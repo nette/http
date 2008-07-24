@@ -21,6 +21,7 @@
 /*namespace Nette::Web;*/
 
 
+
 require_once dirname(__FILE__) . '/../Object.php';
 
 require_once dirname(__FILE__) . '/../Web/IHttpResponse.php';
@@ -40,8 +41,8 @@ final class HttpResponse extends /*Nette::*/Object implements IHttpResponse
 	const PERMANENT = 2116333333; // 23.1.2037
 	const WINDOW    = 0;   // end of session, when the browser closes
 
-	/** @var bool */
-	private static $xhtml = TRUE;
+	/** @var bool  Send invisible garbage for IE 6? */
+	private static $fixIE = TRUE;
 
 	/** @var string The domain in which the cookie will be available */
 	public $cookieDomain = '';
@@ -59,8 +60,8 @@ final class HttpResponse extends /*Nette::*/Object implements IHttpResponse
 	/**
 	 * Sets HTTP response code.
 	 * @param  int
-	 * @return void
-	 * @thorws ::InvalidArgumentException, ::InvalidStateException
+	 * @return bool
+	 * @throws ::InvalidArgumentException
 	 */
 	public function setCode($code)
 	{
@@ -78,11 +79,12 @@ final class HttpResponse extends /*Nette::*/Object implements IHttpResponse
 		}
 
 		if (headers_sent($file, $line)) {
-			throw new /*::*/InvalidStateException("Cannot modify header information - headers already sent (output started at $file:$line).");
+			return FALSE;
 		}
 
 		$this->code = $code;
 		header('HTTP/1.1 ' . $code, TRUE, $code);
+		return TRUE;
 	}
 
 
@@ -107,8 +109,6 @@ final class HttpResponse extends /*Nette::*/Object implements IHttpResponse
 	public function setHeader($header, $replace = FALSE)
 	{
 		if (headers_sent()) {
-			//TODO: return FALSE or throw exception?
-			//throw new /*::*/InvalidStateException("Cannot modify header information - headers already sent.");
 			return FALSE;
 		}
 		// prevent header injection
@@ -121,11 +121,22 @@ final class HttpResponse extends /*Nette::*/Object implements IHttpResponse
 
 	/**
 	 * Returns a list of headers to sent.
+	 * @param  bool
 	 * @return array
 	 */
-	public function getHeaders()
+	public function getHeaders($asPairs = FALSE)
 	{
-		return headers_list();
+		if ($asPairs) {
+			$headers = array();
+			foreach (headers_list() as $header) {
+				$a = strpos($header, ':');
+				$headers[substr($header, 0, $a)] = substr($header, $a + 2);
+			}
+			return $headers;
+
+		} else {
+			return headers_list();
+		}
 	}
 
 
@@ -171,9 +182,20 @@ final class HttpResponse extends /*Nette::*/Object implements IHttpResponse
 	}
 
 
-	/*
+
+	/**
+	 * Enables compression. (warning: may not work)
+	 * @return bool
+	 */
 	public function enableCompression()
 	{
+		if (headers_sent()) return FALSE;
+
+		$headers = $this->getHeaders(TRUE);
+		if (isset($headers['Content-Encoding'])) {
+			return FALSE; // called twice
+		}
+
 		$ok = ob_gzhandler('', PHP_OUTPUT_HANDLER_START);
 		if ($ok === FALSE) {
 			return FALSE; // not allowed
@@ -186,20 +208,23 @@ final class HttpResponse extends /*Nette::*/Object implements IHttpResponse
 		ob_start('ob_gzhandler');
 		return TRUE;
 	}
-	*/
 
 
 
 	/**
-	 * Sends garbage for IE 6.
+	 * @return void
 	 */
-	public function fixIE()
+	public function __destruct()
 	{
-		$ie = isset($_SERVER['HTTP_USER_AGENT']) && strpos($_SERVER['HTTP_USER_AGENT'], 'MSIE 6.0');
-		$codes = array(400, 403, 404, 405, 406, 408, 409, 410, 500, 501, 505);
-		if ($ie && in_array($this->code, $codes)) {
+		if (self::$fixIE) {
+			// Sends invisible garbage for IE 6.
+			if (!isset($_SERVER['HTTP_USER_AGENT']) || strpos($_SERVER['HTTP_USER_AGENT'], 'MSIE 6.0') === FALSE) return;
+			if (!in_array($this->code, array(400, 403, 404, 405, 406, 408, 409, 410, 500, 501, 505), TRUE)) return;
+			$headers = $this->getHeaders(TRUE);
+			if (isset($headers['Content-Type']) && $headers['Content-Type'] !== 'text/html') return;
 			$s = " \t\r\n";
 			for ($i = 2e3; $i; $i--) echo $s{rand(0, 3)};
+			self::$fixIE = FALSE;
 		}
 	}
 
@@ -226,7 +251,7 @@ final class HttpResponse extends /*Nette::*/Object implements IHttpResponse
 			$expire,
 			$path === NULL ? $this->cookiePath : (string) $path,
 			$domain === NULL ? $this->cookieDomain : (string) $domain, //  . '; httponly'
-			$secure === NULL ? $this->cookieSecure : (string) $secure,
+			$secure === NULL ? $this->cookieSecure : (bool) $secure,
 			TRUE // added in PHP 5.2.0.
 		);
 	}
@@ -249,7 +274,7 @@ final class HttpResponse extends /*Nette::*/Object implements IHttpResponse
 			254400000,
 			$path === NULL ? $this->cookiePath : (string) $path,
 			$domain === NULL ? $this->cookieDomain : (string) $domain, //  . '; httponly'
-			$secure === NULL ? $this->cookieSecure : (string) $secure,
+			$secure === NULL ? $this->cookieSecure : (bool) $secure,
 			TRUE // added in PHP 5.2.0.
 		);
 	}

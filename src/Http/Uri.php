@@ -21,6 +21,7 @@
 /*namespace Nette::Web;*/
 
 
+
 require_once dirname(__FILE__) . '/../Object.php';
 
 
@@ -168,7 +169,7 @@ class Uri extends /*Nette::*/Object
 		// compare query strings
 		$part = strtok('?#');
 		if ($part !== FALSE) {
-			$tmp = explode('&', self::unescape($part, '%&=+'));
+			$tmp = explode('&', self::unescape($part, '%&'));
 			sort($tmp);
 			if (implode('&', $tmp) !== $this->query) {
 				return FALSE;
@@ -191,7 +192,7 @@ class Uri extends /*Nette::*/Object
 		$this->host = strtolower(rawurldecode($this->host));
 
 		if ($this->query !== '') {
-			$tmp = explode('&', self::unescape($this->query, '%&=+'));
+			$tmp = explode('&', self::unescape($this->query, '%&'));
 			sort($tmp);
 			$this->query = implode('&', $tmp);
 		}

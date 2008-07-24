@@ -21,6 +21,7 @@
 /*namespace Nette::Web;*/
 
 
+
 require_once dirname(__FILE__) . '/../Object.php';
 
 require_once dirname(__FILE__) . '/../Web/IHttpRequest.php';
@@ -351,7 +352,7 @@ class HttpRequest extends /*Nette::*/Object implements IHttpRequest
 	 */
 	public function isAjax()
 	{
-		return ($this->getMethod() === 'POST') && ($this->getHeader('X-Requested-With') === 'XMLHttpRequest');
+		return $this->getHeader('X-Requested-With') === 'XMLHttpRequest';
 	}
 
 
