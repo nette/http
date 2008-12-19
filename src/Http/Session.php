@@ -218,7 +218,7 @@ class Session extends /*Nette\*/Object
 	 */
 	public function exists()
 	{
-		return $this->getHttpRequest()->getCookie(session_name()) !== NULL;
+		return self::$started || $this->getHttpRequest()->getCookie(session_name()) !== NULL;
 	}
 
 
@@ -298,7 +298,7 @@ class Session extends /*Nette\*/Object
 
 
 	/**
-	 * Returns instance of session namespace.
+	 * Returns specified session namespace.
 	 * @param  string
 	 * @param  string
 	 * @return SessionNamespace
@@ -324,17 +324,17 @@ class Session extends /*Nette\*/Object
 
 
 	/**
-	 * Checks if a namespace exists.
+	 * Checks if a session namespace exist and is not empty.
 	 * @param  string
 	 * @return bool
 	 */
 	public function hasNamespace($namespace)
 	{
-		if (!self::$started) {
+		if ($this->exists() && !self::$started) {
 			$this->start();
 		}
 
-		return isset($_SESSION['__NS'][$namespace]);
+		return !empty($_SESSION['__NS'][$namespace]);
 	}
 
 
@@ -345,7 +345,7 @@ class Session extends /*Nette\*/Object
 	 */
 	public function getIterator()
 	{
-		if (!self::$started) {
+		if ($this->exists() && !self::$started) {
 			$this->start();
 		}
 
@@ -387,6 +387,10 @@ class Session extends /*Nette\*/Object
 
 		if (empty($_SESSION['__NS'])) {
 			unset($_SESSION['__NS']);
+		}
+
+		if (empty($_SESSION)) {
+			//$this->destroy(); only when shutting down
 		}
 	}
 
