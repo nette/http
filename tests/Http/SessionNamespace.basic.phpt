@@ -13,7 +13,7 @@ use Nette\Web\Session;
 
 
 
-require __DIR__ . '/../NetteTest/initialize.php';
+require __DIR__ . '/../initialize.php';
 
 
 
@@ -23,7 +23,7 @@ $namespace->a = 'apple';
 $namespace->p = 'pear';
 $namespace['o'] = 'orange';
 foreach ($namespace as $key => $val) {
-	dump( "$key=$val" );
+	T::dump( "$key=$val" );
 }
 
 Assert::true( isset($namespace['p']) );
@@ -42,8 +42,8 @@ Assert::same( '', http_build_query($namespace->getIterator()) );
 __halt_compiler() ?>
 
 ------EXPECT------
-string(7) "a=apple"
+"a=apple"
 
-string(6) "p=pear"
+"p=pear"
 
-string(8) "o=orange"
+"o=orange"
