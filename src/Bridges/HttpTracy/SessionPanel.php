@@ -5,7 +5,7 @@
  * Copyright (c) 2004 David Grudl (http://davidgrudl.com)
  */
 
-namespace Nette\Http\Diagnostics;
+namespace Nette\Bridges\HttpTracy;
 
 use Nette;
 
