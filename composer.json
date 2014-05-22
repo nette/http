@@ -20,6 +20,9 @@
 	"require-dev": {
 		"nette/tester": "~1.0"
 	},
+	"suggest": {
+		"ext-fileinfo": "to detect type of uploaded files"
+	},
 	"autoload": {
 		"classmap": ["src/"]
 	},
