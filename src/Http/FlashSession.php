@@ -48,7 +48,7 @@ class FlashSession extends Nette\Object
 
 
 	/** @return string */
-	public static function generateID()
+	public static function generateId()
 	{
 		return Nette\Utils\Random::generate(4);
 	}
