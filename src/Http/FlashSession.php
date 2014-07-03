@@ -41,7 +41,7 @@ class FlashSession extends Nette\Object
 	/**
 	 * @return bool
 	 */
-	public function exists($namespace)
+	public function hasSection($namespace)
 	{
 		return $this->session->hasSection($namespace . '/' . $this->id);
 	}
