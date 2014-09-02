@@ -196,19 +196,9 @@ class SessionSection extends Nette\Object implements \IteratorAggregate, \ArrayA
 			$whenBrowserIsClosed = FALSE;
 		}
 
-		if ($variables === NULL) { // to entire section
-			$this->meta['']['T'] = $time;
-			$this->meta['']['B'] = $whenBrowserIsClosed;
-
-		} elseif (is_array($variables)) { // to variables
-			foreach ($variables as $variable) {
-				$this->meta[$variable]['T'] = $time;
-				$this->meta[$variable]['B'] = $whenBrowserIsClosed;
-			}
-
-		} else { // to variable
-			$this->meta[$variables]['T'] = $time;
-			$this->meta[$variables]['B'] = $whenBrowserIsClosed;
+		foreach (is_array($variables) ? $variables : array($variables) as $variable) {
+			$this->meta[$variable]['T'] = $time;
+			$this->meta[$variable]['B'] = $whenBrowserIsClosed;
 		}
 		return $this;
 	}
@@ -222,17 +212,8 @@ class SessionSection extends Nette\Object implements \IteratorAggregate, \ArrayA
 	public function removeExpiration($variables = NULL)
 	{
 		$this->start();
-		if ($variables === NULL) {
-			// from entire section
+		foreach (is_array($variables) ? $variables : array($variables) as $variable) {
 			unset($this->meta['']['T'], $this->meta['']['B']);
-
-		} elseif (is_array($variables)) {
-			// from variables
-			foreach ($variables as $variable) {
-				unset($this->meta[$variable]['T'], $this->meta[$variable]['B']);
-			}
-		} else {
-			unset($this->meta[$variables]['T'], $this->meta[$variables]['B']);
 		}
 	}
 

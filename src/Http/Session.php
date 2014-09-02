@@ -105,7 +105,7 @@ class Session extends Nette\Object
 		/* structure:
 			__NF: BrowserKey, Data, Meta, Time
 				DATA: section->variable = data
-				META: section->variable = Timestamp, Browser, Version
+				META: section->variable = Timestamp, Browser
 		*/
 		$nf = & $_SESSION['__NF'];
 
