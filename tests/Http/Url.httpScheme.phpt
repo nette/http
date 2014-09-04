@@ -11,12 +11,12 @@ use Nette\Http\Url,
 require __DIR__ . '/../bootstrap.php';
 
 
-$url = new Url('http://username:password@hostname:60/path/script.php?arg=value#anchor');
+$url = new Url('http://username%3A:password%3A@hostn%61me:60/p%61th/script.php?%61rg=value#%61nchor');
 
 Assert::same( 'http://hostname:60/path/script.php?arg=value#anchor',  (string) $url );
 Assert::same( 'http',  $url->scheme );
-Assert::same( 'username',  $url->user );
-Assert::same( 'password',  $url->password );
+Assert::same( 'username:',  $url->user );
+Assert::same( 'password:',  $url->password );
 Assert::same( 'hostname',  $url->host );
 Assert::same( 60,  $url->port );
 Assert::same( '/path/script.php',  $url->path );
@@ -30,4 +30,4 @@ Assert::same( 'http://hostname:60/path/',  $url->baseUrl );
 Assert::same( 'script.php?arg=value#anchor',  $url->relativeUrl );
 
 $url->scheme = NULL;
-Assert::same( '//username:password@hostname:60/path/script.php?arg=value#anchor',  $url->absoluteUrl );
+Assert::same( '//username%3A:password%3A@hostname:60/path/script.php?arg=value#anchor',  $url->absoluteUrl );

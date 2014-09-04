@@ -89,22 +89,21 @@ class Url extends Nette\Object
 	public function __construct($url = NULL)
 	{
 		if (is_string($url)) {
-			$parts = @parse_url($url); // @ - is escalated to exception
-			if ($parts === FALSE) {
+			$p = @parse_url($url); // @ - is escalated to exception
+			if ($p === FALSE) {
 				throw new Nette\InvalidArgumentException("Malformed or unsupported URI '$url'.");
 			}
 
-			foreach ($parts as $key => $val) {
-				$this->$key = $val;
-			}
-
-			if (!$this->port && isset(self::$defaultPorts[$this->scheme])) {
-				$this->port = self::$defaultPorts[$this->scheme];
-			}
-
-			if ($this->path === '' && ($this->scheme === 'http' || $this->scheme === 'https')) {
-				$this->path = '/';
-			}
+			$this->scheme = isset($p['scheme']) ? $p['scheme'] : '';
+			$this->port = isset($p['port']) ? $p['port']
+				: (isset(self::$defaultPorts[$this->scheme]) ? self::$defaultPorts[$this->scheme] : NULL);
+			$this->host = isset($p['host']) ? rawurldecode($p['host']) : '';
+			$this->user = isset($p['user']) ? rawurldecode($p['user']) : '';
+			$this->pass = isset($p['pass']) ? rawurldecode($p['pass']) : '';
+			$this->path = isset($p['path']) ? self::unescape($p['path'], '%/')
+				: (in_array($this->scheme, array('http', 'https'), TRUE) ? '/' : '');
+			$this->query = isset($p['query']) ? self::unescape($p['query'], '%&;=+ ') : '';
+			$this->fragment = isset($p['fragment']) ? rawurldecode($p['fragment']) : '';
 
 		} elseif ($url instanceof self) {
 			foreach ($this as $key => $val) {
@@ -357,7 +356,7 @@ class Url extends Nette\Object
 		}
 
 		if ($this->user !== '' && $this->scheme !== 'http' && $this->scheme !== 'https') {
-			$authority = $this->user . ($this->pass === '' ? '' : ':' . $this->pass) . '@' . $authority;
+			$authority = rawurlencode($this->user) . ($this->pass === '' ? '' : ':' . rawurlencode($this->pass)) . '@' . $authority;
 		}
 
 		return $authority;
