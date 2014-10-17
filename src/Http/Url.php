@@ -416,11 +416,12 @@ class Url extends Nette\Object
 		sort($query);
 		parse_str($this->query, $query2);
 		sort($query2);
+		$http = in_array($this->scheme, array('http', 'https'), TRUE);
 		return $url->scheme === $this->scheme
 			&& !strcasecmp($url->host, $this->host)
 			&& $url->port === $this->port
-			&& $url->user === $this->user
-			&& $url->pass === $this->pass
+			&& ($http || $url->user === $this->user)
+			&& ($http || $url->pass === $this->pass)
 			&& $url->path === $this->path
 			&& $query === $query2
 			&& $url->fragment === $this->fragment;
