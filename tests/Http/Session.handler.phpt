@@ -56,8 +56,12 @@ class MySessionStorage extends Object implements SessionHandlerInterface
 $factory = new Nette\Http\RequestFactory;
 $session = new Nette\Http\Session($factory->createHttpRequest(), new Nette\Http\Response);
 
+//custom handler with default session.save_handler option ("files")
+Assert::same('files', ini_get('session.save_handler'));
 $session->setHandler(new MySessionStorage);
+Assert::same('files', ini_get('session.save_handler'));
 $session->start();
+Assert::same('user', ini_get('session.save_handler'));
 $_COOKIE['PHPSESSID'] = $session->getId();
 
 $namespace = $session->getSection('one');
