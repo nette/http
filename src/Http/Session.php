@@ -63,6 +63,9 @@ class Session extends Nette\Object
 	/** @var IResponse */
 	private $response;
 
+	/** @var \SessionHandlerInterface */
+	private $handler;
+
 
 	public function __construct(IRequest $request, IResponse $response)
 	{
@@ -431,6 +434,10 @@ class Session extends Nette\Object
 				$this->sendCookie();
 			}
 		}
+
+		if ($this->handler) {
+			session_set_save_handler($this->handler);
+		}
 	}
 
 
@@ -522,7 +529,7 @@ class Session extends Nette\Object
 		if (self::$started) {
 			throw new Nette\InvalidStateException('Unable to set handler when session has been started.');
 		}
-		session_set_save_handler($handler);
+		$this->handler = $handler;
 		return $this;
 	}
 
