@@ -11,12 +11,15 @@ matrix:
         - php: hhvm
 
 script:
-    - vendor/bin/tester tests -s
+    - vendor/bin/tester tests -s -c tests/php-unix.ini
     - php code-checker/src/code-checker.php -d src
 
 after_failure:
     # Print *.actual content
     - for i in $(find tests -name \*.actual); do echo "--- $i"; cat $i; echo; echo; done
+
+services:
+    - redis-server
 
 before_script:
     # Install Nette Tester & Code Checker
