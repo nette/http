@@ -167,7 +167,7 @@ class Response extends Nette\Object implements IResponse
 
 		$time = DateTime::from($time);
 		$this->setHeader('Cache-Control', 'max-age=' . ($time->format('U') - time()));
-		$this->setHeader('Expires', self::date($time));
+		$this->setHeader('Expires', Helpers::formatDate($time));
 		return $this;
 	}
 
@@ -217,15 +217,11 @@ class Response extends Nette\Object implements IResponse
 
 
 	/**
-	 * Returns HTTP valid date format.
-	 * @param  string|int|DateTime
-	 * @return string
+	 * @deprecated
 	 */
 	public static function date($time = NULL)
 	{
-		$time = DateTime::from($time);
-		$time->setTimezone(new \DateTimeZone('GMT'));
-		return $time->format('D, d M Y H:i:s \G\M\T');
+		return Helpers::formatDate($time);
 	}
 
 
