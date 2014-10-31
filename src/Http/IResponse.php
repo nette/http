@@ -127,6 +127,14 @@ interface IResponse
 	function isSent();
 
 	/**
+	 * Returns value of an HTTP header.
+	 * @param  string
+	 * @param  mixed
+	 * @return mixed
+	 */
+	function getHeader($header, $default = NULL);
+
+	/**
 	 * Returns a list of headers to sent.
 	 * @return array
 	 */
