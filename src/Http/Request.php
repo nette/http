@@ -75,7 +75,7 @@ class Request extends Nette\Object implements IRequest
 		$this->files = (array) $files;
 		$this->cookies = (array) $cookies;
 		$this->headers = array_change_key_case((array) $headers, CASE_LOWER);
-		$this->method = $method;
+		$this->method = $method ?: 'GET';
 		$this->remoteAddress = $remoteAddress;
 		$this->remoteHost = $remoteHost;
 		$this->rawBodyCallback = $rawBodyCallback;
