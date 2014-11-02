@@ -287,8 +287,8 @@ class Request extends Nette\Object implements IRequest
 	 */
 	public function getRemoteHost()
 	{
-		if (!$this->remoteHost) {
-			$this->remoteHost = $this->remoteAddress ? getHostByAddr($this->remoteAddress) : NULL;
+		if ($this->remoteHost === NULL && $this->remoteAddress !== NULL) {
+			$this->remoteHost = getHostByAddr($this->remoteAddress);
 		}
 		return $this->remoteHost;
 	}
