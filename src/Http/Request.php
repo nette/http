@@ -205,8 +205,7 @@ class Request extends Nette\Object implements IRequest
 
 
 	/**
-	 * Checks if the request method is POST.
-	 * @return bool
+	 * @deprecated
 	 */
 	public function isPost()
 	{
