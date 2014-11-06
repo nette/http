@@ -382,7 +382,7 @@ class Session extends Nette\Object
 
 
 	/**
-	 * Configurates session environment.
+	 * Configures session environment.
 	 * @param  array
 	 * @return void
 	 */
@@ -436,7 +436,7 @@ class Session extends Nette\Object
 
 	/**
 	 * Sets the amount of time allowed between requests before the session will be terminated.
-	 * @param  string|int|DateTime  time, value 0 means "until the browser is closed"
+	 * @param  string|int|\DateTime  time, value 0 means "until the browser is closed"
 	 * @return self
 	 */
 	public function setExpiration($time)
