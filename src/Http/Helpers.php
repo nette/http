@@ -7,7 +7,8 @@
 
 namespace Nette\Http;
 
-use Nette;
+use Nette,
+	Nette\Utils\DateTime;
 
 
 /**
@@ -17,6 +18,19 @@ use Nette;
  */
 class Helpers
 {
+
+	/**
+	 * Returns HTTP valid date format.
+	 * @param  string|int|\DateTime
+	 * @return string
+	 */
+	public static function formatDate($time)
+	{
+		$time = DateTime::from($time);
+		$time->setTimezone(new \DateTimeZone('GMT'));
+		return $time->format('D, d M Y H:i:s \G\M\T');
+	}
+
 
 	/**
 	 * Is IP address in CIDR block?

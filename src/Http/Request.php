@@ -16,8 +16,8 @@ use Nette;
  * @author     David Grudl
  *
  * @property-read UrlScript $url
- * @property-read mixed $query
- * @property-read bool $post
+ * @property-read array $query
+ * @property-read array $post
  * @property-read array $files
  * @property-read array $cookies
  * @property-read string $method
@@ -25,9 +25,9 @@ use Nette;
  * @property-read Url|NULL $referer
  * @property-read bool $secured
  * @property-read bool $ajax
- * @property-read string $remoteAddress
- * @property-read string $remoteHost
- * @property-read string $rawBody
+ * @property-read string|NULL $remoteAddress
+ * @property-read string|NULL $remoteHost
+ * @property-read string|NULL $rawBody
  */
 class Request extends Nette\Object implements IRequest
 {
@@ -52,22 +52,22 @@ class Request extends Nette\Object implements IRequest
 	/** @var array */
 	private $headers;
 
-	/** @var string */
+	/** @var string|NULL */
 	private $remoteAddress;
 
-	/** @var string */
+	/** @var string|NULL */
 	private $remoteHost;
 
-	/** @var string */
-	private $rawBody;
+	/** @var callable|NULL */
+	private $rawBodyCallback;
 
 
 	public function __construct(UrlScript $url, $query = NULL, $post = NULL, $files = NULL, $cookies = NULL,
-		$headers = NULL, $method = NULL, $remoteAddress = NULL, $remoteHost = NULL)
+		$headers = NULL, $method = NULL, $remoteAddress = NULL, $remoteHost = NULL, $rawBodyCallback = NULL)
 	{
 		$this->url = $url;
 		if ($query === NULL) {
-			parse_str($url->query, $this->query);
+			parse_str($url->getQuery(), $this->query);
 		} else {
 			$this->query = (array) $query;
 		}
@@ -75,9 +75,10 @@ class Request extends Nette\Object implements IRequest
 		$this->files = (array) $files;
 		$this->cookies = (array) $cookies;
 		$this->headers = array_change_key_case((array) $headers, CASE_LOWER);
-		$this->method = $method;
+		$this->method = $method ?: 'GET';
 		$this->remoteAddress = $remoteAddress;
 		$this->remoteHost = $remoteHost;
+		$this->rawBodyCallback = $rawBodyCallback;
 	}
 
 
@@ -139,7 +140,7 @@ class Request extends Nette\Object implements IRequest
 	/**
 	 * Returns uploaded file.
 	 * @param  string key (or more keys)
-	 * @return FileUpload
+	 * @return FileUpload|NULL
 	 */
 	public function getFile($key)
 	{
@@ -204,8 +205,7 @@ class Request extends Nette\Object implements IRequest
 
 
 	/**
-	 * Checks if the request method is POST.
-	 * @return bool
+	 * @deprecated
 	 */
 	public function isPost()
 	{
@@ -223,11 +223,7 @@ class Request extends Nette\Object implements IRequest
 	public function getHeader($header, $default = NULL)
 	{
 		$header = strtolower($header);
-		if (isset($this->headers[$header])) {
-			return $this->headers[$header];
-		} else {
-			return $default;
-		}
+		return isset($this->headers[$header]) ? $this->headers[$header] : $default;
 	}
 
 
@@ -257,7 +253,7 @@ class Request extends Nette\Object implements IRequest
 	 */
 	public function isSecured()
 	{
-		return $this->url->scheme === 'https';
+		return $this->url->getScheme() === 'https';
 	}
 
 
@@ -273,7 +269,7 @@ class Request extends Nette\Object implements IRequest
 
 	/**
 	 * Returns the IP address of the remote client.
-	 * @return string
+	 * @return string|NULL
 	 */
 	public function getRemoteAddress()
 	{
@@ -283,12 +279,12 @@ class Request extends Nette\Object implements IRequest
 
 	/**
 	 * Returns the host of the remote client.
-	 * @return string
+	 * @return string|NULL
 	 */
 	public function getRemoteHost()
 	{
-		if (!$this->remoteHost) {
-			$this->remoteHost = $this->remoteAddress ? getHostByAddr($this->remoteAddress) : NULL;
+		if ($this->remoteHost === NULL && $this->remoteAddress !== NULL) {
+			$this->remoteHost = getHostByAddr($this->remoteAddress);
 		}
 		return $this->remoteHost;
 	}
@@ -296,25 +292,18 @@ class Request extends Nette\Object implements IRequest
 
 	/**
 	 * Returns raw content of HTTP request body.
-	 * @return string
+	 * @return string|NULL
 	 */
 	public function getRawBody()
 	{
-		if (PHP_VERSION_ID >= 50600) {
-			return file_get_contents('php://input');
-
-		} elseif ($this->rawBody === NULL) { // can be read only once in PHP < 5.6
-			$this->rawBody = (string) file_get_contents('php://input');
-		}
-
-		return $this->rawBody;
+		return $this->rawBodyCallback ? call_user_func($this->rawBodyCallback) : NULL;
 	}
 
 
 	/**
-	 * Parse Accept-Language header and returns prefered language.
-	 * @param  array   Supported languages
-	 * @return string|null
+	 * Parse Accept-Language header and returns preferred language.
+	 * @param  string[] supported languages
+	 * @return string|NULL
 	 */
 	public function detectLanguage(array $langs)
 	{

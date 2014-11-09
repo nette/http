@@ -382,7 +382,7 @@ class Session extends Nette\Object
 
 
 	/**
-	 * Configurates session environment.
+	 * Configures session environment.
 	 * @param  array
 	 * @return void
 	 */
@@ -436,7 +436,7 @@ class Session extends Nette\Object
 
 	/**
 	 * Sets the amount of time allowed between requests before the session will be terminated.
-	 * @param  string|int|DateTime  time, value 0 means "until the browser is closed"
+	 * @param  string|int|\DateTime  time, value 0 means "until the browser is closed"
 	 * @return self
 	 */
 	public function setExpiration($time)
@@ -509,6 +509,7 @@ class Session extends Nette\Object
 			array($storage, 'open'), array($storage, 'close'), array($storage, 'read'),
 			array($storage, 'write'), array($storage, 'remove'), array($storage, 'clean')
 		);
+		return $this;
 	}
 
 
@@ -522,6 +523,7 @@ class Session extends Nette\Object
 			throw new Nette\InvalidStateException('Unable to set handler when session has been started.');
 		}
 		session_set_save_handler($handler);
+		return $this;
 	}
 
 
@@ -540,8 +542,8 @@ class Session extends Nette\Object
 			session_name(), session_id(),
 			$cookie['lifetime'] ? $cookie['lifetime'] + time() : 0,
 			$cookie['path'], $cookie['domain'], $cookie['secure'], $cookie['httponly']
-
-		)->setCookie(
+		);
+		$this->response->setCookie(
 			'nette-browser', $_SESSION['__NF']['B'],
 			Response::BROWSER, $cookie['path'], $cookie['domain']
 		);
