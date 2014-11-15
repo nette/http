@@ -50,7 +50,7 @@ class Helpers
 			$size = $size === '' ? 0 : $max - $size;
 		}
 		$bits = implode('', array_map(function ($n) {
-				return sprintf('%032b', $n);
+			return sprintf('%032b', $n);
 		}, $arr));
 		return substr($bits, 0, $max - $size) === substr($bits, $max, $max - $size);
 	}

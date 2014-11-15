@@ -23,11 +23,11 @@ if (PHP_SAPI !== 'cli') {
 
 
 ob_start();
-$response->redirect('javascript:alert(1)');
+$response->redirect(' javascript:alert(1)');
 Assert::same('', ob_get_clean());
 
 if (PHP_SAPI !== 'cli') {
-	Assert::contains('Location: javascript:alert(1)', headers_list());
+	Assert::contains('Location:  javascript:alert(1)', headers_list());
 }
 
 
