@@ -53,8 +53,9 @@ class Response extends Nette\Object implements IResponse
 		}
 
 		if (PHP_VERSION_ID >= 50401) { // PHP bug #61106
+			class_exists('Nette\Http\Helpers'); // invoke autoloader
 			header_register_callback(function() { // requires closure due PHP bug #66375
-				$this->removeDuplicateCookies();
+				Helpers::removeDuplicateCookies();
 			});
 		}
 	}
@@ -272,7 +273,7 @@ class Response extends Nette\Object implements IResponse
 			$secure === NULL ? $this->cookieSecure : (bool) $secure,
 			$httpOnly === NULL ? $this->cookieHttpOnly : (bool) $httpOnly
 		);
-		$this->removeDuplicateCookies();
+		Helpers::removeDuplicateCookies();
 		return $this;
 	}
 
@@ -292,27 +293,10 @@ class Response extends Nette\Object implements IResponse
 	}
 
 
-	/**
-	 * Removes duplicate cookies from response.
-	 * @return void
-	 * @internal
-	 */
+	/** @internal @deprecated */
 	public function removeDuplicateCookies()
 	{
-		if (headers_sent($file, $line) || ini_get('suhosin.cookie.encrypt')) {
-			return;
-		}
-
-		$flatten = array();
-		foreach (headers_list() as $header) {
-			if (preg_match('#^Set-Cookie: .+?=#', $header, $m)) {
-				$flatten[$m[0]] = $header;
-				header_remove('Set-Cookie');
-			}
-		}
-		foreach (array_values($flatten) as $key => $header) {
-			header($header, $key === 0);
-		}
+		trigger_error('Use Nette\Http\Helpers::removeDuplicateCookies()', E_USER_WARNING);
 	}
 
 

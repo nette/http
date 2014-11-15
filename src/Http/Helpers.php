@@ -55,4 +55,28 @@ class Helpers
 		return substr($bits, 0, $max - $size) === substr($bits, $max, $max - $size);
 	}
 
+
+	/**
+	 * Removes duplicate cookies from response.
+	 * @return void
+	 * @internal
+	 */
+	public static function removeDuplicateCookies()
+	{
+		if (headers_sent($file, $line) || ini_get('suhosin.cookie.encrypt')) {
+			return;
+		}
+
+		$flatten = array();
+		foreach (headers_list() as $header) {
+			if (preg_match('#^Set-Cookie: .+?=#', $header, $m)) {
+				$flatten[$m[0]] = $header;
+				header_remove('Set-Cookie');
+			}
+		}
+		foreach (array_values($flatten) as $key => $header) {
+			header($header, $key === 0);
+		}
+	}
+
 }
