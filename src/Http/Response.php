@@ -53,10 +53,8 @@ class Response extends Nette\Object implements IResponse
 		}
 
 		if (PHP_VERSION_ID >= 50401) { // PHP bug #61106
-			class_exists('Nette\Http\Helpers'); // invoke autoloader
-			header_register_callback(function() { // requires closure due PHP bug #66375
-				Helpers::removeDuplicateCookies();
-			});
+			$rm = new \ReflectionMethod('Nette\Http\Helpers::removeDuplicateCookies');
+			header_register_callback($rm->getClosure()); // requires closure due PHP bug #66375
 		}
 	}
 
