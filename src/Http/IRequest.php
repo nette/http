@@ -53,7 +53,7 @@ interface IRequest
 
 	/**
 	 * Returns uploaded file.
-	 * @param  string key (or more keys)
+	 * @param  string key
 	 * @return FileUpload|NULL
 	 */
 	function getFile($key);

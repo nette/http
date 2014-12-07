@@ -108,7 +108,5 @@ Assert::type( 'Nette\Http\FileUpload', $request->files['file3'][1] );
 Assert::false( isset($request->files['file0']) );
 Assert::true( isset($request->files['file1']) );
 
-Assert::null( $request->getFile('file1', 'a') );
-
 Assert::null( $request->getFile('empty1') );
 Assert::same( array(NULL), $request->getFile('empty2') );
