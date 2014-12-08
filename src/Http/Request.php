@@ -139,12 +139,17 @@ class Request extends Nette\Object implements IRequest
 
 	/**
 	 * Returns uploaded file.
-	 * @param  string key (or more keys)
+	 * @param  string key
 	 * @return FileUpload|NULL
 	 */
 	public function getFile($key)
 	{
-		return Nette\Utils\Arrays::get($this->files, func_get_args(), NULL);
+		if (func_num_args() > 1) {
+			trigger_error('Calling getFile() with multiple keys is deprecated.', E_USER_DEPRECATED);
+			return Nette\Utils\Arrays::get($this->files, func_get_args(), NULL);
+		}
+
+		return isset($this->files[$key]) ? $this->files[$key] : NULL;
 	}
 
 
