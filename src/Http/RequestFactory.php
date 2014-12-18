@@ -21,12 +21,6 @@ class RequestFactory extends Nette\Object
 	/** @internal */
 	const CHARS = '#^[\x09\x0A\x0D\x20-\x7E\xA0-\x{10FFFF}]*+\z#u';
 
-	/** @var array */
-	public $urlFilters = array(
-		'path' => array('#/{2,}#' => '/'), // '%20' => ''
-		'url' => array(), // '#[.,)]\z#' => ''
-	);
-
 	/** @var bool */
 	private $binary = FALSE;
 
@@ -81,21 +75,9 @@ class RequestFactory extends Nette\Object
 		}
 
 		// path & query
-		if (isset($_SERVER['REQUEST_URI'])) { // Apache, IIS 6.0
-			$requestUrl = $_SERVER['REQUEST_URI'];
-
-		} elseif (isset($_SERVER['ORIG_PATH_INFO'])) { // IIS 5.0 (PHP as CGI ?)
-			$requestUrl = $_SERVER['ORIG_PATH_INFO'];
-			if (isset($_SERVER['QUERY_STRING']) && $_SERVER['QUERY_STRING'] != '') {
-				$requestUrl .= '?' . $_SERVER['QUERY_STRING'];
-			}
-		} else {
-			$requestUrl = '';
-		}
-
-		$requestUrl = Strings::replace($requestUrl, $this->urlFilters['url']);
+		$requestUrl = isset($_SERVER['REQUEST_URI']) ? $_SERVER['REQUEST_URI'] : '';
 		$tmp = explode('?', $requestUrl, 2);
-		$url->setPath(Strings::replace($tmp[0], $this->urlFilters['path']));
+		$url->setPath($tmp[0]);
 		$url->setQuery(isset($tmp[1]) ? $tmp[1] : '');
 
 		// normalized url
