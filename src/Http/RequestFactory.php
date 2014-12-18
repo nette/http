@@ -19,24 +19,10 @@ use Nette,
 class RequestFactory extends Nette\Object
 {
 	/** @internal */
-	const NONCHARS = '#[^\x09\x0A\x0D\x20-\x7E\xA0-\x{10FFFF}]#u';
-
-	/** @var bool */
-	private $binary = FALSE;
+	const CHARS = '#^[\x09\x0A\x0D\x20-\x7E\xA0-\x{10FFFF}]++\z#u';
 
 	/** @var array */
 	private $proxies = array();
-
-
-	/**
-	 * @param  bool
-	 * @return self
-	 */
-	public function setBinary($binary = TRUE)
-	{
-		$this->binary = (bool) $binary;
-		return $this;
-	}
 
 
 	/**
@@ -63,48 +49,50 @@ class RequestFactory extends Nette\Object
 		$url->setPassword(isset($_SERVER['PHP_AUTH_PW']) ? $_SERVER['PHP_AUTH_PW'] : '');
 
 		// host & port
-		if ((isset($_SERVER[$tmp = 'HTTP_HOST']) || isset($_SERVER[$tmp = 'SERVER_NAME']))
-			&& preg_match('#^([a-z0-9_.-]+|\[[a-f0-9:]+\])(:\d+)?\z#i', $_SERVER[$tmp], $pair)
-		) {
-			$url->setHost(strtolower($pair[1]));
-			if (isset($pair[2])) {
-				$url->setPort(substr($pair[2], 1));
-			} elseif (isset($_SERVER['SERVER_PORT'])) {
-				$url->setPort($_SERVER['SERVER_PORT']);
+		if (isset($_SERVER[$tmp = 'HTTP_HOST']) || isset($_SERVER[$tmp = 'SERVER_NAME'])) {
+			if (preg_match('#^([a-z0-9_.-]+|\[[a-f0-9:]+\])(:\d+)?\z#i', $_SERVER[$tmp], $pair)) {
+				$url->setHost(strtolower($pair[1]));
+				if (isset($pair[2])) {
+					$url->setPort(substr($pair[2], 1));
+				} elseif (isset($_SERVER['SERVER_PORT'])) {
+					$url->setPort($_SERVER['SERVER_PORT']);
+				}
+			} else {
+				throw new \Exception(); // TODO
 			}
 		}
 
 		// path & query
-		$requestUrl = isset($_SERVER['REQUEST_URI']) ? $_SERVER['REQUEST_URI'] : '';
-		$tmp = explode('?', $requestUrl, 2);
-		$url->setPath($tmp[0]);
-		$url->setQuery(isset($tmp[1]) ? $tmp[1] : '');
-
-		// normalized url
-		$url->canonicalize();
-		$url->setPath(Strings::fixEncoding($url->getPath()));
-
-		// detect script path
-		if (isset($_SERVER['SCRIPT_NAME'])) {
-			$script = $_SERVER['SCRIPT_NAME'];
-		} elseif (isset($_SERVER['DOCUMENT_ROOT'], $_SERVER['SCRIPT_FILENAME'])
-			&& strncmp($_SERVER['DOCUMENT_ROOT'], $_SERVER['SCRIPT_FILENAME'], strlen($_SERVER['DOCUMENT_ROOT'])) === 0
-		) {
-			$script = '/' . ltrim(strtr(substr($_SERVER['SCRIPT_FILENAME'], strlen($_SERVER['DOCUMENT_ROOT'])), '\\', '/'), '/');
-		} else {
-			$script = '/';
-		}
-
-		$path = strtolower($url->getPath()) . '/';
-		$script = strtolower($script) . '/';
-		$max = min(strlen($path), strlen($script));
-		for ($i = 0; $i < $max; $i++) {
-			if ($path[$i] !== $script[$i]) {
-				break;
-			} elseif ($path[$i] === '/') {
-				$url->setScriptPath(substr($url->getPath(), 0, $i + 1));
+		if (isset($_SERVER['REQUEST_URI'])) {
+			$pos = strpos($_SERVER['REQUEST_URI'], '?');
+			if ($pos !== FALSE) {
+				$url->setPath(substr($_SERVER['REQUEST_URI'], 0, $pos));
+				$url->setQuery(substr($_SERVER['REQUEST_URI'], $pos + 1));
+			} else {
+				$url->setPath($_SERVER['REQUEST_URI']);
 			}
 		}
+
+		$url->canonicalize();
+		$path = $url->getPath();
+		if (!preg_match(self::CHARS, $path) || preg_last_error()) {
+			throw new \Exception();
+		}
+
+		// detect script path
+		$script = isset($_SERVER['SCRIPT_NAME']) ? $_SERVER['SCRIPT_NAME'] : '/';
+		$max = min(strlen($path), strlen($script)) - 1;
+		for ($i = 0, $j = 0; $i <= $max; $i++) {
+			if ($path[$i] !== $script[$i] && strcasecmp($path[$i], $script[$i])) {
+				break;
+			} elseif ($path[$i] === '/') {
+				$j = $i;
+			} elseif ($i == $max) {
+				$j = $i + 1;
+			}
+		}
+		$url->setScriptPath(substr($path, 0, $j + 1));
+
 
 		// GET, POST, COOKIE
 		$useFilter = (!in_array(ini_get('filter.default'), array('', 'unsafe_raw')) || ini_get('filter.default_flags'));
@@ -119,36 +107,34 @@ class RequestFactory extends Nette\Object
 		$gpc = (bool) get_magic_quotes_gpc();
 
 		// remove fucking quotes, control characters and check encoding
-		if ($gpc || !$this->binary) {
-			$list = array(& $query, & $post, & $cookies);
-			while (list($key, $val) = each($list)) {
-				foreach ($val as $k => $v) {
-					unset($list[$key][$k]);
+		$list = array(& $query, & $post, & $cookies);
+		while (list($key, $val) = each($list)) {
+			foreach ($val as $k => $v) {
+				unset($list[$key][$k]);
 
-					if ($gpc) {
-						$k = stripslashes($k);
+				if ($gpc) {
+					$k = stripslashes($k);
+				}
+
+				if (is_string($k) && (!preg_match(self::CHARS, $k) || preg_last_error())) {
+					// invalid key -> ignore
+
+				} elseif (is_array($v)) {
+					$list[$key][$k] = $v;
+					$list[] = & $list[$key][$k];
+
+				} else {
+					if ($gpc && !$useFilter) {
+						$v = stripslashes($v);
 					}
-
-					if (!$this->binary && is_string($k) && (preg_match(self::NONCHARS, $k) || preg_last_error())) {
-						// invalid key -> ignore
-
-					} elseif (is_array($v)) {
-						$list[$key][$k] = $v;
-						$list[] = & $list[$key][$k];
-
-					} else {
-						if ($gpc && !$useFilter) {
-							$v = stripSlashes($v);
-						}
-						if (!$this->binary && (preg_match(self::NONCHARS, $v) || preg_last_error())) {
-							$v = '';
-						}
-						$list[$key][$k] = $v;
+					if (!preg_match(self::CHARS, $v) || preg_last_error()) {
+						$v = '';
 					}
+					$list[$key][$k] = $v;
 				}
 			}
-			unset($list, $key, $val, $k, $v);
 		}
+		unset($list, $key, $val, $k, $v);
 
 
 		// FILES and create FileUpload objects
@@ -156,7 +142,7 @@ class RequestFactory extends Nette\Object
 		$list = array();
 		if (!empty($_FILES)) {
 			foreach ($_FILES as $k => $v) {
-				if (!$this->binary && is_string($k) && (preg_match(self::NONCHARS, $k) || preg_last_error())) {
+				if (is_string($k) && (!preg_match(self::CHARS, $k) || preg_last_error())) {
 					continue;
 				}
 				$v['@'] = & $files[$k];
@@ -172,7 +158,7 @@ class RequestFactory extends Nette\Object
 				if ($gpc) {
 					$v['name'] = stripSlashes($v['name']);
 				}
-				if (!$this->binary && (preg_match(self::NONCHARS, $v['name']) || preg_last_error())) {
+				if (!preg_match(self::CHARS, $v['name']) || preg_last_error()) {
 					$v['name'] = '';
 				}
 				if ($v['error'] !== UPLOAD_ERR_NO_FILE) {
@@ -182,7 +168,7 @@ class RequestFactory extends Nette\Object
 			}
 
 			foreach ($v['name'] as $k => $foo) {
-				if (!$this->binary && is_string($k) && (preg_match(self::NONCHARS, $k) || preg_last_error())) {
+				if (is_string($k) && (!preg_match(self::CHARS, $k) || preg_last_error())) {
 					continue;
 				}
 				$list[] = array(
@@ -230,11 +216,14 @@ class RequestFactory extends Nette\Object
 		}
 
 
-		$method = isset($_SERVER['REQUEST_METHOD']) ? $_SERVER['REQUEST_METHOD'] : NULL;
-		if ($method === 'POST' && isset($_SERVER['HTTP_X_HTTP_METHOD_OVERRIDE'])
-			&& preg_match('#^[A-Z]+\z#', $_SERVER['HTTP_X_HTTP_METHOD_OVERRIDE'])
-		) {
-			$method = $_SERVER['HTTP_X_HTTP_METHOD_OVERRIDE'];
+		if (isset($_SERVER['REQUEST_METHOD'])) {
+			if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_SERVER['HTTP_X_HTTP_METHOD_OVERRIDE']) && preg_match('#^[A-Z]+\z#', $_SERVER['HTTP_X_HTTP_METHOD_OVERRIDE'])) {
+				$method = $_SERVER['HTTP_X_HTTP_METHOD_OVERRIDE'];
+			} else {
+				$method = $_SERVER['REQUEST_METHOD'];
+			}
+		} else {
+			$method = NULL;
 		}
 
 		// raw body
