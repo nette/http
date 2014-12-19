@@ -100,7 +100,7 @@ class Url extends Nette\Object
 			$this->host = isset($p['host']) ? rawurldecode($p['host']) : '';
 			$this->user = isset($p['user']) ? rawurldecode($p['user']) : '';
 			$this->pass = isset($p['pass']) ? rawurldecode($p['pass']) : '';
-			$this->path = isset($p['path']) ? self::unescape($p['path'], '%/')
+			$this->path = isset($p['path']) ? $p['path']
 				: (in_array($this->scheme, array('http', 'https'), TRUE) ? '/' : '');
 			$this->query = isset($p['query']) ? self::unescape($p['query'], '%&;=+ ') : '';
 			$this->fragment = isset($p['fragment']) ? rawurldecode($p['fragment']) : '';
@@ -434,7 +434,7 @@ class Url extends Nette\Object
 	 */
 	public function canonicalize()
 	{
-		$this->path = $this->path === '' ? '/' : self::unescape($this->path, '%/');
+		$this->path = $this->path === '' ? '/' : self::unescape($this->path, "\x00\x01\x02\x03\x04\x05\x06\x07\x08\t\n\x0B\x0C\r\x0E\x0F\x10\x11\x12\x13\x14\x15\x16\x17\x18\x19\x1A\x1B\x1C\x1D\x1E\x1F \"#%/<>?[\\]^`{|}");
 		$this->host = strtolower(rawurldecode($this->host));
 		$this->query = self::unescape(strtr($this->query, '+', ' '), '%&;=+');
 		return $this;
