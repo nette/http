@@ -42,6 +42,8 @@ test(function() {
 	Assert::same( '/file.php',  $request->getUrl()->path );
 	Assert::same( "x param=val.&pa%\x72am=val2&param3=v a%26l%3Du%2Be",  $request->getUrl()->query );
 	Assert::same( '',  $request->getUrl()->fragment );
+	Assert::same( 'val.',  $request->getQuery('x_param') );
+	Assert::same( 'val2',  $request->getQuery('pa%ram') );
 	Assert::same( 'nette.org:8080',  $request->getUrl()->authority );
 	Assert::same( 'https://nette.org:8080',  $request->getUrl()->hostUrl );
 	Assert::same( 'https://nette.org:8080/',  $request->getUrl()->baseUrl );

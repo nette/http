@@ -26,6 +26,10 @@ Assert::same( 'arg=value&arg2=value2',  $url->query );
 $url->appendQuery(array('arg3' => 'value3'));
 Assert::same( 'arg=value&arg2=value2&arg3=value3',  $url->query );
 
+$url->appendQuery('arg4[]=1');
+$url->appendQuery('arg4[]=2');
+Assert::same( 'arg=value&arg2=value2&arg3=value3&arg4[]=1&arg4[]=2',  $url->query );
+
 $url->setQuery(array('arg3' => 'value3'));
 Assert::same( 'arg3=value3',  $url->query );
 

@@ -11,14 +11,19 @@ use Nette\Http\Url,
 require __DIR__ . '/../bootstrap.php';
 
 
-$url = new Url('http://exampl%65.COM?text=foo%20bar+foo&value');
-Assert::true( $url->isEqual('http://example.com/?text=foo+bar%20foo&value') );
-Assert::true( $url->isEqual('http://example.com/?value&text=foo+bar%20foo') );
-Assert::false( $url->isEqual('http://example.com/?value&text=foo+bar%20foo#abc') );
-Assert::false( $url->isEqual('http://example.com/?text=foo+bar%20foo') );
-Assert::false( $url->isEqual('https://example.com/?text=foo+bar%20foo&value') );
-Assert::false( $url->isEqual('http://example.org/?text=foo+bar%20foo&value') );
-Assert::false( $url->isEqual('http://example.com/path?text=foo+bar%20foo&value') );
+$url = new Url('http://exampl%65.COM/p%61th?text=foo%20bar+foo&value');
+Assert::true( $url->isEqual('http://example.com/path?text=foo+bar%20foo&value') );
+Assert::true( $url->isEqual('http://example.com/%70ath?value&text=foo+bar%20foo') );
+Assert::false( $url->isEqual('http://example.com/Path?text=foo+bar%20foo&value') );
+Assert::false( $url->isEqual('http://example.com/path?value&text=foo+bar%20foo#abc') );
+Assert::false( $url->isEqual('http://example.com/path?text=foo+bar%20foo') );
+Assert::false( $url->isEqual('https://example.com/path?text=foo+bar%20foo&value') );
+Assert::false( $url->isEqual('http://example.org/path?text=foo+bar%20foo&value') );
+
+
+$url = new Url('http://example.com');
+Assert::true( $url->isEqual('http://example.com/') );
+Assert::true( $url->isEqual('http://example.com') );
 
 
 $url = new Url('http://example.com/?arr[]=item1&arr[]=item2');
