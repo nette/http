@@ -462,9 +462,9 @@ class Url extends Nette\Object
 		// within a path segment, the characters "/", ";", "=", "?" are reserved
 		// within a query component, the characters ";", "/", "?", ":", "@", "&", "=", "+", ",", "$" are reserved.
 		if ($reserved !== '') {
-			$s = preg_replace(
+			$s = preg_replace_callback(
 				'#%(' . substr(chunk_split(bin2hex($reserved), 2, '|'), 0, -1) . ')#i',
-				'%25$1',
+				function($m) { return '%25' . strtoupper($m[1]); },
 				$s
 			);
 		}
