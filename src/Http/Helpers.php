@@ -79,4 +79,17 @@ class Helpers
 		}
 	}
 
+
+	/**
+	 * @internal
+	 */
+	public static function stripSlashes($arr)
+	{
+		$res = array();
+		foreach ($arr as $k => $v) {
+			$res[stripslashes($k)] = is_array($v) ? self::stripSlashes($v) : stripslashes($v);
+		}
+		return $res;
+	}
+
 }

@@ -66,11 +66,7 @@ class Request extends Nette\Object implements IRequest
 		$headers = NULL, $method = NULL, $remoteAddress = NULL, $remoteHost = NULL, $rawBodyCallback = NULL)
 	{
 		$this->url = $url;
-		if ($query === NULL) {
-			parse_str($url->getQuery(), $this->query);
-		} else {
-			$this->query = (array) $query;
-		}
+		$this->query = $query === NULL ? $url->getQueryParameters() : (array) $query;
 		$this->post = (array) $post;
 		$this->files = (array) $files;
 		$this->cookies = (array) $cookies;
