@@ -100,7 +100,10 @@ class RequestFactory extends Nette\Object
 
 		// normalized url
 		$url->canonicalize();
-		$url->setPath(Strings::fixEncoding($url->getPath()));
+
+		if (preg_match(self::NONCHARS, $url->getPath()) || preg_last_error()) {
+			throw new InvalidRequestException(); // TODO!
+		}
 
 		// detect script path
 		if (isset($_SERVER['SCRIPT_NAME'])) {
