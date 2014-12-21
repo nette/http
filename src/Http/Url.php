@@ -100,7 +100,7 @@ class Url extends Nette\Object
 			$this->host = isset($p['host']) ? rawurldecode($p['host']) : '';
 			$this->user = isset($p['user']) ? rawurldecode($p['user']) : '';
 			$this->pass = isset($p['pass']) ? rawurldecode($p['pass']) : '';
-			$this->path = isset($p['path']) ? self::unescape($p['path'], '%/')
+			$this->path = isset($p['path']) ? $p['path']
 				: (in_array($this->scheme, array('http', 'https'), TRUE) ? '/' : '');
 			$this->query = isset($p['query']) ? self::unescape($p['query'], '%&;=+ ') : '';
 			$this->fragment = isset($p['fragment']) ? rawurldecode($p['fragment']) : '';
@@ -422,7 +422,7 @@ class Url extends Nette\Object
 			&& $url->port === $this->port
 			&& ($http || $url->user === $this->user)
 			&& ($http || $url->pass === $this->pass)
-			&& $url->path === $this->path
+			&& self::unescape($url->path, '%/') === self::unescape($this->path, '%/')
 			&& $query === $query2
 			&& $url->fragment === $this->fragment;
 	}
