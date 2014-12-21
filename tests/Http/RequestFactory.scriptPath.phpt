@@ -16,7 +16,7 @@ $factory = new RequestFactory;
 test(function() use ($factory) {
 	$_SERVER = array(
 		'REQUEST_URI' => '/projects/modules-usage/www/',
-		'SCRIPT_FILENAME' => 'W:/projects/Modules-Usage/www/index.php',
+		'SCRIPT_FILENAME' => 'W:/projects/modules-usage/www/index.php',
 		'SCRIPT_NAME' => '/projects/modules-usage/www/index.php',
 	);
 
@@ -27,8 +27,8 @@ test(function() use ($factory) {
 test(function() use ($factory) {
 	$_SERVER = array(
 		'REQUEST_URI' => '/projects/modules-usage/www/default/add-item',
-		'SCRIPT_FILENAME' => 'W:/projects/Modules-Usage/www/index.php',
-		'SCRIPT_NAME' => '/projects/Modules-Usage/www/index.php',
+		'SCRIPT_FILENAME' => 'W:/projects/modules-usage/www/index.php',
+		'SCRIPT_NAME' => '/projects/modules-usage/www/index.php',
 	);
 
 	Assert::same( '/projects/modules-usage/www/', $factory->createHttpRequest()->getUrl()->getScriptPath() );
@@ -96,4 +96,14 @@ test(function() use ($factory) {
 	);
 
 	Assert::same( '/configuration/', $factory->createHttpRequest()->getUrl()->getScriptPath() );
+});
+
+
+test(function() use ($factory) {
+	$_SERVER = array(
+		'REQUEST_URI' => '/blog/WWW/',
+		'SCRIPT_NAME' => '/blog/www/index.php',
+	);
+
+	Assert::same( '/blog/', $factory->createHttpRequest()->getUrl()->getScriptPath() );
 });
