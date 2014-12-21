@@ -113,15 +113,17 @@ class RequestFactory extends Nette\Object
 			$script = '/';
 		}
 
-		$path = strtolower($url->getPath()) . '/';
-		$script = strtolower($script) . '/';
+		$path = $url->getPath();
 		$max = min(strlen($path), strlen($script));
 		for ($i = 0; $i < $max; $i++) {
-			if ($path[$i] !== $script[$i]) {
+			if ($path[$i] !== $script[$i] && strcasecmp($path[$i], $script[$i])) {
 				break;
-			} elseif ($path[$i] === '/') {
-				$url->setScriptPath(substr($url->getPath(), 0, $i + 1));
 			}
+		}
+		if ($i === $max && strlen($path) === strlen($script)) {
+			$url->setScriptPath($path);
+		} else {
+			$url->setScriptPath(substr($path, 0, strrpos($path, '/', $i - $max - 1) + 1));
 		}
 
 		// GET, POST, COOKIE
