@@ -51,3 +51,45 @@ test(function() use ($factory) {
 
 	Assert::same( '/www/', $factory->createHttpRequest()->getUrl()->getScriptPath() );
 });
+
+
+test(function() use ($factory) {
+	$_SERVER = array(
+		'REQUEST_URI' => '/test/in',
+		'SCRIPT_NAME' => '/test/index.php',
+	);
+
+	Assert::same( '/test/', $factory->createHttpRequest()->getUrl()->getScriptPath() );
+});
+
+
+test(function() use ($factory) {
+	$_SERVER = array(
+		'REQUEST_URI' => '/test//',
+		'SCRIPT_NAME' => '/test/index.php',
+	);
+
+	Assert::same( '/test/', $factory->createHttpRequest()->getUrl()->getScriptPath() );
+});
+
+
+// http://forum.nette.org/cs/5932-lepsi-detekce-requesturi-a-scriptpath
+test(function() use ($factory) {
+	$_SERVER = array(
+		'REQUEST_URI' => '/sign/in/',
+		'SCRIPT_NAME' => '/sign/in/',
+	);
+
+	Assert::same( '/sign/in/', $factory->createHttpRequest()->getUrl()->getScriptPath() );
+});
+
+
+// http://forum.nette.org/cs/9139-spatny-urlscript-scriptpath
+test(function() use ($factory) {
+	$_SERVER = array(
+		'REQUEST_URI' => '/configuration/',
+		'SCRIPT_NAME' => '/configuration/www/index.php',
+	);
+
+	Assert::same( '/configuration/', $factory->createHttpRequest()->getUrl()->getScriptPath() );
+});
