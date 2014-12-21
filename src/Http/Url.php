@@ -476,7 +476,9 @@ class Url implements \JsonSerializable
 	 */
 	public static function parseQuery(string $s): array
 	{
+		$s = str_replace(['%5B', '%5b'], '[', $s);
+		$s = preg_replace('#&([^[&=]+)([^&]*)#', '&0[$1]$2', '&' . $s);
 		parse_str($s, $res);
-		return $res;
+		return $res ? $res[0] : [];
 	}
 }
