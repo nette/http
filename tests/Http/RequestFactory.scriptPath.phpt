@@ -16,7 +16,6 @@ $factory = new RequestFactory;
 test(function() use ($factory) {
 	$_SERVER = array(
 		'REQUEST_URI' => '/projects/modules-usage/www/',
-		'SCRIPT_FILENAME' => 'W:/projects/Modules-Usage/www/index.php',
 		'SCRIPT_NAME' => '/projects/modules-usage/www/index.php',
 	);
 
@@ -27,7 +26,6 @@ test(function() use ($factory) {
 test(function() use ($factory) {
 	$_SERVER = array(
 		'REQUEST_URI' => '/projects/modules-usage/www/default/add-item',
-		'SCRIPT_FILENAME' => 'W:/projects/Modules-Usage/www/index.php',
 		'SCRIPT_NAME' => '/projects/Modules-Usage/www/index.php',
 	);
 
@@ -38,7 +36,6 @@ test(function() use ($factory) {
 test(function() use ($factory) {
 	$_SERVER = array(
 		'REQUEST_URI' => '/www/index.php',
-		'SCRIPT_FILENAME' => 'w:\projects\modules-usage\www\index.php',
 		'SCRIPT_NAME' => '/www/index.php',
 	);
 
@@ -49,7 +46,6 @@ test(function() use ($factory) {
 test(function() use ($factory) {
 	$_SERVER = array(
 		'REQUEST_URI' => '/www/',
-		'SCRIPT_FILENAME' => 'w:\projects\modules-usage\www\index.php',
 		'SCRIPT_NAME' => '/www/',
 	);
 
