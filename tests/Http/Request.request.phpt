@@ -40,7 +40,7 @@ test(function() {
 	Assert::same( 'nette.org',  $request->getUrl()->host );
 	Assert::same( 8080,  $request->getUrl()->port );
 	Assert::same( '/file.php',  $request->getUrl()->path );
-	Assert::same( "x param=val.&pa%\x72am=val2&param3=v a%26l%3Du%2Be",  $request->getUrl()->query );
+	Assert::same( 'x param=val.&pa%%72am=val2&param3=v%20a%26l%3Du%2Be',  $request->getUrl()->query );
 	Assert::same( '',  $request->getUrl()->fragment );
 	Assert::same( 'val.',  $request->getQuery('x_param') );
 	Assert::same( 'val2',  $request->getQuery('pa%ram') );
@@ -48,8 +48,8 @@ test(function() {
 	Assert::same( 'https://nette.org:8080',  $request->getUrl()->hostUrl );
 	Assert::same( 'https://nette.org:8080/',  $request->getUrl()->baseUrl );
 	Assert::same( '/',  $request->getUrl()->basePath );
-	Assert::same( "file.php?x param=val.&pa%\x72am=val2&param3=v a%26l%3Du%2Be",  $request->getUrl()->relativeUrl );
-	Assert::same( "https://nette.org:8080/file.php?x param=val.&pa%\x72am=val2&param3=v a%26l%3Du%2Be",  $request->getUrl()->absoluteUrl );
+	Assert::same( 'file.php?x param=val.&pa%%72am=val2&param3=v%20a%26l%3Du%2Be',  $request->getUrl()->relativeUrl );
+	Assert::same( 'https://nette.org:8080/file.php?x param=val.&pa%%72am=val2&param3=v%20a%26l%3Du%2Be',  $request->getUrl()->absoluteUrl );
 	Assert::same( '',  $request->getUrl()->pathInfo );
 });
 
@@ -66,7 +66,7 @@ test(function() {
 	Assert::same( 'nette.org',  $request->getUrl()->host );
 	Assert::same( 8080,  $request->getUrl()->port );
 	Assert::same( '/file.php',  $request->getUrl()->path );
-	Assert::same( 'x param=val.&pa%ram=val2&param3=v a%26l%3Du%2Be)',  $request->getUrl()->query );
+	Assert::same( 'x param=val.&pa%%72am=val2&param3=v%20a%26l%3Du%2Be)',  $request->getUrl()->query );
 	Assert::same( '',  $request->getUrl()->fragment );
 	Assert::same( 'val.',  $request->getQuery('x_param') );
 	Assert::same( 'val2',  $request->getQuery('pa%ram') );
