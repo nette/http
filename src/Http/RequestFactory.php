@@ -81,18 +81,7 @@ class RequestFactory extends Nette\Object
 		}
 
 		// path & query
-		if (isset($_SERVER['REQUEST_URI'])) { // Apache, IIS 6.0
-			$requestUrl = $_SERVER['REQUEST_URI'];
-
-		} elseif (isset($_SERVER['ORIG_PATH_INFO'])) { // IIS 5.0 (PHP as CGI ?)
-			$requestUrl = $_SERVER['ORIG_PATH_INFO'];
-			if (isset($_SERVER['QUERY_STRING']) && $_SERVER['QUERY_STRING'] != '') {
-				$requestUrl .= '?' . $_SERVER['QUERY_STRING'];
-			}
-		} else {
-			$requestUrl = '';
-		}
-
+		$requestUrl = isset($_SERVER['REQUEST_URI']) ? $_SERVER['REQUEST_URI'] : '';
 		$requestUrl = Strings::replace($requestUrl, $this->urlFilters['url']);
 		$tmp = explode('?', $requestUrl, 2);
 		$path = Strings::fixEncoding(Strings::replace($tmp[0], $this->urlFilters['path']));
