@@ -95,12 +95,9 @@ class RequestFactory extends Nette\Object
 
 		$requestUrl = Strings::replace($requestUrl, $this->urlFilters['url']);
 		$tmp = explode('?', $requestUrl, 2);
-		$url->setPath(Strings::replace($tmp[0], $this->urlFilters['path']));
+		$path = Strings::fixEncoding(Strings::replace($tmp[0], $this->urlFilters['path']));
+		$url->setPath($path);
 		$url->setQuery(isset($tmp[1]) ? $tmp[1] : '');
-
-		// normalized url
-		$url->canonicalize();
-		$url->setPath(Strings::fixEncoding($url->getPath()));
 
 		// detect script path
 		if (isset($_SERVER['SCRIPT_NAME'])) {
@@ -113,7 +110,7 @@ class RequestFactory extends Nette\Object
 			$script = '/';
 		}
 
-		$path = strtolower($url->getPath()) . '/';
+		$path = strtolower($path) . '/';
 		$script = strtolower($script) . '/';
 		$max = min(strlen($path), strlen($script));
 		for ($i = 0; $i < $max; $i++) {
