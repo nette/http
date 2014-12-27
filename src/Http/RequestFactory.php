@@ -83,6 +83,9 @@ class RequestFactory
 		// path & query
 		$requestUrl = $_SERVER['REQUEST_URI'] ?? '/';
 		$requestUrl = preg_replace('#^\w++://[^/]++#', '', $requestUrl);
+		if (!$this->binary && (!preg_match(self::CHARS, rawurldecode($requestUrl)) || preg_last_error())) {
+			// TODO: invalid request
+		}
 		$requestUrl = Strings::replace($requestUrl, $this->urlFilters['url']);
 		$tmp = explode('?', $requestUrl, 2);
 		$path = Url::unescape($tmp[0], '%/?#');
@@ -100,17 +103,15 @@ class RequestFactory
 		}
 		$url->setScriptPath($path);
 
-		// GET, POST, COOKIE
+		// POST, COOKIE
 		$useFilter = (!in_array(ini_get('filter.default'), ['', 'unsafe_raw'], true) || ini_get('filter.default_flags'));
-
-		$query = $url->getQueryParameters();
 		$post = $useFilter ? filter_input_array(INPUT_POST, FILTER_UNSAFE_RAW) : (empty($_POST) ? [] : $_POST);
 		$cookies = $useFilter ? filter_input_array(INPUT_COOKIE, FILTER_UNSAFE_RAW) : (empty($_COOKIE) ? [] : $_COOKIE);
 
 		// remove invalid characters
 		$reChars = '#^[' . self::CHARS . ']*+\z#u';
 		if (!$this->binary) {
-			$list = [&$query, &$post, &$cookies];
+			$list = [&$post, &$cookies];
 			foreach ($list as $key => &$val) {
 				foreach ($val as $k => $v) {
 					if (is_string($k) && (!preg_match($reChars, $k) || preg_last_error())) {
@@ -127,7 +128,6 @@ class RequestFactory
 			}
 			unset($list, $key, $val, $k, $v);
 		}
-		$url->setQuery($query);
 
 
 		// FILES and create FileUpload objects
