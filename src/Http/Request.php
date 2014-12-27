@@ -38,9 +38,6 @@ class Request extends Nette\Object implements IRequest
 	private $url;
 
 	/** @var array */
-	private $query;
-
-	/** @var array */
 	private $post;
 
 	/** @var array */
@@ -66,7 +63,10 @@ class Request extends Nette\Object implements IRequest
 		$headers = NULL, $method = NULL, $remoteAddress = NULL, $remoteHost = NULL, $rawBodyCallback = NULL)
 	{
 		$this->url = $url;
-		$this->query = $query === NULL ? $url->getQueryParameters() : (array) $query;
+		if ($query !== NULL) {
+			trigger_error('Nette\Http\Request::__construct(): parameter $query is deprecated.', E_USER_DEPRECATED);
+			$url->setQuery($query);
+		}
 		$this->post = (array) $post;
 		$this->files = (array) $files;
 		$this->cookies = (array) $cookies;
@@ -101,13 +101,9 @@ class Request extends Nette\Object implements IRequest
 	public function getQuery($key = NULL, $default = NULL)
 	{
 		if (func_num_args() === 0) {
-			return $this->query;
-
-		} elseif (isset($this->query[$key])) {
-			return $this->query[$key];
-
+			return $this->url->getQueryParameters();
 		} else {
-			return $default;
+			return $this->url->getQueryParameter($key, $default);
 		}
 	}
 

@@ -137,6 +137,7 @@ class RequestFactory extends Nette\Object
 			}
 			unset($list, $key, $val, $k, $v);
 		}
+		$url->setQuery($query);
 
 
 		// FILES and create FileUpload objects
@@ -239,7 +240,7 @@ class RequestFactory extends Nette\Object
 			return $rawBody;
 		};
 
-		return new Request($url, $query, $post, $files, $cookies, $headers, $method, $remoteAddr, $remoteHost, $rawBodyCallback);
+		return new Request($url, NULL, $post, $files, $cookies, $headers, $method, $remoteAddr, $remoteHost, $rawBodyCallback);
 	}
 
 }
