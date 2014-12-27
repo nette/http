@@ -83,11 +83,13 @@ class Helpers
 	/**
 	 * @internal
 	 */
-	public static function stripSlashes($arr)
+	public static function stripSlashes($arr, $onlyKeys = FALSE)
 	{
 		$res = array();
 		foreach ($arr as $k => $v) {
-			$res[stripslashes($k)] = is_array($v) ? self::stripSlashes($v) : stripslashes($v);
+			$res[stripslashes($k)] = is_array($v)
+				? self::stripSlashes($v, $onlyKeys)
+				: ($onlyKeys ? $v : stripslashes($v));
 		}
 		return $res;
 	}

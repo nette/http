@@ -100,38 +100,29 @@ class RequestFactory extends Nette\Object
 		// GET, POST, COOKIE
 		$useFilter = (!in_array(ini_get('filter.default'), array('', 'unsafe_raw')) || ini_get('filter.default_flags'));
 
-		parse_str($url->getQuery(), $query);
+		$query = $url->getQueryParameters();
 		$post = $useFilter ? filter_input_array(INPUT_POST, FILTER_UNSAFE_RAW) : (empty($_POST) ? array() : $_POST);
 		$cookies = $useFilter ? filter_input_array(INPUT_COOKIE, FILTER_UNSAFE_RAW) : (empty($_COOKIE) ? array() : $_COOKIE);
 
-		$gpc = (bool) get_magic_quotes_gpc();
+		if (get_magic_quotes_gpc()) {
+			$post = Helpers::stripslashes($post, $useFilter);
+			$cookies = Helpers::stripslashes($cookies, $useFilter);
+		}
 
-		// remove fucking quotes, control characters and check encoding
-		if ($gpc || !$this->binary) {
+		// remove invalid characters
+		if (!$this->binary) {
 			$list = array(& $query, & $post, & $cookies);
 			while (list($key, $val) = each($list)) {
 				foreach ($val as $k => $v) {
-					unset($list[$key][$k]);
-
-					if ($gpc) {
-						$k = stripslashes($k);
-					}
-
-					if (!$this->binary && is_string($k) && (!preg_match(self::CHARS, $k) || preg_last_error())) {
-						// invalid key -> ignore
+					if (is_string($k) && (!preg_match(self::CHARS, $k) || preg_last_error())) {
+						unset($list[$key][$k]);
 
 					} elseif (is_array($v)) {
 						$list[$key][$k] = $v;
 						$list[] = & $list[$key][$k];
 
-					} else {
-						if ($gpc && !$useFilter) {
-							$v = stripSlashes($v);
-						}
-						if (!$this->binary && (!preg_match(self::CHARS, $v) || preg_last_error())) {
-							$v = '';
-						}
-						$list[$key][$k] = $v;
+					} elseif (!preg_match(self::CHARS, $v) || preg_last_error()) {
+						$list[$key][$k] = '';
 					}
 				}
 			}
@@ -158,7 +149,7 @@ class RequestFactory extends Nette\Object
 				continue;
 
 			} elseif (!is_array($v['name'])) {
-				if ($gpc) {
+				if (get_magic_quotes_gpc()) {
 					$v['name'] = stripSlashes($v['name']);
 				}
 				if (!$this->binary && (!preg_match(self::CHARS, $v['name']) || preg_last_error())) {
