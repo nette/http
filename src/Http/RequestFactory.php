@@ -81,7 +81,7 @@ class RequestFactory extends Nette\Object
 		}
 
 		// path & query
-		$requestUrl = isset($_SERVER['REQUEST_URI']) ? $_SERVER['REQUEST_URI'] : '';
+		$requestUrl = isset($_SERVER['REQUEST_URI']) ? $_SERVER['REQUEST_URI'] : '/';
 		$requestUrl = Strings::replace($requestUrl, $this->urlFilters['url']);
 		$tmp = explode('?', $requestUrl, 2);
 		$path = Strings::fixEncoding(Strings::replace($tmp[0], $this->urlFilters['path']));
@@ -89,16 +89,13 @@ class RequestFactory extends Nette\Object
 		$url->setQuery(isset($tmp[1]) ? $tmp[1] : '');
 
 		// detect script path
-		$path .= '/';
-		$script = isset($_SERVER['SCRIPT_NAME']) ? $_SERVER['SCRIPT_NAME'] . '/' : '/';
-		$max = min(strlen($path), strlen($script));
-		for ($i = 0; $i < $max; $i++) {
-			if ($path[$i] !== $script[$i]) {
-				break;
-			} elseif ($path[$i] === '/') {
-				$url->setScriptPath(substr($url->getPath(), 0, $i + 1));
-			}
+		$script = isset($_SERVER['SCRIPT_NAME']) ? $_SERVER['SCRIPT_NAME'] : '';
+		if ($path !== $script) {
+			$max = min(strlen($path), strlen($script));
+			for ($i = 0; $i < $max && $path[$i] === $script[$i]; $i++);
+			$path = $i ? substr($path, 0, strrpos($path, '/', $i - $max - 1) + 1) : '/';
 		}
+		$url->setScriptPath($path);
 
 		// GET, POST, COOKIE
 		$useFilter = (!in_array(ini_get('filter.default'), array('', 'unsafe_raw')) || ini_get('filter.default_flags'));

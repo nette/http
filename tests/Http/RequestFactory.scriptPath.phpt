@@ -103,3 +103,43 @@ test(function() use ($factory) {
 
 	Assert::same( '/blog/', $factory->createHttpRequest()->getUrl()->getScriptPath() );
 });
+
+
+test(function() use ($factory) {
+	$_SERVER = array(
+		'REQUEST_URI' => '/',
+		'SCRIPT_NAME' => 'c:\\index.php',
+	);
+
+	Assert::same( '/', $factory->createHttpRequest()->getUrl()->getScriptPath() );
+});
+
+
+test(function() use ($factory) {
+	$_SERVER = array(
+		'REQUEST_URI' => NULL,
+		'SCRIPT_NAME' => 'c:\\index.php',
+	);
+
+	Assert::same( '/', $factory->createHttpRequest()->getUrl()->getScriptPath() );
+});
+
+
+test(function() use ($factory) {
+	$_SERVER = array(
+		'REQUEST_URI' => '/',
+		'SCRIPT_NAME' => NULL,
+	);
+
+	Assert::same( '/', $factory->createHttpRequest()->getUrl()->getScriptPath() );
+});
+
+
+test(function() use ($factory) {
+	$_SERVER = array(
+		'REQUEST_URI' => NULL,
+		'SCRIPT_NAME' => NULL,
+	);
+
+	Assert::same( '/', $factory->createHttpRequest()->getUrl()->getScriptPath() );
+});
