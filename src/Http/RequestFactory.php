@@ -81,9 +81,10 @@ class RequestFactory
 		}
 
 		// path & query
+		$reChars = '#^[' . self::CHARS . ']*+\z#u';
 		$requestUrl = $_SERVER['REQUEST_URI'] ?? '/';
 		$requestUrl = preg_replace('#^\w++://[^/]++#', '', $requestUrl);
-		if (!$this->binary && (!preg_match(self::CHARS, rawurldecode($requestUrl)) || preg_last_error())) {
+		if (!$this->binary && (!preg_match($reChars, rawurldecode($requestUrl)) || preg_last_error())) {
 			// TODO: invalid request
 		}
 		$requestUrl = Strings::replace($requestUrl, $this->urlFilters['url']);
@@ -109,24 +110,13 @@ class RequestFactory
 		$cookies = $useFilter ? filter_input_array(INPUT_COOKIE, FILTER_UNSAFE_RAW) : (empty($_COOKIE) ? [] : $_COOKIE);
 
 		// remove invalid characters
-		$reChars = '#^[' . self::CHARS . ']*+\z#u';
 		if (!$this->binary) {
-			$list = [&$post, &$cookies];
-			foreach ($list as $key => &$val) {
-				foreach ($val as $k => $v) {
-					if (is_string($k) && (!preg_match($reChars, $k) || preg_last_error())) {
-						unset($list[$key][$k]);
-
-					} elseif (is_array($v)) {
-						$list[$key][$k] = $v;
-						$list[] = &$list[$key][$k];
-
-					} else {
-						$list[$key][$k] = (string) preg_replace('#[^' . self::CHARS . ']+#u', '', $v);
-					}
-				}
+			if (!preg_match($reChars, rawurldecode(http_build_query($post))) || preg_last_error()) {
+				$post = [];
 			}
-			unset($list, $key, $val, $k, $v);
+			if (!preg_match($reChars, rawurldecode(http_build_query($cookies))) || preg_last_error()) {
+				$cookies = [];
+			}
 		}
 
 
