@@ -13,15 +13,15 @@ require __DIR__ . '/../bootstrap.php';
 
 // Setup environment
 define('INVALID', "\xC4\x76\xC5\xBE");
-define('CONTROL_CHARACTERS', "A\x00B\x80C");
+define('CONTROL_CHARACTERS', "A\x01B\x80C");
 
-$_GET = array(
+$_SERVER['REQUEST_URI'] = '/?' . http_build_query(array(
 	'invalid' => INVALID,
 	'control' => CONTROL_CHARACTERS,
 	INVALID => '1',
 	CONTROL_CHARACTERS => '1',
 	'array' => array(INVALID => '1'),
-);
+));
 
 $_POST = array(
 	'invalid' => INVALID,
