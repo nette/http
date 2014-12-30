@@ -93,7 +93,7 @@ class RequestFactory extends Nette\Object
 		if ($path !== $script) {
 			$max = min(strlen($path), strlen($script));
 			for ($i = 0; $i < $max && $path[$i] === $script[$i]; $i++);
-			$path = $i ? substr($path, 0, strrpos($path, '/', $i - $max - 1) + 1) : '/';
+			$path = $i ? substr($path, 0, strrpos($path, '/', $i - strlen($path) - 1) + 1) : '/';
 		}
 		$url->setScriptPath($path);
 

@@ -143,3 +143,12 @@ test(function() use ($factory) {
 
 	Assert::same( '/', $factory->createHttpRequest()->getUrl()->getScriptPath() );
 });
+
+test(function() use ($factory) {
+	$_SERVER = array(
+		'REQUEST_URI' => '/documents/show/5474',
+		'SCRIPT_NAME' => '/index.php',
+	);
+
+	Assert::same( '/', $factory->createHttpRequest()->getUrl()->getScriptPath() );
+});
