@@ -65,13 +65,13 @@ class Url extends Nette\Object
 	private $user = '';
 
 	/** @var string */
-	private $pass = '';
+	private $password = '';
 
 	/** @var string */
 	private $host = '';
 
 	/** @var int */
-	private $port = NULL;
+	private $port;
 
 	/** @var string */
 	private $path = '';
@@ -100,7 +100,7 @@ class Url extends Nette\Object
 				: (isset(self::$defaultPorts[$this->scheme]) ? self::$defaultPorts[$this->scheme] : NULL);
 			$this->host = isset($p['host']) ? rawurldecode($p['host']) : '';
 			$this->user = isset($p['user']) ? rawurldecode($p['user']) : '';
-			$this->pass = isset($p['pass']) ? rawurldecode($p['pass']) : '';
+			$this->password = isset($p['pass']) ? rawurldecode($p['pass']) : '';
 			$this->setPath(isset($p['path']) ? $p['path'] : '');
 			$this->setQuery(isset($p['query']) ? $p['query'] : array());
 			$this->fragment = isset($p['fragment']) ? rawurldecode($p['fragment']) : '';
@@ -164,7 +164,7 @@ class Url extends Nette\Object
 	 */
 	public function setPassword($value)
 	{
-		$this->pass = (string) $value;
+		$this->password = (string) $value;
 		return $this;
 	}
 
@@ -175,7 +175,7 @@ class Url extends Nette\Object
 	 */
 	public function getPassword()
 	{
-		return $this->pass;
+		return $this->password;
 	}
 
 
@@ -365,7 +365,7 @@ class Url extends Nette\Object
 		}
 
 		if ($this->user !== '' && $this->scheme !== 'http' && $this->scheme !== 'https') {
-			$authority = rawurlencode($this->user) . ($this->pass === '' ? '' : ':' . rawurlencode($this->pass)) . '@' . $authority;
+			$authority = rawurlencode($this->user) . ($this->password === '' ? '' : ':' . rawurlencode($this->password)) . '@' . $authority;
 		}
 
 		return $authority;
@@ -430,7 +430,7 @@ class Url extends Nette\Object
 			&& !strcasecmp($url->host, $this->host)
 			&& $url->port === $this->port
 			&& ($http || $url->user === $this->user)
-			&& ($http || $url->pass === $this->pass)
+			&& ($http || $url->password === $this->password)
 			&& self::unescape($url->path, '%/') === self::unescape($this->path, '%/')
 			&& $query === $query2
 			&& $url->fragment === $this->fragment;
