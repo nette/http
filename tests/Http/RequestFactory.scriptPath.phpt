@@ -25,6 +25,16 @@ test(function() use ($factory) {
 
 test(function() use ($factory) {
 	$_SERVER = array(
+		'REQUEST_URI' => '/projects/modules-usage/%77%77%77/',
+		'SCRIPT_NAME' => '/projects/modules-usage/www/index.php',
+	);
+
+	Assert::same( '/projects/modules-usage/www/', $factory->createHttpRequest()->getUrl()->getScriptPath() );
+});
+
+
+test(function() use ($factory) {
+	$_SERVER = array(
 		'REQUEST_URI' => '/projects/modules-usage/www/default/add-item',
 		'SCRIPT_NAME' => '/projects/modules-usage/www/index.php',
 	);
