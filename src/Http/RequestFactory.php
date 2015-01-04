@@ -84,7 +84,8 @@ class RequestFactory extends Nette\Object
 		$requestUrl = isset($_SERVER['REQUEST_URI']) ? $_SERVER['REQUEST_URI'] : '/';
 		$requestUrl = Strings::replace($requestUrl, $this->urlFilters['url']);
 		$tmp = explode('?', $requestUrl, 2);
-		$path = Strings::fixEncoding(Strings::replace($tmp[0], $this->urlFilters['path']));
+		$path = Url::unescape($tmp[0], '%/?#');
+		$path = Strings::fixEncoding(Strings::replace($path, $this->urlFilters['path']));
 		$url->setPath($path);
 		$url->setQuery(isset($tmp[1]) ? $tmp[1] : '');
 
