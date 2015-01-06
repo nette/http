@@ -84,7 +84,7 @@ class Request extends Nette\Object implements IRequest
 	 */
 	public function getUrl()
 	{
-		return $this->url;
+		return clone $this->url;
 	}
 
 
