@@ -41,8 +41,9 @@ class UrlScript extends Url
 	 */
 	public function setScriptPath($value)
 	{
-		$this->scriptPath = (string) $value;
-		return $this;
+		$clone = clone $this;
+		$clone->scriptPath = (string) $value;
+		return $clone;
 	}
 
 

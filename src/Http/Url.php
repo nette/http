@@ -101,8 +101,8 @@ class Url extends Nette\Object
 			$this->host = isset($p['host']) ? rawurldecode($p['host']) : '';
 			$this->user = isset($p['user']) ? rawurldecode($p['user']) : '';
 			$this->password = isset($p['pass']) ? rawurldecode($p['pass']) : '';
-			$this->setPath(isset($p['path']) ? $p['path'] : '');
-			$this->setQuery(isset($p['query']) ? $p['query'] : array());
+			self::setPathToUrl($this, isset($p['path']) ? $p['path'] : '');
+			self::setQueryToUrl($this, isset($p['query']) ? $p['query'] : array());
 			$this->fragment = isset($p['fragment']) ? rawurldecode($p['fragment']) : '';
 
 		} elseif ($url instanceof self) {
@@ -120,8 +120,9 @@ class Url extends Nette\Object
 	 */
 	public function setScheme($value)
 	{
-		$this->scheme = (string) $value;
-		return $this;
+		$clone = clone $this;
+		$clone->scheme = (string) $value;
+		return $clone;
 	}
 
 
@@ -142,8 +143,9 @@ class Url extends Nette\Object
 	 */
 	public function setUser($value)
 	{
-		$this->user = (string) $value;
-		return $this;
+		$clone = clone $this;
+		$clone->user = (string) $value;
+		return $clone;
 	}
 
 
@@ -164,8 +166,9 @@ class Url extends Nette\Object
 	 */
 	public function setPassword($value)
 	{
-		$this->password = (string) $value;
-		return $this;
+		$clone = clone $this;
+		$clone->password = (string) $value;
+		return $clone;
 	}
 
 
@@ -186,8 +189,9 @@ class Url extends Nette\Object
 	 */
 	public function setHost($value)
 	{
-		$this->host = (string) $value;
-		return $this;
+		$clone = clone $this;
+		$clone->host = (string) $value;
+		return $clone;
 	}
 
 
@@ -208,8 +212,9 @@ class Url extends Nette\Object
 	 */
 	public function setPort($value)
 	{
-		$this->port = (int) $value;
-		return $this;
+		$clone = clone $this;
+		$clone->port = (int) $value;
+		return $clone;
 	}
 
 
@@ -230,11 +235,23 @@ class Url extends Nette\Object
 	 */
 	public function setPath($value)
 	{
-		$this->path = (string) $value;
-		if (substr($this->path, 0, 1) !== '/' && in_array($this->scheme, array('http', 'https'), TRUE)) {
-			$this->path = '/' . $this->path;
+		return self::setPathToUrl(clone $this, $value);
+	}
+
+
+	/**
+	 * Sets the path part of URI.
+	 * @param Url
+	 * @param string
+	 * @return self
+	 */
+	private static function setPathToUrl(Url $url, $value)
+	{
+		$url->path = (string) $value;
+		if (substr($url->path, 0, 1) !== '/' && in_array($url->scheme, array('http', 'https'), TRUE)) {
+			$url->path = '/' . $url->path;
 		}
-		return $this;
+		return $url;
 	}
 
 
@@ -255,8 +272,20 @@ class Url extends Nette\Object
 	 */
 	public function setQuery($value)
 	{
-		$this->query = is_array($value) ? $value : self::parseQuery($value);
-		return $this;
+		return self::setQueryToUrl(clone $this, $value);
+	}
+
+
+	/**
+	 * Sets the query part of URI.
+	 * @param Url
+	 * @param string|array
+	 * @return self
+	 */
+	private function setQueryToUrl(Url $url, $value)
+	{
+		$url->query = is_array($value) ? $value : self::parseQuery($value);
+		return $url;
 	}
 
 
@@ -267,10 +296,11 @@ class Url extends Nette\Object
 	 */
 	public function appendQuery($value)
 	{
-		$this->query = is_array($value)
+		$clone = clone $this;
+		$clone->query = is_array($value)
 			? $value + $this->query
 			: self::parseQuery($this->getQuery() . '&' . $value);
-		return $this;
+		return $clone;
 	}
 
 
@@ -314,8 +344,9 @@ class Url extends Nette\Object
 	 */
 	public function setQueryParameter($name, $value)
 	{
-		$this->query[$name] = $value;
-		return $this;
+		$clone = clone $this;
+		$clone->query[$name] = $value;
+		return $clone;
 	}
 
 
@@ -326,8 +357,9 @@ class Url extends Nette\Object
 	 */
 	public function setFragment($value)
 	{
-		$this->fragment = (string) $value;
-		return $this;
+		$clone = clone $this;
+		$clone->fragment = (string) $value;
+		return $clone;
 	}
 
 
@@ -443,13 +475,14 @@ class Url extends Nette\Object
 	 */
 	public function canonicalize()
 	{
-		$this->path = preg_replace_callback(
+		$clone = clone $this;
+		$clone->path = preg_replace_callback(
 			'#[^!$&\'()*+,/:;=@%]+#',
 			function($m) { return rawurlencode($m[0]); },
-			self::unescape($this->path, '%/')
+			self::unescape($clone->path, '%/')
 		);
-		$this->host = strtolower($this->host);
-		return $this;
+		$clone->host = strtolower($clone->host);
+		return $clone;
 	}
 
 

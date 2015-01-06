@@ -29,20 +29,20 @@ Assert::same( 'http://hostname:60/p%61th/script.php?arg=value#anchor',  $url->ab
 Assert::same( 'http://hostname:60/p%61th/',  $url->baseUrl );
 Assert::same( 'script.php?arg=value#anchor',  $url->relativeUrl );
 
-$url->setPath('');
+$url = $url->setPath('');
 Assert::same( '/',  $url->getPath() );
 
-$url->setPath('/');
+$url = $url->setPath('/');
 Assert::same( '/',  $url->getPath() );
 
-$url->setPath('x');
+$url = $url->setPath('x');
 Assert::same( '/x',  $url->getPath() );
 
-$url->setPath('/x');
+$url = $url->setPath('/x');
 Assert::same( '/x',  $url->getPath() );
 
-$url->scheme = NULL;
+$url = $url->setScheme(NULL);
 Assert::same( '//username%3A:password%3A@hostname:60/x?arg=value#anchor',  $url->absoluteUrl );
 
-$url->setPath('');
+$url = $url->setPath('');
 Assert::same( '',  $url->getPath() );
