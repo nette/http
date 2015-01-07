@@ -26,7 +26,7 @@ use Nette,
 </style>
 
 <div class="nette-SessionPanel">
-	<h1>Session #<?php echo htmlspecialchars(session_id()) ?> (Lifetime: <?php echo htmlspecialchars(ini_get('session.cookie_lifetime')); ?>)</h1>
+	<h1>Session #<?php echo htmlspecialchars(session_id(), ENT_IGNORE, 'UTF-8') ?> (Lifetime: <?php echo htmlspecialchars(ini_get('session.cookie_lifetime'), ENT_NOQUOTES, 'UTF-8'); ?>)</h1>
 
 	<div class="tracy-inner">
 		<?php if (empty($_SESSION)):?>
@@ -38,7 +38,7 @@ use Nette,
 			if ($k === '__NF') {
 				$k = 'Nette Session'; $v = isset($v['DATA']) ? $v['DATA'] : NULL;
 			}
-			echo '<tr><th>', htmlspecialchars($k), '</th><td>', Dumper::toHtml($v, array(Dumper::LIVE => TRUE)), "</td></tr>\n";
+			echo '<tr><th>', htmlspecialchars($k, ENT_IGNORE, 'UTF-8'), '</th><td>', Dumper::toHtml($v, array(Dumper::LIVE => TRUE)), "</td></tr>\n";
 		}?>
 		</table>
 		<?php endif ?>
