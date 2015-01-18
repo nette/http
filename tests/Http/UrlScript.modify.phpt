@@ -23,3 +23,21 @@ Assert::same('/test/', $url->basePath);
 Assert::same('?q=search', $url->relativeUrl);
 Assert::same('', $url->pathInfo);
 Assert::same('http://nette.org:8080/test/?q=search', $url->absoluteUrl);
+
+
+$url = new UrlScript('http://nette.org:8080/www/about');
+$url->scriptPath = '/www/';
+
+Assert::same('/www/about', $url->path);
+Assert::same('/www/', $url->scriptPath);
+Assert::same('about', $url->relativePath);
+Assert::same('about', $url->pathInfo);
+
+
+$url = new UrlScript('http://nette.org:8080/www/index.php');
+$url->scriptPath = '/www/index.php';
+
+Assert::same('/www/index.php', $url->path);
+Assert::same('/www/index.php', $url->scriptPath);
+Assert::same('index.php', $url->relativePath);
+Assert::same('', $url->pathInfo);
