@@ -35,7 +35,7 @@ class MySessionStorage extends Object implements SessionHandlerInterface
 
 	function write($id, $data)
 	{
-		return file_put_contents("$this->path/sess_$id", $data);
+		return (bool) file_put_contents("$this->path/sess_$id", $data);
 	}
 
 	function destroy($id)
