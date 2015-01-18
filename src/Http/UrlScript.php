@@ -24,6 +24,7 @@ namespace Nette\Http;
  * - pathInfo:    /pathinfo/ (additional path information)
  *
  * @property   string $scriptPath
+ * @property-read string $relativePath
  * @property-read string $pathInfo
  */
 class UrlScript extends Url
@@ -56,6 +57,16 @@ class UrlScript extends Url
 	public function getScriptPath(): string
 	{
 		return $this->scriptPath ?: $this->path;
+	}
+
+
+	/**
+	 * Returns part of path after base path.
+	 * @return string
+	 */
+	public function getRelativePath()
+	{
+		return substr($this->getPath(), strrpos($this->scriptPath, '/') + 1);
 	}
 
 
