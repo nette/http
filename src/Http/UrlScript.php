@@ -26,6 +26,7 @@ use Nette;
  * @author     David Grudl
  *
  * @property   string $scriptPath
+ * @property-read string $appPath
  * @property-read string $pathInfo
  */
 class UrlScript extends Url
@@ -53,6 +54,16 @@ class UrlScript extends Url
 	public function getScriptPath()
 	{
 		return $this->scriptPath;
+	}
+
+
+	/**
+	 * Returns application-specific path, e.g. what is behind script path.
+	 * @return string
+	 */
+	public function getAppPath()
+	{
+		return substr($this->getPath(), strrpos($this->scriptPath, '/') + 1);
 	}
 
 
