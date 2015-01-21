@@ -18,6 +18,7 @@
 		"nette/utils": "~2.2, >=2.2.2"
 	},
 	"require-dev": {
+		"nette/di": "~2.3",
 		"nette/tester": "~1.0"
 	},
 	"conflict": {
