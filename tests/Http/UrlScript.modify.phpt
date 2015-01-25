@@ -12,8 +12,8 @@ require __DIR__ . '/../bootstrap.php';
 
 
 $url = new UrlScript('http://nette.org:8080/file.php?q=search');
-$url->path = '/test/';
-$url->scriptPath = '/test/index.php';
+$url = $url->setPath('/test/');
+$url = $url->setScriptPath('/test/index.php');
 
 Assert::same( '/test/index.php',  $url->scriptPath );
 Assert::same( 'http://nette.org:8080/test/',  $url->baseUrl );

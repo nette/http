@@ -64,19 +64,19 @@ class RequestFactory extends Nette\Object
 	{
 		// DETECTS URI, base path and script path of the request.
 		$url = new UrlScript;
-		$url->setScheme(!empty($_SERVER['HTTPS']) && strcasecmp($_SERVER['HTTPS'], 'off') ? 'https' : 'http');
-		$url->setUser(isset($_SERVER['PHP_AUTH_USER']) ? $_SERVER['PHP_AUTH_USER'] : '');
-		$url->setPassword(isset($_SERVER['PHP_AUTH_PW']) ? $_SERVER['PHP_AUTH_PW'] : '');
+		$url = $url->setScheme(!empty($_SERVER['HTTPS']) && strcasecmp($_SERVER['HTTPS'], 'off') ? 'https' : 'http');
+		$url = $url->setUser(isset($_SERVER['PHP_AUTH_USER']) ? $_SERVER['PHP_AUTH_USER'] : '');
+		$url = $url->setPassword(isset($_SERVER['PHP_AUTH_PW']) ? $_SERVER['PHP_AUTH_PW'] : '');
 
 		// host & port
 		if ((isset($_SERVER[$tmp = 'HTTP_HOST']) || isset($_SERVER[$tmp = 'SERVER_NAME']))
 			&& preg_match('#^([a-z0-9_.-]+|\[[a-f0-9:]+\])(:\d+)?\z#i', $_SERVER[$tmp], $pair)
 		) {
-			$url->setHost(strtolower($pair[1]));
+			$url = $url->setHost(strtolower($pair[1]));
 			if (isset($pair[2])) {
-				$url->setPort(substr($pair[2], 1));
+				$url = $url->setPort(substr($pair[2], 1));
 			} elseif (isset($_SERVER['SERVER_PORT'])) {
-				$url->setPort($_SERVER['SERVER_PORT']);
+				$url = $url->setPort($_SERVER['SERVER_PORT']);
 			}
 		}
 
@@ -86,8 +86,8 @@ class RequestFactory extends Nette\Object
 		$tmp = explode('?', $requestUrl, 2);
 		$path = Url::unescape($tmp[0], '%/?#');
 		$path = Strings::fixEncoding(Strings::replace($path, $this->urlFilters['path']));
-		$url->setPath($path);
-		$url->setQuery(isset($tmp[1]) ? $tmp[1] : '');
+		$url = $url->setPath($path);
+		$url = $url->setQuery(isset($tmp[1]) ? $tmp[1] : '');
 
 		// detect script path
 		$script = isset($_SERVER['SCRIPT_NAME']) ? $_SERVER['SCRIPT_NAME'] : '';
@@ -96,7 +96,7 @@ class RequestFactory extends Nette\Object
 			for ($i = 0; $i < $max && $path[$i] === $script[$i]; $i++);
 			$path = $i ? substr($path, 0, strrpos($path, '/', $i - strlen($path) - 1) + 1) : '/';
 		}
-		$url->setScriptPath($path);
+		$url = $url->setScriptPath($path);
 
 		// GET, POST, COOKIE
 		$useFilter = (!in_array(ini_get('filter.default'), array('', 'unsafe_raw')) || ini_get('filter.default_flags'));
@@ -129,7 +129,7 @@ class RequestFactory extends Nette\Object
 			}
 			unset($list, $key, $val, $k, $v);
 		}
-		$url->setQuery($query);
+		$url = $url->setQuery($query);
 
 
 		// FILES and create FileUpload objects

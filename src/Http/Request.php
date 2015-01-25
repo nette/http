@@ -62,11 +62,11 @@ class Request extends Nette\Object implements IRequest
 	public function __construct(UrlScript $url, $query = NULL, $post = NULL, $files = NULL, $cookies = NULL,
 		$headers = NULL, $method = NULL, $remoteAddress = NULL, $remoteHost = NULL, $rawBodyCallback = NULL)
 	{
-		$this->url = $url;
 		if ($query !== NULL) {
 			trigger_error('Nette\Http\Request::__construct(): parameter $query is deprecated.', E_USER_DEPRECATED);
-			$url->setQuery($query);
+			$url = $url->setQuery($query);
 		}
+		$this->url = $url;
 		$this->post = (array) $post;
 		$this->files = (array) $files;
 		$this->cookies = (array) $cookies;
