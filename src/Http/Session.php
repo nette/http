@@ -28,6 +28,12 @@ class Session extends Nette\Object
 	/** Default file lifetime is 3 hours */
 	const DEFAULT_FILE_LIFETIME = 10800;
 
+	/** Default flash lifetime */
+	const DEFAULT_FLASH_LIFETIME = '10 seconds';
+
+	/** Session ID in URL */
+	const FLASH_KEY = '_fid';
+
 	/** @var bool  has been session ID regenerated? */
 	private $regenerated;
 
@@ -63,11 +69,17 @@ class Session extends Nette\Object
 	/** @var IResponse */
 	private $response;
 
+	/** @var string|NULL */
+	private $flashId;
+
 
 	public function __construct(IRequest $request, IResponse $response)
 	{
 		$this->request = $request;
 		$this->response = $response;
+		if (is_string($flashId = $request->getQuery(self::FLASH_KEY))) {
+			$this->flashId = $flashId;
+		}
 	}
 
 
@@ -345,6 +357,33 @@ class Session extends Nette\Object
 		if (empty($nf['DATA'])) {
 			unset($nf['DATA']);
 		}
+	}
+
+
+	/********************* flash sections ****************d*g**/
+
+
+	/**
+	 * @return string|NULL
+	 */
+	public function getFlashId()
+	{
+		return $this->flashId;
+	}
+
+
+	/**
+	 * Returns specified flash section and creates flash ID if doesn't exist.
+	 * @param  string
+	 * @return SessionSection
+	 */
+	public function getFlashSection($section)
+	{
+		if (!$this->flashId) {
+			$this->flashId = Nette\Utils\Random::generate(4);
+		}
+		return $this->getSection("$section/$this->flashId")
+			->setExpiration(self::DEFAULT_FLASH_LIFETIME);
 	}
 
 
