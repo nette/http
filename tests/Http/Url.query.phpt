@@ -59,3 +59,8 @@ Assert::same( array('arg' => 'value', 'arg2' => 'def'),  $url->getQueryParameter
 $url->setQueryParameter('arg2', NULL);
 Assert::same( NULL, $url->getQueryParameter('arg2') );
 Assert::same( array('arg' => 'value', 'arg2' => NULL),  $url->getQueryParameters() );
+
+
+$url = new Url('http://hostname/path?arg=value');
+$url->setQuery(array(NULL));
+Assert::same( 'http://hostname/path', $url->getAbsoluteUrl() );

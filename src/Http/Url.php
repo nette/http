@@ -348,7 +348,7 @@ class Url extends Nette\Object
 	public function getAbsoluteUrl()
 	{
 		return $this->getHostUrl() . $this->path
-			. ($this->query ? '?' . $this->getQuery() : '')
+			. (($tmp = $this->getQuery()) ? '?' . $tmp : '')
 			. ($this->fragment === '' ? '' : '#' . $this->fragment);
 	}
 
