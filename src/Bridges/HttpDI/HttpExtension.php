@@ -57,7 +57,7 @@ class HttpExtension extends Nette\DI\CompilerExtension
 
 	public function afterCompile(Nette\PhpGenerator\ClassType $class)
 	{
-		$initialize = $class->methods['initialize'];
+		$initialize = $class->getMethod('initialize');
 		$config = $this->getConfig();
 
 		if (isset($config['frames']) && $config['frames'] !== TRUE) {
