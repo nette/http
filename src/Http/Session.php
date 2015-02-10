@@ -92,15 +92,18 @@ class Session extends Nette\Object
 			unset($_COOKIE[session_name()]);
 		}
 
+		try {
 		// session_start returns FALSE on failure only sometimes
-		Nette\Utils\Callback::invokeSafe('session_start', array(), function($message) use (& $error) {
-			$error = $message;
-		});
+			Nette\Utils\Callback::invokeSafe('session_start', array(), function ($message) use (& $e) {
+				$e = new Nette\InvalidStateException($message);
+			});
+		} catch (\Exception $e) {
+		}
 
 		$this->response->removeDuplicateCookies();
-		if ($error) {
+		if ($e) {
 			@session_write_close(); // this is needed
-			throw new Nette\InvalidStateException($error);
+			throw $e;
 		}
 
 		self::$started = TRUE;
