@@ -35,7 +35,7 @@ use Nette;
  * @property   string $user
  * @property   string $password
  * @property   string $host
- * @property   string $port
+ * @property   int $port
  * @property   string $path
  * @property   string $query
  * @property   string $fragment
@@ -96,8 +96,7 @@ class Url extends Nette\Object
 			}
 
 			$this->scheme = isset($p['scheme']) ? $p['scheme'] : '';
-			$this->port = isset($p['port']) ? $p['port']
-				: (isset(self::$defaultPorts[$this->scheme]) ? self::$defaultPorts[$this->scheme] : NULL);
+			$this->port = isset($p['port']) ? $p['port'] : NULL;
 			$this->host = isset($p['host']) ? rawurldecode($p['host']) : '';
 			$this->user = isset($p['user']) ? rawurldecode($p['user']) : '';
 			$this->password = isset($p['pass']) ? rawurldecode($p['pass']) : '';
@@ -203,7 +202,7 @@ class Url extends Nette\Object
 
 	/**
 	 * Sets the port part of URI.
-	 * @param  string
+	 * @param  int
 	 * @return self
 	 */
 	public function setPort($value)
@@ -215,11 +214,13 @@ class Url extends Nette\Object
 
 	/**
 	 * Returns the port part of URI.
-	 * @return string
+	 * @return int
 	 */
 	public function getPort()
 	{
-		return $this->port;
+		return $this->port
+			? $this->port
+			: (isset(self::$defaultPorts[$this->scheme]) ? self::$defaultPorts[$this->scheme] : NULL);
 	}
 
 
@@ -428,7 +429,7 @@ class Url extends Nette\Object
 		$http = in_array($this->scheme, array('http', 'https'), TRUE);
 		return $url->scheme === $this->scheme
 			&& !strcasecmp($url->host, $this->host)
-			&& $url->port === $this->port
+			&& $url->getPort() === $this->getPort()
 			&& ($http || $url->user === $this->user)
 			&& ($http || $url->password === $this->password)
 			&& self::unescape($url->path, '%/') === self::unescape($this->path, '%/')

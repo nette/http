@@ -37,3 +37,9 @@ Assert::true( $url->isEqual('http://example.com') );
 
 $url = new Url('ftp://user:pass@example.com');
 Assert::false( $url->isEqual('ftp://example.com') );
+
+
+$url = new Url;
+$url->setScheme('http');
+$url->setHost('example.com');
+Assert::true( $url->isEqual('http://example.com') );
