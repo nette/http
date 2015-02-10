@@ -186,6 +186,7 @@ class Url extends Nette\Object
 	public function setHost($value)
 	{
 		$this->host = (string) $value;
+		$this->setPath($this->path);
 		return $this;
 	}
 
@@ -232,7 +233,7 @@ class Url extends Nette\Object
 	public function setPath($value)
 	{
 		$this->path = (string) $value;
-		if (substr($this->path, 0, 1) !== '/' && in_array($this->scheme, array('http', 'https'), TRUE)) {
+		if ($this->host && substr($this->path, 0, 1) !== '/') {
 			$this->path = '/' . $this->path;
 		}
 		return $this;
@@ -360,16 +361,15 @@ class Url extends Nette\Object
 	 */
 	public function getAuthority()
 	{
-		$authority = $this->host;
-		if ($this->port && (!isset(self::$defaultPorts[$this->scheme]) || $this->port !== self::$defaultPorts[$this->scheme])) {
-			$authority .= ':' . $this->port;
-		}
-
-		if ($this->user !== '' && $this->scheme !== 'http' && $this->scheme !== 'https') {
-			$authority = rawurlencode($this->user) . ($this->password === '' ? '' : ':' . rawurlencode($this->password)) . '@' . $authority;
-		}
-
-		return $authority;
+		return $this->host === ''
+			? ''
+			: ($this->user !== '' && $this->scheme !== 'http' && $this->scheme !== 'https'
+				? rawurlencode($this->user) . ($this->password === '' ? '' : ':' . rawurlencode($this->password)) . '@'
+				: '')
+			. $this->host
+			. ($this->port && (!isset(self::$defaultPorts[$this->scheme]) || $this->port !== self::$defaultPorts[$this->scheme])
+				? ':' . $this->port
+				: '');
 	}
 
 
