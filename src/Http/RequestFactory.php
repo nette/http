@@ -90,10 +90,11 @@ class RequestFactory extends Nette\Object
 		$url->setQuery(isset($tmp[1]) ? $tmp[1] : '');
 
 		// detect script path
-		$script = isset($_SERVER['SCRIPT_NAME']) ? $_SERVER['SCRIPT_NAME'] : '';
-		if ($path !== $script) {
-			$max = min(strlen($path), strlen($script));
-			for ($i = 0; $i < $max && $path[$i] === $script[$i]; $i++);
+		$lpath = strtolower($path);
+		$script = isset($_SERVER['SCRIPT_NAME']) ? strtolower($_SERVER['SCRIPT_NAME']) : '';
+		if ($lpath !== $script) {
+			$max = min(strlen($lpath), strlen($script));
+			for ($i = 0; $i < $max && $lpath[$i] === $script[$i]; $i++);
 			$path = $i ? substr($path, 0, strrpos($path, '/', $i - strlen($path) - 1) + 1) : '/';
 		}
 		$url->setScriptPath($path);

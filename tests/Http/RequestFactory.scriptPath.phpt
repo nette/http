@@ -111,7 +111,7 @@ test(function() use ($factory) {
 		'SCRIPT_NAME' => '/blog/www/index.php',
 	);
 
-	Assert::same( '/blog/', $factory->createHttpRequest()->getUrl()->getScriptPath() );
+	Assert::same( '/blog/WWW/', $factory->createHttpRequest()->getUrl()->getScriptPath() );
 });
 
 
