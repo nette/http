@@ -87,8 +87,10 @@ class Session extends Nette\Object
 
 		$this->configure($this->options);
 
-		$id = & $_COOKIE[session_name()];
-		if (!is_string($id) || !preg_match('#^[0-9a-zA-Z,-]{22,128}\z#i', $id)) {
+		$id = $this->request->getCookie(session_name());
+		if (is_string($id) && preg_match('#^[0-9a-zA-Z,-]{22,128}\z#i', $id)) {
+			session_id($id);
+		} else {
 			unset($_COOKIE[session_name()]);
 		}
 
