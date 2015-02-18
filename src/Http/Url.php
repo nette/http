@@ -282,7 +282,7 @@ class Url extends Nette\Object
 	 */
 	public function getQuery()
 	{
-		if (PHP_VERSION < 50400) {
+		if (PHP_VERSION_ID < 50400) {
 			return str_replace('+', '%20', http_build_query($this->query, '', '&'));
 		}
 		return http_build_query($this->query, '', '&', PHP_QUERY_RFC3986);
