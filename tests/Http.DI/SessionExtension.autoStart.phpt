@@ -36,4 +36,4 @@ Assert::same($session, $container->getService('session'));
 
 
 $container->initialize();
-Assert::true($session->isStarted());
+Assert::same(PHP_SAPI !== 'cli', $session->isStarted());

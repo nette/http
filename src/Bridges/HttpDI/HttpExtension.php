@@ -57,6 +57,10 @@ class HttpExtension extends Nette\DI\CompilerExtension
 
 	public function afterCompile(Nette\PhpGenerator\ClassType $class)
 	{
+		if (PHP_SAPI === 'cli') {
+			return;
+		}
+
 		$initialize = $class->getMethod('initialize');
 		$config = $this->getConfig();
 
