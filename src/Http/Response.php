@@ -285,13 +285,6 @@ class Response extends Nette\Object implements IResponse
 	}
 
 
-	/** @internal @deprecated */
-	public function removeDuplicateCookies()
-	{
-		trigger_error('Use Nette\Http\Helpers::removeDuplicateCookies()', E_USER_WARNING);
-	}
-
-
 	private function checkHeaders()
 	{
 		if (headers_sent($file, $line)) {
