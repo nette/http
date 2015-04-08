@@ -423,9 +423,9 @@ class Url extends Nette\Object
 	{
 		$url = new self($url);
 		$query = $url->query;
-		sort($query);
+		ksort($query);
 		$query2 = $this->query;
-		sort($query2);
+		ksort($query2);
 		$http = in_array($this->scheme, array('http', 'https'), TRUE);
 		return $url->scheme === $this->scheme
 			&& !strcasecmp($url->host, $this->host)
