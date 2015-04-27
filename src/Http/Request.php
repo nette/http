@@ -14,6 +14,7 @@ use Nette;
  * HttpRequest provides access scheme for request sent via HTTP.
  *
  * @author     David Grudl
+ * @author     Nicola Pietroluongo <nik.longstone@gmail.com>
  *
  * @property-read UrlScript $url
  * @property-read array $query
@@ -176,8 +177,34 @@ class Request extends Nette\Object implements IRequest
 		return $this->cookies;
 	}
 
+    /**
+     * Provides a flexible generic get method.
+     * It follows an order of precedence: GET, POST, FILE.
+     *
+     * @param $key
+     * @param $default
+     *
+     * @return mixed
+     */
+    public function get($key, $default = NULL)
+    {
+        if (null !== $result = $this->getQuery($key)) {
+            return $result;
+        }
 
-	/********************* method & headers ****************d*g**/
+        if (null !== $result = $this->getPost($key)) {
+            return $result;
+        }
+
+        if (null !== $result = $this->getFile($key)) {
+            return $result;
+        }
+
+        return $default;
+    }
+
+
+    /********************* method & headers ****************d*g**/
 
 
 	/**
