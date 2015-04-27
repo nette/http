@@ -177,34 +177,32 @@ class Request extends Nette\Object implements IRequest
 		return $this->cookies;
 	}
 
-    /**
-     * Provides a flexible generic get method.
-     * It follows an order of precedence: GET, POST, FILE.
-     *
-     * @param $key
-     * @param $default
-     *
-     * @return mixed
-     */
-    public function get($key, $default = NULL)
-    {
-        if (null !== $result = $this->getQuery($key)) {
-            return $result;
-        }
+	/**
+	 * Provides a flexible generic get method.
+	* It follows an order of precedence: GET, POST, FILE.
+	* @param $key
+	* @param $default
+	*
+	* @return mixed
+	*/
+	public function get($key, $default = NULL)
+	{
+		if (null !== $result = $this->getQuery($key)) {
+		return $result;
+		}
 
-        if (null !== $result = $this->getPost($key)) {
-            return $result;
-        }
+		if (null !== $result = $this->getPost($key)) {
+		return $result;
+		}
 
-        if (null !== $result = $this->getFile($key)) {
-            return $result;
-        }
+		if (null !== $result = $this->getFile($key)) {
+		return $result;
+		}
 
-        return $default;
-    }
+		return $default;
+	}
 
-
-    /********************* method & headers ****************d*g**/
+/********************* method & headers ****************d*g**/
 
 
 	/**
