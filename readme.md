@@ -2,7 +2,7 @@ Nette HTTP Component
 ====================
 
 [![Downloads this Month](https://img.shields.io/packagist/dm/nette/http.svg)](https://packagist.org/packages/nette/http)
-[![Build Status](https://travis-ci.org/nette/http.svg?branch=master)](https://travis-ci.org/nette/http)
+[![Build Status](https://travis-ci.org/nette/http.svg?branch=v2.3)](https://travis-ci.org/nette/http)
 
 HTTP request and response are encapsulated in `Nette\Http\Request` and `Nette\Http\Response` objects which offer comfortable API and also act as
 sanitization filter.
