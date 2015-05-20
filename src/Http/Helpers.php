@@ -44,7 +44,7 @@ class Helpers
 		if (($ipv4 xor strpos($mask, '.')) || $size < 0 || $size > $max) {
 			return FALSE;
 		} elseif ($ipv4) {
-			$arr = array(ip2long($ip), ip2long($mask));
+			$arr = [ip2long($ip), ip2long($mask)];
 		} else {
 			$arr = unpack('N*', inet_pton($ip) . inet_pton($mask));
 			$size = $size === '' ? 0 : $max - $size;
@@ -67,7 +67,7 @@ class Helpers
 			return;
 		}
 
-		$flatten = array();
+		$flatten = [];
 		foreach (headers_list() as $header) {
 			if (preg_match('#^Set-Cookie: .+?=#', $header, $m)) {
 				$flatten[$m[0]] = $header;
@@ -85,7 +85,7 @@ class Helpers
 	 */
 	public static function stripSlashes($arr, $onlyKeys = FALSE)
 	{
-		$res = array();
+		$res = [];
 		foreach ($arr as $k => $v) {
 			$res[stripslashes($k)] = is_array($v)
 				? self::stripSlashes($v, $onlyKeys)

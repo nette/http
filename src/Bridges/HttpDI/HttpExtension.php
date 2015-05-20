@@ -17,14 +17,14 @@ use Nette;
  */
 class HttpExtension extends Nette\DI\CompilerExtension
 {
-	public $defaults = array(
-		'proxy' => array(),
-		'headers' => array(
+	public $defaults = [
+		'proxy' => [],
+		'headers' => [
 			'X-Powered-By' => 'Nette Framework',
 			'Content-Type' => 'text/html; charset=utf-8',
-		),
+		],
 		'frames' => 'SAMEORIGIN', // X-Frame-Options
-	);
+	];
 
 
 	public function loadConfiguration()
@@ -34,7 +34,7 @@ class HttpExtension extends Nette\DI\CompilerExtension
 
 		$container->addDefinition($this->prefix('requestFactory'))
 			->setClass('Nette\Http\RequestFactory')
-			->addSetup('setProxy', array($config['proxy']));
+			->addSetup('setProxy', [$config['proxy']]);
 
 		$container->addDefinition($this->prefix('request'))
 			->setClass('Nette\Http\Request')
@@ -71,12 +71,12 @@ class HttpExtension extends Nette\DI\CompilerExtension
 			} elseif (preg_match('#^https?:#', $frames)) {
 				$frames = "ALLOW-FROM $frames";
 			}
-			$initialize->addBody('header(?);', array("X-Frame-Options: $frames"));
+			$initialize->addBody('header(?);', ["X-Frame-Options: $frames"]);
 		}
 
 		foreach ($config['headers'] as $key => $value) {
 			if ($value != NULL) { // intentionally ==
-				$initialize->addBody('header(?);', array("$key: $value"));
+				$initialize->addBody('header(?);', ["$key: $value"]);
 			}
 		}
 	}

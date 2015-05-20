@@ -20,14 +20,14 @@ $response = new Http\Response;
 
 
 $response->setCookie('test', 'value', 0);
-$headers = array_values(array_diff(headers_list(), $old, array('Set-Cookie:')));
-Assert::same( array(
+$headers = array_values(array_diff(headers_list(), $old, ['Set-Cookie:']));
+Assert::same( [
 	'Set-Cookie: test=value; path=/; httponly',
-), $headers );
+], $headers );
 
 
 $response->setCookie('test', 'newvalue', 0);
-$headers = array_values(array_diff(headers_list(), $old, array('Set-Cookie:')));
-Assert::same( array(
+$headers = array_values(array_diff(headers_list(), $old, ['Set-Cookie:']));
+Assert::same( [
 	'Set-Cookie: test=newvalue; path=/; httponly',
-), $headers );
+], $headers );

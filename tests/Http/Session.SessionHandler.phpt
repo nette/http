@@ -24,7 +24,7 @@ class MySessionStorageExtension extends \SessionHandler
 $factory = new Nette\Http\RequestFactory;
 $session = new Nette\Http\Session($factory->createHttpRequest(), new Nette\Http\Response);
 
-$session->setOptions(array('save_handler' => 'files'));
+$session->setOptions(['save_handler' => 'files']);
 $session->setHandler(new MySessionStorageExtension);
 $session->start(); //and configure();
 Assert::same('user', ini_get('session.save_handler'));

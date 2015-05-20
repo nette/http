@@ -15,53 +15,53 @@ require __DIR__ . '/../bootstrap.php';
 define('INVALID', "\xC4\x76\xC5\xBE");
 define('CONTROL_CHARACTERS', "A\x01B\x02C");
 
-$_SERVER['REQUEST_URI'] = '/?' . http_build_query(array(
+$_SERVER['REQUEST_URI'] = '/?' . http_build_query([
 	'invalid' => INVALID,
 	'control' => CONTROL_CHARACTERS,
 	INVALID => '1',
 	CONTROL_CHARACTERS => '1',
-	'array' => array(INVALID => '1'),
-));
+	'array' => [INVALID => '1'],
+]);
 
-$_POST = array(
+$_POST = [
 	'invalid' => INVALID,
 	'control' => CONTROL_CHARACTERS,
 	INVALID => '1',
 	CONTROL_CHARACTERS => '1',
-	'array' => array(INVALID => '1'),
-);
+	'array' => [INVALID => '1'],
+];
 
-$_COOKIE = array(
+$_COOKIE = [
 	'invalid' => INVALID,
 	'control' => CONTROL_CHARACTERS,
 	INVALID => '1',
 	CONTROL_CHARACTERS => '1',
-	'array' => array(INVALID => '1'),
-);
+	'array' => [INVALID => '1'],
+];
 
-$_FILES = array(
-	INVALID => array(
+$_FILES = [
+	INVALID => [
 		'name' => 'readme.txt',
 		'type' => 'text/plain',
 		'tmp_name' => 'C:\\PHP\\temp\\php1D5B.tmp',
 		'error' => 0,
 		'size' => 209,
-	),
-	CONTROL_CHARACTERS => array(
+	],
+	CONTROL_CHARACTERS => [
 		'name' => 'readme.txt',
 		'type' => 'text/plain',
 		'tmp_name' => 'C:\\PHP\\temp\\php1D5B.tmp',
 		'error' => 0,
 		'size' => 209,
-	),
-	'file1' => array(
+	],
+	'file1' => [
 		'name' => INVALID,
 		'type' => 'text/plain',
 		'tmp_name' => 'C:\\PHP\\temp\\php1D5B.tmp',
 		'error' => 0,
 		'size' => 209,
-	),
-);
+	],
+];
 
 test(function() { // unfiltered data
 	$factory = new Http\RequestFactory;

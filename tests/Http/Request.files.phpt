@@ -12,90 +12,90 @@ require __DIR__ . '/../bootstrap.php';
 
 
 // Setup environment
-$_FILES = array(
-	'file1' => array(
+$_FILES = [
+	'file1' => [
 		'name' => 'readme.txt',
 		'type' => 'text/plain',
 		'tmp_name' => 'C:\\PHP\\temp\\php1D5B.tmp',
 		'error' => 0,
 		'size' => 209,
-	),
+	],
 
-	'file2' => array(
-		'name' => array(
+	'file2' => [
+		'name' => [
 			2 => 'license.txt',
-		),
+		],
 
-		'type' => array(
+		'type' => [
 			2 => 'text/plain',
-		),
+		],
 
-		'tmp_name' => array(
+		'tmp_name' => [
 			2 => 'C:\\PHP\\temp\\php1D5C.tmp',
-		),
+		],
 
-		'error' => array(
+		'error' => [
 			2 => 0,
-		),
+		],
 
-		'size' => array(
+		'size' => [
 			2 => 3013,
-		),
-	),
+		],
+	],
 
-	'file3' => array(
-		'name' => array(
-			'y' => array(
+	'file3' => [
+		'name' => [
+			'y' => [
 				'z' => 'default.htm',
-			),
+			],
 			1 => 'logo.gif',
-		),
+		],
 
-		'type' => array(
-			'y' => array(
+		'type' => [
+			'y' => [
 				'z' => 'text/html',
-			),
+			],
 			1 => 'image/gif',
-		),
+		],
 
-		'tmp_name' => array(
-			'y' => array(
+		'tmp_name' => [
+			'y' => [
 				'z' => 'C:\\PHP\\temp\\php1D5D.tmp',
-			),
+			],
 			1 => 'C:\\PHP\\temp\\php1D5E.tmp',
-		),
+		],
 
-		'error' => array(
-			'y' => array(
+		'error' => [
+			'y' => [
 				'z' => 0,
-			),
+			],
 			1 => 0,
-		),
+		],
 
-		'size' => array(
-			'y' => array(
+		'size' => [
+			'y' => [
 				'z' => 26320,
-			),
+			],
 			1 => 3519,
-		),
-	),
+		],
+	],
 
-	'empty1' => array(
+	'empty1' => [
 		'name' => '',
 		'type' => '',
 		'tmp_name' => '',
 		'error' => UPLOAD_ERR_NO_FILE,
 		'size' => 0,
-	),
+	],
 
-	'empty2' => array(
-		'name' => array(''),
-		'type' => array(''),
-		'tmp_name' => array(''),
-		'error' => array(UPLOAD_ERR_NO_FILE),
-		'size' => array(0),
-	),
-);
+	'empty2' => [
+		'name' => [''],
+		'type' => [''],
+		'tmp_name' => [''],
+		'error' => [UPLOAD_ERR_NO_FILE],
+		'size' => [0],
+	],
+];
 
 $factory = new Http\RequestFactory;
 $request = $factory->createHttpRequest();
@@ -109,4 +109,4 @@ Assert::false( isset($request->files['file0']) );
 Assert::true( isset($request->files['file1']) );
 
 Assert::null( $request->getFile('empty1') );
-Assert::same( array(NULL), $request->getFile('empty2') );
+Assert::same( [NULL], $request->getFile('empty2') );

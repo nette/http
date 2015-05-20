@@ -35,7 +35,7 @@ class Session extends Nette\Object
 	private static $started;
 
 	/** @var array default configuration */
-	private $options = array(
+	private $options = [
 		// security
 		'referer_check' => '',    // must be disabled because PHP implementation is invalid
 		'use_cookies' => 1,       // must be enabled to prevent Session Hijacking and Fixation
@@ -55,7 +55,7 @@ class Session extends Nette\Object
 		'cache_expire' => NULL,   // (default "180")
 		'hash_function' => NULL,  // (default "0", means MD5)
 		'hash_bits_per_character' => NULL, // (default "4")
-	);
+	];
 
 	/** @var IRequest */
 	private $request;
@@ -96,7 +96,7 @@ class Session extends Nette\Object
 
 		try {
 			// session_start returns FALSE on failure only sometimes
-			Nette\Utils\Callback::invokeSafe('session_start', array(), function ($message) use (& $e) {
+			Nette\Utils\Callback::invokeSafe('session_start', [], function ($message) use (& $e) {
 				$e = new Nette\InvalidStateException($message);
 			});
 		} catch (\Exception $e) {
@@ -158,7 +158,7 @@ class Session extends Nette\Object
 			$this->regenerateId();
 		}
 
-		register_shutdown_function(array($this, 'clean'));
+		register_shutdown_function([$this, 'clean']);
 	}
 
 
@@ -260,9 +260,9 @@ class Session extends Nette\Object
 		}
 
 		session_name($name);
-		return $this->setOptions(array(
+		return $this->setOptions([
 			'name' => $name,
-		));
+		]);
 	}
 
 
@@ -396,7 +396,7 @@ class Session extends Nette\Object
 	 */
 	private function configure(array $config)
 	{
-		$special = array('cache_expire' => 1, 'cache_limiter' => 1, 'save_path' => 1, 'name' => 1);
+		$special = ['cache_expire' => 1, 'cache_limiter' => 1, 'save_path' => 1, 'name' => 1];
 
 		foreach ($config as $key => $value) {
 			if (!strncmp($key, 'session.', 8)) { // back compatibility
@@ -454,17 +454,17 @@ class Session extends Nette\Object
 	public function setExpiration($time)
 	{
 		if (empty($time)) {
-			return $this->setOptions(array(
+			return $this->setOptions([
 				'gc_maxlifetime' => self::DEFAULT_FILE_LIFETIME,
 				'cookie_lifetime' => 0,
-			));
+			]);
 
 		} else {
 			$time = Nette\Utils\DateTime::from($time)->format('U') - time();
-			return $this->setOptions(array(
+			return $this->setOptions([
 				'gc_maxlifetime' => $time,
 				'cookie_lifetime' => $time,
-			));
+			]);
 		}
 	}
 
@@ -478,11 +478,11 @@ class Session extends Nette\Object
 	 */
 	public function setCookieParameters($path, $domain = NULL, $secure = NULL)
 	{
-		return $this->setOptions(array(
+		return $this->setOptions([
 			'cookie_path' => $path,
 			'cookie_domain' => $domain,
 			'cookie_secure' => $secure
-		));
+		]);
 	}
 
 
@@ -502,9 +502,9 @@ class Session extends Nette\Object
 	 */
 	public function setSavePath($path)
 	{
-		return $this->setOptions(array(
+		return $this->setOptions([
 			'save_path' => $path,
-		));
+		]);
 	}
 
 
@@ -518,8 +518,8 @@ class Session extends Nette\Object
 			throw new Nette\InvalidStateException('Unable to set storage when session has been started.');
 		}
 		session_set_save_handler(
-			array($storage, 'open'), array($storage, 'close'), array($storage, 'read'),
-			array($storage, 'write'), array($storage, 'remove'), array($storage, 'clean')
+			[$storage, 'open'], [$storage, 'close'], [$storage, 'read'],
+			[$storage, 'write'], [$storage, 'remove'], [$storage, 'clean']
 		);
 		return $this;
 	}

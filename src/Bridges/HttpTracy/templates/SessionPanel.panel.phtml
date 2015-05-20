@@ -26,7 +26,7 @@ use Nette,
 </style>
 
 <div class="nette-SessionPanel">
-	<h1>Session #<?php echo htmlspecialchars(session_id(), ENT_IGNORE, 'UTF-8') ?> (Lifetime: <?php echo htmlspecialchars(ini_get('session.cookie_lifetime'), ENT_NOQUOTES, 'UTF-8'); ?>)</h1>
+	<h1>Session #<?= htmlspecialchars(session_id(), ENT_IGNORE, 'UTF-8') ?> (Lifetime: <?= htmlspecialchars(ini_get('session.cookie_lifetime'), ENT_NOQUOTES, 'UTF-8'); ?>)</h1>
 
 	<div class="tracy-inner">
 		<?php if (empty($_SESSION)):?>

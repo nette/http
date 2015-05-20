@@ -46,9 +46,9 @@ Assert::true( headers_sent() );
 
 Assert::error(function() use ($container) {
 	$container->initialize();
-}, array(
-	array(E_WARNING, 'Cannot modify header information - headers already sent %a%'),
-	array(E_WARNING, 'Cannot modify header information - headers already sent %a%'),
-	array(E_WARNING, 'Cannot modify header information - headers already sent %a%'),
-	array(E_WARNING, 'Cannot modify header information - headers already sent %a%'),
-));
+}, [
+	[E_WARNING, 'Cannot modify header information - headers already sent %a%'],
+	[E_WARNING, 'Cannot modify header information - headers already sent %a%'],
+	[E_WARNING, 'Cannot modify header information - headers already sent %a%'],
+	[E_WARNING, 'Cannot modify header information - headers already sent %a%'],
+]);

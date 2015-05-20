@@ -21,11 +21,11 @@ $namespace['o'] = 'orange';
 foreach ($namespace as $key => $val) {
 	$tmp[] = "$key=$val";
 }
-Assert::same( array(
+Assert::same( [
 	'a=apple',
 	'p=pear',
 	'o=orange',
-), $tmp );
+], $tmp );
 
 
 Assert::true( isset($namespace['p']) );

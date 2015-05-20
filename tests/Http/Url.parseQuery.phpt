@@ -11,13 +11,13 @@ use Nette\Http\Url,
 require __DIR__ . '/../bootstrap.php';
 
 
-Assert::same( array(), Url::parseQuery('') );
-Assert::same( array('key' => ''), Url::parseQuery('key') );
-Assert::same( array('key' => ''), Url::parseQuery('key=') );
-Assert::same( array('key' => 'val'), Url::parseQuery('key=val') );
-Assert::same( array('key' => ''), Url::parseQuery('&key=&') );
-Assert::same( array('a' => array('val', 'val')), Url::parseQuery('a[]=val&a[]=val') );
-Assert::same( array('a' => array('x' => 'val', 'y' => 'val')), Url::parseQuery('%61[x]=val&%61[y]=val') );
-Assert::same( array('a_b' => 'val', 'c' => array('d e' => 'val')), Url::parseQuery('a b=val&c[d e]=val') );
-Assert::same( array('a_b' => 'val', 'c' => array('d.e' => 'val')), Url::parseQuery('a.b=val&c[d.e]=val') );
-Assert::same( array('key"\'' => '"\''), Url::parseQuery('key"\'="\'') ); // magic quotes
+Assert::same( [], Url::parseQuery('') );
+Assert::same( ['key' => ''], Url::parseQuery('key') );
+Assert::same( ['key' => ''], Url::parseQuery('key=') );
+Assert::same( ['key' => 'val'], Url::parseQuery('key=val') );
+Assert::same( ['key' => ''], Url::parseQuery('&key=&') );
+Assert::same( ['a' => ['val', 'val']], Url::parseQuery('a[]=val&a[]=val') );
+Assert::same( ['a' => ['x' => 'val', 'y' => 'val']], Url::parseQuery('%61[x]=val&%61[y]=val') );
+Assert::same( ['a_b' => 'val', 'c' => ['d e' => 'val']], Url::parseQuery('a b=val&c[d e]=val') );
+Assert::same( ['a_b' => 'val', 'c' => ['d.e' => 'val']], Url::parseQuery('a.b=val&c[d.e]=val') );
+Assert::same( ['key"\'' => '"\''], Url::parseQuery('key"\'="\'') ); // magic quotes

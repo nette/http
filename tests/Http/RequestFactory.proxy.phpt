@@ -12,12 +12,12 @@ require __DIR__ . '/../bootstrap.php';
 
 
 test(function() {
-	$_SERVER = array(
+	$_SERVER = [
 		'REMOTE_ADDR' => '127.0.0.3',
 		'REMOTE_HOST' => 'localhost',
 		'HTTP_X_FORWARDED_FOR' => '23.75.345.200, 10.0.0.1',
 		'HTTP_X_FORWARDED_HOST' => 'otherhost, anotherhost',
-	);
+	];
 
 	$factory = new RequestFactory;
 	$factory->setProxy('127.0.0.1');

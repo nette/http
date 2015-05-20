@@ -17,11 +17,11 @@ use Nette;
  */
 class SessionExtension extends Nette\DI\CompilerExtension
 {
-	public $defaults = array(
+	public $defaults = [
 		'debugger' => FALSE,
 		'autoStart' => 'smart', // true|false|smart
 		'expiration' => NULL,
-	);
+	];
 
 	/** @var bool */
 	private $debugMode;
@@ -43,18 +43,18 @@ class SessionExtension extends Nette\DI\CompilerExtension
 			->setClass('Nette\Http\Session');
 
 		if ($config['expiration']) {
-			$session->addSetup('setExpiration', array($config['expiration']));
+			$session->addSetup('setExpiration', [$config['expiration']]);
 		}
 
 		if ($this->debugMode && $config['debugger']) {
-			$session->addSetup('@Tracy\Bar::addPanel', array(
+			$session->addSetup('@Tracy\Bar::addPanel', [
 				new Nette\DI\Statement('Nette\Bridges\HttpTracy\SessionPanel')
-			));
+			]);
 		}
 
 		unset($config['expiration'], $config['autoStart'], $config['debugger']);
 		if (!empty($config)) {
-			$session->addSetup('setOptions', array($config));
+			$session->addSetup('setOptions', [$config]);
 		}
 
 		if ($this->name === 'session') {
@@ -74,10 +74,10 @@ class SessionExtension extends Nette\DI\CompilerExtension
 		$name = $this->prefix('session');
 
 		if ($config['autoStart'] === 'smart') {
-			$initialize->addBody('$this->getService(?)->exists() && $this->getService(?)->start();', array($name, $name));
+			$initialize->addBody('$this->getService(?)->exists() && $this->getService(?)->start();', [$name, $name]);
 
 		} elseif ($config['autoStart']) {
-			$initialize->addBody('$this->getService(?)->start();', array($name));
+			$initialize->addBody('$this->getService(?)->start();', [$name]);
 		}
 	}
 

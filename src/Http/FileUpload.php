@@ -46,7 +46,7 @@ class FileUpload extends Nette\Object
 
 	public function __construct($value)
 	{
-		foreach (array('name', 'type', 'size', 'tmp_name', 'error') as $key) {
+		foreach (['name', 'type', 'size', 'tmp_name', 'error'] as $key) {
 			if (!isset($value[$key]) || !is_scalar($value[$key])) {
 				$this->error = UPLOAD_ERR_NO_FILE;
 				return; // or throw exception?
@@ -166,7 +166,7 @@ class FileUpload extends Nette\Object
 	 */
 	public function isImage()
 	{
-		return in_array($this->getContentType(), array('image/gif', 'image/png', 'image/jpeg'), TRUE);
+		return in_array($this->getContentType(), ['image/gif', 'image/png', 'image/jpeg'], TRUE);
 	}
 
 

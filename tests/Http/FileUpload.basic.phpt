@@ -12,13 +12,13 @@ require __DIR__ . '/../bootstrap.php';
 
 
 test(function() {
-	$upload = new FileUpload(array(
+	$upload = new FileUpload([
 		'name' => 'readme.txt',
 		'type' => 'text/plain',
 		'tmp_name' => __DIR__ . '/files/file.txt',
 		'error' => 0,
 		'size' => 209,
-	));
+	]);
 
 	Assert::same( 'readme.txt', $upload->getName() );
 	Assert::same( 'readme.txt', $upload->getSanitizedName() );
@@ -33,13 +33,13 @@ test(function() {
 
 
 test(function() {
-	$upload = new FileUpload(array(
+	$upload = new FileUpload([
 		'name' => '../.image.png',
 		'type' => 'text/plain',
 		'tmp_name' => __DIR__ . '/files/logo.png',
 		'error' => 0,
 		'size' => 209,
-	));
+	]);
 
 	Assert::same( '../.image.png', $upload->getName() );
 	Assert::same( 'image.png', $upload->getSanitizedName() );

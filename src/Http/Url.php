@@ -50,13 +50,13 @@ use Nette;
 class Url extends Nette\Object
 {
 	/** @var array */
-	public static $defaultPorts = array(
+	public static $defaultPorts = [
 		'http' => 80,
 		'https' => 443,
 		'ftp' => 21,
 		'news' => 119,
 		'nntp' => 119,
-	);
+	];
 
 	/** @var string */
 	private $scheme = '';
@@ -77,7 +77,7 @@ class Url extends Nette\Object
 	private $path = '';
 
 	/** @var array */
-	private $query = array();
+	private $query = [];
 
 	/** @var string */
 	private $fragment = '';
@@ -101,7 +101,7 @@ class Url extends Nette\Object
 			$this->user = isset($p['user']) ? rawurldecode($p['user']) : '';
 			$this->password = isset($p['pass']) ? rawurldecode($p['pass']) : '';
 			$this->setPath(isset($p['path']) ? $p['path'] : '');
-			$this->setQuery(isset($p['query']) ? $p['query'] : array());
+			$this->setQuery(isset($p['query']) ? $p['query'] : []);
 			$this->fragment = isset($p['fragment']) ? rawurldecode($p['fragment']) : '';
 
 		} elseif ($url instanceof self) {
@@ -426,7 +426,7 @@ class Url extends Nette\Object
 		ksort($query);
 		$query2 = $this->query;
 		ksort($query2);
-		$http = in_array($this->scheme, array('http', 'https'), TRUE);
+		$http = in_array($this->scheme, ['http', 'https'], TRUE);
 		return $url->scheme === $this->scheme
 			&& !strcasecmp($url->host, $this->host)
 			&& $url->getPort() === $this->getPort()

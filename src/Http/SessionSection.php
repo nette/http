@@ -196,7 +196,7 @@ class SessionSection extends Nette\Object implements \IteratorAggregate, \ArrayA
 			$whenBrowserIsClosed = FALSE;
 		}
 
-		foreach (is_array($variables) ? $variables : array($variables) as $variable) {
+		foreach (is_array($variables) ? $variables : [$variables] as $variable) {
 			$this->meta[$variable]['T'] = $time;
 			$this->meta[$variable]['B'] = $whenBrowserIsClosed;
 		}
@@ -212,7 +212,7 @@ class SessionSection extends Nette\Object implements \IteratorAggregate, \ArrayA
 	public function removeExpiration($variables = NULL)
 	{
 		$this->start();
-		foreach (is_array($variables) ? $variables : array($variables) as $variable) {
+		foreach (is_array($variables) ? $variables : [$variables] as $variable) {
 			unset($this->meta['']['T'], $this->meta['']['B']);
 		}
 	}

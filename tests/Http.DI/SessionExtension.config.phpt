@@ -31,6 +31,6 @@ $container = new Container1;
 $container->getService('session')->start();
 
 Assert::same(
-	array('lifetime' => 0, 'path' => '/x', 'domain' => 'abc', 'secure' => TRUE, 'httponly' => TRUE),
+	['lifetime' => 0, 'path' => '/x', 'domain' => 'abc', 'secure' => TRUE, 'httponly' => TRUE],
 	session_get_cookie_params()
 );

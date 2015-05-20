@@ -20,7 +20,7 @@ class MockResponse extends Nette\Http\Response
 }
 
 
-$_COOKIE['nette-browser'] = array('invalid');
+$_COOKIE['nette-browser'] = ['invalid'];
 
 $requestFactory = new Nette\Http\RequestFactory();
 $request = $requestFactory->createHttpRequest();

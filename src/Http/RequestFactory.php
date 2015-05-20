@@ -22,16 +22,16 @@ class RequestFactory extends Nette\Object
 	const CHARS = '\x09\x0A\x0D\x20-\x7E\xA0-\x{10FFFF}';
 
 	/** @var array */
-	public $urlFilters = array(
-		'path' => array('#/{2,}#' => '/'), // '%20' => ''
-		'url' => array(), // '#[.,)]\z#' => ''
-	);
+	public $urlFilters = [
+		'path' => ['#/{2,}#' => '/'], // '%20' => ''
+		'url' => [], // '#[.,)]\z#' => ''
+	];
 
 	/** @var bool */
 	private $binary = FALSE;
 
 	/** @var array */
-	private $proxies = array();
+	private $proxies = [];
 
 
 	/**
@@ -100,11 +100,11 @@ class RequestFactory extends Nette\Object
 		$url->setScriptPath($path);
 
 		// GET, POST, COOKIE
-		$useFilter = (!in_array(ini_get('filter.default'), array('', 'unsafe_raw')) || ini_get('filter.default_flags'));
+		$useFilter = (!in_array(ini_get('filter.default'), ['', 'unsafe_raw']) || ini_get('filter.default_flags'));
 
 		$query = $url->getQueryParameters();
-		$post = $useFilter ? filter_input_array(INPUT_POST, FILTER_UNSAFE_RAW) : (empty($_POST) ? array() : $_POST);
-		$cookies = $useFilter ? filter_input_array(INPUT_COOKIE, FILTER_UNSAFE_RAW) : (empty($_COOKIE) ? array() : $_COOKIE);
+		$post = $useFilter ? filter_input_array(INPUT_POST, FILTER_UNSAFE_RAW) : (empty($_POST) ? [] : $_POST);
+		$cookies = $useFilter ? filter_input_array(INPUT_COOKIE, FILTER_UNSAFE_RAW) : (empty($_COOKIE) ? [] : $_COOKIE);
 
 		if (get_magic_quotes_gpc()) {
 			$post = Helpers::stripslashes($post, $useFilter);
@@ -114,7 +114,7 @@ class RequestFactory extends Nette\Object
 		// remove invalid characters
 		$reChars = '#^[' . self::CHARS . ']*+\z#u';
 		if (!$this->binary) {
-			$list = array(& $query, & $post, & $cookies);
+			$list = [& $query, & $post, & $cookies];
 			while (list($key, $val) = each($list)) {
 				foreach ($val as $k => $v) {
 					if (is_string($k) && (!preg_match($reChars, $k) || preg_last_error())) {
@@ -135,8 +135,8 @@ class RequestFactory extends Nette\Object
 
 
 		// FILES and create FileUpload objects
-		$files = array();
-		$list = array();
+		$files = [];
+		$list = [];
 		if (!empty($_FILES)) {
 			foreach ($_FILES as $k => $v) {
 				if (!$this->binary && is_string($k) && (!preg_match($reChars, $k) || preg_last_error())) {
@@ -168,14 +168,14 @@ class RequestFactory extends Nette\Object
 				if (!$this->binary && is_string($k) && (!preg_match($reChars, $k) || preg_last_error())) {
 					continue;
 				}
-				$list[] = array(
+				$list[] = [
 					'name' => $v['name'][$k],
 					'type' => $v['type'][$k],
 					'size' => $v['size'][$k],
 					'tmp_name' => $v['tmp_name'][$k],
 					'error' => $v['error'][$k],
 					'@' => & $v['@'][$k],
-				);
+				];
 			}
 		}
 
@@ -184,7 +184,7 @@ class RequestFactory extends Nette\Object
 		if (function_exists('apache_request_headers')) {
 			$headers = apache_request_headers();
 		} else {
-			$headers = array();
+			$headers = [];
 			foreach ($_SERVER as $k => $v) {
 				if (strncmp($k, 'HTTP_', 5) == 0) {
 					$k = substr($k, 5);

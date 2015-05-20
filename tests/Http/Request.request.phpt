@@ -12,7 +12,7 @@ require __DIR__ . '/../bootstrap.php';
 
 
 // Setup environment
-$_SERVER = array(
+$_SERVER = [
 	'HTTPS' => 'On',
 	'HTTP_HOST' => 'nette.org:8080',
 	'QUERY_STRING' => 'x param=val.&pa%%72am=val2&param3=v%20a%26l%3Du%2Be)',
@@ -20,12 +20,12 @@ $_SERVER = array(
 	'REQUEST_METHOD' => 'GET',
 	'REQUEST_URI' => '/file.php?x param=val.&pa%%72am=val2&quotes\\"=\\"&param3=v%20a%26l%3Du%2Be)',
 	'SCRIPT_NAME' => '/file.php',
-);
+];
 
 test(function() {
 	$factory = new Http\RequestFactory;
-	$factory->urlFilters['path'] = array('#%20#' => '');
-	$factory->urlFilters['url'] = array('#[.,)]\z#' => '');
+	$factory->urlFilters['path'] = ['#%20#' => ''];
+	$factory->urlFilters['url'] = ['#[.,)]\z#' => ''];
 	$request = $factory->createHttpRequest();
 
 	Assert::same( 'GET',  $request->getMethod() );
@@ -55,8 +55,8 @@ test(function() {
 
 test(function() {
 	$factory = new Http\RequestFactory;
-	$factory->urlFilters['path'] = array();
-	$factory->urlFilters['url'] = array();
+	$factory->urlFilters['path'] = [];
+	$factory->urlFilters['url'] = [];
 	$request = $factory->createHttpRequest();
 
 	Assert::same( 'https',  $request->getUrl()->scheme );

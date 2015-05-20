@@ -12,7 +12,7 @@ require __DIR__ . '/../bootstrap.php';
 
 
 $session = new Session(new Nette\Http\Request(new Nette\Http\UrlScript), new Nette\Http\Response);
-$session->setOptions(array('gc_maxlifetime' => '0')); //memcache handler supports unlimited expiration
+$session->setOptions(['gc_maxlifetime' => '0']); //memcache handler supports unlimited expiration
 
 //try to set section to shorter expiration
 $namespace = $session->getSection('maxlifetime');
