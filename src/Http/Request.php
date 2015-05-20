@@ -201,6 +201,7 @@ class Request extends Nette\Object implements IRequest
 	 */
 	public function isPost()
 	{
+		trigger_error('Method isPost() is deprecated, use isMethod(\'POST\') instead.', E_USER_DEPRECATED);
 		return $this->isMethod('POST');
 	}
 
