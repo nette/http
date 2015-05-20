@@ -2,7 +2,6 @@
 
 /**
  * Test: Nette\Http\Session handle storage exceptions.
- * @phpversion 5.4
  */
 
 use Nette\Http,

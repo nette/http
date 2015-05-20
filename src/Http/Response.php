@@ -46,16 +46,10 @@ class Response extends Nette\Object implements IResponse
 
 	public function __construct()
 	{
-		if (PHP_VERSION_ID >= 50400) {
-			if (is_int($code = http_response_code())) {
-				$this->code = $code;
-			}
+		if (is_int($code = http_response_code())) {
+			$this->code = $code;
 		}
-
-		if (PHP_VERSION_ID >= 50401) { // PHP bug #61106
-			$rm = new \ReflectionMethod('Nette\Http\Helpers::removeDuplicateCookies');
-			header_register_callback($rm->getClosure()); // requires closure due PHP bug #66375
-		}
+		header_register_callback((new \ReflectionMethod('Nette\Http\Helpers::removeDuplicateCookies'))->getClosure()); // requires closure due PHP bug #66375
 	}
 
 

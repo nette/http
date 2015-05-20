@@ -102,7 +102,6 @@ class Session extends Nette\Object
 		} catch (\Exception $e) {
 		}
 
-		Helpers::removeDuplicateCookies();
 		if ($e) {
 			@session_write_close(); // this is needed
 			throw $e;
@@ -232,7 +231,6 @@ class Session extends Nette\Object
 			$backup = $_SESSION;
 			session_start();
 			$_SESSION = $backup;
-			Helpers::removeDuplicateCookies();
 		}
 		$this->regenerated = TRUE;
 	}
@@ -509,7 +507,7 @@ class Session extends Nette\Object
 
 
 	/**
-	 * Sets user session storage for PHP < 5.4. For PHP >= 5.4, use setHandler().
+	 * @deprecated  use setHandler().
 	 * @return self
 	 */
 	public function setStorage(ISessionStorage $storage)

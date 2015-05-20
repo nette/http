@@ -11,7 +11,7 @@ sanitization filter.
 HTTP Request
 -------------
 
-Nette cleans out data sent by user from control and invalid characters. It also removes any //magic_quotes//.
+Nette cleans out data sent by user from control and invalid characters.
 
 The URL of the request is available as [api:Nette\Http\UrlScript] instance:
 

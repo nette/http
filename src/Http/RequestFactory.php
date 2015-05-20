@@ -106,11 +106,6 @@ class RequestFactory extends Nette\Object
 		$post = $useFilter ? filter_input_array(INPUT_POST, FILTER_UNSAFE_RAW) : (empty($_POST) ? [] : $_POST);
 		$cookies = $useFilter ? filter_input_array(INPUT_COOKIE, FILTER_UNSAFE_RAW) : (empty($_COOKIE) ? [] : $_COOKIE);
 
-		if (get_magic_quotes_gpc()) {
-			$post = Helpers::stripslashes($post, $useFilter);
-			$cookies = Helpers::stripslashes($cookies, $useFilter);
-		}
-
 		// remove invalid characters
 		$reChars = '#^[' . self::CHARS . ']*+\z#u';
 		if (!$this->binary) {
@@ -152,9 +147,6 @@ class RequestFactory extends Nette\Object
 				continue;
 
 			} elseif (!is_array($v['name'])) {
-				if (get_magic_quotes_gpc()) {
-					$v['name'] = stripSlashes($v['name']);
-				}
 				if (!$this->binary && (!preg_match($reChars, $v['name']) || preg_last_error())) {
 					$v['name'] = '';
 				}

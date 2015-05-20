@@ -282,9 +282,6 @@ class Url extends Nette\Object
 	 */
 	public function getQuery()
 	{
-		if (PHP_VERSION_ID < 50400) {
-			return str_replace('+', '%20', http_build_query($this->query, '', '&'));
-		}
 		return http_build_query($this->query, '', '&', PHP_QUERY_RFC3986);
 	}
 
@@ -492,9 +489,6 @@ class Url extends Nette\Object
 	public static function parseQuery($s)
 	{
 		parse_str($s, $res);
-		if (get_magic_quotes_gpc()) { // for PHP 5.3
-			$res = Helpers::stripSlashes($res);
-		}
 		return $res;
 	}
 

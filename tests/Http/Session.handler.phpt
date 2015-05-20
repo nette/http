@@ -2,7 +2,6 @@
 
 /**
  * Test: Nette\Http\Session storage.
- * @phpversion 5.4
  */
 
 use Nette\Object,
