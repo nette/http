@@ -222,6 +222,7 @@ class Response extends Nette\Object implements IResponse
 	 */
 	public static function date($time = NULL)
 	{
+		trigger_error('Method date() is deprecated, use Nette\Http\Helpers::formatDate() instead.', E_USER_DEPRECATED);
 		return Helpers::formatDate($time);
 	}
 
@@ -282,13 +283,6 @@ class Response extends Nette\Object implements IResponse
 	public function deleteCookie($name, $path = NULL, $domain = NULL, $secure = NULL)
 	{
 		$this->setCookie($name, FALSE, 0, $path, $domain, $secure);
-	}
-
-
-	/** @internal @deprecated */
-	public function removeDuplicateCookies()
-	{
-		trigger_error('Use Nette\Http\Helpers::removeDuplicateCookies()', E_USER_WARNING);
 	}
 
 
