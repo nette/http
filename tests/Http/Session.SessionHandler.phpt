@@ -5,8 +5,8 @@
  * @phpversion 5.4
  */
 
-use Nette\Http\Session,
-	Tester\Assert;
+use Nette\Http\Session;
+use Tester\Assert;
 
 
 require __DIR__ . '/../bootstrap.php';
