@@ -319,7 +319,8 @@ class Request extends Nette\Object implements IRequest
 		foreach ($matches[1] as $key => $value) {
 			$q = $matches[2][$key] === '' ? 1.0 : (float) $matches[2][$key];
 			if ($q > $max) {
-				$max = $q; $lang = $value;
+				$max = $q;
+				$lang = $value;
 			}
 		}
 

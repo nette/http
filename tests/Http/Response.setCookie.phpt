@@ -4,8 +4,8 @@
  * Test: Nette\Http\Response::setCookie().
  */
 
-use Nette\Http,
-	Tester\Assert;
+use Nette\Http;
+use Tester\Assert;
 
 
 require __DIR__ . '/../bootstrap.php';
@@ -22,14 +22,14 @@ $response = new Http\Response;
 $response->setCookie('test', 'value', 0);
 $headers = array_values(array_diff(headers_list(), $old, ['Set-Cookie:']));
 $headers = str_replace('HttpOnly', 'httponly', $headers);
-Assert::same( [
+Assert::same([
 	'Set-Cookie: test=value; path=/; httponly',
-], $headers );
+], $headers);
 
 
 $response->setCookie('test', 'newvalue', 0);
 $headers = array_values(array_diff(headers_list(), $old, ['Set-Cookie:']));
 $headers = str_replace('HttpOnly', 'httponly', $headers);
-Assert::same( [
+Assert::same([
 	'Set-Cookie: test=newvalue; path=/; httponly',
-], $headers );
+], $headers);

@@ -4,43 +4,43 @@
  * Test: Nette\Http\Request detectLanguage.
  */
 
-use Nette\Http,
-	Tester\Assert;
+use Nette\Http;
+use Tester\Assert;
 
 
 require __DIR__ . '/../bootstrap.php';
 
 
-test(function() {
+test(function () {
 	$headers = ['Accept-Language' => 'en, cs'];
 	$request = new Http\Request(new Http\UrlScript, NULL, NULL, NULL, NULL, $headers);
 
-	Assert::same( 'en', $request->detectLanguage(['en', 'cs']) );
-	Assert::same( 'en', $request->detectLanguage(['cs', 'en']) );
-	Assert::null( $request->detectLanguage(['xx']) );
+	Assert::same('en', $request->detectLanguage(['en', 'cs']));
+	Assert::same('en', $request->detectLanguage(['cs', 'en']));
+	Assert::null($request->detectLanguage(['xx']));
 });
 
 
-test(function() {
+test(function () {
 	$headers = ['Accept-Language' => 'da, en-gb;q=0.8, en;q=0.7'];
 	$request = new Http\Request(new Http\UrlScript, NULL, NULL, NULL, NULL, $headers);
 
-	Assert::same( 'en-gb', $request->detectLanguage(['en', 'en-gb']) );
-	Assert::same( 'en', $request->detectLanguage(['en']) );
+	Assert::same('en-gb', $request->detectLanguage(['en', 'en-gb']));
+	Assert::same('en', $request->detectLanguage(['en']));
 });
 
 
-test(function() {
+test(function () {
 	$headers = [];
 	$request = new Http\Request(new Http\UrlScript, NULL, NULL, NULL, NULL, $headers);
 
-	Assert::null( $request->detectLanguage(['en']) );
+	Assert::null($request->detectLanguage(['en']));
 });
 
 
-test(function() {
+test(function () {
 	$headers = ['Accept-Language' => 'garbage'];
 	$request = new Http\Request(new Http\UrlScript, NULL, NULL, NULL, NULL, $headers);
 
-	Assert::null( $request->detectLanguage(['en']) );
+	Assert::null($request->detectLanguage(['en']));
 });

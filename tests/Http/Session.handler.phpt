@@ -4,9 +4,9 @@
  * Test: Nette\Http\Session storage.
  */
 
-use Nette\Object,
-	Nette\Http\Session,
-	Tester\Assert;
+use Nette\Object;
+use Nette\Http\Session;
+use Tester\Assert;
 
 
 require __DIR__ . '/../bootstrap.php';

@@ -4,8 +4,8 @@
  * Test: Nette\Http\SessionSection::setExpiration()
  */
 
-use Nette\Http\Session,
-	Tester\Assert;
+use Nette\Http\Session;
+use Tester\Assert;
 
 
 require __DIR__ . '/../bootstrap.php';
@@ -18,4 +18,4 @@ $session->setOptions(['gc_maxlifetime' => '0']); //memcache handler supports unl
 $namespace = $session->getSection('maxlifetime');
 $namespace->setExpiration(100);
 
-Assert::same(true, true); //Fix Error: This test forgets to execute an assertion.
+Assert::same(TRUE, TRUE); // fix Error: This test forgets to execute an assertion.

@@ -4,9 +4,9 @@
  * Test: Nette\Http\Session handle storage exceptions.
  */
 
-use Nette\Http,
-	Nette\Http\Session,
-	Tester\Assert;
+use Nette\Http;
+use Nette\Http\Session;
+use Tester\Assert;
 
 
 require __DIR__ . '/../bootstrap.php';

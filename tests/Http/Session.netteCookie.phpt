@@ -4,8 +4,8 @@
  * Test: Nette\Http\Session error caused by a malicious 'nette-browser' cookie
  */
 
-use Nette\Http\Session,
-	Tester\Assert;
+use Nette\Http\Session;
+use Tester\Assert;
 
 
 require __DIR__ . '/../bootstrap.php';

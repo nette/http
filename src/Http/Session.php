@@ -224,7 +224,7 @@ class Session extends Nette\Object
 	{
 		if (self::$started && !$this->regenerated) {
 			if (headers_sent($file, $line)) {
-				throw new Nette\InvalidStateException("Cannot regenerate session ID after HTTP headers have been sent" . ($file ? " (output started at $file:$line)." : "."));
+				throw new Nette\InvalidStateException('Cannot regenerate session ID after HTTP headers have been sent' . ($file ? " (output started at $file:$line)." : '.'));
 			}
 			session_regenerate_id(TRUE);
 			session_write_close();
@@ -413,7 +413,7 @@ class Session extends Nette\Object
 
 			} else {
 				if (defined('SID')) {
-					throw new Nette\InvalidStateException("Unable to set 'session.$key' to value '$value' when session has been started" . ($this->started ? "." : " by session.auto_start or session_start()."));
+					throw new Nette\InvalidStateException("Unable to set 'session.$key' to value '$value' when session has been started" . ($this->started ? '.' : ' by session.auto_start or session_start().'));
 				}
 				if (isset($special[$key])) {
 					$key = "session_$key";
@@ -479,7 +479,7 @@ class Session extends Nette\Object
 		return $this->setOptions([
 			'cookie_path' => $path,
 			'cookie_domain' => $domain,
-			'cookie_secure' => $secure
+			'cookie_secure' => $secure,
 		]);
 	}
 

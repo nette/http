@@ -48,7 +48,7 @@ class SessionExtension extends Nette\DI\CompilerExtension
 
 		if ($this->debugMode && $config['debugger']) {
 			$session->addSetup('@Tracy\Bar::addPanel', [
-				new Nette\DI\Statement('Nette\Bridges\HttpTracy\SessionPanel')
+				new Nette\DI\Statement('Nette\Bridges\HttpTracy\SessionPanel'),
 			]);
 		}
 

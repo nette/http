@@ -443,7 +443,7 @@ class Url extends Nette\Object
 	{
 		$this->path = preg_replace_callback(
 			'#[^!$&\'()*+,/:;=@%]+#',
-			function($m) { return rawurlencode($m[0]); },
+			function ($m) { return rawurlencode($m[0]); },
 			self::unescape($this->path, '%/')
 		);
 		$this->host = strtolower($this->host);
@@ -474,7 +474,7 @@ class Url extends Nette\Object
 		if ($reserved !== '') {
 			$s = preg_replace_callback(
 				'#%(' . substr(chunk_split(bin2hex($reserved), 2, '|'), 0, -1) . ')#i',
-				function($m) { return '%25' . strtoupper($m[1]); },
+				function ($m) { return '%25' . strtoupper($m[1]); },
 				$s
 			);
 		}
