@@ -7,8 +7,8 @@
 
 namespace Nette\Bridges\HttpTracy;
 
-use Nette,
-	Tracy;
+use Nette;
+use Tracy;
 
 
 /**

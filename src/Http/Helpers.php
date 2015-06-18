@@ -7,8 +7,8 @@
 
 namespace Nette\Http;
 
-use Nette,
-	Nette\Utils\DateTime;
+use Nette;
+use Nette\Utils\DateTime;
 
 
 /**

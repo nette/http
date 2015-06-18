@@ -4,24 +4,24 @@
  * Test: Nette\Http\Request getRawBody.
  */
 
-use Nette\Http,
-	Tester\Assert;
+use Nette\Http;
+use Tester\Assert;
 
 
 require __DIR__ . '/../bootstrap.php';
 
 
-test(function() {
-	$request = new Http\Request(new Http\UrlScript, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, function() {
+test(function () {
+	$request = new Http\Request(new Http\UrlScript, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, function () {
 		return 'raw body';
 	});
 
-	Assert::same( 'raw body', $request->getRawBody() );
+	Assert::same('raw body', $request->getRawBody());
 });
 
 
-test(function() {
+test(function () {
 	$request = new Http\Request(new Http\UrlScript);
 
-	Assert::null( $request->getRawBody() );
+	Assert::null($request->getRawBody());
 });

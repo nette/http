@@ -7,8 +7,8 @@
 
 namespace Nette\Http;
 
-use Nette,
-	Nette\Utils\Strings;
+use Nette;
+use Nette\Utils\Strings;
 
 
 /**
@@ -221,7 +221,7 @@ class RequestFactory extends Nette\Object
 		}
 
 		// raw body
-		$rawBodyCallback = function() {
+		$rawBodyCallback = function () {
 			static $rawBody;
 
 			if (PHP_VERSION_ID >= 50600) {

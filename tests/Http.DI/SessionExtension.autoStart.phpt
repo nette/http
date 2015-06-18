@@ -4,10 +4,10 @@
  * Test: SessionExtension.
  */
 
-use Nette\DI,
-	Nette\Bridges\HttpDI\HttpExtension,
-	Nette\Bridges\HttpDI\SessionExtension,
-	Tester\Assert;
+use Nette\DI;
+use Nette\Bridges\HttpDI\HttpExtension;
+use Nette\Bridges\HttpDI\SessionExtension;
+use Tester\Assert;
 
 
 require __DIR__ . '/../bootstrap.php';

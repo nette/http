@@ -4,9 +4,9 @@
  * Test: HttpExtension.
  */
 
-use Nette\DI,
-	Nette\Bridges\HttpDI\HttpExtension,
-	Tester\Assert;
+use Nette\DI;
+use Nette\Bridges\HttpDI\HttpExtension;
+use Tester\Assert;
 
 
 require __DIR__ . '/../bootstrap.php';
@@ -24,6 +24,6 @@ $container = new Container1;
 $container->initialize();
 
 $headers = headers_list();
-Assert::contains( 'X-Frame-Options: SAMEORIGIN', $headers );
-Assert::contains( 'Content-Type: text/html; charset=utf-8', $headers );
-Assert::contains( 'X-Powered-By: Nette Framework', $headers );
+Assert::contains('X-Frame-Options: SAMEORIGIN', $headers);
+Assert::contains('Content-Type: text/html; charset=utf-8', $headers);
+Assert::contains('X-Powered-By: Nette Framework', $headers);

@@ -4,9 +4,9 @@
  * Test: HttpExtension.
  */
 
-use Nette\DI,
-	Nette\Bridges\HttpDI\HttpExtension,
-	Tester\Assert;
+use Nette\DI;
+use Nette\Bridges\HttpDI\HttpExtension;
+use Tester\Assert;
 
 
 require __DIR__ . '/../bootstrap.php';
