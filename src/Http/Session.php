@@ -226,7 +226,9 @@ class Session extends Nette\Object
 			if (headers_sent($file, $line)) {
 				throw new Nette\InvalidStateException('Cannot regenerate session ID after HTTP headers have been sent' . ($file ? " (output started at $file:$line)." : '.'));
 			}
-			session_regenerate_id(TRUE);
+			if (session_id() !== '') {
+				session_regenerate_id(TRUE);
+			}
 			session_write_close();
 			$backup = $_SESSION;
 			session_start();
