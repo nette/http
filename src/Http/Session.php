@@ -13,8 +13,6 @@ use Nette;
 /**
  * Provides access to session sections as well as session settings and management methods.
  *
- * @author     David Grudl
- *
  * @property-read bool $started
  * @property-read string $id
  * @property   string $name

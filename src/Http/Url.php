@@ -29,8 +29,6 @@ use Nette;
  * - baseUrl:     http://user:password@nette.org:8042/en/
  * - relativeUrl: manual.php
  *
- * @author     David Grudl
- *
  * @property   string $scheme
  * @property   string $user
  * @property   string $password

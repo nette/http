@@ -12,8 +12,6 @@ use Nette;
 
 /**
  * Session extension for Nette DI.
- *
- * @author     David Grudl
  */
 class SessionExtension extends Nette\DI\CompilerExtension
 {

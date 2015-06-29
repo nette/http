@@ -12,8 +12,6 @@ use Nette;
 
 /**
  * HTTP extension for Nette DI.
- *
- * @author     David Grudl
  */
 class HttpExtension extends Nette\DI\CompilerExtension
 {

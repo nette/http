@@ -13,8 +13,6 @@ use Nette;
 /**
  * HttpRequest provides access scheme for request sent via HTTP.
  *
- * @author     David Grudl
- *
  * @property-read UrlScript $url
  * @property-read array $query
  * @property-read array $post

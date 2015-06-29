@@ -13,8 +13,6 @@ use Nette;
 /**
  * Provides access to individual files that have been uploaded by a client.
  *
- * @author     David Grudl
- *
  * @property-read string $name
  * @property-read string $sanitizedName
  * @property-read string|NULL $contentType

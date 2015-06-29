@@ -14,8 +14,6 @@ use Nette\Utils\DateTime;
 /**
  * HttpResponse class.
  *
- * @author     David Grudl
- *
  * @property   int $code
  * @property-read bool $sent
  * @property-read array $headers

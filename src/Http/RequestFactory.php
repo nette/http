@@ -13,8 +13,6 @@ use Nette\Utils\Strings;
 
 /**
  * Current HTTP request factory.
- *
- * @author     David Grudl
  */
 class RequestFactory extends Nette\Object
 {

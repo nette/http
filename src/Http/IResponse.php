@@ -12,8 +12,6 @@ use Nette;
 
 /**
  * IHttpResponse interface.
- *
- * @author     David Grudl
  */
 interface IResponse
 {
