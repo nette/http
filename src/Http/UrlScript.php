@@ -7,8 +7,6 @@
 
 namespace Nette\Http;
 
-use Nette;
-
 
 /**
  * Extended HTTP URL.
