@@ -23,8 +23,6 @@ use Nette;
  * - scriptPath:  /admin/script.php (or simply /admin/ when script is directory index)
  * - pathInfo:    /pathinfo/ (additional path information)
  *
- * @author     David Grudl
- *
  * @property   string $scriptPath
  * @property-read string $pathInfo
  */

@@ -13,8 +13,6 @@ use Nette\Utils\DateTime;
 
 /**
  * Rendering helpers for HTTP.
- *
- * @author     David Grudl
  */
 class Helpers
 {

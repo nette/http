@@ -13,8 +13,6 @@ use Tracy;
 
 /**
  * Session panel for Debugger Bar.
- *
- * @author     David Grudl
  */
 class SessionPanel extends Nette\Object implements Tracy\IBarPanel
 {
