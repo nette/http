@@ -45,3 +45,33 @@ test(function () {
 	Assert::same('Tue, 15 Nov 1994 08:12:31 GMT', Helpers::formatDate(new DateTime('1994-11-15T06:12:31-0200')));
 	Assert::same('Tue, 15 Nov 1994 08:12:31 GMT', Helpers::formatDate(784887151));
 });
+
+
+
+test(function () {
+	Assert::exception(function () {
+		Helpers::ipMatch(NULL, '192.168.68.233');
+	}, 'Nette\InvalidArgumentException', 'The arguments cannot be empty.');
+	Assert::exception(function () {
+		Helpers::ipMatch('', '192.168.68.233');
+	}, 'Nette\InvalidArgumentException', 'The arguments cannot be empty.');
+	Assert::exception(function () {
+		Helpers::ipMatch(0, '192.168.68.233');
+	}, 'Nette\InvalidArgumentException', 'The arguments cannot be empty.');
+	Assert::exception(function () {
+		Helpers::ipMatch(FALSE, '192.168.68.233');
+	}, 'Nette\InvalidArgumentException', 'The arguments cannot be empty.');
+
+	Assert::exception(function () {
+		Helpers::ipMatch('192.168.68.233', NULL);
+	}, 'Nette\InvalidArgumentException', 'The arguments cannot be empty.');
+	Assert::exception(function () {
+		Helpers::ipMatch('192.168.68.233', '');
+	}, 'Nette\InvalidArgumentException', 'The arguments cannot be empty.');
+	Assert::exception(function () {
+		Helpers::ipMatch('192.168.68.233', 0);
+	}, 'Nette\InvalidArgumentException', 'The arguments cannot be empty.');
+	Assert::exception(function () {
+		Helpers::ipMatch('192.168.68.233', FALSE);
+	}, 'Nette\InvalidArgumentException', 'The arguments cannot be empty.');
+});

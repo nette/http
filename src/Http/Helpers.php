@@ -36,6 +36,10 @@ class Helpers
 	 */
 	public static function ipMatch($ip, $mask)
 	{
+		if (empty($ip) || empty($mask)) {
+			throw new Nette\InvalidArgumentException("The arguments cannot be empty.");
+		}
+
 		list($mask, $size) = explode('/', $mask . '/');
 		$tmp = function ($n) { return sprintf('%032b', $n); };
 		$ip = implode('', array_map($tmp, unpack('N*', inet_pton($ip))));
