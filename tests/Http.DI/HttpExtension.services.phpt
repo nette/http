@@ -18,10 +18,10 @@ eval($compiler->compile([], 'Container1'));
 
 $container = new Container1;
 
-Assert::type('Nette\Http\RequestFactory', $container->getService('http.requestFactory'));
-Assert::type('Nette\Http\Request', $container->getService('http.request'));
-Assert::type('Nette\Http\Response', $container->getService('http.response'));
-Assert::type('Nette\Http\Context', $container->getService('http.context'));
+Assert::type(Nette\Http\RequestFactory::class, $container->getService('http.requestFactory'));
+Assert::type(Nette\Http\Request::class, $container->getService('http.request'));
+Assert::type(Nette\Http\Response::class, $container->getService('http.response'));
+Assert::type(Nette\Http\Context::class, $container->getService('http.context'));
 
 // aliases
 Assert::same($container->getService('http.requestFactory'), $container->getService('nette.httpRequestFactory'));

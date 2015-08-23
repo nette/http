@@ -28,7 +28,7 @@ eval($compiler->compile($config, 'Container1'));
 $container = new Container1;
 
 $session = $container->getService('session.session');
-Assert::type('Nette\Http\Session', $session);
+Assert::type(Nette\Http\Session::class, $session);
 Assert::false($session->isStarted());
 
 // aliases

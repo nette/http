@@ -100,10 +100,10 @@ $_FILES = [
 $factory = new Http\RequestFactory;
 $request = $factory->createHttpRequest();
 
-Assert::type('Nette\Http\FileUpload', $request->files['file1']);
-Assert::type('Nette\Http\FileUpload', $request->files['file2'][2]);
-Assert::type('Nette\Http\FileUpload', $request->files['file3']['y']['z']);
-Assert::type('Nette\Http\FileUpload', $request->files['file3'][1]);
+Assert::type(Nette\Http\FileUpload::class, $request->files['file1']);
+Assert::type(Nette\Http\FileUpload::class, $request->files['file2'][2]);
+Assert::type(Nette\Http\FileUpload::class, $request->files['file3']['y']['z']);
+Assert::type(Nette\Http\FileUpload::class, $request->files['file3'][1]);
 
 Assert::false(isset($request->files['file0']));
 Assert::true(isset($request->files['file1']));

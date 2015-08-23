@@ -19,4 +19,4 @@ $session = new Session(new Nette\Http\Request(new Nette\Http\UrlScript), new Net
 
 Assert::exception(function () use ($session) {
 	$session->start();
-}, 'Nette\InvalidStateException', '%a?%open(%A%) failed: %a%');
+}, Nette\InvalidStateException::class, '%a?%open(%A%) failed: %a%');

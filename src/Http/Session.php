@@ -284,7 +284,7 @@ class Session extends Nette\Object
 	 * @return SessionSection
 	 * @throws Nette\InvalidArgumentException
 	 */
-	public function getSection($section, $class = 'Nette\Http\SessionSection')
+	public function getSection($section, $class = SessionSection::class)
 	{
 		return new $class($this, $section);
 	}
