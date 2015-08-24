@@ -23,8 +23,8 @@ use Nette;
  */
 class Session extends Nette\Object
 {
-	/** Default file lifetime is 3 hours */
-	const DEFAULT_FILE_LIFETIME = 10800;
+	/** Default file lifetime */
+	const DEFAULT_FILE_LIFETIME = 3 * Nette\Utils\DateTime::HOUR;
 
 	/** @var bool  has been session ID regenerated? */
 	private $regenerated;
