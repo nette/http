@@ -11,8 +11,9 @@ use Tester\Assert;
 require __DIR__ . '/../bootstrap.php';
 
 
+// compatibility
 test(function () {
-	$request = new Http\Request(new Http\UrlScript, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, function () {
+	@$request = new Http\Request(new Http\UrlScript, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, function () {
 		return 'raw body';
 	});
 

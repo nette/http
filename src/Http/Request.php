@@ -72,6 +72,9 @@ class Request extends Nette\Object implements IRequest
 		$this->method = $method ?: 'GET';
 		$this->remoteAddress = $remoteAddress;
 		$this->remoteHost = $remoteHost;
+		if ($rawBodyCallback !== NULL) {
+			trigger_error('Nette\Http\Request::__construct(): parameter $rawBodyCallback is deprecated.', E_USER_DEPRECATED);
+		}
 		$this->rawBodyCallback = $rawBodyCallback;
 	}
 
@@ -287,7 +290,8 @@ class Request extends Nette\Object implements IRequest
 	 */
 	public function getRawBody()
 	{
-		return $this->rawBodyCallback ? call_user_func($this->rawBodyCallback) : NULL;
+		$body = $this->rawBodyCallback ? call_user_func($this->rawBodyCallback) : file_get_contents('php://input');
+		return $body !== '' ? $body : NULL;
 	}
 
 
