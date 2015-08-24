@@ -111,7 +111,7 @@ interface IResponse
 
 	/**
 	 * Sets the number of seconds before a page cached on a browser expires.
-	 * @param  string|int|\DateTime  time, value 0 means "until the browser is closed"
+	 * @param  string|int|\DateTimeInterface  time, value 0 means "until the browser is closed"
 	 * @return void
 	 */
 	function setExpiration($seconds);

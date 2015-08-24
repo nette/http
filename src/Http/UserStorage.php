@@ -117,7 +117,7 @@ class UserStorage extends Nette\Object implements Nette\Security\IUserStorage
 
 	/**
 	 * Enables log out after inactivity.
-	 * @param  string|int|\DateTime Number of seconds or timestamp
+	 * @param  string|int|\DateTimeInterface Number of seconds or timestamp
 	 * @param  int Log out when the browser is closed | Clear the identity from persistent storage?
 	 * @return self
 	 */

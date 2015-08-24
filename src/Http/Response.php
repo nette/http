@@ -152,7 +152,7 @@ class Response extends Nette\Object implements IResponse
 
 	/**
 	 * Sets the number of seconds before a page cached on a browser expires.
-	 * @param  string|int|\DateTime  time, value 0 means "until the browser is closed"
+	 * @param  string|int|\DateTimeInterface  time, value 0 means "until the browser is closed"
 	 * @return self
 	 * @throws Nette\InvalidStateException  if HTTP headers have been sent
 	 */
@@ -244,7 +244,7 @@ class Response extends Nette\Object implements IResponse
 	 * Sends a cookie.
 	 * @param  string name of the cookie
 	 * @param  string value
-	 * @param  string|int|\DateTime  expiration time, value 0 means "until the browser is closed"
+	 * @param  string|int|\DateTimeInterface  expiration time, value 0 means "until the browser is closed"
 	 * @param  string
 	 * @param  string
 	 * @param  bool
