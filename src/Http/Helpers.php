@@ -19,7 +19,7 @@ class Helpers
 
 	/**
 	 * Returns HTTP valid date format.
-	 * @param  string|int|\DateTime
+	 * @param  string|int|\DateTimeInterface
 	 * @return string
 	 */
 	public static function formatDate($time)

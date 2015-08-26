@@ -38,7 +38,7 @@ class SessionExtension extends Nette\DI\CompilerExtension
 		$this->setConfig($config);
 
 		$session = $container->addDefinition($this->prefix('session'))
-			->setClass('Nette\Http\Session');
+			->setClass(Nette\Http\Session::class);
 
 		if ($config['expiration']) {
 			$session->addSetup('setExpiration', [$config['expiration']]);
@@ -46,7 +46,7 @@ class SessionExtension extends Nette\DI\CompilerExtension
 
 		if ($this->debugMode && $config['debugger']) {
 			$session->addSetup('@Tracy\Bar::addPanel', [
-				new Nette\DI\Statement('Nette\Bridges\HttpTracy\SessionPanel'),
+				new Nette\DI\Statement(Nette\Bridges\HttpTracy\SessionPanel::class)
 			]);
 		}
 

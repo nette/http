@@ -23,8 +23,8 @@ use Nette;
  */
 class Session extends Nette\Object
 {
-	/** Default file lifetime is 3 hours */
-	const DEFAULT_FILE_LIFETIME = 10800;
+	/** Default file lifetime */
+	const DEFAULT_FILE_LIFETIME = 3 * Nette\Utils\DateTime::HOUR;
 
 	/** @var bool  has been session ID regenerated? */
 	private $regenerated;
@@ -284,7 +284,7 @@ class Session extends Nette\Object
 	 * @return SessionSection
 	 * @throws Nette\InvalidArgumentException
 	 */
-	public function getSection($section, $class = 'Nette\Http\SessionSection')
+	public function getSection($section, $class = SessionSection::class)
 	{
 		return new $class($this, $section);
 	}
@@ -446,7 +446,7 @@ class Session extends Nette\Object
 
 	/**
 	 * Sets the amount of time allowed between requests before the session will be terminated.
-	 * @param  string|int|\DateTime  time, value 0 means "until the browser is closed"
+	 * @param  string|int|\DateTimeInterface  time, value 0 means "until the browser is closed"
 	 * @return self
 	 */
 	public function setExpiration($time)

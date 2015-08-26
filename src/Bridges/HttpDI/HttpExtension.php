@@ -31,18 +31,18 @@ class HttpExtension extends Nette\DI\CompilerExtension
 		$config = $this->validateConfig($this->defaults);
 
 		$container->addDefinition($this->prefix('requestFactory'))
-			->setClass('Nette\Http\RequestFactory')
+			->setClass(Nette\Http\RequestFactory::class)
 			->addSetup('setProxy', [$config['proxy']]);
 
 		$container->addDefinition($this->prefix('request'))
-			->setClass('Nette\Http\Request')
+			->setClass(Nette\Http\Request::class)
 			->setFactory('@Nette\Http\RequestFactory::createHttpRequest');
 
 		$container->addDefinition($this->prefix('response'))
-			->setClass('Nette\Http\Response');
+			->setClass(Nette\Http\Response::class);
 
 		$container->addDefinition($this->prefix('context'))
-			->setClass('Nette\Http\Context');
+			->setClass(Nette\Http\Context::class);
 
 		if ($this->name === 'http') {
 			$container->addAlias('nette.httpRequestFactory', $this->prefix('requestFactory'));

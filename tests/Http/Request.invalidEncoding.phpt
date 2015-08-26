@@ -86,9 +86,9 @@ test(function () { // unfiltered data
 	Assert::same('1', $request->getCookie(CONTROL_CHARACTERS));
 	Assert::same('1', $request->cookies['array'][INVALID]);
 
-	Assert::type('Nette\Http\FileUpload', $request->getFile(INVALID));
-	Assert::type('Nette\Http\FileUpload', $request->getFile(CONTROL_CHARACTERS));
-	Assert::type('Nette\Http\FileUpload', $request->files['file1']);
+	Assert::type(Nette\Http\FileUpload::class, $request->getFile(INVALID));
+	Assert::type(Nette\Http\FileUpload::class, $request->getFile(CONTROL_CHARACTERS));
+	Assert::type(Nette\Http\FileUpload::class, $request->files['file1']);
 });
 
 
@@ -116,6 +116,6 @@ test(function () { // filtered data
 
 	Assert::null($request->getFile(INVALID));
 	Assert::null($request->getFile(CONTROL_CHARACTERS));
-	Assert::type('Nette\Http\FileUpload', $request->files['file1']);
+	Assert::type(Nette\Http\FileUpload::class, $request->files['file1']);
 	Assert::same('', $request->files['file1']->name);
 });
