@@ -27,10 +27,10 @@ class Session extends Nette\Object
 	const DEFAULT_FILE_LIFETIME = 3 * Nette\Utils\DateTime::HOUR;
 
 	/** @var bool  has been session ID regenerated? */
-	private $regenerated;
+	private $regenerated = FALSE;
 
 	/** @var bool  has been session started? */
-	private static $started;
+	private static $started = FALSE;
 
 	/** @var array default configuration */
 	private $options = [
@@ -420,7 +420,7 @@ class Session extends Nette\Object
 					$key($value);
 
 				} elseif (function_exists('ini_set')) {
-					ini_set("session.$key", $value);
+					ini_set("session.$key", (string) $value);
 
 				} elseif (ini_get("session.$key") != $value) { // intentionally ==
 					throw new Nette\NotSupportedException("Unable to set 'session.$key' to '$value' because function ini_set() is disabled.");

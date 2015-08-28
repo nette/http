@@ -258,7 +258,7 @@ class Response extends Nette\Object implements IResponse
 		setcookie(
 			$name,
 			$value,
-			$time ? DateTime::from($time)->format('U') : 0,
+			$time ? (int) DateTime::from($time)->format('U') : 0,
 			$path === NULL ? $this->cookiePath : (string) $path,
 			$domain === NULL ? $this->cookieDomain : (string) $domain,
 			$secure === NULL ? $this->cookieSecure : (bool) $secure,
