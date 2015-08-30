@@ -72,9 +72,9 @@ class RequestFactory extends Nette\Object
 		) {
 			$url->setHost(strtolower($pair[1]));
 			if (isset($pair[2])) {
-				$url->setPort(substr($pair[2], 1));
+				$url->setPort((int) substr($pair[2], 1));
 			} elseif (isset($_SERVER['SERVER_PORT'])) {
-				$url->setPort($_SERVER['SERVER_PORT']);
+				$url->setPort((int) $_SERVER['SERVER_PORT']);
 			}
 		}
 

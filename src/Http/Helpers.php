@@ -41,10 +41,10 @@ class Helpers
 		$ip = implode('', array_map($tmp, unpack('N*', inet_pton($ip))));
 		$mask = implode('', array_map($tmp, unpack('N*', inet_pton($mask))));
 		$max = strlen($ip);
-		if (!$max || $max !== strlen($mask) || $size < 0 || $size > $max) {
+		if (!$max || $max !== strlen($mask) || (int) $size < 0 || (int) $size > $max) {
 			return FALSE;
 		}
-		return strncmp($ip, $mask, $size === '' ? $max : $size) === 0;
+		return strncmp($ip, $mask, $size === '' ? $max : (int) $size) === 0;
 	}
 
 

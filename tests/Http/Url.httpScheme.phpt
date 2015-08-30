@@ -42,13 +42,13 @@ Assert::same('/x',  $url->getPath());
 $url->setPath('/x');
 Assert::same('/x',  $url->getPath());
 
-$url->setScheme(NULL);
+$url->setScheme('');
 Assert::same('//username%3A:password%3A@hostname:60/x?arg=value#anchor',  $url->absoluteUrl);
 
 $url->setPath('');
 Assert::same('/',  $url->getPath());
 
-$url->setHost(NULL)->setPath(NULL);
+$url->setHost('')->setPath('');
 Assert::same('//?arg=value#anchor',  $url->absoluteUrl);
 
 $url->setPath('');

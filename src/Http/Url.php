@@ -68,7 +68,7 @@ class Url extends Nette\Object implements \JsonSerializable
 	/** @var string */
 	private $host = '';
 
-	/** @var int */
+	/** @var int|NULL */
 	private $port;
 
 	/** @var string */
@@ -213,7 +213,7 @@ class Url extends Nette\Object implements \JsonSerializable
 
 	/**
 	 * Returns the port part of URI.
-	 * @return int
+	 * @return int|NULL
 	 */
 	public function getPort()
 	{
