@@ -45,7 +45,7 @@ use Nette;
  * @property-read string $relativeUrl
  * @property-read array $queryParameters
  */
-class Url extends Nette\Object
+class Url extends Nette\Object implements \JsonSerializable
 {
 	/** @var array */
 	public static $defaultPorts = [
@@ -453,6 +453,15 @@ class Url extends Nette\Object
 	 * @return string
 	 */
 	public function __toString()
+	{
+		return $this->getAbsoluteUrl();
+	}
+
+
+	/**
+	 * @return string
+	 */
+	public function jsonSerialize()
 	{
 		return $this->getAbsoluteUrl();
 	}
