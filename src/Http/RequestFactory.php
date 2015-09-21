@@ -212,16 +212,7 @@ class RequestFactory extends Nette\Object
 
 		// raw body
 		$rawBodyCallback = function () {
-			static $rawBody;
-
-			if (PHP_VERSION_ID >= 50600) {
-				return file_get_contents('php://input');
-
-			} elseif ($rawBody === NULL) { // can be read only once in PHP < 5.6
-				$rawBody = (string) file_get_contents('php://input');
-			}
-
-			return $rawBody;
+			return file_get_contents('php://input');
 		};
 
 		return new Request($url, NULL, $post, $files, $cookies, $headers, $method, $remoteAddr, $remoteHost, $rawBodyCallback);
