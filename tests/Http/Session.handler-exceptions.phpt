@@ -21,7 +21,6 @@ class ThrowsOnReadHandler extends \SessionHandler
 	}
 
 
-
 	public function read($session_id)
 	{
 		throw new RuntimeException("Session can't be started for whatever reason!");
