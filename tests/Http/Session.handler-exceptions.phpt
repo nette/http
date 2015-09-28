@@ -2,7 +2,7 @@
 
 /**
  * Test: Nette\Http\Session handle storage exceptions.
- * @phpversion 5.4
+ * @phpversion 5.4.11
  */
 
 use Nette\Http;
@@ -20,7 +20,6 @@ class ThrowsOnReadHandler extends \SessionHandler
 	{
 		return TRUE; // never throw an exception from here, the universe might implode
 	}
-
 
 
 	public function read($session_id)

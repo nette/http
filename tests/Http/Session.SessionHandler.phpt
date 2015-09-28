@@ -2,7 +2,7 @@
 
 /**
  * Test: Nette\Http\Session storage.
- * @phpversion 5.4
+ * @phpversion 5.4.11
  */
 
 use Nette\Http\Session;
