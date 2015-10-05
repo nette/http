@@ -19,7 +19,7 @@ The URL of the request is available as [api:Nette\Http\UrlScript] instance:
 
 ```php
 $url = $httpRequest->getUrl();
-echo $url;       // e.g. http://nette.org/en/documentation?action=edit
+echo $url;       // e.g. https://nette.org/en/documentation?action=edit
 echo $url->host; // nette.org
 ```
 
