@@ -34,11 +34,11 @@ $session->setHandler(new ThrowsOnReadHandler);
 
 Assert::exception(function () use ($session) {
 	$session->start();
-}, 'RuntimeException', 'Session can\'t be started for whatever reason!');
+}, RuntimeException::class, 'Session can\'t be started for whatever reason!');
 
 Assert::exception(function () use ($session) {
 	$session->start();
-}, 'RuntimeException', 'Session can\'t be started for whatever reason!');
+}, RuntimeException::class, 'Session can\'t be started for whatever reason!');
 
 $session->setHandler(new \SessionHandler());
 $session->start();
