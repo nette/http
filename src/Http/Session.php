@@ -217,7 +217,7 @@ class Session extends Nette\Object
 				throw new Nette\InvalidStateException('Cannot regenerate session ID after HTTP headers have been sent' . ($file ? " (output started at $file:$line)." : '.'));
 			}
 			if (session_id() !== '') {
-				session_regenerate_id(TRUE);
+				@session_regenerate_id(TRUE); // @ - Suppress warning 'Session object destruction failed'
 			}
 			session_write_close();
 			$backup = $_SESSION;
