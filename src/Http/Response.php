@@ -25,10 +25,10 @@ class Response extends Nette\Object implements IResponse
 	/** @var string The path in which the cookie will be available */
 	public $cookiePath = '/';
 
-	/** @var string Whether the cookie is available only through HTTPS */
+	/** @var bool Whether the cookie is available only through HTTPS */
 	public $cookieSecure = FALSE;
 
-	/** @var string Whether the cookie is hidden from client-side */
+	/** @var bool Whether the cookie is hidden from client-side */
 	public $cookieHttpOnly = TRUE;
 
 	/** @var bool Whether warn on possible problem with data in output buffer */
