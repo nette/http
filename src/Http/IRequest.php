@@ -19,7 +19,8 @@ interface IRequest
 		POST = 'POST',
 		HEAD = 'HEAD',
 		PUT = 'PUT',
-		DELETE = 'DELETE';
+		DELETE = 'DELETE',
+		PATCH = 'PATCH';
 
 	/**
 	 * Returns URL object.
