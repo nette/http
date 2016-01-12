@@ -141,16 +141,17 @@ class FileUpload extends Nette\Object
 	/**
 	 * Move uploaded file to new location.
 	 * @param  string
+	 * @param  int
 	 * @return self
 	 */
-	public function move($dest)
+	public function move($dest, $mode = 0666)
 	{
 		@mkdir(dirname($dest), 0777, TRUE); // @ - dir may already exist
 		@unlink($dest); // @ - file may not exists
 		if (!call_user_func(is_uploaded_file($this->tmpName) ? 'move_uploaded_file' : 'rename', $this->tmpName, $dest)) {
 			throw new Nette\InvalidStateException("Unable to move uploaded file '$this->tmpName' to '$dest'.");
 		}
-		@chmod($dest, 0666); // @ - possible low permission to chmod
+		@chmod($dest, $mode); // @ - possible low permission to chmod
 		$this->tmpName = $dest;
 		return $this;
 	}
