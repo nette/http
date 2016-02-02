@@ -185,24 +185,33 @@ class RequestFactory extends Nette\Object
 			}
 		}
 
+		$remoteAddr = !empty($_SERVER['REMOTE_ADDR']) ? $_SERVER['REMOTE_ADDR'] : NULL;
+		$remoteHost = !empty($_SERVER['REMOTE_HOST']) ? $_SERVER['REMOTE_HOST'] : NULL;
 
-		$remoteAddr = isset($_SERVER['REMOTE_ADDR']) ? $_SERVER['REMOTE_ADDR'] : NULL;
-		$remoteHost = isset($_SERVER['REMOTE_HOST']) ? $_SERVER['REMOTE_HOST'] : NULL;
+		// use real client address and host if trusted proxy is used
+		$usingTrustedProxy = $remoteAddr && array_filter($this->proxies, function ($proxy) use ($remoteAddr) {
+			return Helpers::ipMatch($remoteAddr, $proxy);
+		});
 
-		// proxy
-		foreach ($this->proxies as $proxy) {
-			if (Helpers::ipMatch($remoteAddr, $proxy)) {
-				if (isset($_SERVER['HTTP_X_FORWARDED_FOR'])) {
-					$remoteAddr = trim(current(explode(',', $_SERVER['HTTP_X_FORWARDED_FOR'])));
-				}
-				if (isset($_SERVER['HTTP_X_FORWARDED_HOST'])) {
-					$remoteHost = trim(current(explode(',', $_SERVER['HTTP_X_FORWARDED_HOST'])));
-				}
-				break;
+		if ($usingTrustedProxy) {
+			if (!empty($_SERVER['HTTP_X_FORWARDED_PROTO'])) {
+				$url->setScheme(strcasecmp($_SERVER['HTTP_X_FORWARDED_PROTO'], 'https') === 0 ? 'https' : 'http');
+			}
+
+			if (!empty($_SERVER['HTTP_X_FORWARDED_PORT'])) {
+				$url->setPort((int) $_SERVER['HTTP_X_FORWARDED_PORT']);
+			}
+
+			if (!empty($_SERVER['HTTP_X_FORWARDED_FOR'])) {
+				$remoteAddr = trim(explode(',', $_SERVER['HTTP_X_FORWARDED_FOR'])[0]);
+			}
+
+			if (!empty($_SERVER['HTTP_X_FORWARDED_HOST'])) {
+				$remoteHost = trim(explode(',', $_SERVER['HTTP_X_FORWARDED_HOST'])[0]);
 			}
 		}
 
-
+		// method, eg. GET, PUT, ...
 		$method = isset($_SERVER['REQUEST_METHOD']) ? $_SERVER['REQUEST_METHOD'] : NULL;
 		if ($method === 'POST' && isset($_SERVER['HTTP_X_HTTP_METHOD_OVERRIDE'])
 			&& preg_match('#^[A-Z]+\z#', $_SERVER['HTTP_X_HTTP_METHOD_OVERRIDE'])
