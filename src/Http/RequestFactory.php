@@ -76,8 +76,6 @@ class RequestFactory extends Nette\Object
 			} elseif (isset($_SERVER['SERVER_PORT'])) {
 				$url->setPort((int) $_SERVER['SERVER_PORT']);
 			}
-		} else if (!empty($_SERVER['SERVER_PORT'])) {
-			$url->setPort((int) $_SERVER['SERVER_PORT']);
 		}
 
 		// path and query
