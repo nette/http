@@ -191,9 +191,10 @@ class RequestFactory extends Nette\Object
 		$remoteHost = !empty($_SERVER['REMOTE_HOST']) ? $_SERVER['REMOTE_HOST'] : NULL;
 
 		// use real client address and host if trusted proxy is used
-		$usingTrustedProxy = (bool) array_filter($this->proxies, function ($proxy) use ($remoteAddr) {
-			return $remoteAddr !== NULL && Helpers::ipMatch($remoteAddr, $proxy);
-		});
+		$usingTrustedProxy = $remoteAddr !== NULL
+			&& (bool) array_filter($this->proxies, function ($proxy) use ($remoteAddr) {
+				return Helpers::ipMatch($remoteAddr, $proxy);
+			});
 
 		if ($usingTrustedProxy) {
 			if (!empty($_SERVER['HTTP_X_FORWARDED_PROTO'])) {
