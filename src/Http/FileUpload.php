@@ -146,11 +146,13 @@ class FileUpload extends Nette\Object
 	public function move($dest)
 	{
 		$dir = dirname($dest);
+		@mkdir($dir, 0777, TRUE); // @ - dir may already exist
+		@unlink($dest); // @ - file may not exists
 		if (!is_dir($dir)) {
-			mkdir(dirname($dest), 0777, TRUE);
+			throw new \Nette\InvalidStateException("Permission denied: directory '$dir' cannot be created.");
 		}
-		if (file_exists($dest)) {
-			unlink($dest);
+		if (file_exists($dest) && !is_writable($dest)) {
+			throw new \Nette\InvalidStateException("Permission denied: file '$dest' cannot be removed.");
 		}
 		if (!call_user_func(is_uploaded_file($this->tmpName) ? 'move_uploaded_file' : 'rename', $this->tmpName, $dest)) {
 			throw new Nette\InvalidStateException("Unable to move uploaded file '$this->tmpName' to '$dest'.");
