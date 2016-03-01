@@ -149,7 +149,7 @@ class FileUpload extends Nette\Object
 		@mkdir($dir, 0777, TRUE); // @ - dir may already exist
 		@unlink($dest); // @ - file may not exists
 		if (!is_dir($dir)) {
-			throw new \Nette\InvalidStateException("Permission denied: directory '$dir' cannot be created.");
+			throw new \Nette\InvalidStateException("Directory '$dir' cannot be created.");
 		}
 		if (file_exists($dest) && !is_writable($dest)) {
 			throw new \Nette\InvalidStateException("Permission denied: file '$dest' cannot be removed.");
