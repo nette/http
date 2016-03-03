@@ -414,7 +414,7 @@ class Session extends Nette\Object
 				} elseif (function_exists('ini_set')) {
 					ini_set("session.$key", (string) $value);
 
-				} elseif (ini_get("session.$key") != $value) { // intentionally ==
+				} elseif (ini_get("session.$key") != $value) { // intentionally !=
 					throw new Nette\NotSupportedException("Unable to set 'session.$key' to '$value' because function ini_set() is disabled.");
 				}
 			}
