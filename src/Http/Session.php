@@ -404,7 +404,7 @@ class Session extends Nette\Object
 				$cookie[substr($key, 7)] = $value;
 
 			} else {
-				if (defined('SID')) {
+				if (session_status() === PHP_SESSION_ACTIVE) {
 					throw new Nette\InvalidStateException("Unable to set 'session.$key' to value '$value' when session has been started" . ($this->started ? '.' : ' by session.auto_start or session_start().'));
 				}
 				if (isset($special[$key])) {
