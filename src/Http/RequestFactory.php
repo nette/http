@@ -199,12 +199,21 @@ class RequestFactory extends Nette\Object
 
 		// proxy
 		foreach ($this->proxies as $proxy) {
-			if (Helpers::ipMatch($remoteAddr, $proxy)) {
-				if (isset($_SERVER['HTTP_X_FORWARDED_FOR'])) {
-					$remoteAddr = trim(current(explode(',', $_SERVER['HTTP_X_FORWARDED_FOR'])));
-				}
-				if (isset($_SERVER['HTTP_X_FORWARDED_HOST'])) {
-					$remoteHost = trim(current(explode(',', $_SERVER['HTTP_X_FORWARDED_HOST'])));
+			if (Helpers::ipMatch($remoteAddr, $proxy) && !empty($_SERVER['HTTP_X_FORWARDED_FOR'])) {
+				$proxies = $this->proxies;
+				$xForwardedForWithoutProxies = array_filter(explode(',', $_SERVER['HTTP_X_FORWARDED_FOR']), function ($ip) use ($proxies) {
+					return !array_filter($proxies, function ($proxy) use ($ip) {
+						return Helpers::ipMatch(trim($ip), $proxy);
+					});
+				});
+				$remoteAddr = trim(end($xForwardedForWithoutProxies));
+
+				if (!empty($_SERVER['HTTP_X_FORWARDED_HOST'])) {
+					$xForwardedForRealIpKey = key($xForwardedForWithoutProxies);
+					$xForwardedHost = explode(',', $_SERVER['HTTP_X_FORWARDED_HOST']);
+					if (isset($xForwardedHost[$xForwardedForRealIpKey])) {
+						$remoteHost = trim($xForwardedHost[$xForwardedForRealIpKey]);
+					}
 				}
 				break;
 			}
