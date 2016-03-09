@@ -203,11 +203,20 @@ class RequestFactory extends Nette\Object
 			}
 
 			if (!empty($_SERVER['HTTP_X_FORWARDED_FOR'])) {
-				$remoteAddr = trim(explode(',', $_SERVER['HTTP_X_FORWARDED_FOR'])[0]);
+				$xForwardedForWithoutProxies = array_filter(explode(',', $_SERVER['HTTP_X_FORWARDED_FOR']), function ($ip) {
+					return !array_filter($this->proxies, function ($proxy) use ($ip) {
+						return Helpers::ipMatch(trim($ip), $proxy);
+					});
+				});
+				$remoteAddr = trim(end($xForwardedForWithoutProxies));
+				$xForwardedForRealIpKey = key($xForwardedForWithoutProxies);
 			}
 
-			if (!empty($_SERVER['HTTP_X_FORWARDED_HOST'])) {
-				$remoteHost = trim(explode(',', $_SERVER['HTTP_X_FORWARDED_HOST'])[0]);
+			if (isset($xForwardedForRealIpKey) && !empty($_SERVER['HTTP_X_FORWARDED_HOST'])) {
+				$xForwardedHost = explode(',', $_SERVER['HTTP_X_FORWARDED_HOST']);
+				if (isset($xForwardedHost[$xForwardedForRealIpKey])) {
+					$remoteHost = trim($xForwardedHost[$xForwardedForRealIpKey]);
+				}
 			}
 		}
 
