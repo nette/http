@@ -2,6 +2,7 @@
 
 /**
  * Test: HttpExtension.
+ * @phpversion 5.4
  */
 
 use Nette\DI;
