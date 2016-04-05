@@ -14,8 +14,10 @@ use Nette\Utils\DateTime;
 /**
  * HttpResponse class.
  */
-class Response extends Nette\Object implements IResponse
+class Response implements IResponse
 {
+	use Nette\SmartObject;
+
 	/** @var bool  Send invisible garbage for IE 6? */
 	private static $fixIE = TRUE;
 

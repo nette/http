@@ -4,7 +4,6 @@
  * Test: Nette\Http\Session storage.
  */
 
-use Nette\Object;
 use Nette\Http\ISessionStorage;
 use Nette\Http\Session;
 use Tester\Assert;
@@ -13,7 +12,7 @@ use Tester\Assert;
 require __DIR__ . '/../bootstrap.php';
 
 
-class MySessionStorage extends Object implements ISessionStorage
+class MySessionStorage implements ISessionStorage
 {
 	private $path;
 

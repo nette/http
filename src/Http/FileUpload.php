@@ -22,8 +22,10 @@ use Nette;
  * @property-read bool $ok
  * @property-read string|NULL $contents
  */
-class FileUpload extends Nette\Object
+class FileUpload
 {
+	use Nette\SmartObject;
+
 	/** @var string */
 	private $name;
 

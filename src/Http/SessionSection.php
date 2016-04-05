@@ -13,8 +13,10 @@ use Nette;
 /**
  * Session section.
  */
-class SessionSection extends Nette\Object implements \IteratorAggregate, \ArrayAccess
+class SessionSection implements \IteratorAggregate, \ArrayAccess
 {
+	use Nette\SmartObject;
+
 	/** @var Session */
 	private $session;
 

@@ -14,8 +14,10 @@ use Nette\Utils\Strings;
 /**
  * Current HTTP request factory.
  */
-class RequestFactory extends Nette\Object
+class RequestFactory
 {
+	use Nette\SmartObject;
+
 	/** @internal */
 	const CHARS = '\x09\x0A\x0D\x20-\x7E\xA0-\x{10FFFF}';
 

@@ -14,8 +14,10 @@ use Nette\Security\IIdentity;
 /**
  * Session storage for user object.
  */
-class UserStorage extends Nette\Object implements Nette\Security\IUserStorage
+class UserStorage implements Nette\Security\IUserStorage
 {
+	use Nette\SmartObject;
+
 	/** @var string */
 	private $namespace = '';
 

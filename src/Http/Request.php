@@ -27,8 +27,10 @@ use Nette;
  * @property-read string|NULL $remoteHost
  * @property-read string|NULL $rawBody
  */
-class Request extends Nette\Object implements IRequest
+class Request implements IRequest
 {
+	use Nette\SmartObject;
+
 	/** @var string */
 	private $method;
 

@@ -13,8 +13,10 @@ use Nette;
 /**
  * Provides access to session sections as well as session settings and management methods.
  */
-class Session extends Nette\Object
+class Session
 {
+	use Nette\SmartObject;
+
 	/** Default file lifetime */
 	const DEFAULT_FILE_LIFETIME = 3 * Nette\Utils\DateTime::HOUR;
 

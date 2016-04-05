@@ -45,8 +45,10 @@ use Nette;
  * @property-read string $relativeUrl
  * @property-read array $queryParameters
  */
-class Url extends Nette\Object implements \JsonSerializable
+class Url implements \JsonSerializable
 {
+	use Nette\SmartObject;
+
 	/** @var array */
 	public static $defaultPorts = [
 		'http' => 80,

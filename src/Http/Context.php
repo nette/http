@@ -13,8 +13,10 @@ use Nette;
 /**
  * HTTP-specific tasks.
  */
-class Context extends Nette\Object
+class Context
 {
+	use Nette\SmartObject;
+
 	/** @var IRequest */
 	private $request;
 

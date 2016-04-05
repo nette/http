@@ -16,6 +16,7 @@ use Nette\Utils\DateTime;
  */
 class Helpers
 {
+	use Nette\StaticClass;
 
 	/**
 	 * Returns HTTP valid date format.
