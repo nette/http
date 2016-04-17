@@ -13,6 +13,8 @@ use Nette\Utils\DateTime;
 
 /**
  * HttpResponse class.
+ *
+ * @property-read array $headers
  */
 class Response implements IResponse
 {
