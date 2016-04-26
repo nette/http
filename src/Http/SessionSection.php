@@ -97,7 +97,7 @@ class SessionSection implements \IteratorAggregate, \ArrayAccess
 	{
 		$this->start();
 		if ($this->warnOnUndefined && !array_key_exists($name, $this->data)) {
-			trigger_error("The variable '$name' does not exist in session section", E_USER_NOTICE);
+			trigger_error("The variable '$name' does not exist in session section");
 		}
 
 		return $this->data[$name];
@@ -191,7 +191,7 @@ class SessionSection implements \IteratorAggregate, \ArrayAccess
 			$time = Nette\Utils\DateTime::from($time)->format('U');
 			$max = (int) ini_get('session.gc_maxlifetime');
 			if ($max !== 0 && ($time - time() > $max + 3)) { // 0 - unlimited in memcache handler, 3 - bulgarian constant
-				trigger_error("The expiration time is greater than the session expiration $max seconds", E_USER_NOTICE);
+				trigger_error("The expiration time is greater than the session expiration $max seconds");
 			}
 			$whenBrowserIsClosed = FALSE;
 		}
