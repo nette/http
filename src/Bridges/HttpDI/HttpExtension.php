@@ -42,7 +42,8 @@ class HttpExtension extends Nette\DI\CompilerExtension
 			->setClass(Nette\Http\Response::class);
 
 		$builder->addDefinition($this->prefix('context'))
-			->setClass(Nette\Http\Context::class);
+			->setClass(Nette\Http\Context::class)
+			->addSetup('::trigger_error', ['Service http.context is deprecated.', E_USER_DEPRECATED]);
 
 		if ($this->name === 'http') {
 			$builder->addAlias('nette.httpRequestFactory', $this->prefix('requestFactory'));
