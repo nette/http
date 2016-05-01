@@ -45,3 +45,47 @@ test(function () {
 	Assert::same('Tue, 15 Nov 1994 08:12:31 GMT', Helpers::formatDate(new DateTime('1994-11-15T06:12:31-0200')));
 	Assert::same('Tue, 15 Nov 1994 08:12:31 GMT', Helpers::formatDate(784887151));
 });
+
+
+
+test(function () {
+	Assert::same(
+		['text/html' => NULL],
+		Helpers::parseHeader('text/html')
+	);
+
+	Assert::same(
+		['text/html' => NULL, 'charset' => 'iso-8859-1'],
+		Helpers::parseHeader('text/html; charset="iso-8859-1"')
+	);
+
+	Assert::same(
+		['text/html' => NULL, 'charset' => 'ISO-8859-4'],
+		Helpers::parseHeader('text/html; charset=ISO-8859-4')
+	);
+
+	Assert::same(
+		['text/html' => NULL, 'charset' => 'utf-8'],
+		Helpers::parseHeader('text/html;charset=utf-8')
+	);
+
+	Assert::same(
+		['INLINE' => NULL, 'FILENAME' => 'an example.html'],
+		Helpers::parseHeader('INLINE; FILENAME= "an example.html"')
+	);
+
+	// SUPPORT THIS?
+	Assert::same(
+		['attachment' => NULL, 'filename' => '€ rates'],
+		Helpers::parseHeader('attachment; filename*= UTF-8\'\'%e2%82%ac%20rates')
+	);
+
+/*
+
+	Content-Type: token "/" token params
+
+	params     = *( OWS ";" OWS parameter )
+	param      = token "=" ( token / quoted-string )
+
+ */
+});
