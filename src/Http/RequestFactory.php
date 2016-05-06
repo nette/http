@@ -81,7 +81,8 @@ class RequestFactory
 		}
 
 		// path & query
-		$requestUrl = isset($_SERVER['REQUEST_URI']) ? Strings::replace($_SERVER['REQUEST_URI'], '#^\w+://[^/]+#i') : '/';
+		$requestUrl = isset($_SERVER['REQUEST_URI']) ? $_SERVER['REQUEST_URI'] : '/';
+		$requestUrl = preg_replace('#^\w++://[^/]++#', '', $_SERVER['REQUEST_URI']);
 		$requestUrl = Strings::replace($requestUrl, $this->urlFilters['url']);
 		$tmp = explode('?', $requestUrl, 2);
 		$path = Url::unescape($tmp[0], '%/?#');
