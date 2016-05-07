@@ -33,11 +33,11 @@ class SessionExtension extends Nette\DI\CompilerExtension
 
 	public function loadConfiguration()
 	{
-		$container = $this->getContainerBuilder();
+		$builder = $this->getContainerBuilder();
 		$config = $this->getConfig() + $this->defaults;
 		$this->setConfig($config);
 
-		$session = $container->addDefinition($this->prefix('session'))
+		$session = $builder->addDefinition($this->prefix('session'))
 			->setClass(Nette\Http\Session::class);
 
 		if ($config['expiration']) {
@@ -56,7 +56,7 @@ class SessionExtension extends Nette\DI\CompilerExtension
 		}
 
 		if ($this->name === 'session') {
-			$container->addAlias('session', $this->prefix('session'));
+			$builder->addAlias('session', $this->prefix('session'));
 		}
 	}
 

@@ -27,28 +27,28 @@ class HttpExtension extends Nette\DI\CompilerExtension
 
 	public function loadConfiguration()
 	{
-		$container = $this->getContainerBuilder();
+		$builder = $this->getContainerBuilder();
 		$config = $this->validateConfig($this->defaults);
 
-		$container->addDefinition($this->prefix('requestFactory'))
+		$builder->addDefinition($this->prefix('requestFactory'))
 			->setClass(Nette\Http\RequestFactory::class)
 			->addSetup('setProxy', [$config['proxy']]);
 
-		$container->addDefinition($this->prefix('request'))
+		$builder->addDefinition($this->prefix('request'))
 			->setClass(Nette\Http\Request::class)
 			->setFactory('@Nette\Http\RequestFactory::createHttpRequest');
 
-		$container->addDefinition($this->prefix('response'))
+		$builder->addDefinition($this->prefix('response'))
 			->setClass(Nette\Http\Response::class);
 
-		$container->addDefinition($this->prefix('context'))
+		$builder->addDefinition($this->prefix('context'))
 			->setClass(Nette\Http\Context::class);
 
 		if ($this->name === 'http') {
-			$container->addAlias('nette.httpRequestFactory', $this->prefix('requestFactory'));
-			$container->addAlias('nette.httpContext', $this->prefix('context'));
-			$container->addAlias('httpRequest', $this->prefix('request'));
-			$container->addAlias('httpResponse', $this->prefix('response'));
+			$builder->addAlias('nette.httpRequestFactory', $this->prefix('requestFactory'));
+			$builder->addAlias('nette.httpContext', $this->prefix('context'));
+			$builder->addAlias('httpRequest', $this->prefix('request'));
+			$builder->addAlias('httpResponse', $this->prefix('response'));
 		}
 	}
 
