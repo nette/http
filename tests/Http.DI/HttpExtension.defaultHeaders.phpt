@@ -18,9 +18,9 @@ if (PHP_SAPI === 'cli') {
 
 $compiler = new DI\Compiler;
 $compiler->addExtension('http', new HttpExtension);
-eval($compiler->compile([], 'Container1'));
+eval($compiler->compile());
 
-$container = new Container1;
+$container = new Container;
 $container->initialize();
 
 $headers = headers_list();

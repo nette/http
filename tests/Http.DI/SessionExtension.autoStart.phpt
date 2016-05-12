@@ -23,9 +23,9 @@ session:
 	autoStart: yes
 ', 'neon'));
 
-eval($compiler->compile($config, 'Container1'));
+eval($compiler->addConfig($config)->compile());
 
-$container = new Container1;
+$container = new Container;
 
 $session = $container->getService('session.session');
 Assert::type(Nette\Http\Session::class, $session);

@@ -14,9 +14,9 @@ require __DIR__ . '/../bootstrap.php';
 
 $compiler = new DI\Compiler;
 $compiler->addExtension('http', new HttpExtension);
-eval($compiler->compile([], 'Container1'));
+eval($compiler->compile());
 
-$container = new Container1;
+$container = new Container;
 
 Assert::type(Nette\Http\RequestFactory::class, $container->getService('http.requestFactory'));
 Assert::type(Nette\Http\Request::class, $container->getService('http.request'));
