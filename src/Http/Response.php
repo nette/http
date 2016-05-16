@@ -160,6 +160,7 @@ class Response extends Nette\Object implements IResponse
 	 */
 	public function setExpiration($time)
 	{
+		$this->setHeader('Pragma', NULL);
 		if (!$time) { // no cache
 			$this->setHeader('Cache-Control', 's-maxage=0, max-age=0, must-revalidate');
 			$this->setHeader('Expires', 'Mon, 23 Jan 1978 10:00:00 GMT');
