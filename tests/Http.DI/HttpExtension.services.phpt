@@ -14,7 +14,7 @@ require __DIR__ . '/../bootstrap.php';
 
 $compiler = new DI\Compiler;
 $compiler->addExtension('http', new HttpExtension);
-eval($compiler->compile(array(), 'Container1'));
+eval(@$compiler->compile(array(), 'Container1')); // @ compatibility with 2.4
 
 $container = new Container1;
 

@@ -27,7 +27,7 @@ http:
 		C:
 ', 'neon'));
 
-eval($compiler->compile($config, 'Container1'));
+eval(@$compiler->compile($config, 'Container1')); // @ compatibility with 2.4
 
 $container = new Container1;
 $container->initialize();
