@@ -207,7 +207,6 @@ class RequestFactory
 				}
 
 				if (isset($proxyParams['host']) && count($proxyParams['host']) === 1) {
-					echo $proxyParams['host'][0];
 					$remoteHostArr = explode(':', $proxyParams['host'][0]);
 					if(count($remoteHostArr) === 2) {
 						$remoteHost = $remoteHostArr[0];
