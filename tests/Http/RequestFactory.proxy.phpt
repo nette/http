@@ -51,7 +51,7 @@ test(function () {
 	$_SERVER = [
 		'REMOTE_ADDR' => '127.0.0.3',
 		'REMOTE_HOST' => 'localhost',
-		'HTTP_FORWARDED' => 'for=23.75.45.200:85;host=otherhost',
+		'HTTP_FORWARDED' => 'For=23.75.45.200:85;HOST=otherhost',
 	];
 
 	$factory = new RequestFactory;
@@ -62,4 +62,38 @@ test(function () {
 	$factory->setProxy('127.0.0.1/8');
 	Assert::same('23.75.45.200', $factory->createHttpRequest()->getRemoteAddress());
 	Assert::same('otherhost', $factory->createHttpRequest()->getRemoteHost());
+});
+
+
+test(function () {
+	$_SERVER = [
+		'REMOTE_ADDR' => '127.0.0.3',
+		'REMOTE_HOST' => 'localhost',
+		'HTTP_FORWARDED' => 'for="[2001:db8:cafe::17]:47011";host=192.168.0.1:8080',
+	];
+
+	$factory = new RequestFactory;
+
+	$factory->setProxy('127.0.0.3');
+	Assert::same('2001:db8:cafe::17', $factory->createHttpRequest()->getRemoteAddress());
+	Assert::same('192.168.0.1', $factory->createHttpRequest()->getRemoteHost());
+
+	$url = $factory->createHttpRequest()->getUrl();
+	Assert::same(8080, $url->getPort());
+});
+
+test(function () {
+	$_SERVER = [
+		'REMOTE_ADDR' => '127.0.0.3',
+		'REMOTE_HOST' => 'localhost',
+		'HTTP_FORWARDED' => 'for="[2001:db8:cafe::17]";host=192.168.0.1;scheme=https',
+	];
+
+	$factory = new RequestFactory;
+
+	$factory->setProxy('127.0.0.3');
+	Assert::same('2001:db8:cafe::17', $factory->createHttpRequest()->getRemoteAddress());
+
+	$url = $factory->createHttpRequest()->getUrl();
+	Assert::same('https', $url->getScheme());
 });

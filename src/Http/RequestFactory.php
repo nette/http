@@ -199,24 +199,34 @@ class RequestFactory
 				$forwardParams = preg_split('/[,]|[;]/', $_SERVER['HTTP_FORWARDED']);
 				foreach ($forwardParams as $forwardParam) {
 					$param = explode("=", $forwardParam);
-					$proxyParams[strtolower(trim($param[0]))][] = trim($param[1]);   //e.g. array['for'][0] = 192.168.0.1
+					$proxyParams[strtolower(trim($param[0]))][] = trim($param[1], "\"\t\n\r\0\x0B");   //e.g. array['for'][0] = 192.168.0.1
 				}
 
-				if (isset($proxyParams['for'])) {
-					$remoteAddr = explode(':', $proxyParams['for'][0])[0];
-				}
-
-				if (isset($proxyParams['host']) && count($proxyParams['host']) === 1) {
-					$remoteHostArr = explode(':', $proxyParams['host'][0]);
-					if(count($remoteHostArr) === 2) {
-						$remoteHost = $remoteHostArr[0];
-						$url->setPort((int) $remoteHostArr[1]);
-					} else {
-						$remoteHost = $proxyParams['host'][0];
+				if(isset($proxyParams['for'])) {
+					$address = $proxyParams['for'][0];
+					if(strpos($address, '[') === FALSE) { //IPv4
+						$remoteAddr = explode(':', $address)[0];
+					} else { //IPv6
+						$remoteAddr = substr($address, 1, strpos($address, ']')-1);
 					}
 				}
 
-				$scheme = (isset($proxyParams['scheme']) && count($proxyParams['scheme']) === 1) ? $proxyParams['scheme'] : 'http';
+				if(isset($proxyParams['host']) && count($proxyParams['host']) === 1) {
+					$host = $proxyParams['host'][0];
+					$startingDelimiterPosition = strpos($host, '[');
+					if($startingDelimiterPosition === FALSE) { //IPv4
+						$remoteHostArr = explode(':', $host);
+						$remoteHost = $remoteHostArr[0];
+						if(isset($remoteHostArr[1])) $url->setPort((int) $remoteHostArr[1]);
+					} else { //IPv6
+						$endingDelimiterPosition = strpos($host, ']');
+						$remoteHost = substr($host, strpos($host, '[')+1, $endingDelimiterPosition-1);
+						$remoteHostArr = explode(':', substr($host, $endingDelimiterPosition));
+						if(isset($remoteHostArr[1])) $url->setPort((int) $remoteHostArr[1]);
+					}
+				}
+
+				$scheme = (isset($proxyParams['scheme']) && count($proxyParams['scheme']) === 1) ? $proxyParams['scheme'][0] : 'http';
 				$url->setScheme(strcasecmp($scheme, 'https') === 0 ? 'https' : 'http');
 			} else {
 				if (!empty($_SERVER['HTTP_X_FORWARDED_PROTO'])) {
