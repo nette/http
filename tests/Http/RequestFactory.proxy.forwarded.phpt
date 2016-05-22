@@ -93,4 +93,3 @@ test(function () {
 	$url = $factory->createHttpRequest()->getUrl();
 	Assert::same('https', $url->getScheme());
 });
-
