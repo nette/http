@@ -199,7 +199,7 @@ class RequestFactory
 				$forwardParams = preg_split('/[,]|[;]/', $_SERVER['HTTP_FORWARDED']);
 				foreach ($forwardParams as $forwardParam) {
 					$param = explode("=", $forwardParam);
-					$proxyParams[trim($param[0])][] = trim($param[1]);   //e.g. array['for'][0] = 192.168.0.1
+					$proxyParams[strtolower(trim($param[0]))][] = trim($param[1]);   //e.g. array['for'][0] = 192.168.0.1
 				}
 
 				if (isset($proxyParams['for'])) {
