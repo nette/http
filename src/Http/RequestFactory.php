@@ -196,10 +196,10 @@ class RequestFactory
 		});
 		if ($usingTrustedProxy) {
 			if(!empty($_SERVER['HTTP_FORWARDED'])) {
-				$forwardParams = preg_split('/[,]|[;]/', $_SERVER['HTTP_FORWARDED']);
+				$forwardParams = preg_split('/[,;]/', $_SERVER['HTTP_FORWARDED']);
 				foreach ($forwardParams as $forwardParam) {
-					$param = explode("=", $forwardParam);
-					$proxyParams[strtolower(trim($param[0]))][] = trim($param[1], "\"\t\n\r\0\x0B");   //e.g. array['for'][0] = 192.168.0.1
+					list($key, $value) = explode('=', $forwardParam, 2) + [1 => NULL];
+					$proxyParams[strtolower(trim($key))][] = trim($value, " \t\"");
 				}
 
 				if(isset($proxyParams['for'])) {
