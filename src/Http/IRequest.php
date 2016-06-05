@@ -135,4 +135,10 @@ interface IRequest
 	 */
 	function getRawBody();
 
+	/**
+	 * Returns parsed content of HTTP request body.
+	 * @return mixed
+	 * @throws InvalidRequestBodyException
+	 */
+	function getBody();
 }

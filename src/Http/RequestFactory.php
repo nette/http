@@ -8,6 +8,7 @@
 namespace Nette\Http;
 
 use Nette;
+use Nette\Utils\Json;
 use Nette\Utils\Strings;
 
 
@@ -33,6 +34,25 @@ class RequestFactory
 	/** @var array */
 	private $proxies = [];
 
+	/** @var callable[] of function (Request $request): mixed */
+	private $bodyParsers = [];
+
+
+	public function __construct()
+	{
+		$this->addBodyParser('application/x-www-form-urlencoded', function (Request $request) {
+			return $request->getPost();
+		});
+
+		$this->addBodyParser('application/json', function (Request $request) {
+			try {
+				return Json::decode($request->getRawBody());
+			} catch (Nette\Utils\JsonException $e) {
+				throw new InvalidRequestBodyException('Body is not a valid JSON', 0, $e);
+			}
+		});
+	}
+
 
 	/**
 	 * @param  bool
@@ -52,6 +72,18 @@ class RequestFactory
 	public function setProxy($proxy)
 	{
 		$this->proxies = (array) $proxy;
+		return $this;
+	}
+
+
+	/**
+	 * @param  string
+	 * @param  callable function(Request $request): mixed|NULL
+	 * @return self
+	 */
+	public function addBodyParser($contentType, $callback)
+	{
+		$this->bodyParsers[$contentType] = $callback;
 		return $this;
 	}
 
@@ -235,7 +267,22 @@ class RequestFactory
 			return file_get_contents('php://input');
 		};
 
-		return new Request($url, NULL, $post, $files, $cookies, $headers, $method, $remoteAddr, $remoteHost, $rawBodyCallback);
+		// parsed body
+		$bodyCallback = function (Request $request) use (& $body) {
+			if ($body === NULL) {
+				$contentType = $request->getHeader('Content-Type');
+				foreach ($this->bodyParsers as $parserContentType => $parser) {
+					if (stripos($contentType, $parserContentType) === 0) {
+						$body = $parser($request);
+						break;
+					}
+				}
+			}
+
+			return $body;
+		};
+
+		return new Request($url, NULL, $post, $files, $cookies, $headers, $method, $remoteAddr, $remoteHost, $rawBodyCallback, $bodyCallback);
 	}
 
 }
