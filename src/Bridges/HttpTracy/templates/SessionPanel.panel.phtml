@@ -33,6 +33,8 @@ use Nette,
 		foreach ($_SESSION as $k => $v) {
 			if ($k === '__NF') {
 				$k = 'Nette Session'; $v = isset($v['DATA']) ? $v['DATA'] : NULL;
+			} elseif ($k === '_tracy') {
+				continue;
 			}
 			echo '<tr><th>', htmlspecialchars($k, ENT_IGNORE, 'UTF-8'), '</th><td>', Dumper::toHtml($v, [Dumper::LIVE => TRUE]), "</td></tr>\n";
 		}?>
