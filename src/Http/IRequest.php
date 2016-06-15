@@ -20,7 +20,8 @@ interface IRequest
 		HEAD = 'HEAD',
 		PUT = 'PUT',
 		DELETE = 'DELETE',
-		PATCH = 'PATCH';
+		PATCH = 'PATCH',
+		OPTIONS = 'OPTIONS';
 
 	/**
 	 * Returns URL object.
