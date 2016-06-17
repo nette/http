@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Test: Nette\Http\RequestFactory and proxy.
+ * Test: Nette\Http\RequestFactory and proxy with "X-forwarded" headers.
  */
 
 use Nette\Http\RequestFactory;
