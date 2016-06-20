@@ -24,10 +24,14 @@ class SessionExtension extends Nette\DI\CompilerExtension
 	/** @var bool */
 	private $debugMode;
 
+	/** @var bool */
+	private $cliMode;
 
-	public function __construct($debugMode = FALSE)
+
+	public function __construct($debugMode = FALSE, $cliMode = FALSE)
 	{
 		$this->debugMode = $debugMode;
+		$this->cliMode = $cliMode;
 	}
 
 
@@ -63,7 +67,7 @@ class SessionExtension extends Nette\DI\CompilerExtension
 
 	public function afterCompile(Nette\PhpGenerator\ClassType $class)
 	{
-		if (PHP_SAPI === 'cli') {
+		if ($this->cliMode) {
 			return;
 		}
 

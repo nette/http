@@ -15,7 +15,7 @@ require __DIR__ . '/../bootstrap.php';
 
 $compiler = new DI\Compiler;
 $compiler->addExtension('foo', new HttpExtension);
-$compiler->addExtension('session', new SessionExtension);
+$compiler->addExtension('session', new SessionExtension(FALSE, PHP_SAPI === 'cli'));
 
 $loader = new DI\Config\Loader;
 $config = $loader->load(Tester\FileMock::create('

@@ -24,6 +24,15 @@ class HttpExtension extends Nette\DI\CompilerExtension
 		'frames' => 'SAMEORIGIN', // X-Frame-Options
 	];
 
+	/** @var bool */
+	private $cliMode;
+
+
+	public function __construct($cliMode = FALSE)
+	{
+		$this->cliMode = $cliMode;
+	}
+
 
 	public function loadConfiguration()
 	{
@@ -56,7 +65,7 @@ class HttpExtension extends Nette\DI\CompilerExtension
 
 	public function afterCompile(Nette\PhpGenerator\ClassType $class)
 	{
-		if (PHP_SAPI === 'cli') {
+		if ($this->cliMode) {
 			return;
 		}
 
