@@ -220,6 +220,7 @@ class Session extends Nette\Object
 				session_write_close();
 				session_regenerate_id(TRUE);
 			}
+			session_write_close();
 			$backup = $_SESSION;
 			session_start();
 			$_SESSION = $backup;
