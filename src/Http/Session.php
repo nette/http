@@ -219,6 +219,7 @@ class Session extends Nette\Object
 			if (session_status() === PHP_SESSION_ACTIVE) {
 				session_regenerate_id(TRUE);
 			}
+			session_write_close();
 			$backup = $_SESSION;
 			session_start();
 			$_SESSION = $backup;
