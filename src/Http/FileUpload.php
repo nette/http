@@ -147,11 +147,19 @@ class FileUpload
 	 */
 	public function move($dest)
 	{
-		@mkdir(dirname($dest), 0777, TRUE); // @ - dir may already exist
-		@unlink($dest); // @ - file may not exists
-		if (!call_user_func(is_uploaded_file($this->tmpName) ? 'move_uploaded_file' : 'rename', $this->tmpName, $dest)) {
-			throw new Nette\InvalidStateException("Unable to move uploaded file '$this->tmpName' to '$dest'.");
+		$dir = dirname($dest);
+		@mkdir($dir, 0777, TRUE); // @ - dir may already exist
+		if (!is_dir($dir)) {
+			throw new Nette\InvalidStateException("Directory '$dir' cannot be created. " . error_get_last()['message']);
 		}
+		@unlink($dest); // @ - file may not exists
+		Nette\Utils\Callback::invokeSafe(
+			is_uploaded_file($this->tmpName) ? 'move_uploaded_file' : 'rename',
+			[$this->tmpName, $dest],
+			function ($message) {
+				throw new Nette\InvalidStateException("Unable to move uploaded file '$this->tmpName' to '$dest'. $message");
+			}
+		);
 		@chmod($dest, 0666); // @ - possible low permission to chmod
 		$this->tmpName = $dest;
 		return $this;
