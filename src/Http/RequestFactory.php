@@ -135,7 +135,9 @@ class RequestFactory
 		$list = [];
 		if (!empty($_FILES)) {
 			foreach ($_FILES as $k => $v) {
-				if (!$this->binary && is_string($k) && (!preg_match($reChars, $k) || preg_last_error())) {
+				if (!is_array($v) || !isset($v['name'], $v['type'], $v['size'], $v['tmp_name'], $v['error'])
+					|| (!$this->binary && is_string($k) && (!preg_match($reChars, $k) || preg_last_error()))
+				) {
 					continue;
 				}
 				$v['@'] = & $files[$k];
