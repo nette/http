@@ -141,6 +141,15 @@ class FileUpload
 
 
 	/**
+	 * @return bool
+	 */
+	public function hasFile()
+	{
+		return $this->error !== UPLOAD_ERR_NO_FILE;
+	}
+
+
+	/**
 	 * Move uploaded file to new location.
 	 * @param  string
 	 * @return self
