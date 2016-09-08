@@ -40,7 +40,8 @@ class Session
 		'cookie_domain' => '',    // cookie is available on current subdomain only
 		'cookie_secure' => FALSE, // cookie is available on HTTP & HTTPS
 		'cookie_httponly' => TRUE,// must be enabled to prevent Session Hijacking
-
+		'browserKey' => 'nette-browser',//nette browserKey name in cookie
+		
 		// other
 		'gc_maxlifetime' => self::DEFAULT_FILE_LIFETIME,// 3 hours
 		'cache_limiter' => NULL,  // (default "nocache", special value "\0")
@@ -115,7 +116,7 @@ class Session
 		}
 
 		// browser closing detection
-		$browserKey = $this->request->getCookie('nette-browser');
+		$browserKey = $this->request->getCookie($this->options['browserKey']);
 		if (!is_string($browserKey) || !preg_match('#^[0-9a-z]{10}\z#', $browserKey)) {
 			$browserKey = Nette\Utils\Random::generate();
 		}
@@ -544,7 +545,7 @@ class Session
 			$cookie['path'], $cookie['domain'], $cookie['secure'], $cookie['httponly']
 		);
 		$this->response->setCookie(
-			'nette-browser', $_SESSION['__NF']['B'],
+			$this->options['browserKey'], $_SESSION['__NF']['B'],
 			Response::BROWSER, $cookie['path'], $cookie['domain']
 		);
 	}
