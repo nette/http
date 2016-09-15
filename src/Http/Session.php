@@ -545,7 +545,7 @@ class Session
 		);
 		$this->response->setCookie(
 			'nette-browser', $_SESSION['__NF']['B'],
-			Response::BROWSER, $cookie['path'], $cookie['domain']
+			Response::BROWSER, $cookie['path'], $cookie['domain'], $cookie['secure'], $cookie['httponly']
 		);
 	}
 
