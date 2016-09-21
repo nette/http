@@ -102,9 +102,9 @@ class Session
 		self::$started = TRUE;
 
 		/* structure:
-			__NF: BrowserKey, Data, Meta, Time
+			__NF: Data, Meta, Time
 				DATA: section->variable = data
-				META: section->variable = Timestamp, Browser
+				META: section->variable = Timestamp
 		*/
 		$nf = & $_SESSION['__NF'];
 
@@ -113,14 +113,6 @@ class Session
 			$nf['Time'] = time();
 			$this->regenerated = TRUE;
 		}
-
-		// browser closing detection
-		$browserKey = $this->request->getCookie('nette-browser');
-		if (!is_string($browserKey) || !preg_match('#^[0-9a-z]{10}\z#', $browserKey)) {
-			$browserKey = Nette\Utils\Random::generate();
-		}
-		$browserClosed = !isset($nf['B']) || $nf['B'] !== $browserKey;
-		$nf['B'] = $browserKey;
 
 		// resend cookie
 		$this->sendCookie();
@@ -132,7 +124,7 @@ class Session
 			foreach ($nf['META'] as $section => $metadata) {
 				if (is_array($metadata)) {
 					foreach ($metadata as $variable => $value) {
-						if ((!empty($value['B']) && $browserClosed) || (!empty($value['T']) && $now > $value['T'])) { // whenBrowserIsClosed || Time
+						if (!empty($value['T']) && $now > $value['T']) {
 							if ($variable === '') { // expire whole section
 								unset($nf['META'][$section], $nf['DATA'][$section]);
 								continue 2;
@@ -542,10 +534,6 @@ class Session
 			session_name(), session_id(),
 			$cookie['lifetime'] ? $cookie['lifetime'] + time() : 0,
 			$cookie['path'], $cookie['domain'], $cookie['secure'], $cookie['httponly']
-		);
-		$this->response->setCookie(
-			'nette-browser', $_SESSION['__NF']['B'],
-			Response::BROWSER, $cookie['path'], $cookie['domain']
 		);
 	}
 
