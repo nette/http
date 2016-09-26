@@ -49,7 +49,7 @@ $url->setPath('');
 Assert::same('/',  $url->getPath());
 
 $url->setHost('')->setPath('');
-Assert::same('//?arg=value#anchor',  $url->absoluteUrl);
+Assert::same('?arg=value#anchor',  $url->absoluteUrl);
 
 $url->setPath('');
 Assert::same('',  $url->getPath());
