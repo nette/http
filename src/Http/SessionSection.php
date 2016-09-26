@@ -177,28 +177,23 @@ class SessionSection implements \IteratorAggregate, \ArrayAccess
 
 	/**
 	 * Sets the expiration of the section or specific variables.
-	 * @param  string|int|\DateTimeInterface  time, value 0 means "until the browser is closed"
+	 * @param  string|int|\DateTimeInterface  time
 	 * @param  mixed   optional list of variables / single variable to expire
 	 * @return self
 	 */
 	public function setExpiration($time, $variables = NULL)
 	{
 		$this->start();
-		if (empty($time)) {
-			$time = NULL;
-			$whenBrowserIsClosed = TRUE;
-		} else {
+		if ($time) {
 			$time = Nette\Utils\DateTime::from($time)->format('U');
 			$max = (int) ini_get('session.gc_maxlifetime');
 			if ($max !== 0 && ($time - time() > $max + 3)) { // 0 - unlimited in memcache handler, 3 - bulgarian constant
 				trigger_error("The expiration time is greater than the session expiration $max seconds");
 			}
-			$whenBrowserIsClosed = FALSE;
 		}
 
 		foreach (is_array($variables) ? $variables : [$variables] as $variable) {
-			$this->meta[$variable]['T'] = $time;
-			$this->meta[$variable]['B'] = $whenBrowserIsClosed;
+			$this->meta[$variable]['T'] = $time ?: NULL;
 		}
 		return $this;
 	}
@@ -213,7 +208,7 @@ class SessionSection implements \IteratorAggregate, \ArrayAccess
 	{
 		$this->start();
 		foreach (is_array($variables) ? $variables : [$variables] as $variable) {
-			unset($this->meta['']['T'], $this->meta['']['B']);
+			unset($this->meta['']['T']);
 		}
 	}
 
