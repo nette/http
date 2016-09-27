@@ -42,11 +42,7 @@ class Session
 		'cookie_httponly' => TRUE,// must be enabled to prevent Session Hijacking
 
 		// other
-		'gc_maxlifetime' => self::DEFAULT_FILE_LIFETIME,// 3 hours
-		'cache_limiter' => NULL,  // (default "nocache", special value "\0")
-		'cache_expire' => NULL,   // (default "180")
-		'hash_function' => NULL,  // (default "0", means MD5)
-		'hash_bits_per_character' => NULL, // (default "4")
+		'gc_maxlifetime' => self::DEFAULT_FILE_LIFETIME, // 3 hours
 	];
 
 	/** @var IRequest */
