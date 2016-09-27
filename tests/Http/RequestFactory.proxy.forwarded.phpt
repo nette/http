@@ -84,7 +84,7 @@ test(function () {
 	$_SERVER = [
 		'REMOTE_ADDR' => '127.0.0.3',
 		'REMOTE_HOST' => 'localhost',
-		'HTTP_FORWARDED' => 'for="[2001:db8:cafe::17]:47831" ; host="[2001:db8:cafe::18]:47832" ; scheme=https',
+		'HTTP_FORWARDED' => 'for="[2001:db8:cafe::17]:47831" ; host="[2001:db8:cafe::18]:47832" ; proto=https',
 	];
 
 	$factory = new RequestFactory;
