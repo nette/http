@@ -27,6 +27,7 @@ test(function () {
 	Assert::same(__DIR__ . '/files/file.txt', (string) $upload);
 	Assert::same(0, $upload->getError());
 	Assert::true($upload->isOk());
+	Assert::true($upload->hasFile());
 	Assert::false($upload->isImage());
 	Assert::same(file_get_contents(__DIR__ . '/files/file.txt'), $upload->getContents());
 });
@@ -45,4 +46,19 @@ test(function () {
 	Assert::same('image.png', $upload->getSanitizedName());
 	Assert::same('image/png', $upload->getContentType());
 	Assert::true($upload->isImage());
+});
+
+
+test(function () {
+	$upload = new FileUpload([
+		'name' => '',
+		'type' => '',
+		'tmp_name' => '',
+		'error' => UPLOAD_ERR_NO_FILE,
+		'size' => 0,
+	]);
+
+	Assert::false($upload->isOk());
+	Assert::false($upload->hasFile());
+	Assert::false($upload->isImage());
 });
