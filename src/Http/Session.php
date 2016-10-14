@@ -104,6 +104,10 @@ class Session
 		*/
 		$nf = & $_SESSION['__NF'];
 
+		if (!is_array($nf)) {
+			$nf = [];
+		}
+
 		// regenerate empty session
 		if (empty($nf['Time'])) {
 			$nf['Time'] = time();
