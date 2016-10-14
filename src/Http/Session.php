@@ -107,7 +107,7 @@ class Session
 		if (!is_array($nf)) {
 			$nf = [];
 		}
-		
+
 		// regenerate empty session
 		if (empty($nf['Time'])) {
 			$nf['Time'] = time();
