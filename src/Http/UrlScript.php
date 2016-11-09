@@ -30,6 +30,13 @@ class UrlScript extends Url
 	private $scriptPath;
 
 
+	public function __construct($url = NULL, $scriptPath = '')
+	{
+		parent::__construct($url);
+		$this->setScriptPath($scriptPath);
+	}
+
+
 	/**
 	 * Sets the script-path part of URI.
 	 * @param  string
