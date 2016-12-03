@@ -211,7 +211,7 @@ class SessionSection extends Nette\Object implements \IteratorAggregate, \ArrayA
 	{
 		$this->start();
 		foreach (is_array($variables) ? $variables : array($variables) as $variable) {
-			unset($this->meta['']['T'], $this->meta['']['B']);
+			unset($this->meta[$variable]['T'], $this->meta[$variable]['B']);
 		}
 	}
 
