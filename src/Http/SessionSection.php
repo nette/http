@@ -208,7 +208,7 @@ class SessionSection implements \IteratorAggregate, \ArrayAccess
 	{
 		$this->start();
 		foreach (is_array($variables) ? $variables : [$variables] as $variable) {
-			unset($this->meta['']['T']);
+			unset($this->meta[$variable]['T']);
 		}
 	}
 
