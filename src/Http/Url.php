@@ -113,7 +113,7 @@ class Url extends Nette\Object
 	/**
 	 * Sets the scheme part of URI.
 	 * @param  string
-	 * @return self
+	 * @return static
 	 */
 	public function setScheme($value)
 	{
@@ -135,7 +135,7 @@ class Url extends Nette\Object
 	/**
 	 * Sets the user name part of URI.
 	 * @param  string
-	 * @return self
+	 * @return static
 	 */
 	public function setUser($value)
 	{
@@ -157,7 +157,7 @@ class Url extends Nette\Object
 	/**
 	 * Sets the password part of URI.
 	 * @param  string
-	 * @return self
+	 * @return static
 	 */
 	public function setPassword($value)
 	{
@@ -179,7 +179,7 @@ class Url extends Nette\Object
 	/**
 	 * Sets the host part of URI.
 	 * @param  string
-	 * @return self
+	 * @return static
 	 */
 	public function setHost($value)
 	{
@@ -202,7 +202,7 @@ class Url extends Nette\Object
 	/**
 	 * Sets the port part of URI.
 	 * @param  int
-	 * @return self
+	 * @return static
 	 */
 	public function setPort($value)
 	{
@@ -226,7 +226,7 @@ class Url extends Nette\Object
 	/**
 	 * Sets the path part of URI.
 	 * @param  string
-	 * @return self
+	 * @return static
 	 */
 	public function setPath($value)
 	{
@@ -251,7 +251,7 @@ class Url extends Nette\Object
 	/**
 	 * Sets the query part of URI.
 	 * @param  string|array
-	 * @return self
+	 * @return static
 	 */
 	public function setQuery($value)
 	{
@@ -263,7 +263,7 @@ class Url extends Nette\Object
 	/**
 	 * Appends the query part of URI.
 	 * @param  string|array
-	 * @return self
+	 * @return static
 	 */
 	public function appendQuery($value)
 	{
@@ -310,7 +310,7 @@ class Url extends Nette\Object
 	/**
 	 * @param string
 	 * @param mixed NULL unsets the parameter
-	 * @return self
+	 * @return static
 	 */
 	public function setQueryParameter($name, $value)
 	{
@@ -322,7 +322,7 @@ class Url extends Nette\Object
 	/**
 	 * Sets the fragment part of URI.
 	 * @param  string
-	 * @return self
+	 * @return static
 	 */
 	public function setFragment($value)
 	{
@@ -438,7 +438,7 @@ class Url extends Nette\Object
 
 	/**
 	 * Transforms URL to canonical form.
-	 * @return self
+	 * @return static
 	 */
 	public function canonicalize()
 	{

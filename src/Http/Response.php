@@ -56,7 +56,7 @@ class Response extends Nette\Object implements IResponse
 	/**
 	 * Sets HTTP response code.
 	 * @param  int
-	 * @return self
+	 * @return static
 	 * @throws Nette\InvalidArgumentException  if code is invalid
 	 * @throws Nette\InvalidStateException  if HTTP headers have been sent
 	 */
@@ -88,7 +88,7 @@ class Response extends Nette\Object implements IResponse
 	 * Sends a HTTP header and replaces a previous one.
 	 * @param  string  header name
 	 * @param  string  header value
-	 * @return self
+	 * @return static
 	 * @throws Nette\InvalidStateException  if HTTP headers have been sent
 	 */
 	public function setHeader($name, $value)
@@ -109,7 +109,7 @@ class Response extends Nette\Object implements IResponse
 	 * Adds HTTP header.
 	 * @param  string  header name
 	 * @param  string  header value
-	 * @return self
+	 * @return static
 	 * @throws Nette\InvalidStateException  if HTTP headers have been sent
 	 */
 	public function addHeader($name, $value)
@@ -124,7 +124,7 @@ class Response extends Nette\Object implements IResponse
 	 * Sends a Content-type HTTP header.
 	 * @param  string  mime-type
 	 * @param  string  charset
-	 * @return self
+	 * @return static
 	 * @throws Nette\InvalidStateException  if HTTP headers have been sent
 	 */
 	public function setContentType($type, $charset = NULL)
@@ -155,7 +155,7 @@ class Response extends Nette\Object implements IResponse
 	/**
 	 * Sets the number of seconds before a page cached on a browser expires.
 	 * @param  string|int|\DateTime  time, value 0 means "until the browser is closed"
-	 * @return self
+	 * @return static
 	 * @throws Nette\InvalidStateException  if HTTP headers have been sent
 	 */
 	public function setExpiration($time)
@@ -251,7 +251,7 @@ class Response extends Nette\Object implements IResponse
 	 * @param  string
 	 * @param  bool
 	 * @param  bool
-	 * @return self
+	 * @return static
 	 * @throws Nette\InvalidStateException  if HTTP headers have been sent
 	 */
 	public function setCookie($name, $value, $time, $path = NULL, $domain = NULL, $secure = NULL, $httpOnly = NULL)

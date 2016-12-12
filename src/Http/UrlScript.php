@@ -33,7 +33,7 @@ class UrlScript extends Url
 	/**
 	 * Sets the script-path part of URI.
 	 * @param  string
-	 * @return self
+	 * @return static
 	 */
 	public function setScriptPath($value)
 	{

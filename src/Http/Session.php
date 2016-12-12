@@ -243,7 +243,7 @@ class Session extends Nette\Object
 	/**
 	 * Sets the session name to a specified one.
 	 * @param  string
-	 * @return self
+	 * @return static
 	 */
 	public function setName($name)
 	{
@@ -354,7 +354,7 @@ class Session extends Nette\Object
 	/**
 	 * Sets session options.
 	 * @param  array
-	 * @return self
+	 * @return static
 	 * @throws Nette\NotSupportedException
 	 * @throws Nette\InvalidStateException
 	 */
@@ -441,7 +441,7 @@ class Session extends Nette\Object
 	/**
 	 * Sets the amount of time allowed between requests before the session will be terminated.
 	 * @param  string|int|\DateTime  time, value 0 means "until the browser is closed"
-	 * @return self
+	 * @return static
 	 */
 	public function setExpiration($time)
 	{
@@ -466,7 +466,7 @@ class Session extends Nette\Object
 	 * @param  string  path
 	 * @param  string  domain
 	 * @param  bool    secure
-	 * @return self
+	 * @return static
 	 */
 	public function setCookieParameters($path, $domain = NULL, $secure = NULL)
 	{
@@ -490,7 +490,7 @@ class Session extends Nette\Object
 
 	/**
 	 * Sets path of the directory used to save session data.
-	 * @return self
+	 * @return static
 	 */
 	public function setSavePath($path)
 	{
@@ -502,7 +502,7 @@ class Session extends Nette\Object
 
 	/**
 	 * Sets user session storage for PHP < 5.4. For PHP >= 5.4, use setHandler().
-	 * @return self
+	 * @return static
 	 */
 	public function setStorage(ISessionStorage $storage)
 	{
@@ -519,7 +519,7 @@ class Session extends Nette\Object
 
 	/**
 	 * Sets user session handler.
-	 * @return self
+	 * @return static
 	 */
 	public function setHandler(\SessionHandlerInterface $handler)
 	{
