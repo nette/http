@@ -37,7 +37,7 @@ class UserStorage implements Nette\Security\IUserStorage
 	/**
 	 * Sets the authenticated status of this user.
 	 * @param  bool
-	 * @return self
+	 * @return static
 	 */
 	public function setAuthenticated($state)
 	{
@@ -72,7 +72,7 @@ class UserStorage implements Nette\Security\IUserStorage
 
 	/**
 	 * Sets the user identity.
-	 * @return self
+	 * @return static
 	 */
 	public function setIdentity(IIdentity $identity = NULL)
 	{
@@ -95,7 +95,7 @@ class UserStorage implements Nette\Security\IUserStorage
 	/**
 	 * Changes namespace; allows more users to share a session.
 	 * @param  string
-	 * @return self
+	 * @return static
 	 */
 	public function setNamespace($namespace)
 	{
@@ -121,7 +121,7 @@ class UserStorage implements Nette\Security\IUserStorage
 	 * Enables log out after inactivity.
 	 * @param  string|int|\DateTimeInterface Number of seconds or timestamp
 	 * @param  int Log out when the browser is closed | Clear the identity from persistent storage?
-	 * @return self
+	 * @return static
 	 */
 	public function setExpiration($time, $flags = 0)
 	{

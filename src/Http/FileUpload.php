@@ -152,7 +152,7 @@ class FileUpload
 	/**
 	 * Move uploaded file to new location.
 	 * @param  string
-	 * @return self
+	 * @return static
 	 */
 	public function move($dest)
 	{

@@ -36,7 +36,7 @@ class RequestFactory
 
 	/**
 	 * @param  bool
-	 * @return self
+	 * @return static
 	 */
 	public function setBinary($binary = TRUE)
 	{
@@ -47,7 +47,7 @@ class RequestFactory
 
 	/**
 	 * @param  array|string
-	 * @return self
+	 * @return static
 	 */
 	public function setProxy($proxy)
 	{

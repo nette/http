@@ -80,7 +80,7 @@ class Request implements IRequest
 
 	/**
 	 * Returns URL object.
-	 * @return UrlScript
+	 * @return static
 	 */
 	public function getUrl()
 	{
