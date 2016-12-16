@@ -66,8 +66,7 @@ class Response implements IResponse
 		}
 		self::checkHeaders();
 		$this->code = $code;
-		$protocol = isset($_SERVER['SERVER_PROTOCOL']) ? $_SERVER['SERVER_PROTOCOL'] : 'HTTP/1.1';
-		header($protocol . ' ' . $code, TRUE, $code);
+		http_response_code($code);
 		return $this;
 	}
 
