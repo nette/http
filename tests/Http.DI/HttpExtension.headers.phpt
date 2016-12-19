@@ -44,11 +44,6 @@ echo ' '; @ob_flush(); flush();
 
 Assert::true(headers_sent());
 
-Assert::error(function () use ($container) {
+Assert::exception(function () use ($container) {
 	$container->initialize();
-}, [
-	[E_WARNING, 'Cannot modify header information - headers already sent %a%'],
-	[E_WARNING, 'Cannot modify header information - headers already sent %a%'],
-	[E_WARNING, 'Cannot modify header information - headers already sent %a%'],
-	[E_WARNING, 'Cannot modify header information - headers already sent %a%'],
-]);
+}, Nette\InvalidStateException::class, 'Cannot send header after %a%');

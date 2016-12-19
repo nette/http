@@ -79,12 +79,12 @@ class HttpExtension extends Nette\DI\CompilerExtension
 			} elseif (preg_match('#^https?:#', $frames)) {
 				$frames = "ALLOW-FROM $frames";
 			}
-			$initialize->addBody('header(?);', ["X-Frame-Options: $frames"]);
+			$initialize->addBody('$this->getService(?)->setHeader(?, ?);', [$this->prefix('response'), 'X-Frame-Options', $frames]);
 		}
 
 		foreach ($config['headers'] as $key => $value) {
 			if ($value != NULL) { // intentionally ==
-				$initialize->addBody('header(?);', ["$key: $value"]);
+				$initialize->addBody('$this->getService(?)->setHeader(?, ?);', [$this->prefix('response'), $key, $value]);
 			}
 		}
 	}
