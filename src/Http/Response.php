@@ -68,8 +68,12 @@ class Response extends Nette\Object implements IResponse
 		}
 		self::checkHeaders();
 		$this->code = $code;
-		$protocol = isset($_SERVER['SERVER_PROTOCOL']) ? $_SERVER['SERVER_PROTOCOL'] : 'HTTP/1.1';
-		header($protocol . ' ' . $code, TRUE, $code);
+		if (PHP_VERSION_ID >= 50400) {
+			http_response_code($code);
+		} else {
+			$protocol = isset($_SERVER['SERVER_PROTOCOL']) ? $_SERVER['SERVER_PROTOCOL'] : 'HTTP/1.1';
+			header($protocol . ' ' . $code, TRUE, $code);
+		}
 		return $this;
 	}
 
