@@ -37,3 +37,16 @@ test(function () {
 	Assert::same('2', $request->getHeader('Two'));
 	Assert::same('X', $request->getHeader('X-Header'));
 });
+
+test(function() {
+	$emptyRequest = new Http\Request(new Http\UrlScript);
+	Assert::null($emptyRequest->getHeader('referer'));
+	Assert::null($emptyRequest->getReferrer());
+
+	$referrerRequest = new Http\Request(new Http\UrlScript, NULL, NULL, NULL, NULL, array(
+		'referer' => 'http://nette.org/',
+	));
+	Assert::same('http://nette.org/', $referrerRequest->getHeader('referer'));
+	Assert::type('Nette\Http\Url', $referrerRequest->getReferrer());
+	Assert::same('http://nette.org/', $referrerRequest->getReferrer()->getAbsoluteUrl());
+});

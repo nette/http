@@ -55,7 +55,7 @@ echo $httpRequest->getRemoteHost();    // and its DNS translation
 What URL the user came from? Returned as [Nette\Http\Url |urls] object.
 
 ```php
-echo $httpRequest->getReferer()->host;
+echo $httpRequest->getReferrer()->host;
 ```
 
 Request parameters:

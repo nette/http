@@ -20,7 +20,7 @@ use Nette;
  * @property-read array $cookies
  * @property-read string $method
  * @property-read array $headers
- * @property-read Url|NULL $referer
+ * @property-read Url|NULL $referrer
  * @property-read bool $secured
  * @property-read bool $ajax
  * @property-read string|NULL $remoteAddress
@@ -234,9 +234,20 @@ class Request implements IRequest
 	 * Returns referrer.
 	 * @return Url|NULL
 	 */
-	public function getReferer()
+	public function getReferrer()
 	{
 		return isset($this->headers['referer']) ? new Url($this->headers['referer']) : NULL;
+	}
+
+
+	/**
+	 * Returns referrer.
+	 * @return Url|NULL
+	 * @deprecated Use ::getReferrer instead.
+	 */
+	public function getReferer()
+	{
+		return $this->getReferrer();
 	}
 
 
