@@ -19,12 +19,20 @@ if (PHP_SAPI === 'cli') {
 $compiler = new DI\Compiler;
 $compiler->addExtension('http', new HttpExtension);
 $loader = new DI\Config\Loader;
-$config = $loader->load(Tester\FileMock::create('
+$config = $loader->load(Tester\FileMock::create(<<<'EOD'
 http:
 	headers:
 		A: b
 		C:
-', 'neon'));
+	csp:
+		default-src: "'self' https://example.com"
+		upgrade-insecure-requests:
+		script-src: 'nonce'
+		style-src:
+			- self
+			- https://example.com
+EOD
+, 'neon'));
 
 eval($compiler->addConfig($config)->compile());
 
@@ -38,6 +46,8 @@ Assert::contains('X-Powered-By: Nette Framework', $headers);
 Assert::contains('A: b', $headers);
 Assert::notContains('C:', $headers);
 
+preg_match('#nonce-([\w+/]+=*)#', implode($headers), $nonce);
+Assert::contains("Content-Security-Policy: default-src 'self' https://example.com; upgrade-insecure-requests; script-src 'nonce-$nonce[1]'; style-src 'self' https://example.com;", $headers);
 
 
 echo ' '; @ob_flush(); flush();
