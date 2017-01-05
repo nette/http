@@ -71,6 +71,7 @@ class HttpExtension extends Nette\DI\CompilerExtension
 
 		$initialize = $class->getMethod('initialize');
 		$config = $this->getConfig();
+		$headers = $config['headers'];
 
 		if (isset($config['frames']) && $config['frames'] !== TRUE) {
 			$frames = $config['frames'];
@@ -79,10 +80,10 @@ class HttpExtension extends Nette\DI\CompilerExtension
 			} elseif (preg_match('#^https?:#', $frames)) {
 				$frames = "ALLOW-FROM $frames";
 			}
-			$initialize->addBody('$this->getService(?)->setHeader(?, ?);', [$this->prefix('response'), 'X-Frame-Options', $frames]);
+			$headers['X-Frame-Options'] = $frames;
 		}
 
-		foreach ($config['headers'] as $key => $value) {
+		foreach ($headers as $key => $value) {
 			if ($value != NULL) { // intentionally ==
 				$initialize->addBody('$this->getService(?)->setHeader(?, ?);', [$this->prefix('response'), $key, $value]);
 			}
