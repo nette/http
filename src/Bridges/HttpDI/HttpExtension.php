@@ -22,6 +22,7 @@ class HttpExtension extends Nette\DI\CompilerExtension
 			'Content-Type' => 'text/html; charset=utf-8',
 		],
 		'frames' => 'SAMEORIGIN', // X-Frame-Options
+		'csp' => [], // Content-Security-Policy
 	];
 
 	/** @var bool */
@@ -81,6 +82,24 @@ class HttpExtension extends Nette\DI\CompilerExtension
 				$frames = "ALLOW-FROM $frames";
 			}
 			$headers['X-Frame-Options'] = $frames;
+		}
+
+		if (!empty($config['csp'])) {
+			$value = '';
+			foreach ($config['csp'] as $type => $policy) {
+				$value .= $type;
+				foreach ((array) $policy as $item) {
+					$value .= preg_match('#^[a-z-]+\z#', $item) ? " '$item'" : " $item";
+				}
+				$value .= '; ';
+			}
+			if (strpos($value, "'nonce'")) {
+				$value = Nette\DI\ContainerBuilder::literal(
+					'str_replace(?, ? . base64_encode(Nette\Utils\Random::generate(16, "\x00-\xFF")), ?)',
+					["'nonce", "'nonce-", $value]
+				);
+			}
+			$headers['Content-Security-Policy'] = $value;
 		}
 
 		foreach ($headers as $key => $value) {
