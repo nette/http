@@ -18,7 +18,7 @@ $path = rtrim(ini_get('session.save_path'), '/\\') . '/sess_';
 $session->start();
 $oldId = $session->getId();
 Assert::true(is_file($path . $oldId));
-$ref = & $_SESSION['var'];
+$ref = &$_SESSION['var'];
 $ref = 10;
 
 $session->regenerateId();

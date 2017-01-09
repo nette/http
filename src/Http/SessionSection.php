@@ -54,8 +54,8 @@ class SessionSection implements \IteratorAggregate, \ArrayAccess
 	{
 		if ($this->meta === FALSE) {
 			$this->session->start();
-			$this->data = & $_SESSION['__NF']['DATA'][$this->name];
-			$this->meta = & $_SESSION['__NF']['META'][$this->name];
+			$this->data = &$_SESSION['__NF']['DATA'][$this->name];
+			$this->meta = &$_SESSION['__NF']['META'][$this->name];
 		}
 	}
 

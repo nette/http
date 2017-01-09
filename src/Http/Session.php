@@ -84,7 +84,7 @@ class Session
 
 		try {
 			// session_start returns FALSE on failure only sometimes
-			Nette\Utils\Callback::invokeSafe('session_start', [], function ($message) use (& $e) {
+			Nette\Utils\Callback::invokeSafe('session_start', [], function ($message) use (&$e) {
 				$e = new Nette\InvalidStateException($message);
 			});
 		} catch (\Exception $e) {
@@ -102,7 +102,7 @@ class Session
 				DATA: section->variable = data
 				META: section->variable = Timestamp
 		*/
-		$nf = & $_SESSION['__NF'];
+		$nf = &$_SESSION['__NF'];
 
 		if (!is_array($nf)) {
 			$nf = [];
@@ -321,7 +321,7 @@ class Session
 			return;
 		}
 
-		$nf = & $_SESSION['__NF'];
+		$nf = &$_SESSION['__NF'];
 		if (isset($nf['META']) && is_array($nf['META'])) {
 			foreach ($nf['META'] as $name => $foo) {
 				if (empty($nf['META'][$name])) {
