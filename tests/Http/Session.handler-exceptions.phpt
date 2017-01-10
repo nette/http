@@ -4,6 +4,8 @@
  * Test: Nette\Http\Session handle storage exceptions.
  */
 
+declare(strict_types=1);
+
 use Nette\Http;
 use Nette\Http\Session;
 use Tester\Assert;

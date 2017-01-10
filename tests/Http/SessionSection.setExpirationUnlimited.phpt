@@ -4,6 +4,8 @@
  * Test: Nette\Http\SessionSection::setExpiration()
  */
 
+declare(strict_types=1);
+
 use Nette\Http\Session;
 use Tester\Assert;
 

@@ -4,6 +4,8 @@
  * Test: Nette\Http\Url canonicalize.
  */
 
+declare(strict_types=1);
+
 use Nette\Http\Url;
 use Tester\Assert;
 
