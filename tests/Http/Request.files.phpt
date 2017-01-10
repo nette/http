@@ -4,6 +4,8 @@
  * Test: Nette\Http\Request files.
  */
 
+declare(strict_types=1);
+
 use Nette\Http;
 use Tester\Assert;
 

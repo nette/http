@@ -4,6 +4,8 @@
  * Test: Nette\Http\RequestFactory and host.
  */
 
+declare(strict_types=1);
+
 use Nette\Http\RequestFactory;
 use Tester\Assert;
 

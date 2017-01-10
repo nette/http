@@ -4,6 +4,8 @@
  * Test: Nette\Http\SessionSection undefined property.
  */
 
+declare(strict_types=1);
+
 use Nette\Http\Session;
 use Tester\Assert;
 

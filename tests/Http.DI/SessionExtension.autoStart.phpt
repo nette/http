@@ -4,6 +4,8 @@
  * Test: SessionExtension.
  */
 
+declare(strict_types=1);
+
 use Nette\DI;
 use Nette\Bridges\HttpDI\HttpExtension;
 use Nette\Bridges\HttpDI\SessionExtension;

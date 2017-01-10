@@ -4,6 +4,8 @@
  * Test: Nette\Http\Session sections.
  */
 
+declare(strict_types=1);
+
 use Nette\Http\Session;
 use Nette\Http\SessionSection;
 use Tester\Assert;
