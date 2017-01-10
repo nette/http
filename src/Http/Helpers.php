@@ -49,6 +49,62 @@ class Helpers
 	}
 
 
+	public static function parseHeader($value)
+	{
+		$tokenizer = new Nette\Utils\Tokenizer([
+			'word' => '[\\w!#$%&\'*+\\-.\\^`|\\~/]+', // "/" manually allowed
+
+			'quoted' => '"(?:\\\\[\x01-\x7F]|[^"\\\\\x00\x80-\xFF])*+"',
+			'equal' => '=',
+			'semicolon' => ';',
+			'ows' => '\h+',
+		]);
+
+		$tokens = $tokenizer->tokenize("$value;");
+		$parsed = [];
+		$k = NULL;
+		$v = NULL;
+		$e = FALSE;
+
+		foreach ($tokens as list($value, $offset, $type)) {
+			if ($type === 'word') {
+				if ($e && $v === NULL) {
+					$v = $value;
+				} elseif ($k === NULL) {
+					$k = $value;
+				} else {
+					throw new \Exception();
+				}
+
+			} elseif ($type === 'quoted') {
+				$value = stripslashes(substr($value, 1, -1));
+				if ($e && $v === NULL) {
+					$v = $value;
+				} else {
+					throw new \Exception();
+				}
+
+			} elseif ($type === 'semicolon') {
+				if ($k === NULL) {
+					throw new \Exception();
+				}
+				$parsed[$k] = $v;
+				$k = $v = NULL;
+				$e = FALSE;
+
+			} elseif ($type === 'equal') {
+				if ($e || $k === NULL) {
+					throw new \Exception();
+				}
+
+				$e = TRUE;
+			}
+		}
+
+		return $parsed;
+	}
+
+
 	/**
 	 * Removes duplicate cookies from response.
 	 * @return void
