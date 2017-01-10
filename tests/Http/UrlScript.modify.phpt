@@ -4,6 +4,8 @@
  * Test: Nette\Http\UrlScript modify.
  */
 
+declare(strict_types=1);
+
 use Nette\Http\UrlScript;
 use Tester\Assert;
 

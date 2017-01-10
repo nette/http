@@ -4,6 +4,8 @@
  * Test: Nette\Http\Helpers.
  */
 
+declare(strict_types=1);
+
 use Nette\Http\Helpers;
 use Tester\Assert;
 

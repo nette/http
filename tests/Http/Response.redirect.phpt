@@ -4,6 +4,8 @@
  * Test: Nette\Http\Response redirect.
  */
 
+declare(strict_types=1);
+
 use Nette\Http;
 use Tester\Assert;
 
