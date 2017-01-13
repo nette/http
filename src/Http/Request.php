@@ -28,6 +28,7 @@ use Nette;
  * @property-read string|NULL $remoteAddress
  * @property-read string|NULL $remoteHost
  * @property-read string|NULL $rawBody
+ * @property-read string|NULL $body
  */
 class Request implements IRequest
 {
@@ -60,9 +61,14 @@ class Request implements IRequest
 	/** @var callable|NULL */
 	private $rawBodyCallback;
 
+	/** @var callable|NULL */
+	private $bodyCallback;
 
-	public function __construct(UrlScript $url, $query = NULL, $post = NULL, $files = NULL, $cookies = NULL,
-		$headers = NULL, $method = NULL, $remoteAddress = NULL, $remoteHost = NULL, $rawBodyCallback = NULL)
+
+	public function __construct(
+		UrlScript $url, $query = NULL, $post = NULL, $files = NULL, $cookies = NULL,
+		$headers = NULL, $method = NULL, $remoteAddress = NULL, $remoteHost = NULL,
+		$rawBodyCallback = NULL, $bodyCallback = NULL)
 	{
 		$this->url = $url;
 		if ($query !== NULL) {
@@ -77,6 +83,7 @@ class Request implements IRequest
 		$this->remoteAddress = $remoteAddress;
 		$this->remoteHost = $remoteHost;
 		$this->rawBodyCallback = $rawBodyCallback;
+		$this->bodyCallback = $bodyCallback;
 	}
 
 
@@ -291,7 +298,18 @@ class Request implements IRequest
 	 */
 	public function getRawBody()
 	{
-		return $this->rawBodyCallback ? call_user_func($this->rawBodyCallback) : NULL;
+		return $this->rawBodyCallback ? call_user_func($this->rawBodyCallback, $this) : NULL;
+	}
+
+
+	/**
+	 * Returns parsed content of HTTP request body.
+	 * @return mixed
+	 * @throws InvalidRequestBodyException
+	 */
+	public function getBody()
+	{
+		return $this->bodyCallback ? call_user_func($this->bodyCallback, $this) : NULL;
 	}
 
 
