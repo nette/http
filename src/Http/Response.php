@@ -235,7 +235,7 @@ class Response implements IResponse
 			&& in_array($this->code, [400, 403, 404, 405, 406, 408, 409, 410, 500, 501, 505], TRUE)
 			&& preg_match('#^text/html(?:;|$)#', $this->getHeader('Content-Type'))
 		) {
-			echo Nette\Utils\Random::generate(2e3, " \t\r\n"); // sends invisible garbage for IE
+			echo Nette\Utils\Random::generate(2000, " \t\r\n"); // sends invisible garbage for IE
 			self::$fixIE = FALSE;
 		}
 	}
