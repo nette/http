@@ -138,7 +138,7 @@ class Request implements IRequest
 	 */
 	public function getFile($key)
 	{
-		return isset($this->files[$key]) ? $this->files[$key] : NULL;
+		return $this->files[$key] ?? NULL;
 	}
 
 
@@ -160,7 +160,7 @@ class Request implements IRequest
 	 */
 	public function getCookie($key, $default = NULL)
 	{
-		return isset($this->cookies[$key]) ? $this->cookies[$key] : $default;
+		return $this->cookies[$key] ?? $default;
 	}
 
 
@@ -208,7 +208,7 @@ class Request implements IRequest
 	public function getHeader($header, $default = NULL)
 	{
 		$header = strtolower($header);
-		return isset($this->headers[$header]) ? $this->headers[$header] : $default;
+		return $this->headers[$header] ?? $default;
 	}
 
 
@@ -281,7 +281,7 @@ class Request implements IRequest
 	 */
 	public function getRawBody()
 	{
-		return $this->rawBodyCallback ? call_user_func($this->rawBodyCallback) : NULL;
+		return $this->rawBodyCallback ? ($this->rawBodyCallback)() : NULL;
 	}
 
 

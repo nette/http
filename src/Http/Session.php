@@ -20,7 +20,7 @@ class Session
 	use Nette\SmartObject;
 
 	/** Default file lifetime */
-	const DEFAULT_FILE_LIFETIME = 3 * Nette\Utils\DateTime::HOUR;
+	private const DEFAULT_FILE_LIFETIME = 3 * Nette\Utils\DateTime::HOUR;
 
 	/** @var bool  has been session ID regenerated? */
 	private $regenerated = FALSE;
@@ -258,7 +258,7 @@ class Session
 	 */
 	public function getName()
 	{
-		return isset($this->options['name']) ? $this->options['name'] : session_name();
+		return $this->options['name'] ?? session_name();
 	}
 
 

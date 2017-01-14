@@ -23,15 +23,13 @@ $response = new Http\Response;
 
 $response->setCookie('test', 'value', 0);
 $headers = array_values(array_diff(headers_list(), $old, ['Set-Cookie:']));
-$headers = str_replace('HttpOnly', 'httponly', $headers);
 Assert::same([
-	'Set-Cookie: test=value; path=/; httponly',
+	'Set-Cookie: test=value; path=/; HttpOnly',
 ], $headers);
 
 
 $response->setCookie('test', 'newvalue', 0);
 $headers = array_values(array_diff(headers_list(), $old, ['Set-Cookie:']));
-$headers = str_replace('HttpOnly', 'httponly', $headers);
 Assert::same([
-	'Set-Cookie: test=newvalue; path=/; httponly',
+	'Set-Cookie: test=newvalue; path=/; HttpOnly',
 ], $headers);

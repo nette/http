@@ -27,8 +27,7 @@ class Helpers
 	 */
 	public static function formatDate($time)
 	{
-		$time = DateTime::from($time);
-		$time->setTimezone(new \DateTimeZone('GMT'));
+		$time = DateTime::from($time)->setTimezone(new \DateTimeZone('GMT'));
 		return $time->format('D, d M Y H:i:s \G\M\T');
 	}
 
@@ -39,7 +38,7 @@ class Helpers
 	 */
 	public static function ipMatch($ip, $mask)
 	{
-		list($mask, $size) = explode('/', $mask . '/');
+		[$mask, $size] = explode('/', $mask . '/');
 		$tmp = function ($n) { return sprintf('%032b', $n); };
 		$ip = implode('', array_map($tmp, unpack('N*', inet_pton($ip))));
 		$mask = implode('', array_map($tmp, unpack('N*', inet_pton($mask))));
