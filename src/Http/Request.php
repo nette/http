@@ -291,7 +291,7 @@ class Request implements IRequest
 	 */
 	public function getRawBody()
 	{
-		return $this->rawBodyCallback ? call_user_func($this->rawBodyCallback) : NULL;
+		return $this->rawBodyCallback ? ($this->rawBodyCallback)() : NULL;
 	}
 
 
