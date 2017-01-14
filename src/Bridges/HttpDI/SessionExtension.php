@@ -49,7 +49,7 @@ class SessionExtension extends Nette\DI\CompilerExtension
 		if ($config['expiration']) {
 			$session->addSetup('setExpiration', [$config['expiration']]);
 		}
-		if (isset($config['cookieDomain']) && $config['cookieDomain'] === 'domain') {
+		if (($config['cookieDomain'] ?? NULL) === 'domain') {
 			$config['cookieDomain'] = $builder::literal('$this->getByType(Nette\Http\IRequest::class)->getUrl()->getDomain(2)');
 		}
 

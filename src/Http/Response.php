@@ -78,7 +78,7 @@ class Response implements IResponse
 			500, 501, 502, 503, 504, 505, 506, 511,
 		];
 		if ($reason || !in_array($code, $hasReason, TRUE)) {
-			$protocol = isset($_SERVER['SERVER_PROTOCOL']) ? $_SERVER['SERVER_PROTOCOL'] : 'HTTP/1.1';
+			$protocol = $_SERVER['SERVER_PROTOCOL'] ?? 'HTTP/1.1';
 			header("$protocol $code " . ($reason ?: 'Unknown status'));
 		} else {
 			http_response_code($code);

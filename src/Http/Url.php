@@ -97,13 +97,13 @@ class Url implements \JsonSerializable
 				throw new Nette\InvalidArgumentException("Malformed or unsupported URI '$url'.");
 			}
 
-			$this->scheme = isset($p['scheme']) ? $p['scheme'] : '';
-			$this->port = isset($p['port']) ? $p['port'] : NULL;
+			$this->scheme = $p['scheme'] ?? '';
+			$this->port = $p['port'] ?? NULL;
 			$this->host = isset($p['host']) ? rawurldecode($p['host']) : '';
 			$this->user = isset($p['user']) ? rawurldecode($p['user']) : '';
 			$this->password = isset($p['pass']) ? rawurldecode($p['pass']) : '';
-			$this->setPath(isset($p['path']) ? $p['path'] : '');
-			$this->setQuery(isset($p['query']) ? $p['query'] : []);
+			$this->setPath($p['path'] ?? '');
+			$this->setQuery($p['query'] ?? []);
 			$this->fragment = isset($p['fragment']) ? rawurldecode($p['fragment']) : '';
 
 		} elseif ($url instanceof self) {
@@ -235,7 +235,7 @@ class Url implements \JsonSerializable
 	{
 		return $this->port
 			? $this->port
-			: (isset(self::$defaultPorts[$this->scheme]) ? self::$defaultPorts[$this->scheme] : NULL);
+			: (self::$defaultPorts[$this->scheme] ?? NULL);
 	}
 
 
@@ -316,7 +316,7 @@ class Url implements \JsonSerializable
 	 */
 	public function getQueryParameter($name, $default = NULL)
 	{
-		return isset($this->query[$name]) ? $this->query[$name] : $default;
+		return $this->query[$name] ?? $default;
 	}
 
 
@@ -422,7 +422,7 @@ class Url implements \JsonSerializable
 	 */
 	public function getRelativeUrl()
 	{
-		return (string) substr($this->getAbsoluteUrl(), strlen($this->getBaseUrl()));
+		return substr($this->getAbsoluteUrl(), strlen($this->getBaseUrl()));
 	}
 
 
