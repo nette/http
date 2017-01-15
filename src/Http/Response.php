@@ -232,16 +232,6 @@ class Response implements IResponse
 
 
 	/**
-	 * @deprecated
-	 */
-	public static function date($time = NULL)
-	{
-		trigger_error('Method date() is deprecated, use Nette\Http\Helpers::formatDate() instead.', E_USER_DEPRECATED);
-		return Helpers::formatDate($time);
-	}
-
-
-	/**
 	 * @return void
 	 */
 	public function __destruct()
