@@ -493,23 +493,6 @@ class Session
 
 
 	/**
-	 * @deprecated  use setHandler().
-	 * @return static
-	 */
-	public function setStorage(ISessionStorage $storage)
-	{
-		if (self::$started) {
-			throw new Nette\InvalidStateException('Unable to set storage when session has been started.');
-		}
-		session_set_save_handler(
-			[$storage, 'open'], [$storage, 'close'], [$storage, 'read'],
-			[$storage, 'write'], [$storage, 'remove'], [$storage, 'clean']
-		);
-		return $this;
-	}
-
-
-	/**
 	 * Sets user session handler.
 	 * @return static
 	 */

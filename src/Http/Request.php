@@ -197,16 +197,6 @@ class Request implements IRequest
 
 
 	/**
-	 * @deprecated
-	 */
-	public function isPost()
-	{
-		trigger_error('Method isPost() is deprecated, use isMethod(\'POST\') instead.', E_USER_DEPRECATED);
-		return $this->isMethod('POST');
-	}
-
-
-	/**
 	 * Return the value of the HTTP header. Pass the header name as the
 	 * plain, HTTP-specified header name (e.g. 'Accept-Encoding').
 	 * @param  string

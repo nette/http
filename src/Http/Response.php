@@ -229,16 +229,6 @@ class Response implements IResponse
 	}
 
 
-	/**
-	 * @deprecated
-	 */
-	public static function date($time = NULL)
-	{
-		trigger_error('Method date() is deprecated, use Nette\Http\Helpers::formatDate() instead.', E_USER_DEPRECATED);
-		return Helpers::formatDate($time);
-	}
-
-
 	public function __destruct()
 	{
 		if (self::$fixIE && isset($_SERVER['HTTP_USER_AGENT']) && strpos($_SERVER['HTTP_USER_AGENT'], 'MSIE ') !== FALSE
