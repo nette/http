@@ -67,8 +67,8 @@ class RequestFactory
 		// DETECTS URI, base path and script path of the request.
 		$url = new UrlScript;
 		$url->setScheme(!empty($_SERVER['HTTPS']) && strcasecmp($_SERVER['HTTPS'], 'off') ? 'https' : 'http');
-		$url->setUser(isset($_SERVER['PHP_AUTH_USER']) ? $_SERVER['PHP_AUTH_USER'] : '');
-		$url->setPassword(isset($_SERVER['PHP_AUTH_PW']) ? $_SERVER['PHP_AUTH_PW'] : '');
+		$url->setUser($_SERVER['PHP_AUTH_USER'] ?? '');
+		$url->setPassword($_SERVER['PHP_AUTH_PW'] ?? '');
 
 		// host & port
 		if ((isset($_SERVER[$tmp = 'HTTP_HOST']) || isset($_SERVER[$tmp = 'SERVER_NAME']))
@@ -83,14 +83,14 @@ class RequestFactory
 		}
 
 		// path & query
-		$requestUrl = isset($_SERVER['REQUEST_URI']) ? $_SERVER['REQUEST_URI'] : '/';
+		$requestUrl = $_SERVER['REQUEST_URI'] ?? '/';
 		$requestUrl = preg_replace('#^\w++://[^/]++#', '', $requestUrl);
 		$requestUrl = Strings::replace($requestUrl, $this->urlFilters['url']);
 		$tmp = explode('?', $requestUrl, 2);
 		$path = Url::unescape($tmp[0], '%/?#');
 		$path = Strings::fixEncoding(Strings::replace($path, $this->urlFilters['path']));
 		$url->setPath($path);
-		$url->setQuery(isset($tmp[1]) ? $tmp[1] : '');
+		$url->setQuery($tmp[1] ?? '');
 
 		// detect script path
 		$lpath = strtolower($path);
@@ -266,7 +266,7 @@ class RequestFactory
 		}
 
 		// method, eg. GET, PUT, ...
-		$method = isset($_SERVER['REQUEST_METHOD']) ? $_SERVER['REQUEST_METHOD'] : NULL;
+		$method = $_SERVER['REQUEST_METHOD'] ?? NULL;
 		if ($method === 'POST' && isset($_SERVER['HTTP_X_HTTP_METHOD_OVERRIDE'])
 			&& preg_match('#^[A-Z]+\z#', $_SERVER['HTTP_X_HTTP_METHOD_OVERRIDE'])
 		) {

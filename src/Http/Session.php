@@ -258,7 +258,7 @@ class Session
 	 */
 	public function getName()
 	{
-		return isset($this->options['name']) ? $this->options['name'] : session_name();
+		return $this->options['name'] ?? session_name();
 	}
 
 
