@@ -67,9 +67,8 @@ class Session
 	/**
 	 * Starts and initializes session data.
 	 * @throws Nette\InvalidStateException
-	 * @return void
 	 */
-	public function start()
+	public function start(): void
 	{
 		if (self::$started) {
 			return;
@@ -149,9 +148,8 @@ class Session
 
 	/**
 	 * Has been session started?
-	 * @return bool
 	 */
-	public function isStarted()
+	public function isStarted(): bool
 	{
 		return (bool) self::$started;
 	}
@@ -159,9 +157,8 @@ class Session
 
 	/**
 	 * Ends the current session and store session data.
-	 * @return void
 	 */
-	public function close()
+	public function close(): void
 	{
 		if (self::$started) {
 			$this->clean();
@@ -173,9 +170,8 @@ class Session
 
 	/**
 	 * Destroys all data registered to a session.
-	 * @return void
 	 */
-	public function destroy()
+	public function destroy(): void
 	{
 		if (!self::$started) {
 			throw new Nette\InvalidStateException('Session is not started.');
@@ -193,9 +189,8 @@ class Session
 
 	/**
 	 * Does session exists for the current request?
-	 * @return bool
 	 */
-	public function exists()
+	public function exists(): bool
 	{
 		return self::$started || $this->request->getCookie($this->getName()) !== NULL;
 	}
@@ -204,9 +199,8 @@ class Session
 	/**
 	 * Regenerates the session ID.
 	 * @throws Nette\InvalidStateException
-	 * @return void
 	 */
-	public function regenerateId()
+	public function regenerateId(): void
 	{
 		if (self::$started && !$this->regenerated) {
 			if (headers_sent($file, $line)) {
@@ -226,9 +220,8 @@ class Session
 
 	/**
 	 * Returns the current session ID. Don't make dependencies, can be changed for each request.
-	 * @return string
 	 */
-	public function getId()
+	public function getId(): string
 	{
 		return session_id();
 	}
@@ -236,10 +229,9 @@ class Session
 
 	/**
 	 * Sets the session name to a specified one.
-	 * @param  string
 	 * @return static
 	 */
-	public function setName($name)
+	public function setName(string $name)
 	{
 		if (!is_string($name) || !preg_match('#[^0-9.][^.]*\z#A', $name)) {
 			throw new Nette\InvalidArgumentException('Session name must be a string and cannot contain dot.');
@@ -254,9 +246,8 @@ class Session
 
 	/**
 	 * Gets the session name.
-	 * @return string
 	 */
-	public function getName()
+	public function getName(): string
 	{
 		return $this->options['name'] ?? session_name();
 	}
@@ -267,12 +258,9 @@ class Session
 
 	/**
 	 * Returns specified session section.
-	 * @param  string
-	 * @param  string
-	 * @return SessionSection
 	 * @throws Nette\InvalidArgumentException
 	 */
-	public function getSection($section, $class = SessionSection::class)
+	public function getSection(string $section, string $class = SessionSection::class): SessionSection
 	{
 		return new $class($this, $section);
 	}
@@ -280,10 +268,8 @@ class Session
 
 	/**
 	 * Checks if a session section exist and is not empty.
-	 * @param  string
-	 * @return bool
 	 */
-	public function hasSection($section)
+	public function hasSection(string $section): bool
 	{
 		if ($this->exists() && !self::$started) {
 			$this->start();
@@ -295,9 +281,8 @@ class Session
 
 	/**
 	 * Iteration over all sections.
-	 * @return \Iterator
 	 */
-	public function getIterator()
+	public function getIterator(): \Iterator
 	{
 		if ($this->exists() && !self::$started) {
 			$this->start();
@@ -315,9 +300,8 @@ class Session
 	/**
 	 * Cleans and minimizes meta structures. This method is called automatically on shutdown, do not call it directly.
 	 * @internal
-	 * @return void
 	 */
-	public function clean()
+	public function clean(): void
 	{
 		if (!self::$started || empty($_SESSION)) {
 			return;
@@ -347,7 +331,6 @@ class Session
 
 	/**
 	 * Sets session options.
-	 * @param  array
 	 * @return static
 	 * @throws Nette\NotSupportedException
 	 * @throws Nette\InvalidStateException
@@ -367,9 +350,8 @@ class Session
 
 	/**
 	 * Returns all session options.
-	 * @return array
 	 */
-	public function getOptions()
+	public function getOptions(): array
 	{
 		return $this->options;
 	}
@@ -377,10 +359,8 @@ class Session
 
 	/**
 	 * Configures session environment.
-	 * @param  array
-	 * @return void
 	 */
-	private function configure(array $config)
+	private function configure(array $config): void
 	{
 		$special = ['cache_expire' => 1, 'cache_limiter' => 1, 'save_path' => 1, 'name' => 1];
 
@@ -457,12 +437,9 @@ class Session
 
 	/**
 	 * Sets the session cookie parameters.
-	 * @param  string  path
-	 * @param  string  domain
-	 * @param  bool    secure
 	 * @return static
 	 */
-	public function setCookieParameters($path, $domain = NULL, $secure = NULL)
+	public function setCookieParameters(string $path, string $domain = NULL, bool $secure = NULL)
 	{
 		return $this->setOptions([
 			'cookie_path' => $path,
@@ -473,10 +450,9 @@ class Session
 
 
 	/**
-	 * Returns the session cookie parameters.
-	 * @return array  containing items: lifetime, path, domain, secure, httponly
+	 * Returns the session cookie parameters containing items: lifetime, path, domain, secure, httponly.
 	 */
-	public function getCookieParameters()
+	public function getCookieParameters(): array
 	{
 		return session_get_cookie_params();
 	}
@@ -510,9 +486,8 @@ class Session
 
 	/**
 	 * Sends the session cookies.
-	 * @return void
 	 */
-	private function sendCookie()
+	private function sendCookie(): void
 	{
 		$cookie = $this->getCookieParameters();
 		$this->response->setCookie(

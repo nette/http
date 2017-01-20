@@ -82,9 +82,8 @@ class Request implements IRequest
 
 	/**
 	 * Returns URL object.
-	 * @return UrlScript
 	 */
-	public function getUrl()
+	public function getUrl(): UrlScript
 	{
 		return clone $this->url;
 	}
@@ -96,10 +95,9 @@ class Request implements IRequest
 	/**
 	 * Returns variable provided to the script via URL query ($_GET).
 	 * If no key is passed, returns the entire array.
-	 * @param  string key
 	 * @return mixed
 	 */
-	public function getQuery($key = NULL)
+	public function getQuery(string $key = NULL)
 	{
 		if (func_num_args() === 0) {
 			return $this->url->getQueryParameters();
@@ -113,10 +111,9 @@ class Request implements IRequest
 	/**
 	 * Returns variable provided to the script via POST method ($_POST).
 	 * If no key is passed, returns the entire array.
-	 * @param  string key
 	 * @return mixed
 	 */
-	public function getPost($key = NULL)
+	public function getPost(string $key = NULL)
 	{
 		if (func_num_args() === 0) {
 			return $this->post;
@@ -129,10 +126,9 @@ class Request implements IRequest
 
 	/**
 	 * Returns uploaded file.
-	 * @param  string key
 	 * @return FileUpload|array|NULL
 	 */
-	public function getFile($key)
+	public function getFile(string $key)
 	{
 		return $this->files[$key] ?? NULL;
 	}
@@ -140,9 +136,8 @@ class Request implements IRequest
 
 	/**
 	 * Returns uploaded files.
-	 * @return array
 	 */
-	public function getFiles()
+	public function getFiles(): array
 	{
 		return $this->files;
 	}
@@ -150,10 +145,9 @@ class Request implements IRequest
 
 	/**
 	 * Returns variable provided to the script via HTTP cookies.
-	 * @param  string key
 	 * @return mixed
 	 */
-	public function getCookie($key)
+	public function getCookie(string $key)
 	{
 		if (func_num_args() > 1) {
 			trigger_error(__METHOD__ . '() parameter $default is deprecated, use operator ??', E_USER_DEPRECATED);
@@ -164,9 +158,8 @@ class Request implements IRequest
 
 	/**
 	 * Returns variables provided to the script via HTTP cookies.
-	 * @return array
 	 */
-	public function getCookies()
+	public function getCookies(): array
 	{
 		return $this->cookies;
 	}
@@ -177,9 +170,8 @@ class Request implements IRequest
 
 	/**
 	 * Returns HTTP request method (GET, POST, HEAD, PUT, ...). The method is case-sensitive.
-	 * @return string
 	 */
-	public function getMethod()
+	public function getMethod(): string
 	{
 		return $this->method;
 	}
@@ -187,10 +179,8 @@ class Request implements IRequest
 
 	/**
 	 * Checks if the request method is the given one.
-	 * @param  string
-	 * @return bool
 	 */
-	public function isMethod($method)
+	public function isMethod(string $method): bool
 	{
 		return strcasecmp($this->method, $method) === 0;
 	}
@@ -199,10 +189,8 @@ class Request implements IRequest
 	/**
 	 * Return the value of the HTTP header. Pass the header name as the
 	 * plain, HTTP-specified header name (e.g. 'Accept-Encoding').
-	 * @param  string
-	 * @return string|NULL
 	 */
-	public function getHeader($header)
+	public function getHeader(string $header): ?string
 	{
 		if (func_num_args() > 1) {
 			trigger_error(__METHOD__ . '() parameter $default is deprecated, use operator ??', E_USER_DEPRECATED);
@@ -214,9 +202,8 @@ class Request implements IRequest
 
 	/**
 	 * Returns all HTTP headers.
-	 * @return array
 	 */
-	public function getHeaders()
+	public function getHeaders(): array
 	{
 		return $this->headers;
 	}
@@ -224,9 +211,8 @@ class Request implements IRequest
 
 	/**
 	 * Returns referrer.
-	 * @return Url|NULL
 	 */
-	public function getReferer()
+	public function getReferer(): ?Url
 	{
 		return isset($this->headers['referer']) ? new Url($this->headers['referer']) : NULL;
 	}
@@ -234,9 +220,8 @@ class Request implements IRequest
 
 	/**
 	 * Is the request is sent via secure channel (https).
-	 * @return bool
 	 */
-	public function isSecured()
+	public function isSecured(): bool
 	{
 		return $this->url->getScheme() === 'https';
 	}
@@ -244,9 +229,8 @@ class Request implements IRequest
 
 	/**
 	 * Is AJAX request?
-	 * @return bool
 	 */
-	public function isAjax()
+	public function isAjax(): bool
 	{
 		return $this->getHeader('X-Requested-With') === 'XMLHttpRequest';
 	}
@@ -254,9 +238,8 @@ class Request implements IRequest
 
 	/**
 	 * Returns the IP address of the remote client.
-	 * @return string|NULL
 	 */
-	public function getRemoteAddress()
+	public function getRemoteAddress(): ?string
 	{
 		return $this->remoteAddress;
 	}
@@ -264,9 +247,8 @@ class Request implements IRequest
 
 	/**
 	 * Returns the host of the remote client.
-	 * @return string|NULL
 	 */
-	public function getRemoteHost()
+	public function getRemoteHost(): ?string
 	{
 		if ($this->remoteHost === NULL && $this->remoteAddress !== NULL) {
 			$this->remoteHost = getHostByAddr($this->remoteAddress);
@@ -277,9 +259,8 @@ class Request implements IRequest
 
 	/**
 	 * Returns raw content of HTTP request body.
-	 * @return string|NULL
 	 */
-	public function getRawBody()
+	public function getRawBody(): ?string
 	{
 		return $this->rawBodyCallback ? ($this->rawBodyCallback)() : NULL;
 	}
@@ -288,9 +269,8 @@ class Request implements IRequest
 	/**
 	 * Parse Accept-Language header and returns preferred language.
 	 * @param  string[] supported languages
-	 * @return string|NULL
 	 */
-	public function detectLanguage(array $langs)
+	public function detectLanguage(array $langs): ?string
 	{
 		$header = $this->getHeader('Accept-Language');
 		if (!$header) {

@@ -32,7 +32,7 @@ class UrlScript extends Url
 	private $scriptPath;
 
 
-	public function __construct($url = NULL, $scriptPath = '')
+	public function __construct($url = NULL, string $scriptPath = '')
 	{
 		parent::__construct($url);
 		$this->setScriptPath($scriptPath);
@@ -41,10 +41,9 @@ class UrlScript extends Url
 
 	/**
 	 * Sets the script-path part of URI.
-	 * @param  string
 	 * @return static
 	 */
-	public function setScriptPath($value)
+	public function setScriptPath(string $value)
 	{
 		$this->scriptPath = (string) $value;
 		return $this;
@@ -53,9 +52,8 @@ class UrlScript extends Url
 
 	/**
 	 * Returns the script-path part of URI.
-	 * @return string
 	 */
-	public function getScriptPath()
+	public function getScriptPath(): string
 	{
 		return $this->scriptPath ?: $this->path;
 	}
@@ -63,9 +61,8 @@ class UrlScript extends Url
 
 	/**
 	 * Returns the base-path.
-	 * @return string
 	 */
-	public function getBasePath()
+	public function getBasePath(): string
 	{
 		$pos = strrpos($this->getScriptPath(), '/');
 		return $pos === FALSE ? '' : substr($this->getPath(), 0, $pos + 1);
@@ -74,9 +71,8 @@ class UrlScript extends Url
 
 	/**
 	 * Returns the additional path information.
-	 * @return string
 	 */
-	public function getPathInfo()
+	public function getPathInfo(): string
 	{
 		return (string) substr($this->getPath(), strlen($this->getScriptPath()));
 	}

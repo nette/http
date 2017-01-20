@@ -86,48 +86,37 @@ interface IResponse
 
 	/**
 	 * Sets HTTP response code.
-	 * @param  int
 	 * @return static
 	 */
-	function setCode($code);
+	function setCode(int $code);
 
 	/**
 	 * Returns HTTP response code.
-	 * @return int
 	 */
-	function getCode();
+	function getCode(): int;
 
 	/**
 	 * Sends a HTTP header and replaces a previous one.
-	 * @param  string  header name
-	 * @param  string  header value
 	 * @return static
 	 */
-	function setHeader($name, $value);
+	function setHeader(string $name, string $value);
 
 	/**
 	 * Adds HTTP header.
-	 * @param  string  header name
-	 * @param  string  header value
 	 * @return static
 	 */
-	function addHeader($name, $value);
+	function addHeader(string $name, string $value);
 
 	/**
 	 * Sends a Content-type HTTP header.
-	 * @param  string  mime-type
-	 * @param  string  charset
 	 * @return static
 	 */
-	function setContentType($type, $charset = NULL);
+	function setContentType(string $type, string $charset = NULL);
 
 	/**
 	 * Redirects to a new URL.
-	 * @param  string  URL
-	 * @param  int     HTTP code
-	 * @return void
 	 */
-	function redirect($url, $code = self::S302_FOUND);
+	function redirect(string $url, int $code = self::S302_FOUND): void;
 
 	/**
 	 * Sets the number of seconds before a page cached on a browser expires.
@@ -138,44 +127,29 @@ interface IResponse
 
 	/**
 	 * Checks if headers have been sent.
-	 * @return bool
 	 */
-	function isSent();
+	function isSent(): bool;
 
 	/**
 	 * Returns value of an HTTP header.
-	 * @param  string
-	 * @return string|NULL
 	 */
-	function getHeader($header);
+	function getHeader(string $header): ?string;
 
 	/**
-	 * Returns a list of headers to sent.
-	 * @return array (name => value)
+	 * Returns a associative array of headers to sent.
 	 */
-	function getHeaders();
+	function getHeaders(): array;
 
 	/**
 	 * Sends a cookie.
-	 * @param  string name of the cookie
-	 * @param  string value
-	 * @param  string|int|\DateTimeInterface  time, value 0 means "until the browser is closed"
-	 * @param  string
-	 * @param  string
-	 * @param  bool
-	 * @param  bool
+	 * @param  string|int|\DateTimeInterface $expire  time, value 0 means "until the browser is closed"
 	 * @return static
 	 */
-	function setCookie($name, $value, $expire, $path = NULL, $domain = NULL, $secure = NULL, $httpOnly = NULL);
+	function setCookie(string $name, string $value, $expire, string $path = NULL, string $domain = NULL, bool $secure = NULL, bool $httpOnly = NULL);
 
 	/**
 	 * Deletes a cookie.
-	 * @param  string name of the cookie.
-	 * @param  string
-	 * @param  string
-	 * @param  bool
-	 * @return void
 	 */
-	function deleteCookie($name, $path = NULL, $domain = NULL, $secure = NULL);
+	function deleteCookie(string $name, string $path = NULL, string $domain = NULL, bool $secure = NULL);
 
 }

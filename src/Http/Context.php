@@ -36,10 +36,8 @@ class Context
 	/**
 	 * Attempts to cache the sent entity by its last modification date.
 	 * @param  string|int|\DateTimeInterface  last modified time
-	 * @param  string  strong entity tag validator
-	 * @return bool
 	 */
-	public function isModified($lastModified = NULL, $etag = NULL)
+	public function isModified($lastModified = NULL, string $etag = NULL): bool
 	{
 		if ($lastModified) {
 			$this->response->setHeader('Last-Modified', Helpers::formatDate($lastModified));
@@ -83,19 +81,13 @@ class Context
 	}
 
 
-	/**
-	 * @return IRequest
-	 */
-	public function getRequest()
+	public function getRequest(): IRequest
 	{
 		return $this->request;
 	}
 
 
-	/**
-	 * @return IResponse
-	 */
-	public function getResponse()
+	public function getResponse(): IResponse
 	{
 		return $this->response;
 	}
