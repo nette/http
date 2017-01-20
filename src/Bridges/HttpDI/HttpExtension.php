@@ -31,7 +31,7 @@ class HttpExtension extends Nette\DI\CompilerExtension
 	private $cliMode;
 
 
-	public function __construct($cliMode = FALSE)
+	public function __construct(bool $cliMode = FALSE)
 	{
 		$this->cliMode = $cliMode;
 	}

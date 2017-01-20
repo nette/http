@@ -30,7 +30,7 @@ class SessionExtension extends Nette\DI\CompilerExtension
 	private $cliMode;
 
 
-	public function __construct($debugMode = FALSE, $cliMode = FALSE)
+	public function __construct(bool $debugMode = FALSE, bool $cliMode = FALSE)
 	{
 		$this->debugMode = $debugMode;
 		$this->cliMode = $cliMode;

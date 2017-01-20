@@ -22,9 +22,8 @@ class SessionPanel implements Tracy\IBarPanel
 
 	/**
 	 * Renders tab.
-	 * @return string
 	 */
-	public function getTab()
+	public function getTab(): string
 	{
 		ob_start(function () {});
 		require __DIR__ . '/templates/SessionPanel.tab.phtml';
@@ -34,9 +33,8 @@ class SessionPanel implements Tracy\IBarPanel
 
 	/**
 	 * Renders panel.
-	 * @return string
 	 */
-	public function getPanel()
+	public function getPanel(): string
 	{
 		ob_start(function () {});
 		require __DIR__ . '/templates/SessionPanel.panel.phtml';

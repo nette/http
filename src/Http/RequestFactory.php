@@ -37,10 +37,9 @@ class RequestFactory
 
 
 	/**
-	 * @param  bool
 	 * @return static
 	 */
-	public function setBinary($binary = TRUE)
+	public function setBinary(bool $binary = TRUE)
 	{
 		$this->binary = (bool) $binary;
 		return $this;
@@ -60,9 +59,8 @@ class RequestFactory
 
 	/**
 	 * Creates current HttpRequest object.
-	 * @return Request
 	 */
-	public function createHttpRequest()
+	public function createHttpRequest(): Request
 	{
 		// DETECTS URI, base path and script path of the request.
 		$url = new UrlScript;

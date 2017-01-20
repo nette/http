@@ -23,9 +23,8 @@ class Helpers
 	/**
 	 * Returns HTTP valid date format.
 	 * @param  string|int|\DateTimeInterface
-	 * @return string
 	 */
-	public static function formatDate($time)
+	public static function formatDate($time): string
 	{
 		$time = DateTime::from($time);
 		$time->setTimezone(new \DateTimeZone('GMT'));
@@ -35,9 +34,8 @@ class Helpers
 
 	/**
 	 * Is IP address in CIDR block?
-	 * @return bool
 	 */
-	public static function ipMatch($ip, $mask)
+	public static function ipMatch($ip, $mask): bool
 	{
 		[$mask, $size] = explode('/', $mask . '/');
 		$tmp = function ($n) { return sprintf('%032b', $n); };
@@ -53,10 +51,9 @@ class Helpers
 
 	/**
 	 * Removes duplicate cookies from response.
-	 * @return void
 	 * @internal
 	 */
-	public static function removeDuplicateCookies()
+	public static function removeDuplicateCookies(): void
 	{
 		if (headers_sent($file, $line) || ini_get('suhosin.cookie.encrypt')) {
 			return;

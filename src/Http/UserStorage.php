@@ -38,10 +38,9 @@ class UserStorage implements Nette\Security\IUserStorage
 
 	/**
 	 * Sets the authenticated status of this user.
-	 * @param  bool
 	 * @return static
 	 */
-	public function setAuthenticated($state)
+	public function setAuthenticated(bool $state)
 	{
 		$section = $this->getSessionSection(TRUE);
 		$section->authenticated = (bool) $state;
@@ -63,9 +62,8 @@ class UserStorage implements Nette\Security\IUserStorage
 
 	/**
 	 * Is this user authenticated?
-	 * @return bool
 	 */
-	public function isAuthenticated()
+	public function isAuthenticated(): bool
 	{
 		$session = $this->getSessionSection(FALSE);
 		return $session && $session->authenticated;
@@ -76,7 +74,7 @@ class UserStorage implements Nette\Security\IUserStorage
 	 * Sets the user identity.
 	 * @return static
 	 */
-	public function setIdentity(IIdentity $identity = NULL)
+	public function setIdentity(?IIdentity $identity)
 	{
 		$this->getSessionSection(TRUE)->identity = $identity;
 		return $this;
@@ -85,9 +83,8 @@ class UserStorage implements Nette\Security\IUserStorage
 
 	/**
 	 * Returns current user identity, if any.
-	 * @return Nette\Security\IIdentity|NULL
 	 */
-	public function getIdentity()
+	public function getIdentity(): ?Nette\Security\IIdentity
 	{
 		$session = $this->getSessionSection(FALSE);
 		return $session ? $session->identity : NULL;
@@ -96,10 +93,9 @@ class UserStorage implements Nette\Security\IUserStorage
 
 	/**
 	 * Changes namespace; allows more users to share a session.
-	 * @param  string
 	 * @return static
 	 */
-	public function setNamespace($namespace)
+	public function setNamespace(string $namespace)
 	{
 		if ($this->namespace !== $namespace) {
 			$this->namespace = (string) $namespace;
@@ -111,9 +107,8 @@ class UserStorage implements Nette\Security\IUserStorage
 
 	/**
 	 * Returns current namespace.
-	 * @return string
 	 */
-	public function getNamespace()
+	public function getNamespace(): string
 	{
 		return $this->namespace;
 	}
@@ -125,7 +120,7 @@ class UserStorage implements Nette\Security\IUserStorage
 	 * @param  int  flag IUserStorage::CLEAR_IDENTITY
 	 * @return static
 	 */
-	public function setExpiration($time, $flags = 0)
+	public function setExpiration($time, int $flags = 0)
 	{
 		$section = $this->getSessionSection(TRUE);
 		if ($time) {
@@ -145,9 +140,8 @@ class UserStorage implements Nette\Security\IUserStorage
 
 	/**
 	 * Why was user logged out?
-	 * @return int|NULL
 	 */
-	public function getLogoutReason()
+	public function getLogoutReason(): ?int
 	{
 		$session = $this->getSessionSection(FALSE);
 		return $session ? $session->reason : NULL;
@@ -156,9 +150,8 @@ class UserStorage implements Nette\Security\IUserStorage
 
 	/**
 	 * Returns and initializes $this->sessionSection.
-	 * @return SessionSection|NULL
 	 */
-	protected function getSessionSection($need)
+	protected function getSessionSection($need): ?SessionSection
 	{
 		if ($this->sessionSection !== NULL) {
 			return $this->sessionSection;
