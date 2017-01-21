@@ -262,21 +262,34 @@ class Response implements IResponse
 	 * @param  string
 	 * @param  bool
 	 * @param  bool
+	 * @param  string
 	 * @return static
 	 * @throws Nette\InvalidStateException  if HTTP headers have been sent
 	 */
-	public function setCookie($name, $value, $time, $path = null, $domain = null, $secure = null, $httpOnly = null)
+	public function setCookie($name, $value, $time, $path = null, $domain = null, $secure = null, $httpOnly = null, $sameSite = null)
 	{
 		self::checkHeaders();
-		setcookie(
-			$name,
-			$value,
-			$time ? (int) DateTime::from($time)->format('U') : 0,
-			$path === null ? $this->cookiePath : (string) $path,
-			$domain === null ? $this->cookieDomain : (string) $domain,
-			$secure === null ? $this->cookieSecure : (bool) $secure,
-			$httpOnly === null ? $this->cookieHttpOnly : (bool) $httpOnly
-		);
+		$options = [
+			'expires' => $time ? (int) DateTime::from($time)->format('U') : 0,
+			'path' => $path === null ? $this->cookiePath : (string) $path,
+			'domain' => $domain === null ? $this->cookieDomain : (string) $domain,
+			'secure' => $secure === null ? $this->cookieSecure : (bool) $secure,
+			'httponly' => $httpOnly === null ? $this->cookieHttpOnly : (bool) $httpOnly,
+			'samesite' => (string) $sameSite,
+		];
+		if (PHP_VERSION_ID >= 70300) {
+			setcookie($name, $value, $options);
+		} else {
+			setcookie(
+				$name,
+				$value,
+				$options['expires'],
+				$options['path'] . ($sameSite ? "; SameSite=$sameSite" : ''),
+				$options['domain'],
+				$options['secure'],
+				$options['httponly']
+			);
+		}
 		Helpers::removeDuplicateCookies();
 		return $this;
 	}
