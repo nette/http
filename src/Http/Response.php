@@ -60,7 +60,6 @@ class Response implements IResponse
 	 */
 	public function setCode(int $code, string $reason = NULL)
 	{
-		$code = (int) $code;
 		if ($code < 100 || $code > 599) {
 			throw new Nette\InvalidArgumentException("Bad HTTP response '$code'.");
 		}
@@ -241,10 +240,10 @@ class Response implements IResponse
 			$name,
 			$value,
 			$time ? (int) DateTime::from($time)->format('U') : 0,
-			$path === NULL ? $this->cookiePath : (string) $path,
-			$domain === NULL ? $this->cookieDomain : (string) $domain,
-			$secure === NULL ? $this->cookieSecure : (bool) $secure,
-			$httpOnly === NULL ? $this->cookieHttpOnly : (bool) $httpOnly
+			$path === NULL ? $this->cookiePath : $path,
+			$domain === NULL ? $this->cookieDomain : $domain,
+			$secure === NULL ? $this->cookieSecure : $secure,
+			$httpOnly === NULL ? $this->cookieHttpOnly : $httpOnly
 		);
 		Helpers::removeDuplicateCookies();
 		return $this;

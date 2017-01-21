@@ -151,7 +151,7 @@ class Session
 	 */
 	public function isStarted(): bool
 	{
-		return (bool) self::$started;
+		return self::$started;
 	}
 
 
@@ -233,8 +233,8 @@ class Session
 	 */
 	public function setName(string $name)
 	{
-		if (!is_string($name) || !preg_match('#[^0-9.][^.]*\z#A', $name)) {
-			throw new Nette\InvalidArgumentException('Session name must be a string and cannot contain dot.');
+		if (!preg_match('#[^0-9.][^.]*\z#A', $name)) {
+			throw new Nette\InvalidArgumentException('Session name cannot contain dot.');
 		}
 
 		session_name($name);

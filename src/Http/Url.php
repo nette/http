@@ -120,7 +120,7 @@ class Url implements \JsonSerializable
 	 */
 	public function setScheme(string $value)
 	{
-		$this->scheme = (string) $value;
+		$this->scheme = $value;
 		return $this;
 	}
 
@@ -140,7 +140,7 @@ class Url implements \JsonSerializable
 	 */
 	public function setUser(string $value)
 	{
-		$this->user = (string) $value;
+		$this->user = $value;
 		return $this;
 	}
 
@@ -160,7 +160,7 @@ class Url implements \JsonSerializable
 	 */
 	public function setPassword(string $value)
 	{
-		$this->password = (string) $value;
+		$this->password = $value;
 		return $this;
 	}
 
@@ -180,7 +180,7 @@ class Url implements \JsonSerializable
 	 */
 	public function setHost(string $value)
 	{
-		$this->host = (string) $value;
+		$this->host = $value;
 		$this->setPath($this->path);
 		return $this;
 	}
@@ -212,7 +212,7 @@ class Url implements \JsonSerializable
 	 */
 	public function setPort(int $value)
 	{
-		$this->port = (int) $value;
+		$this->port = $value;
 		return $this;
 	}
 
@@ -234,7 +234,7 @@ class Url implements \JsonSerializable
 	 */
 	public function setPath(string $value)
 	{
-		$this->path = (string) $value;
+		$this->path = $value;
 		if ($this->host && substr($this->path, 0, 1) !== '/') {
 			$this->path = '/' . $this->path;
 		}
@@ -321,7 +321,7 @@ class Url implements \JsonSerializable
 	 */
 	public function setFragment(string $value)
 	{
-		$this->fragment = (string) $value;
+		$this->fragment = $value;
 		return $this;
 	}
 

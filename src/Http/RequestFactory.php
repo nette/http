@@ -41,7 +41,7 @@ class RequestFactory
 	 */
 	public function setBinary(bool $binary = TRUE)
 	{
-		$this->binary = (bool) $binary;
+		$this->binary = $binary;
 		return $this;
 	}
 

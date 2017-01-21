@@ -40,10 +40,6 @@ class SessionSection implements \IteratorAggregate, \ArrayAccess
 	 */
 	public function __construct(Session $session, string $name)
 	{
-		if (!is_string($name)) {
-			throw new Nette\InvalidArgumentException('Session namespace must be a string, ' . gettype($name) . ' given.');
-		}
-
 		$this->session = $session;
 		$this->name = $name;
 	}

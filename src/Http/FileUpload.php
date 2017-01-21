@@ -112,7 +112,7 @@ class FileUpload
 	 */
 	public function __toString(): string
 	{
-		return (string) $this->tmpName;
+		return $this->tmpName;
 	}
 
 
