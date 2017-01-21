@@ -43,7 +43,7 @@ class UserStorage implements Nette\Security\IUserStorage
 	public function setAuthenticated(bool $state)
 	{
 		$section = $this->getSessionSection(TRUE);
-		$section->authenticated = (bool) $state;
+		$section->authenticated = $state;
 
 		// Session Fixation defence
 		$this->sessionHandler->regenerateId();
@@ -98,7 +98,7 @@ class UserStorage implements Nette\Security\IUserStorage
 	public function setNamespace(string $namespace)
 	{
 		if ($this->namespace !== $namespace) {
-			$this->namespace = (string) $namespace;
+			$this->namespace = $namespace;
 			$this->sessionSection = NULL;
 		}
 		return $this;
