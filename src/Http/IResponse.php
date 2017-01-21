@@ -85,7 +85,7 @@ interface IResponse
 	/**
 	 * Sets HTTP response code.
 	 * @param  int
-	 * @return void
+	 * @return static
 	 */
 	function setCode($code);
 
@@ -99,7 +99,7 @@ interface IResponse
 	 * Sends a HTTP header and replaces a previous one.
 	 * @param  string  header name
 	 * @param  string  header value
-	 * @return void
+	 * @return static
 	 */
 	function setHeader($name, $value);
 
@@ -107,7 +107,7 @@ interface IResponse
 	 * Adds HTTP header.
 	 * @param  string  header name
 	 * @param  string  header value
-	 * @return void
+	 * @return static
 	 */
 	function addHeader($name, $value);
 
@@ -115,7 +115,7 @@ interface IResponse
 	 * Sends a Content-type HTTP header.
 	 * @param  string  mime-type
 	 * @param  string  charset
-	 * @return void
+	 * @return static
 	 */
 	function setContentType($type, $charset = NULL);
 
@@ -130,7 +130,7 @@ interface IResponse
 	/**
 	 * Sets the number of seconds before a page cached on a browser expires.
 	 * @param  string|int|\DateTimeInterface  time, value 0 means "until the browser is closed"
-	 * @return void
+	 * @return static
 	 */
 	function setExpiration($seconds);
 
@@ -143,8 +143,8 @@ interface IResponse
 	/**
 	 * Returns value of an HTTP header.
 	 * @param  string
-	 * @param  mixed
-	 * @return mixed
+	 * @param  string|NULL
+	 * @return string|NULL
 	 */
 	function getHeader($header, $default = NULL);
 
@@ -158,12 +158,12 @@ interface IResponse
 	 * Sends a cookie.
 	 * @param  string name of the cookie
 	 * @param  string value
-	 * @param  mixed expiration as unix timestamp or number of seconds; Value 0 means "until the browser is closed"
+	 * @param  string|int|\DateTimeInterface  time, value 0 means "until the browser is closed"
 	 * @param  string
 	 * @param  string
 	 * @param  bool
 	 * @param  bool
-	 * @return void
+	 * @return static
 	 */
 	function setCookie($name, $value, $expire, $path = NULL, $domain = NULL, $secure = NULL, $httpOnly = NULL);
 

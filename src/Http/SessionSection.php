@@ -47,9 +47,6 @@ class SessionSection implements \IteratorAggregate, \ArrayAccess
 	}
 
 
-	/**
-	 * Do not call directly. Use Session::getNamespace().
-	 */
 	private function start()
 	{
 		if ($this->meta === FALSE) {
@@ -62,7 +59,7 @@ class SessionSection implements \IteratorAggregate, \ArrayAccess
 
 	/**
 	 * Returns an iterator over all section variables.
-	 * @return \ArrayIterator
+	 * @return \Iterator
 	 */
 	public function getIterator()
 	{

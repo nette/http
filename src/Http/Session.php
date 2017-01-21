@@ -293,7 +293,7 @@ class Session
 
 	/**
 	 * Iteration over all sections.
-	 * @return \ArrayIterator
+	 * @return \Iterator
 	 */
 	public function getIterator()
 	{

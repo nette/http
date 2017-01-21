@@ -132,7 +132,7 @@ class Request implements IRequest
 	/**
 	 * Returns uploaded file.
 	 * @param  string key
-	 * @return FileUpload|NULL
+	 * @return FileUpload|array|NULL
 	 */
 	public function getFile($key)
 	{
@@ -210,8 +210,8 @@ class Request implements IRequest
 	 * Return the value of the HTTP header. Pass the header name as the
 	 * plain, HTTP-specified header name (e.g. 'Accept-Encoding').
 	 * @param  string
-	 * @param  mixed
-	 * @return mixed
+	 * @param  string|NULL
+	 * @return string|NULL
 	 */
 	public function getHeader($header, $default = NULL)
 	{

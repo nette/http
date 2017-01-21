@@ -120,7 +120,7 @@ class UserStorage implements Nette\Security\IUserStorage
 	/**
 	 * Enables log out after inactivity.
 	 * @param  string|int|\DateTimeInterface Number of seconds or timestamp
-	 * @param  int Clear the identity from persistent storage?
+	 * @param  int  flag IUserStorage::CLEAR_IDENTITY
 	 * @return static
 	 */
 	public function setExpiration($time, $flags = 0)
@@ -154,7 +154,7 @@ class UserStorage implements Nette\Security\IUserStorage
 
 	/**
 	 * Returns and initializes $this->sessionSection.
-	 * @return SessionSection
+	 * @return SessionSection|NULL
 	 */
 	protected function getSessionSection($need)
 	{

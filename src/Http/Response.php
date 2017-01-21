@@ -198,8 +198,8 @@ class Response implements IResponse
 	/**
 	 * Returns value of an HTTP header.
 	 * @param  string
-	 * @param  mixed
-	 * @return mixed
+	 * @param  string|NULL
+	 * @return string|NULL
 	 */
 	public function getHeader($header, $default = NULL)
 	{
@@ -239,9 +239,6 @@ class Response implements IResponse
 	}
 
 
-	/**
-	 * @return void
-	 */
 	public function __destruct()
 	{
 		if (self::$fixIE && isset($_SERVER['HTTP_USER_AGENT']) && strpos($_SERVER['HTTP_USER_AGENT'], 'MSIE ') !== FALSE

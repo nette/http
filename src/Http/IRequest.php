@@ -52,7 +52,7 @@ interface IRequest
 	/**
 	 * Returns uploaded file.
 	 * @param  string key
-	 * @return FileUpload|NULL
+	 * @return FileUpload|array|NULL
 	 */
 	function getFile($key);
 
@@ -95,8 +95,8 @@ interface IRequest
 	 * Return the value of the HTTP header. Pass the header name as the
 	 * plain, HTTP-specified header name (e.g. 'Accept-Encoding').
 	 * @param  string
-	 * @param  mixed
-	 * @return mixed
+	 * @param  string|NULL
+	 * @return string|NULL
 	 */
 	function getHeader($header, $default = NULL);
 
