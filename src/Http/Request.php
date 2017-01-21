@@ -97,16 +97,16 @@ class Request implements IRequest
 	 * Returns variable provided to the script via URL query ($_GET).
 	 * If no key is passed, returns the entire array.
 	 * @param  string key
-	 * @param  mixed  default value
 	 * @return mixed
 	 */
-	public function getQuery($key = NULL, $default = NULL)
+	public function getQuery($key = NULL)
 	{
 		if (func_num_args() === 0) {
 			return $this->url->getQueryParameters();
-		} else {
-			return $this->url->getQueryParameter($key, $default);
+		} elseif (func_num_args() > 1) {
+			trigger_error(__METHOD__ . '() parameter $default is deprecated, use operator ??', E_USER_DEPRECATED);
 		}
+		return $this->url->getQueryParameter($key);
 	}
 
 
@@ -114,20 +114,16 @@ class Request implements IRequest
 	 * Returns variable provided to the script via POST method ($_POST).
 	 * If no key is passed, returns the entire array.
 	 * @param  string key
-	 * @param  mixed  default value
 	 * @return mixed
 	 */
-	public function getPost($key = NULL, $default = NULL)
+	public function getPost($key = NULL)
 	{
 		if (func_num_args() === 0) {
 			return $this->post;
-
-		} elseif (isset($this->post[$key])) {
-			return $this->post[$key];
-
-		} else {
-			return $default;
+		} elseif (func_num_args() > 1) {
+			trigger_error(__METHOD__ . '() parameter $default is deprecated, use operator ??', E_USER_DEPRECATED);
 		}
+		return $this->post[$key] ?? NULL;
 	}
 
 
@@ -155,12 +151,14 @@ class Request implements IRequest
 	/**
 	 * Returns variable provided to the script via HTTP cookies.
 	 * @param  string key
-	 * @param  mixed  default value
 	 * @return mixed
 	 */
-	public function getCookie($key, $default = NULL)
+	public function getCookie($key)
 	{
-		return $this->cookies[$key] ?? $default;
+		if (func_num_args() > 1) {
+			trigger_error(__METHOD__ . '() parameter $default is deprecated, use operator ??', E_USER_DEPRECATED);
+		}
+		return $this->cookies[$key] ?? NULL;
 	}
 
 
@@ -202,13 +200,15 @@ class Request implements IRequest
 	 * Return the value of the HTTP header. Pass the header name as the
 	 * plain, HTTP-specified header name (e.g. 'Accept-Encoding').
 	 * @param  string
-	 * @param  string|NULL
 	 * @return string|NULL
 	 */
-	public function getHeader($header, $default = NULL)
+	public function getHeader($header)
 	{
+		if (func_num_args() > 1) {
+			trigger_error(__METHOD__ . '() parameter $default is deprecated, use operator ??', E_USER_DEPRECATED);
+		}
 		$header = strtolower($header);
-		return $this->headers[$header] ?? $default;
+		return $this->headers[$header] ?? NULL;
 	}
 
 

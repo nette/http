@@ -37,19 +37,17 @@ interface IRequest
 	 * Returns variable provided to the script via URL query ($_GET).
 	 * If no key is passed, returns the entire array.
 	 * @param  string key
-	 * @param  mixed  default value
 	 * @return mixed
 	 */
-	function getQuery($key = NULL, $default = NULL);
+	function getQuery($key = NULL);
 
 	/**
 	 * Returns variable provided to the script via POST method ($_POST).
 	 * If no key is passed, returns the entire array.
 	 * @param  string key
-	 * @param  mixed  default value
 	 * @return mixed
 	 */
-	function getPost($key = NULL, $default = NULL);
+	function getPost($key = NULL);
 
 	/**
 	 * Returns uploaded file.
@@ -67,10 +65,9 @@ interface IRequest
 	/**
 	 * Returns variable provided to the script via HTTP cookies.
 	 * @param  string key
-	 * @param  mixed  default value
 	 * @return mixed
 	 */
-	function getCookie($key, $default = NULL);
+	function getCookie($key);
 
 	/**
 	 * Returns variables provided to the script via HTTP cookies.
@@ -97,10 +94,9 @@ interface IRequest
 	 * Return the value of the HTTP header. Pass the header name as the
 	 * plain, HTTP-specified header name (e.g. 'Accept-Encoding').
 	 * @param  string
-	 * @param  string|NULL
 	 * @return string|NULL
 	 */
-	function getHeader($header, $default = NULL);
+	function getHeader($header);
 
 	/**
 	 * Returns all HTTP headers.
