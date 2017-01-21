@@ -145,10 +145,9 @@ interface IResponse
 	/**
 	 * Returns value of an HTTP header.
 	 * @param  string
-	 * @param  string|NULL
 	 * @return string|NULL
 	 */
-	function getHeader($header, $default = NULL);
+	function getHeader($header);
 
 	/**
 	 * Returns a list of headers to sent.

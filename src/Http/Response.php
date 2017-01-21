@@ -200,11 +200,13 @@ class Response implements IResponse
 	/**
 	 * Returns value of an HTTP header.
 	 * @param  string
-	 * @param  string|NULL
 	 * @return string|NULL
 	 */
-	public function getHeader($header, $default = NULL)
+	public function getHeader($header)
 	{
+		if (func_num_args() > 1) {
+			trigger_error(__METHOD__ . '() parameter $default is deprecated, use operator ??', E_USER_DEPRECATED);
+		}
 		$header .= ':';
 		$len = strlen($header);
 		foreach (headers_list() as $item) {
@@ -212,7 +214,7 @@ class Response implements IResponse
 				return ltrim(substr($item, $len));
 			}
 		}
-		return $default;
+		return NULL;
 	}
 
 

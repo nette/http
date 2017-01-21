@@ -311,12 +311,14 @@ class Url implements \JsonSerializable
 
 	/**
 	 * @param string
-	 * @param mixed
 	 * @return mixed
 	 */
-	public function getQueryParameter($name, $default = NULL)
+	public function getQueryParameter($name)
 	{
-		return $this->query[$name] ?? $default;
+		if (func_num_args() > 1) {
+			trigger_error(__METHOD__ . '() parameter $default is deprecated, use operator ??', E_USER_DEPRECATED);
+		}
+		return $this->query[$name] ?? NULL;
 	}
 
 

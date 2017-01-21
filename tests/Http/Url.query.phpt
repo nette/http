@@ -50,7 +50,6 @@ Assert::same(['arg3' => 'value3'],  $url->getQueryParameters());
 $url->setQuery(['arg' => 'value']);
 Assert::same('value', $url->getQueryParameter('arg'));
 Assert::same(NULL, $url->getQueryParameter('invalid'));
-Assert::same(123, $url->getQueryParameter('invalid', 123));
 
 $url->setQueryParameter('arg2', 'abc');
 Assert::same('abc', $url->getQueryParameter('arg2'));
