@@ -33,3 +33,10 @@ $headers = array_values(array_diff(headers_list(), $old, ['Set-Cookie:']));
 Assert::same([
 	'Set-Cookie: test=newvalue; path=/; HttpOnly',
 ], $headers);
+
+
+$response->setCookie('test', 'newvalue', 0, NULL, NULL, NULL, NULL, 'Lax');
+$headers = array_values(array_diff(headers_list(), $old, ['Set-Cookie:']));
+Assert::same([
+	'Set-Cookie: test=newvalue; path=/; SameSite=Lax; HttpOnly',
+], $headers);
