@@ -18,7 +18,7 @@ use Nette\Utils\DateTime;
  *
  * @property-read array $headers
  */
-class Response implements IResponse
+final class Response implements IResponse
 {
 	use Nette\SmartObject;
 

@@ -16,7 +16,7 @@ use Nette\Utils\DateTime;
 /**
  * Rendering helpers for HTTP.
  */
-class Helpers
+final class Helpers
 {
 	use Nette\StaticClass;
 
