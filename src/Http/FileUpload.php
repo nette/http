@@ -24,7 +24,7 @@ use Nette;
  * @property-read bool $ok
  * @property-read string|NULL $contents
  */
-class FileUpload
+final class FileUpload
 {
 	use Nette\SmartObject;
 
