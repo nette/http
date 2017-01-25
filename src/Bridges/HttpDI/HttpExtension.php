@@ -43,20 +43,33 @@ class HttpExtension extends Nette\DI\CompilerExtension
 		$config = $this->validateConfig($this->defaults);
 
 		$builder->addDefinition($this->prefix('requestFactory'))
-			->setClass(Nette\Http\RequestFactory::class)
+			->setFactory(Nette\Http\RequestFactory::class)
 			->addSetup('setProxy', [$config['proxy']]);
 
 		$builder->addDefinition($this->prefix('request'))
-			->setClass(Nette\Http\Request::class)
-			->setFactory('@Nette\Http\RequestFactory::createHttpRequest');
+			->setFactory('@Nette\Http\RequestFactory::createHttpRequest')
+			->setClass(Nette\Http\IRequest::class);
 
 		$builder->addDefinition($this->prefix('response'))
-			->setClass(Nette\Http\Response::class);
+			->setFactory(Nette\Http\Response::class)
+			->setClass(Nette\Http\IResponse::class);
 
 		if ($this->name === 'http') {
 			$builder->addAlias('nette.httpRequestFactory', $this->prefix('requestFactory'));
 			$builder->addAlias('httpRequest', $this->prefix('request'));
 			$builder->addAlias('httpResponse', $this->prefix('response'));
+
+			$builder->addDefinition($this->prefix('oldRequest'))
+				->setFactory($this->prefix('@request'))
+				->setClass(Nette\Http\Request::class)
+				->addSetup('::trigger_error', ['Service Nette\Http\Request should be autowired via interface Nette\Http\IRequest.', E_USER_DEPRECATED])
+				->setAutowired(Nette\Http\Request::class);
+
+			$builder->addDefinition($this->prefix('oldResponse'))
+				->setFactory($this->prefix('@response'))
+				->setClass(Nette\Http\Response::class)
+				->addSetup('::trigger_error', ['Service Nette\Http\Response should be autowired via interface Nette\Http\IResponse.', E_USER_DEPRECATED])
+				->setAutowired(Nette\Http\Response::class);
 		}
 	}
 
