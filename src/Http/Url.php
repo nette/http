@@ -202,6 +202,18 @@ class Url implements \JsonSerializable
 
 
 	/**
+	 * Returns the part of domain.
+	 * @return string
+	 */
+	public function getDomain($level = 2)
+	{
+		$parts = ip2long($this->host) ? [$this->host] : explode('.', $this->host);
+		$parts = $level >= 0 ? array_slice($parts, -$level) : array_slice($parts, 0, $level);
+		return implode('.', $parts);
+	}
+
+
+	/**
 	 * Sets the port part of URI.
 	 * @param  int
 	 * @return static
