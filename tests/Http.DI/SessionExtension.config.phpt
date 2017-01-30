@@ -21,8 +21,11 @@ $loader = new DI\Config\Loader;
 $config = $loader->load(Tester\FileMock::create('
 session:
 	cookiePath: /x
-	cookieDomain: abc
+	cookieDomain: domain
 	cookieSecure: yes
+
+services:
+	foo.request: Nette\Http\Request(Nette\Http\UrlScript("http://www.nette.org"))
 ', 'neon'));
 
 eval($compiler->addConfig($config)->compile());
@@ -31,6 +34,6 @@ $container = new Container;
 $container->getService('session')->start();
 
 Assert::same(
-	['lifetime' => 0, 'path' => '/x', 'domain' => 'abc', 'secure' => TRUE, 'httponly' => TRUE],
+	['lifetime' => 0, 'path' => '/x', 'domain' => 'nette.org', 'secure' => TRUE, 'httponly' => TRUE],
 	session_get_cookie_params()
 );
