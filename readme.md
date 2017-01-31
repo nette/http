@@ -106,7 +106,7 @@ echo $httpRequest->detectLanguage($langs); // en
 RequestFactory and URL filtering
 ------------------
 
-Object holding current HTTP request is created by [api:Nette\Http\RequstFactory]. Its behavior can be modified.
+Object holding current HTTP request is created by [api:Nette\Http\RequestFactory]. Its behavior can be modified.
 It's possible to clean up URLs from characters that can get into them because of poorly implemented comment systems on various other websites by using filters:
 
 ```php
