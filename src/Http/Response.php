@@ -153,7 +153,7 @@ final class Response implements IResponse
 
 	/**
 	 * Sets the number of seconds before a page cached on a browser expires.
-	 * @param  string|int|\DateTimeInterface  time, value 0 means "must-revalidate"
+	 * @param  string|NULL like '20 minutes', NULL means "must-revalidate"
 	 * @return static
 	 * @throws Nette\InvalidStateException  if HTTP headers have been sent
 	 */

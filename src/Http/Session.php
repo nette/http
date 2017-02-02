@@ -414,7 +414,7 @@ class Session
 
 	/**
 	 * Sets the amount of time allowed between requests before the session will be terminated.
-	 * @param  string|int|\DateTimeInterface  time, value 0 means "until the browser is closed"
+	 * @param  string|NULL like '20 minutes', NULL means "until the browser is closed"
 	 * @return static
 	 */
 	public function setExpiration($time)
