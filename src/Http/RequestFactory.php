@@ -112,7 +112,7 @@ class RequestFactory
 		$reChars = '#^[' . self::CHARS . ']*+\z#u';
 		if (!$this->binary) {
 			$list = [&$query, &$post, &$cookies];
-			while (list($key, $val) = @each($list)) { // @ intentionally, deprecated in PHP 7.2
+			while (list($key, $val) = self::each($list)) {
 				foreach ($val as $k => $v) {
 					if (is_string($k) && (!preg_match($reChars, $k) || preg_last_error())) {
 						unset($list[$key][$k]);
@@ -148,7 +148,7 @@ class RequestFactory
 			}
 		}
 
-		while (list(, $v) = @each($list)) { // @ intentionally, deprecated in PHP 7.2
+		while (list(, $v) = self::each($list)) {
 			if (!isset($v['name'])) {
 				continue;
 
@@ -283,5 +283,13 @@ class RequestFactory
 		};
 
 		return new Request($url, null, $post, $files, $cookies, $headers, $method, $remoteAddr, $remoteHost, $rawBodyCallback);
+	}
+
+
+	private function each(&$arr)
+	{
+		$key = key($arr);
+		next($arr);
+		return $key === null ? false : [$key, $arr[$key]];
 	}
 }
