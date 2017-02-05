@@ -20,7 +20,7 @@ class HttpExtension extends Nette\DI\CompilerExtension
 	public $defaults = [
 		'proxy' => [],
 		'headers' => [
-			'X-Powered-By' => 'Nette Framework',
+			'X-Powered-By' => 'Nette Framework 3',
 			'Content-Type' => 'text/html; charset=utf-8',
 		],
 		'frames' => 'SAMEORIGIN', // X-Frame-Options

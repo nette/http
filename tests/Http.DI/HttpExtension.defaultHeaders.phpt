@@ -28,4 +28,4 @@ $container->initialize();
 $headers = headers_list();
 Assert::contains('X-Frame-Options: SAMEORIGIN', $headers);
 Assert::contains('Content-Type: text/html; charset=utf-8', $headers);
-Assert::contains('X-Powered-By: Nette Framework', $headers);
+Assert::contains('X-Powered-By: Nette Framework 3', $headers);
