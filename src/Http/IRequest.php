@@ -16,7 +16,7 @@ namespace Nette\Http;
 interface IRequest
 {
 	/** HTTP request method */
-	const
+	public const
 		GET = 'GET',
 		POST = 'POST',
 		HEAD = 'HEAD',
