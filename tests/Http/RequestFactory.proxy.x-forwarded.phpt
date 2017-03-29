@@ -35,8 +35,8 @@ test(function () {
 	$_SERVER = [
 		'REMOTE_ADDR' => '10.0.0.2', //proxy2
 		'REMOTE_HOST' => 'proxy2',
-		'HTTP_X_FORWARDED_FOR' => '123.123.123.123, 172.16.0.1, 10.0.0.1',
-		'HTTP_X_FORWARDED_HOST' => 'fake, real, proxy1',
+		'HTTP_X_FORWARDED_FOR' => '123.123.123.123, not-ip.com, 172.16.0.1, 10.0.0.1',
+		'HTTP_X_FORWARDED_HOST' => 'fake, not-ip.com, real, proxy1',
 	];
 
 	$factory = new RequestFactory;
