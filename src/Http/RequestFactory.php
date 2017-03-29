@@ -247,7 +247,7 @@ class RequestFactory
 				if (!empty($_SERVER['HTTP_X_FORWARDED_FOR'])) {
 					$xForwardedForWithoutProxies = array_filter(explode(',', $_SERVER['HTTP_X_FORWARDED_FOR']), function ($ip) {
 						return !array_filter($this->proxies, function ($proxy) use ($ip) {
-							return Helpers::ipMatch(trim($ip), $proxy);
+							return filter_var(trim($ip), FILTER_VALIDATE_IP) !== FALSE && Helpers::ipMatch(trim($ip), $proxy);
 						});
 					});
 					$remoteAddr = trim(end($xForwardedForWithoutProxies));
