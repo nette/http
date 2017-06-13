@@ -74,11 +74,11 @@ class RequestFactorySchemeTest extends Tester\TestCase
 	{
 		return [
 			['http', 80, ['SERVER_NAME' => 'localhost:80', 'HTTP_X_FORWARDED_PROTO' => 'http']],
-			['http', 443, ['SERVER_NAME' => 'localhost:443', 'HTTPS' => 'on', 'HTTP_X_FORWARDED_PROTO' => 'http']],
-			['http', 443, ['SERVER_NAME' => 'localhost:443', 'HTTPS' => 'on', 'HTTP_X_FORWARDED_PROTO' => 'something-unexpected']],
+			['http', 80, ['SERVER_NAME' => 'localhost:443', 'HTTPS' => 'on', 'HTTP_X_FORWARDED_PROTO' => 'http']],
+			['http', 80, ['SERVER_NAME' => 'localhost:443', 'HTTPS' => 'on', 'HTTP_X_FORWARDED_PROTO' => 'something-unexpected']],
 			['http', 443, ['SERVER_NAME' => 'localhost:443', 'HTTPS' => 'on', 'HTTP_X_FORWARDED_PROTO' => 'http', 'HTTP_X_FORWARDED_PORT' => '443']],
-			['https', 80, ['SERVER_NAME' => 'localhost:80', 'HTTP_X_FORWARDED_PROTO' => 'https']],
-			['https', 80, ['SERVER_NAME' => 'localhost:80', 'HTTPS' => 'off', 'HTTP_X_FORWARDED_PROTO' => 'https']],
+			['https', 443, ['SERVER_NAME' => 'localhost:80', 'HTTP_X_FORWARDED_PROTO' => 'https']],
+			['https', 443, ['SERVER_NAME' => 'localhost:80', 'HTTPS' => 'off', 'HTTP_X_FORWARDED_PROTO' => 'https']],
 			['https', 80, ['SERVER_NAME' => 'localhost:80', 'HTTPS' => 'off', 'HTTP_X_FORWARDED_PROTO' => 'https', 'HTTP_X_FORWARDED_PORT' => '80']],
 		];
 	}
