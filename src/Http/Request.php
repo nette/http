@@ -267,6 +267,19 @@ class Request implements IRequest
 
 
 	/**
+	 * Returns new IRequest instance with modified URL.
+	 * @return IRequest
+	 */
+	public function withUrl(UrlScript $url)
+	{
+		return new static(
+			$url, NULL, $this->post, $this->files, $this->cookies, $this->headers, $this->method,
+			$this->remoteAddress, $this->remoteHost, $this->rawBodyCallback
+		);
+	}
+
+
+	/**
 	 * Parse Accept-Language header and returns preferred language.
 	 * @param  string[] supported languages
 	 */

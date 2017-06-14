@@ -116,4 +116,11 @@ interface IRequest
 	 */
 	function getRawBody(): ?string;
 
+
+	/**
+	 * Returns new IRequest instance with modified URL.
+	 * @return IRequest
+	 */
+	// public function withUrl(UrlScript $url);
+
 }
