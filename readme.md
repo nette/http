@@ -11,6 +11,14 @@ Nette HTTP Component
 HTTP request and response are encapsulated in `Nette\Http\Request` and `Nette\Http\Response` objects which offer comfortable API and also act as
 sanitization filter.
 
+Install it using Composer:
+
+```
+composer require nette/http
+```
+
+The last stable release requires PHP version 5.6 or newer (is compatible with PHP 7.0 and 7.1). The dev-master version requires PHP 7.1.
+
 
 HTTP Request
 -------------
