@@ -20,4 +20,4 @@ $session->setOptions(['gc_maxlifetime' => '0']); //memcache handler supports unl
 $namespace = $session->getSection('maxlifetime');
 $namespace->setExpiration(100);
 
-Assert::same(TRUE, TRUE); // fix Error: This test forgets to execute an assertion.
+Assert::same(true, true); // fix Error: This test forgets to execute an assertion.

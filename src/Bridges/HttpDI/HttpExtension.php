@@ -31,7 +31,7 @@ class HttpExtension extends Nette\DI\CompilerExtension
 	private $cliMode;
 
 
-	public function __construct(bool $cliMode = FALSE)
+	public function __construct(bool $cliMode = false)
 	{
 		$this->cliMode = $cliMode;
 	}
@@ -84,9 +84,9 @@ class HttpExtension extends Nette\DI\CompilerExtension
 		$config = $this->getConfig();
 		$headers = $config['headers'];
 
-		if (isset($config['frames']) && $config['frames'] !== TRUE) {
+		if (isset($config['frames']) && $config['frames'] !== true) {
 			$frames = $config['frames'];
-			if ($frames === FALSE) {
+			if ($frames === false) {
 				$frames = 'DENY';
 			} elseif (preg_match('#^https?:#', $frames)) {
 				$frames = "ALLOW-FROM $frames";
@@ -113,7 +113,7 @@ class HttpExtension extends Nette\DI\CompilerExtension
 		}
 
 		foreach ($headers as $key => $value) {
-			if ($value != NULL) { // intentionally ==
+			if ($value != null) { // intentionally ==
 				$initialize->addBody('$this->getService(?)->setHeader(?, ?);', [$this->prefix('response'), $key, $value]);
 			}
 		}

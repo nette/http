@@ -37,18 +37,18 @@ interface IRequest
 	 * If no key is passed, returns the entire array.
 	 * @return mixed
 	 */
-	function getQuery(string $key = NULL);
+	function getQuery(string $key = null);
 
 	/**
 	 * Returns variable provided to the script via POST method ($_POST).
 	 * If no key is passed, returns the entire array.
 	 * @return mixed
 	 */
-	function getPost(string $key = NULL);
+	function getPost(string $key = null);
 
 	/**
 	 * Returns uploaded file.
-	 * @return FileUpload|array|NULL
+	 * @return FileUpload|array|null
 	 */
 	function getFile(string $key);
 

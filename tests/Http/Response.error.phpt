@@ -24,7 +24,7 @@ ob_end_clean();
 
 if (PHP_SAPI === 'cli') {
 	Assert::noError(function () use ($response) {
-		ob_start(NULL, 4096);
+		ob_start(null, 4096);
 		echo '  ';
 		$response->setHeader('A', 'b');
 	});
@@ -36,13 +36,13 @@ if (PHP_SAPI === 'cli') {
 
 } else {
 	Assert::error(function () use ($response) {
-		ob_start(NULL, 4096);
+		ob_start(null, 4096);
 		echo '  ';
 		$response->setHeader('A', 'b');
 	}, E_USER_NOTICE, 'Possible problem: you are sending a HTTP header while already having some data in output buffer%a%');
 
 	Assert::noError(function () use ($response) {
-		$response->warnOnBuffer = FALSE;
+		$response->warnOnBuffer = false;
 		$response->setHeader('A', 'b');
 	});
 

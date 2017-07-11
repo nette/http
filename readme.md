@@ -70,13 +70,13 @@ Request parameters:
 
 ```php
 $get = $httpRequest->getQuery();    // array of all URL parameters
-$id = $httpRequest->getQuery('id'); // returns GET parameter 'id' (or NULL)
+$id = $httpRequest->getQuery('id'); // returns GET parameter 'id' (or null)
 
 $post = $httpRequest->getPost();    // array of all POST parameters
-$id = $httpRequest->getPost('id');  // returns POST parameter 'id' (or NULL)
+$id = $httpRequest->getPost('id');  // returns POST parameter 'id' (or null)
 
 $cookies = $httpRequest->getCookies(); // array of all cookies
-$sessId = $httpRequest->getCookie('sess_id'); // returns the cookie (or NULL)
+$sessId = $httpRequest->getCookie('sess_id'); // returns the cookie (or null)
 ```
 
 Uploaded files are encapsulated into [api:Nette\Http\FileUpload] objects:
@@ -141,7 +141,7 @@ $container->addService('httpRequest', $requestFactory->createHttpRequest());
 HTTP response
 --------------
 
-Whether it is still possible to send headers or change the status code tells the `isSent()` method. If it returns TRUE,
+Whether it is still possible to send headers or change the status code tells the `isSent()` method. If it returns true,
 it won't be possible to send another header or change the status code.
 
 In that case, any attempt to send header or change code invokes `Nette\InvalidStateException`. .[caution]
@@ -176,7 +176,7 @@ Http\IResponse::S501_NOT_IMPLEMENTED
 Http\IResponse::S503_SERVICE_UNAVAILABLE
 ```
 
-Method `setContentType($type, $charset=NULL)` changes `Content-Type` response header:
+Method `setContentType($type, $charset=null)` changes `Content-Type` response header:
 
 ```php
 $httpResponse->setContentType('text/plain', 'UTF-8');

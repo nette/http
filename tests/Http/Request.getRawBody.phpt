@@ -14,7 +14,7 @@ require __DIR__ . '/../bootstrap.php';
 
 
 test(function () {
-	$request = new Http\Request(new Http\UrlScript, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, function () {
+	$request = new Http\Request(new Http\UrlScript, null, null, null, null, null, null, null, null, function () {
 		return 'raw body';
 	});
 

@@ -111,7 +111,7 @@ interface IResponse
 	 * Sends a Content-type HTTP header.
 	 * @return static
 	 */
-	function setContentType(string $type, string $charset = NULL);
+	function setContentType(string $type, string $charset = null);
 
 	/**
 	 * Redirects to a new URL.
@@ -120,7 +120,7 @@ interface IResponse
 
 	/**
 	 * Sets the number of seconds before a page cached on a browser expires.
-	 * @param  string|NULL like '20 minutes', NULL means "must-revalidate"
+	 * @param  string|null like '20 minutes', null means "must-revalidate"
 	 * @return static
 	 */
 	function setExpiration($seconds);
@@ -145,10 +145,10 @@ interface IResponse
 	 * @param  string|int|\DateTimeInterface $expire  time, value 0 means "until the browser is closed"
 	 * @return static
 	 */
-	function setCookie(string $name, string $value, $expire, string $path = NULL, string $domain = NULL, bool $secure = NULL, bool $httpOnly = NULL);
+	function setCookie(string $name, string $value, $expire, string $path = null, string $domain = null, bool $secure = null, bool $httpOnly = null);
 
 	/**
 	 * Deletes a cookie.
 	 */
-	function deleteCookie(string $name, string $path = NULL, string $domain = NULL, bool $secure = NULL);
+	function deleteCookie(string $name, string $path = null, string $domain = null, bool $secure = null);
 }

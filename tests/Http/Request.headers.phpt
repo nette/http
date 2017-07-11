@@ -19,12 +19,12 @@ test(function () {
 });
 
 test(function () {
-	$request = new Http\Request(new Http\UrlScript, NULL, NULL, NULL, NULL, []);
+	$request = new Http\Request(new Http\UrlScript, null, null, null, null, []);
 	Assert::same([], $request->getHeaders());
 });
 
 test(function () {
-	$request = new Http\Request(new Http\UrlScript, NULL, NULL, NULL, NULL, [
+	$request = new Http\Request(new Http\UrlScript, null, null, null, null, [
 		'one' => '1',
 		'TWO' => '2',
 		'X-Header' => 'X',

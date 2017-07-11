@@ -17,7 +17,7 @@ require __DIR__ . '/../bootstrap.php';
 
 $compiler = new DI\Compiler;
 $compiler->addExtension('foo', new HttpExtension);
-$compiler->addExtension('session', new SessionExtension(FALSE, PHP_SAPI === 'cli'));
+$compiler->addExtension('session', new SessionExtension(false, PHP_SAPI === 'cli'));
 
 $loader = new DI\Config\Loader;
 $config = $loader->load(Tester\FileMock::create('
@@ -36,6 +36,6 @@ $container = new Container;
 $container->getService('session')->start();
 
 Assert::same(
-	['lifetime' => 0, 'path' => '/x', 'domain' => 'nette.org', 'secure' => TRUE, 'httponly' => TRUE],
+	['lifetime' => 0, 'path' => '/x', 'domain' => 'nette.org', 'secure' => true, 'httponly' => true],
 	session_get_cookie_params()
 );

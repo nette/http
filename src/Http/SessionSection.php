@@ -29,10 +29,10 @@ class SessionSection implements \IteratorAggregate, \ArrayAccess
 	private $data;
 
 	/** @var array  session metadata storage */
-	private $meta = FALSE;
+	private $meta = false;
 
 	/** @var bool */
-	public $warnOnUndefined = FALSE;
+	public $warnOnUndefined = false;
 
 
 	/**
@@ -47,7 +47,7 @@ class SessionSection implements \IteratorAggregate, \ArrayAccess
 
 	private function start(): void
 	{
-		if ($this->meta === FALSE) {
+		if ($this->meta === false) {
 			$this->session->start();
 			$this->data = &$_SESSION['__NF']['DATA'][$this->name];
 			$this->meta = &$_SESSION['__NF']['META'][$this->name];
@@ -159,7 +159,7 @@ class SessionSection implements \IteratorAggregate, \ArrayAccess
 	 * @param  mixed   optional list of variables / single variable to expire
 	 * @return static
 	 */
-	public function setExpiration($time, $variables = NULL)
+	public function setExpiration($time, $variables = null)
 	{
 		$this->start();
 		if ($time) {
@@ -171,7 +171,7 @@ class SessionSection implements \IteratorAggregate, \ArrayAccess
 		}
 
 		foreach (is_array($variables) ? $variables : [$variables] as $variable) {
-			$this->meta[$variable]['T'] = $time ?: NULL;
+			$this->meta[$variable]['T'] = $time ?: null;
 		}
 		return $this;
 	}
@@ -181,7 +181,7 @@ class SessionSection implements \IteratorAggregate, \ArrayAccess
 	 * Removes the expiration from the section or specific variables.
 	 * @param  mixed   optional list of variables / single variable to expire
 	 */
-	public function removeExpiration($variables = NULL): void
+	public function removeExpiration($variables = null): void
 	{
 		$this->start();
 		foreach (is_array($variables) ? $variables : [$variables] as $variable) {
@@ -196,7 +196,7 @@ class SessionSection implements \IteratorAggregate, \ArrayAccess
 	public function remove(): void
 	{
 		$this->start();
-		$this->data = NULL;
-		$this->meta = NULL;
+		$this->data = null;
+		$this->meta = null;
 	}
 }

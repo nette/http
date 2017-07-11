@@ -17,13 +17,13 @@ $url = new Url('http://hostname/path?arg=value');
 Assert::same('arg=value',  $url->query);
 Assert::same(['arg' => 'value'],  $url->getQueryParameters());
 
-$url->appendQuery(NULL);
+$url->appendQuery(null);
 Assert::same('arg=value',  $url->query);
 Assert::same(['arg' => 'value'],  $url->getQueryParameters());
 
-$url->appendQuery([NULL]);
+$url->appendQuery([null]);
 Assert::same('arg=value',  $url->query);
-Assert::same([NULL, 'arg' => 'value'],  $url->getQueryParameters());
+Assert::same([null, 'arg' => 'value'],  $url->getQueryParameters());
 
 $url->appendQuery('arg2=value2');
 Assert::same('arg=value&arg2=value2',  $url->query);
@@ -49,7 +49,7 @@ Assert::same(['arg3' => 'value3'],  $url->getQueryParameters());
 
 $url->setQuery(['arg' => 'value']);
 Assert::same('value', $url->getQueryParameter('arg'));
-Assert::same(NULL, $url->getQueryParameter('invalid'));
+Assert::same(null, $url->getQueryParameter('invalid'));
 
 $url->setQueryParameter('arg2', 'abc');
 Assert::same('abc', $url->getQueryParameter('arg2'));
@@ -57,11 +57,11 @@ Assert::same(['arg' => 'value', 'arg2' => 'abc'],  $url->getQueryParameters());
 $url->setQueryParameter('arg2', 'def');
 Assert::same('def', $url->getQueryParameter('arg2'));
 Assert::same(['arg' => 'value', 'arg2' => 'def'],  $url->getQueryParameters());
-$url->setQueryParameter('arg2', NULL);
-Assert::same(NULL, $url->getQueryParameter('arg2'));
-Assert::same(['arg' => 'value', 'arg2' => NULL],  $url->getQueryParameters());
+$url->setQueryParameter('arg2', null);
+Assert::same(null, $url->getQueryParameter('arg2'));
+Assert::same(['arg' => 'value', 'arg2' => null],  $url->getQueryParameters());
 
 
 $url = new Url('http://hostname/path?arg=value');
-$url->setQuery([NULL]);
+$url->setQuery([null]);
 Assert::same('http://hostname/path', $url->getAbsoluteUrl());

@@ -42,7 +42,7 @@ final class Helpers
 		$mask = implode('', array_map($tmp, unpack('N*', inet_pton($mask))));
 		$max = strlen($ip);
 		if (!$max || $max !== strlen($mask) || (int) $size < 0 || (int) $size > $max) {
-			return FALSE;
+			return false;
 		}
 		return strncmp($ip, $mask, $size === '' ? $max : (int) $size) === 0;
 	}

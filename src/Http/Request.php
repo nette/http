@@ -22,12 +22,12 @@ use Nette;
  * @property-read array $cookies
  * @property-read string $method
  * @property-read array $headers
- * @property-read Url|NULL $referer
+ * @property-read Url|null $referer
  * @property-read bool $secured
  * @property-read bool $ajax
- * @property-read string|NULL $remoteAddress
- * @property-read string|NULL $remoteHost
- * @property-read string|NULL $rawBody
+ * @property-read string|null $remoteAddress
+ * @property-read string|null $remoteHost
+ * @property-read string|null $rawBody
  */
 class Request implements IRequest
 {
@@ -51,21 +51,21 @@ class Request implements IRequest
 	/** @var array */
 	private $headers;
 
-	/** @var string|NULL */
+	/** @var string|null */
 	private $remoteAddress;
 
-	/** @var string|NULL */
+	/** @var string|null */
 	private $remoteHost;
 
-	/** @var callable|NULL */
+	/** @var callable|null */
 	private $rawBodyCallback;
 
 
-	public function __construct(UrlScript $url, $query = NULL, $post = NULL, $files = NULL, $cookies = NULL,
-		$headers = NULL, $method = NULL, $remoteAddress = NULL, $remoteHost = NULL, $rawBodyCallback = NULL)
+	public function __construct(UrlScript $url, $query = null, $post = null, $files = null, $cookies = null,
+		$headers = null, $method = null, $remoteAddress = null, $remoteHost = null, $rawBodyCallback = null)
 	{
 		$this->url = $url;
-		if ($query !== NULL) {
+		if ($query !== null) {
 			trigger_error('Nette\Http\Request::__construct(): parameter $query is deprecated.', E_USER_DEPRECATED);
 			$url->setQuery($query);
 		}
@@ -97,7 +97,7 @@ class Request implements IRequest
 	 * If no key is passed, returns the entire array.
 	 * @return mixed
 	 */
-	public function getQuery(string $key = NULL)
+	public function getQuery(string $key = null)
 	{
 		if (func_num_args() === 0) {
 			return $this->url->getQueryParameters();
@@ -113,24 +113,24 @@ class Request implements IRequest
 	 * If no key is passed, returns the entire array.
 	 * @return mixed
 	 */
-	public function getPost(string $key = NULL)
+	public function getPost(string $key = null)
 	{
 		if (func_num_args() === 0) {
 			return $this->post;
 		} elseif (func_num_args() > 1) {
 			trigger_error(__METHOD__ . '() parameter $default is deprecated, use operator ??', E_USER_DEPRECATED);
 		}
-		return $this->post[$key] ?? NULL;
+		return $this->post[$key] ?? null;
 	}
 
 
 	/**
 	 * Returns uploaded file.
-	 * @return FileUpload|array|NULL
+	 * @return FileUpload|array|null
 	 */
 	public function getFile(string $key)
 	{
-		return $this->files[$key] ?? NULL;
+		return $this->files[$key] ?? null;
 	}
 
 
@@ -152,7 +152,7 @@ class Request implements IRequest
 		if (func_num_args() > 1) {
 			trigger_error(__METHOD__ . '() parameter $default is deprecated, use operator ??', E_USER_DEPRECATED);
 		}
-		return $this->cookies[$key] ?? NULL;
+		return $this->cookies[$key] ?? null;
 	}
 
 
@@ -196,7 +196,7 @@ class Request implements IRequest
 			trigger_error(__METHOD__ . '() parameter $default is deprecated, use operator ??', E_USER_DEPRECATED);
 		}
 		$header = strtolower($header);
-		return $this->headers[$header] ?? NULL;
+		return $this->headers[$header] ?? null;
 	}
 
 
@@ -214,7 +214,7 @@ class Request implements IRequest
 	 */
 	public function getReferer(): ?Url
 	{
-		return isset($this->headers['referer']) ? new Url($this->headers['referer']) : NULL;
+		return isset($this->headers['referer']) ? new Url($this->headers['referer']) : null;
 	}
 
 
@@ -250,7 +250,7 @@ class Request implements IRequest
 	 */
 	public function getRemoteHost(): ?string
 	{
-		if ($this->remoteHost === NULL && $this->remoteAddress !== NULL) {
+		if ($this->remoteHost === null && $this->remoteAddress !== null) {
 			$this->remoteHost = getHostByAddr($this->remoteAddress);
 		}
 		return $this->remoteHost;
@@ -262,7 +262,7 @@ class Request implements IRequest
 	 */
 	public function getRawBody(): ?string
 	{
-		return $this->rawBodyCallback ? ($this->rawBodyCallback)() : NULL;
+		return $this->rawBodyCallback ? ($this->rawBodyCallback)() : null;
 	}
 
 
@@ -274,7 +274,7 @@ class Request implements IRequest
 	{
 		$header = $this->getHeader('Accept-Language');
 		if (!$header) {
-			return NULL;
+			return null;
 		}
 
 		$s = strtolower($header);  // case insensitive
@@ -283,11 +283,11 @@ class Request implements IRequest
 		preg_match_all('#(' . implode('|', $langs) . ')(?:-[^\s,;=]+)?\s*(?:;\s*q=([0-9.]+))?#', $s, $matches);
 
 		if (!$matches[0]) {
-			return NULL;
+			return null;
 		}
 
 		$max = 0;
-		$lang = NULL;
+		$lang = null;
 		foreach ($matches[1] as $key => $value) {
 			$q = $matches[2][$key] === '' ? 1.0 : (float) $matches[2][$key];
 			if ($q > $max) {

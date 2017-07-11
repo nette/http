@@ -17,7 +17,7 @@ class ThrowsOnReadHandler extends \SessionHandler
 {
 	public function open($save_path, $session_id)
 	{
-		return TRUE; // never throw an exception from here, the universe might implode
+		return true; // never throw an exception from here, the universe might implode
 	}
 
 

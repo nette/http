@@ -20,13 +20,13 @@ class MySessionStorage implements SessionHandlerInterface
 	function open($savePath, $sessionName)
 	{
 		$this->path = $savePath;
-		return TRUE;
+		return true;
 	}
 
 
 	function close()
 	{
-		return TRUE;
+		return true;
 	}
 
 
@@ -55,7 +55,7 @@ class MySessionStorage implements SessionHandlerInterface
 				unlink($filename);
 			}
 		}
-		return TRUE;
+		return true;
 	}
 }
 

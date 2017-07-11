@@ -30,7 +30,7 @@ class RequestFactory
 	];
 
 	/** @var bool */
-	private $binary = FALSE;
+	private $binary = false;
 
 	/** @var array */
 	private $proxies = [];
@@ -39,7 +39,7 @@ class RequestFactory
 	/**
 	 * @return static
 	 */
-	public function setBinary(bool $binary = TRUE)
+	public function setBinary(bool $binary = true)
 	{
 		$this->binary = $binary;
 		return $this;
@@ -190,8 +190,8 @@ class RequestFactory
 			}
 		}
 
-		$remoteAddr = !empty($_SERVER['REMOTE_ADDR']) ? $_SERVER['REMOTE_ADDR'] : NULL;
-		$remoteHost = !empty($_SERVER['REMOTE_HOST']) ? $_SERVER['REMOTE_HOST'] : NULL;
+		$remoteAddr = !empty($_SERVER['REMOTE_ADDR']) ? $_SERVER['REMOTE_ADDR'] : null;
+		$remoteHost = !empty($_SERVER['REMOTE_HOST']) ? $_SERVER['REMOTE_HOST'] : null;
 
 		// use real client address and host if trusted proxy is used
 		$usingTrustedProxy = $remoteAddr && array_filter($this->proxies, function ($proxy) use ($remoteAddr) {
@@ -201,13 +201,13 @@ class RequestFactory
 			if (!empty($_SERVER['HTTP_FORWARDED'])) {
 				$forwardParams = preg_split('/[,;]/', $_SERVER['HTTP_FORWARDED']);
 				foreach ($forwardParams as $forwardParam) {
-					[$key, $value] = explode('=', $forwardParam, 2) + [1 => NULL];
+					[$key, $value] = explode('=', $forwardParam, 2) + [1 => null];
 					$proxyParams[strtolower(trim($key))][] = trim($value, " \t\"");
 				}
 
 				if (isset($proxyParams['for'])) {
 					$address = $proxyParams['for'][0];
-					if (strpos($address, '[') === FALSE) { //IPv4
+					if (strpos($address, '[') === false) { //IPv4
 						$remoteAddr = explode(':', $address)[0];
 					} else { //IPv6
 						$remoteAddr = substr($address, 1, strpos($address, ']') - 1);
@@ -217,7 +217,7 @@ class RequestFactory
 				if (isset($proxyParams['host']) && count($proxyParams['host']) === 1) {
 					$host = $proxyParams['host'][0];
 					$startingDelimiterPosition = strpos($host, '[');
-					if ($startingDelimiterPosition === FALSE) { //IPv4
+					if ($startingDelimiterPosition === false) { //IPv4
 						$remoteHostArr = explode(':', $host);
 						$remoteHost = $remoteHostArr[0];
 						if (isset($remoteHostArr[1])) {
@@ -248,7 +248,7 @@ class RequestFactory
 				if (!empty($_SERVER['HTTP_X_FORWARDED_FOR'])) {
 					$xForwardedForWithoutProxies = array_filter(explode(',', $_SERVER['HTTP_X_FORWARDED_FOR']), function ($ip) {
 						return !array_filter($this->proxies, function ($proxy) use ($ip) {
-							return filter_var(trim($ip), FILTER_VALIDATE_IP) !== FALSE && Helpers::ipMatch(trim($ip), $proxy);
+							return filter_var(trim($ip), FILTER_VALIDATE_IP) !== false && Helpers::ipMatch(trim($ip), $proxy);
 						});
 					});
 					$remoteAddr = trim(end($xForwardedForWithoutProxies));
@@ -265,7 +265,7 @@ class RequestFactory
 		}
 
 		// method, eg. GET, PUT, ...
-		$method = $_SERVER['REQUEST_METHOD'] ?? NULL;
+		$method = $_SERVER['REQUEST_METHOD'] ?? null;
 		if ($method === 'POST' && isset($_SERVER['HTTP_X_HTTP_METHOD_OVERRIDE'])
 			&& preg_match('#^[A-Z]+\z#', $_SERVER['HTTP_X_HTTP_METHOD_OVERRIDE'])
 		) {
@@ -277,6 +277,6 @@ class RequestFactory
 			return file_get_contents('php://input');
 		};
 
-		return new Request($url, NULL, $post, $files, $cookies, $headers, $method, $remoteAddr, $remoteHost, $rawBodyCallback);
+		return new Request($url, null, $post, $files, $cookies, $headers, $method, $remoteAddr, $remoteHost, $rawBodyCallback);
 	}
 }

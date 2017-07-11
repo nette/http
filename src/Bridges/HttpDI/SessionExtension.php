@@ -18,9 +18,9 @@ use Nette;
 class SessionExtension extends Nette\DI\CompilerExtension
 {
 	public $defaults = [
-		'debugger' => FALSE,
+		'debugger' => false,
 		'autoStart' => 'smart', // true|false|smart
-		'expiration' => NULL,
+		'expiration' => null,
 	];
 
 	/** @var bool */
@@ -30,7 +30,7 @@ class SessionExtension extends Nette\DI\CompilerExtension
 	private $cliMode;
 
 
-	public function __construct(bool $debugMode = FALSE, bool $cliMode = FALSE)
+	public function __construct(bool $debugMode = false, bool $cliMode = false)
 	{
 		$this->debugMode = $debugMode;
 		$this->cliMode = $cliMode;
@@ -49,7 +49,7 @@ class SessionExtension extends Nette\DI\CompilerExtension
 		if ($config['expiration']) {
 			$session->addSetup('setExpiration', [$config['expiration']]);
 		}
-		if (($config['cookieDomain'] ?? NULL) === 'domain') {
+		if (($config['cookieDomain'] ?? null) === 'domain') {
 			$config['cookieDomain'] = $builder::literal('$this->getByType(Nette\Http\IRequest::class)->getUrl()->getDomain(2)');
 		}
 

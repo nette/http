@@ -17,12 +17,12 @@ use Nette;
  *
  * @property-read string $name
  * @property-read string $sanitizedName
- * @property-read string|NULL $contentType
+ * @property-read string|null $contentType
  * @property-read int $size
  * @property-read string $temporaryFile
  * @property-read int $error
  * @property-read bool $ok
- * @property-read string|NULL $contents
+ * @property-read string|null $contents
  */
 final class FileUpload
 {
@@ -73,7 +73,7 @@ final class FileUpload
 	 */
 	public function getSanitizedName(): string
 	{
-		return trim(Nette\Utils\Strings::webalize($this->name, '.', FALSE), '.-');
+		return trim(Nette\Utils\Strings::webalize($this->name, '.', false), '.-');
 	}
 
 
@@ -82,7 +82,7 @@ final class FileUpload
 	 */
 	public function getContentType(): ?string
 	{
-		if ($this->isOk() && $this->type === NULL) {
+		if ($this->isOk() && $this->type === null) {
 			$this->type = finfo_file(finfo_open(FILEINFO_MIME_TYPE), $this->tmpName);
 		}
 		return $this->type;
@@ -147,7 +147,7 @@ final class FileUpload
 	public function move(string $dest)
 	{
 		$dir = dirname($dest);
-		@mkdir($dir, 0777, TRUE); // @ - dir may already exist
+		@mkdir($dir, 0777, true); // @ - dir may already exist
 		if (!is_dir($dir)) {
 			throw new Nette\InvalidStateException("Directory '$dir' cannot be created. " . error_get_last()['message']);
 		}
@@ -170,7 +170,7 @@ final class FileUpload
 	 */
 	public function isImage(): bool
 	{
-		return in_array($this->getContentType(), ['image/gif', 'image/png', 'image/jpeg'], TRUE);
+		return in_array($this->getContentType(), ['image/gif', 'image/png', 'image/jpeg'], true);
 	}
 
 
@@ -189,7 +189,7 @@ final class FileUpload
 	 */
 	public function getImageSize(): ?array
 	{
-		return $this->isOk() ? @getimagesize($this->tmpName) : NULL; // @ - files smaller than 12 bytes causes read error
+		return $this->isOk() ? @getimagesize($this->tmpName) : null; // @ - files smaller than 12 bytes causes read error
 	}
 
 
@@ -199,6 +199,6 @@ final class FileUpload
 	public function getContents(): ?string
 	{
 		// future implementation can try to work around safe_mode and open_basedir limitations
-		return $this->isOk() ? file_get_contents($this->tmpName) : NULL;
+		return $this->isOk() ? file_get_contents($this->tmpName) : null;
 	}
 }

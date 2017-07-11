@@ -72,7 +72,7 @@ class Url implements \JsonSerializable
 	/** @var string */
 	private $host = '';
 
-	/** @var int|NULL */
+	/** @var int|null */
 	private $port;
 
 	/** @var string */
@@ -89,16 +89,16 @@ class Url implements \JsonSerializable
 	 * @param  string|self
 	 * @throws Nette\InvalidArgumentException if URL is malformed
 	 */
-	public function __construct($url = NULL)
+	public function __construct($url = null)
 	{
 		if (is_string($url)) {
 			$p = @parse_url($url); // @ - is escalated to exception
-			if ($p === FALSE) {
+			if ($p === false) {
 				throw new Nette\InvalidArgumentException("Malformed or unsupported URI '$url'.");
 			}
 
 			$this->scheme = $p['scheme'] ?? '';
-			$this->port = $p['port'] ?? NULL;
+			$this->port = $p['port'] ?? null;
 			$this->host = isset($p['host']) ? rawurldecode($p['host']) : '';
 			$this->user = isset($p['user']) ? rawurldecode($p['user']) : '';
 			$this->password = isset($p['pass']) ? rawurldecode($p['pass']) : '';
@@ -224,7 +224,7 @@ class Url implements \JsonSerializable
 	{
 		return $this->port
 			? $this->port
-			: (self::$defaultPorts[$this->scheme] ?? NULL);
+			: (self::$defaultPorts[$this->scheme] ?? null);
 	}
 
 
@@ -300,12 +300,12 @@ class Url implements \JsonSerializable
 		if (func_num_args() > 1) {
 			trigger_error(__METHOD__ . '() parameter $default is deprecated, use operator ??', E_USER_DEPRECATED);
 		}
-		return $this->query[$name] ?? NULL;
+		return $this->query[$name] ?? null;
 	}
 
 
 	/**
-	 * @param mixed $value NULL unsets the parameter
+	 * @param mixed $value null unsets the parameter
 	 * @return static
 	 */
 	public function setQueryParameter(string $name, $value)
@@ -379,7 +379,7 @@ class Url implements \JsonSerializable
 	public function getBasePath(): string
 	{
 		$pos = strrpos($this->path, '/');
-		return $pos === FALSE ? '' : substr($this->path, 0, $pos + 1);
+		return $pos === false ? '' : substr($this->path, 0, $pos + 1);
 	}
 
 
@@ -412,7 +412,7 @@ class Url implements \JsonSerializable
 		ksort($query);
 		$query2 = $this->query;
 		ksort($query2);
-		$http = in_array($this->scheme, ['http', 'https'], TRUE);
+		$http = in_array($this->scheme, ['http', 'https'], true);
 		return $url->scheme === $this->scheme
 			&& !strcasecmp($url->host, $this->host)
 			&& $url->getPort() === $this->getPort()

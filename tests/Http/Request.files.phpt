@@ -111,4 +111,4 @@ Assert::false(isset($request->files['file0']));
 Assert::true(isset($request->files['file1']));
 
 Assert::null($request->getFile('empty1'));
-Assert::same([NULL], $request->getFile('empty2'));
+Assert::same([null], $request->getFile('empty2'));
