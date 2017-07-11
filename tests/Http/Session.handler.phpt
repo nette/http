@@ -17,38 +17,38 @@ class MySessionStorage implements SessionHandlerInterface
 	private $path;
 
 
-	function open($savePath, $sessionName)
+	public function open($savePath, $sessionName)
 	{
 		$this->path = $savePath;
 		return true;
 	}
 
 
-	function close()
+	public function close()
 	{
 		return true;
 	}
 
 
-	function read($id)
+	public function read($id)
 	{
 		return (string) @file_get_contents("$this->path/sess_$id");
 	}
 
 
-	function write($id, $data)
+	public function write($id, $data)
 	{
 		return (bool) file_put_contents("$this->path/sess_$id", $data);
 	}
 
 
-	function destroy($id)
+	public function destroy($id)
 	{
 		return !is_file("$this->path/sess_$id") || @unlink("$this->path/sess_$id");
 	}
 
 
-	function gc($maxlifetime)
+	public function gc($maxlifetime)
 	{
 		foreach (glob("$this->path/sess_*") as $filename) {
 			if (filemtime($filename) + $maxlifetime < time()) {

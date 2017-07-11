@@ -41,7 +41,7 @@ class Session
 		'cookie_path' => '/',     // cookie is available within the entire domain
 		'cookie_domain' => '',    // cookie is available on current subdomain only
 		'cookie_secure' => false, // cookie is available on HTTP & HTTPS
-		'cookie_httponly' => true,// must be enabled to prevent Session Hijacking
+		'cookie_httponly' => true, // must be enabled to prevent Session Hijacking
 
 		// other
 		'gc_maxlifetime' => self::DEFAULT_FILE_LIFETIME, // 3 hours

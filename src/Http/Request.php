@@ -251,7 +251,7 @@ class Request implements IRequest
 	public function getRemoteHost(): ?string
 	{
 		if ($this->remoteHost === null && $this->remoteAddress !== null) {
-			$this->remoteHost = getHostByAddr($this->remoteAddress);
+			$this->remoteHost = gethostbyaddr($this->remoteAddress);
 		}
 		return $this->remoteHost;
 	}

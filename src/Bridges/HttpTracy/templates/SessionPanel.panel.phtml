@@ -32,7 +32,7 @@ use Tracy\Dumper;
 		foreach ($_SESSION as $k => $v) {
 			if ($k === '__NF') {
 				$k = 'Nette Session';
-				$v = isset($v['DATA']) ? $v['DATA'] : null;
+				$v = $v['DATA'] ?? null;
 			} elseif ($k === '_tracy') {
 				continue;
 			}

@@ -34,9 +34,9 @@ Assert::true(isset($namespace['p']));
 Assert::true(isset($namespace->o));
 Assert::false(isset($namespace->undefined));
 
-unset($namespace['a']);
-unset($namespace->p);
-unset($namespace->o);
-unset($namespace->undef);
+unset($namespace['a'], $namespace->p, $namespace->o, $namespace->undef);
+
+
+
 
 Assert::same('', http_build_query($namespace->getIterator()));

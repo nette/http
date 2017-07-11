@@ -22,9 +22,6 @@ final class Response implements IResponse
 {
 	use Nette\SmartObject;
 
-	/** @var bool  Send invisible garbage for IE 6? */
-	private static $fixIE = true;
-
 	/** @var string The domain in which the cookie will be available */
 	public $cookieDomain = '';
 
@@ -39,6 +36,9 @@ final class Response implements IResponse
 
 	/** @var bool Whether warn on possible problem with data in output buffer */
 	public $warnOnBuffer = true;
+
+	/** @var bool  Send invisible garbage for IE 6? */
+	private static $fixIE = true;
 
 	/** @var int HTTP response code */
 	private $code = self::S200_OK;
@@ -145,7 +145,7 @@ final class Response implements IResponse
 		$this->setCode($code);
 		$this->setHeader('Location', $url);
 		if (preg_match('#^https?:|^\s*+[a-z0-9+.-]*+[^:]#i', $url)) {
-			$escapedUrl = htmlSpecialChars($url, ENT_IGNORE | ENT_QUOTES, 'UTF-8');
+			$escapedUrl = htmlspecialchars($url, ENT_IGNORE | ENT_QUOTES, 'UTF-8');
 			echo "<h1>Redirect</h1>\n\n<p><a href=\"$escapedUrl\">Please click here to continue</a>.</p>";
 		}
 	}
