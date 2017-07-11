@@ -97,5 +97,4 @@ class Context
 	{
 		return $this->response;
 	}
-
 }

@@ -176,5 +176,4 @@ interface IResponse
 	 * @return void
 	 */
 	function deleteCookie($name, $path = NULL, $domain = NULL, $secure = NULL);
-
 }

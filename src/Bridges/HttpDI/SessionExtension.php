@@ -85,5 +85,4 @@ class SessionExtension extends Nette\DI\CompilerExtension
 			$initialize->addBody('$this->getService(?)->start();', [$name]);
 		}
 	}
-
 }

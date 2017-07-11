@@ -47,7 +47,6 @@ class Response implements IResponse
 		if (is_int($code = http_response_code())) {
 			$this->code = $code;
 		}
-
 	}
 
 
@@ -298,7 +297,6 @@ class Response implements IResponse
 	private function checkHeaders()
 	{
 		if (PHP_SAPI === 'cli') {
-
 		} elseif (headers_sent($file, $line)) {
 			throw new Nette\InvalidStateException('Cannot send header after HTTP headers have been sent' . ($file ? " (output started at $file:$line)." : '.'));
 
@@ -306,5 +304,4 @@ class Response implements IResponse
 			trigger_error('Possible problem: you are sending a HTTP header while already having some data in output buffer. Try Tracy\OutputDebugger or start session earlier.');
 		}
 	}
-
 }

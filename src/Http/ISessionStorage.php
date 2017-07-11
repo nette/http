@@ -15,7 +15,6 @@ namespace Nette\Http;
  */
 interface ISessionStorage
 {
-
 	function open($savePath, $sessionName);
 
 	function close();
@@ -27,5 +26,4 @@ interface ISessionStorage
 	function remove($id);
 
 	function clean($maxlifetime);
-
 }

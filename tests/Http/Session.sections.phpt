@@ -5,7 +5,6 @@
  */
 
 use Nette\Http\Session;
-use Nette\Http\SessionSection;
 use Tester\Assert;
 
 

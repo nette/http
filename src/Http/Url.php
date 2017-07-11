@@ -513,5 +513,4 @@ class Url implements \JsonSerializable
 		parse_str($s, $res);
 		return $res;
 	}
-
 }

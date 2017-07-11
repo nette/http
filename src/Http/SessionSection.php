@@ -220,5 +220,4 @@ class SessionSection implements \IteratorAggregate, \ArrayAccess
 		$this->data = NULL;
 		$this->meta = NULL;
 	}
-
 }

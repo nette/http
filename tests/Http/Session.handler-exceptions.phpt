@@ -5,7 +5,6 @@
  */
 
 use Nette\Http;
-use Nette\Http\Session;
 use Tester\Assert;
 
 
@@ -14,7 +13,6 @@ require __DIR__ . '/../bootstrap.php';
 
 class ThrowsOnReadHandler extends \SessionHandler
 {
-
 	public function open($save_path, $session_id)
 	{
 		return TRUE; // never throw an exception from here, the universe might implode
@@ -25,7 +23,6 @@ class ThrowsOnReadHandler extends \SessionHandler
 	{
 		throw new RuntimeException("Session can't be started for whatever reason!");
 	}
-
 }
 
 

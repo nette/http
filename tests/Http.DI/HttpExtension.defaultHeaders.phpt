@@ -4,8 +4,8 @@
  * Test: HttpExtension.
  */
 
-use Nette\DI;
 use Nette\Bridges\HttpDI\HttpExtension;
+use Nette\DI;
 use Tester\Assert;
 
 

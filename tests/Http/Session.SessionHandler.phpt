@@ -4,7 +4,6 @@
  * Test: Nette\Http\Session storage.
  */
 
-use Nette\Http\Session;
 use Tester\Assert;
 
 

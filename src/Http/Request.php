@@ -326,5 +326,4 @@ class Request implements IRequest
 
 		return $lang;
 	}
-
 }

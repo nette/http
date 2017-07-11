@@ -135,5 +135,4 @@ interface IRequest
 	 * @return string|NULL
 	 */
 	function getRawBody();
-
 }

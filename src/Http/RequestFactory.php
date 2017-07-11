@@ -279,5 +279,4 @@ class RequestFactory
 
 		return new Request($url, NULL, $post, $files, $cookies, $headers, $method, $remoteAddr, $remoteHost, $rawBodyCallback);
 	}
-
 }

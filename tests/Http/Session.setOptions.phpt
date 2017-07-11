@@ -4,7 +4,6 @@
  * Test: Nette\Http\Session setOptions.
  */
 
-use Nette\Http\Session;
 use Tester\Assert;
 
 

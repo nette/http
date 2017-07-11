@@ -539,5 +539,4 @@ class Session
 			$cookie['path'], $cookie['domain'], $cookie['secure'], $cookie['httponly']
 		);
 	}
-
 }
