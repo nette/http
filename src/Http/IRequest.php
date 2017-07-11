@@ -115,5 +115,4 @@ interface IRequest
 	 * Returns raw content of HTTP request body.
 	 */
 	function getRawBody(): ?string;
-
 }

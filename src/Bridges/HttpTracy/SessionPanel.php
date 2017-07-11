@@ -40,5 +40,4 @@ class SessionPanel implements Tracy\IBarPanel
 		require __DIR__ . '/templates/SessionPanel.panel.phtml';
 		return ob_get_clean();
 	}
-
 }

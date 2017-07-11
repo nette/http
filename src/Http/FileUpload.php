@@ -201,5 +201,4 @@ final class FileUpload
 		// future implementation can try to work around safe_mode and open_basedir limitations
 		return $this->isOk() ? file_get_contents($this->tmpName) : NULL;
 	}
-
 }

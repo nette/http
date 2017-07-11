@@ -69,5 +69,4 @@ final class Helpers
 			header($header, $key === 0);
 		}
 	}
-
 }

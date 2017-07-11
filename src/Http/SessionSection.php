@@ -137,7 +137,6 @@ class SessionSection implements \IteratorAggregate, \ArrayAccess
 
 	/**
 	 * Determines whether a variable in this session section is set.
-
 	 */
 	public function offsetExists($name): bool
 	{
@@ -200,5 +199,4 @@ class SessionSection implements \IteratorAggregate, \ArrayAccess
 		$this->data = NULL;
 		$this->meta = NULL;
 	}
-
 }

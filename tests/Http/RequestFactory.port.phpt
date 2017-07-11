@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 use Tester\Assert;
@@ -22,6 +21,7 @@ class RequestFactoryPortTest extends Tester\TestCase
 		$factory = new Nette\Http\RequestFactory;
 		Assert::same($expectedPort, $factory->createHttpRequest()->getUrl()->getPort());
 	}
+
 
 	/**
 	 * @return array
@@ -50,6 +50,7 @@ class RequestFactoryPortTest extends Tester\TestCase
 		];
 	}
 
+
 	/**
 	 * @dataProvider providerCreateHttpRequestWithTrustedProxy
 	 */
@@ -61,6 +62,7 @@ class RequestFactoryPortTest extends Tester\TestCase
 		$factory->setProxy(['10.0.0.1']);
 		Assert::same($expectedPort, $factory->createHttpRequest()->getUrl()->getPort());
 	}
+
 
 	/**
 	 * @return array
@@ -80,7 +82,6 @@ class RequestFactoryPortTest extends Tester\TestCase
 			[44443, ['HTTPS' => 'on', 'SERVER_NAME' => 'localhost:666', 'HTTP_X_FORWARDED_PORT' => '44443']],
 		];
 	}
-
 }
 
 $test = new RequestFactoryPortTest();

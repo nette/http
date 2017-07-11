@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 use Tester\Assert;
@@ -82,7 +81,6 @@ class RequestFactorySchemeTest extends Tester\TestCase
 			['https', 80, ['SERVER_NAME' => 'localhost:80', 'HTTPS' => 'off', 'HTTP_X_FORWARDED_PROTO' => 'https', 'HTTP_X_FORWARDED_PORT' => '80']],
 		];
 	}
-
 }
 
 

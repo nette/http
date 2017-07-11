@@ -6,7 +6,6 @@
 
 declare(strict_types=1);
 
-use Nette\Http\Session;
 use Tester\Assert;
 
 

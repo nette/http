@@ -187,5 +187,4 @@ class UserStorage implements Nette\Security\IUserStorage
 
 		return $this->sessionSection;
 	}
-
 }

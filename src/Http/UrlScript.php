@@ -76,5 +76,4 @@ class UrlScript extends Url
 	{
 		return (string) substr($this->getPath(), strlen($this->getScriptPath()));
 	}
-
 }

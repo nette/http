@@ -151,5 +151,4 @@ interface IResponse
 	 * Deletes a cookie.
 	 */
 	function deleteCookie(string $name, string $path = NULL, string $domain = NULL, bool $secure = NULL);
-
 }

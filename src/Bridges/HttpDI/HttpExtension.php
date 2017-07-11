@@ -118,5 +118,4 @@ class HttpExtension extends Nette\DI\CompilerExtension
 			}
 		}
 	}
-
 }

@@ -6,7 +6,6 @@
 
 declare(strict_types=1);
 
-use Nette\Http\Session;
 use Tester\Assert;
 
 
@@ -17,31 +16,37 @@ class MySessionStorage implements SessionHandlerInterface
 {
 	private $path;
 
+
 	function open($savePath, $sessionName)
 	{
 		$this->path = $savePath;
 		return TRUE;
 	}
 
+
 	function close()
 	{
 		return TRUE;
 	}
+
 
 	function read($id)
 	{
 		return (string) @file_get_contents("$this->path/sess_$id");
 	}
 
+
 	function write($id, $data)
 	{
 		return (bool) file_put_contents("$this->path/sess_$id", $data);
 	}
 
+
 	function destroy($id)
 	{
 		return !is_file("$this->path/sess_$id") || @unlink("$this->path/sess_$id");
 	}
+
 
 	function gc($maxlifetime)
 	{
