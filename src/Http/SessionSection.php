@@ -17,6 +17,9 @@ class SessionSection implements \IteratorAggregate, \ArrayAccess
 {
 	use Nette\SmartObject;
 
+	/** @var bool */
+	public $warnOnUndefined = false;
+
 	/** @var Session */
 	private $session;
 
@@ -28,9 +31,6 @@ class SessionSection implements \IteratorAggregate, \ArrayAccess
 
 	/** @var array  session metadata storage */
 	private $meta = false;
-
-	/** @var bool */
-	public $warnOnUndefined = false;
 
 
 	/**

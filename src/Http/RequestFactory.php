@@ -101,7 +101,7 @@ class RequestFactory
 		$url->setScriptPath($path);
 
 		// GET, POST, COOKIE
-		$useFilter = (!in_array(ini_get('filter.default'), ['', 'unsafe_raw']) || ini_get('filter.default_flags'));
+		$useFilter = (!in_array(ini_get('filter.default'), ['', 'unsafe_raw'], true) || ini_get('filter.default_flags'));
 
 		$query = $url->getQueryParameters();
 		$post = $useFilter ? filter_input_array(INPUT_POST, FILTER_UNSAFE_RAW) : (empty($_POST) ? [] : $_POST);
@@ -186,7 +186,7 @@ class RequestFactory
 				} elseif (strncmp($k, 'CONTENT_', 8)) {
 					continue;
 				}
-				$headers[ strtr($k, '_', '-') ] = $v;
+				$headers[strtr($k, '_', '-')] = $v;
 			}
 		}
 
