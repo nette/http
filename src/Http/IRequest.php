@@ -38,7 +38,7 @@ interface IRequest
 	 * @param  mixed  default value
 	 * @return mixed
 	 */
-	function getQuery($key = NULL, $default = NULL);
+	function getQuery($key = null, $default = null);
 
 	/**
 	 * Returns variable provided to the script via POST method ($_POST).
@@ -47,12 +47,12 @@ interface IRequest
 	 * @param  mixed  default value
 	 * @return mixed
 	 */
-	function getPost($key = NULL, $default = NULL);
+	function getPost($key = null, $default = null);
 
 	/**
 	 * Returns uploaded file.
 	 * @param  string key
-	 * @return FileUpload|array|NULL
+	 * @return FileUpload|array|null
 	 */
 	function getFile($key);
 
@@ -68,7 +68,7 @@ interface IRequest
 	 * @param  mixed  default value
 	 * @return mixed
 	 */
-	function getCookie($key, $default = NULL);
+	function getCookie($key, $default = null);
 
 	/**
 	 * Returns variables provided to the script via HTTP cookies.
@@ -95,10 +95,10 @@ interface IRequest
 	 * Return the value of the HTTP header. Pass the header name as the
 	 * plain, HTTP-specified header name (e.g. 'Accept-Encoding').
 	 * @param  string
-	 * @param  string|NULL
-	 * @return string|NULL
+	 * @param  string|null
+	 * @return string|null
 	 */
-	function getHeader($header, $default = NULL);
+	function getHeader($header, $default = null);
 
 	/**
 	 * Returns all HTTP headers.
@@ -120,19 +120,19 @@ interface IRequest
 
 	/**
 	 * Returns the IP address of the remote client.
-	 * @return string|NULL
+	 * @return string|null
 	 */
 	function getRemoteAddress();
 
 	/**
 	 * Returns the host of the remote client.
-	 * @return string|NULL
+	 * @return string|null
 	 */
 	function getRemoteHost();
 
 	/**
 	 * Returns raw content of HTTP request body.
-	 * @return string|NULL
+	 * @return string|null
 	 */
 	function getRawBody();
 }

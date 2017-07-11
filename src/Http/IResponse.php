@@ -117,7 +117,7 @@ interface IResponse
 	 * @param  string  charset
 	 * @return static
 	 */
-	function setContentType($type, $charset = NULL);
+	function setContentType($type, $charset = null);
 
 	/**
 	 * Redirects to a new URL.
@@ -143,10 +143,10 @@ interface IResponse
 	/**
 	 * Returns value of an HTTP header.
 	 * @param  string
-	 * @param  string|NULL
-	 * @return string|NULL
+	 * @param  string|null
+	 * @return string|null
 	 */
-	function getHeader($header, $default = NULL);
+	function getHeader($header, $default = null);
 
 	/**
 	 * Returns a list of headers to sent.
@@ -165,7 +165,7 @@ interface IResponse
 	 * @param  bool
 	 * @return static
 	 */
-	function setCookie($name, $value, $expire, $path = NULL, $domain = NULL, $secure = NULL, $httpOnly = NULL);
+	function setCookie($name, $value, $expire, $path = null, $domain = null, $secure = null, $httpOnly = null);
 
 	/**
 	 * Deletes a cookie.
@@ -175,5 +175,5 @@ interface IResponse
 	 * @param  bool
 	 * @return void
 	 */
-	function deleteCookie($name, $path = NULL, $domain = NULL, $secure = NULL);
+	function deleteCookie($name, $path = null, $domain = null, $secure = null);
 }

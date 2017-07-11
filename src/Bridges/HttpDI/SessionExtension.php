@@ -16,9 +16,9 @@ use Nette;
 class SessionExtension extends Nette\DI\CompilerExtension
 {
 	public $defaults = [
-		'debugger' => FALSE,
+		'debugger' => false,
 		'autoStart' => 'smart', // true|false|smart
-		'expiration' => NULL,
+		'expiration' => null,
 	];
 
 	/** @var bool */
@@ -28,7 +28,7 @@ class SessionExtension extends Nette\DI\CompilerExtension
 	private $cliMode;
 
 
-	public function __construct($debugMode = FALSE, $cliMode = FALSE)
+	public function __construct($debugMode = false, $cliMode = false)
 	{
 		$this->debugMode = $debugMode;
 		$this->cliMode = $cliMode;

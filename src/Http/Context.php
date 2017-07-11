@@ -37,7 +37,7 @@ class Context
 	 * @param  string  strong entity tag validator
 	 * @return bool
 	 */
-	public function isModified($lastModified = NULL, $etag = NULL)
+	public function isModified($lastModified = null, $etag = null)
 	{
 		if ($lastModified) {
 			$this->response->setHeader('Last-Modified', Helpers::formatDate($lastModified));
@@ -48,36 +48,36 @@ class Context
 
 		$ifNoneMatch = $this->request->getHeader('If-None-Match');
 		if ($ifNoneMatch === '*') {
-			$match = TRUE; // match, check if-modified-since
+			$match = true; // match, check if-modified-since
 
-		} elseif ($ifNoneMatch !== NULL) {
+		} elseif ($ifNoneMatch !== null) {
 			$etag = $this->response->getHeader('ETag');
 
-			if ($etag == NULL || strpos(' ' . strtr($ifNoneMatch, ",\t", '  '), ' ' . $etag) === FALSE) {
-				return TRUE;
+			if ($etag == null || strpos(' ' . strtr($ifNoneMatch, ",\t", '  '), ' ' . $etag) === false) {
+				return true;
 
 			} else {
-				$match = TRUE; // match, check if-modified-since
+				$match = true; // match, check if-modified-since
 			}
 		}
 
 		$ifModifiedSince = $this->request->getHeader('If-Modified-Since');
-		if ($ifModifiedSince !== NULL) {
+		if ($ifModifiedSince !== null) {
 			$lastModified = $this->response->getHeader('Last-Modified');
-			if ($lastModified != NULL && strtotime($lastModified) <= strtotime($ifModifiedSince)) {
-				$match = TRUE;
+			if ($lastModified != null && strtotime($lastModified) <= strtotime($ifModifiedSince)) {
+				$match = true;
 
 			} else {
-				return TRUE;
+				return true;
 			}
 		}
 
 		if (empty($match)) {
-			return TRUE;
+			return true;
 		}
 
 		$this->response->setCode(IResponse::S304_NOT_MODIFIED);
-		return FALSE;
+		return false;
 	}
 
 

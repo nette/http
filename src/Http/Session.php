@@ -21,10 +21,10 @@ class Session
 	const DEFAULT_FILE_LIFETIME = 3 * Nette\Utils\DateTime::HOUR;
 
 	/** @var bool  has been session ID regenerated? */
-	private $regenerated = FALSE;
+	private $regenerated = false;
 
 	/** @var bool  has been session started? */
-	private static $started = FALSE;
+	private static $started = false;
 
 	/** @var array default configuration */
 	private $options = [
@@ -38,8 +38,8 @@ class Session
 		'cookie_lifetime' => 0,   // until the browser is closed
 		'cookie_path' => '/',     // cookie is available within the entire domain
 		'cookie_domain' => '',    // cookie is available on current subdomain only
-		'cookie_secure' => FALSE, // cookie is available on HTTP & HTTPS
-		'cookie_httponly' => TRUE,// must be enabled to prevent Session Hijacking
+		'cookie_secure' => false, // cookie is available on HTTP & HTTPS
+		'cookie_httponly' => true,// must be enabled to prevent Session Hijacking
 
 		// other
 		'gc_maxlifetime' => self::DEFAULT_FILE_LIFETIME, // 3 hours
@@ -83,7 +83,7 @@ class Session
 		}
 
 		try {
-			// session_start returns FALSE on failure only sometimes
+			// session_start returns false on failure only sometimes
 			Nette\Utils\Callback::invokeSafe('session_start', [], function ($message) use (&$e) {
 				$e = new Nette\InvalidStateException($message);
 			});
@@ -95,7 +95,7 @@ class Session
 			throw $e;
 		}
 
-		self::$started = TRUE;
+		self::$started = true;
 
 		/* structure:
 			__NF: Data, Meta, Time
@@ -111,7 +111,7 @@ class Session
 		// regenerate empty session
 		if (empty($nf['Time'])) {
 			$nf['Time'] = time();
-			$this->regenerated = TRUE;
+			$this->regenerated = true;
 		}
 
 		// resend cookie
@@ -137,7 +137,7 @@ class Session
 		}
 
 		if ($this->regenerated) {
-			$this->regenerated = FALSE;
+			$this->regenerated = false;
 			$this->regenerateId();
 		}
 
@@ -164,7 +164,7 @@ class Session
 		if (self::$started) {
 			$this->clean();
 			session_write_close();
-			self::$started = FALSE;
+			self::$started = false;
 		}
 	}
 
@@ -180,8 +180,8 @@ class Session
 		}
 
 		session_destroy();
-		$_SESSION = NULL;
-		self::$started = FALSE;
+		$_SESSION = null;
+		self::$started = false;
 		if (!$this->response->isSent()) {
 			$params = session_get_cookie_params();
 			$this->response->deleteCookie(session_name(), $params['path'], $params['domain'], $params['secure']);
@@ -195,7 +195,7 @@ class Session
 	 */
 	public function exists()
 	{
-		return self::$started || $this->request->getCookie($this->getName()) !== NULL;
+		return self::$started || $this->request->getCookie($this->getName()) !== null;
 	}
 
 
@@ -211,14 +211,14 @@ class Session
 				throw new Nette\InvalidStateException('Cannot regenerate session ID after HTTP headers have been sent' . ($file ? " (output started at $file:$line)." : '.'));
 			}
 			if (session_status() === PHP_SESSION_ACTIVE) {
-				session_regenerate_id(TRUE);
+				session_regenerate_id(true);
 				session_write_close();
 			}
 			$backup = $_SESSION;
 			session_start();
 			$_SESSION = $backup;
 		}
-		$this->regenerated = TRUE;
+		$this->regenerated = true;
 	}
 
 
@@ -391,7 +391,7 @@ class Session
 		$special = ['cache_expire' => 1, 'cache_limiter' => 1, 'save_path' => 1, 'name' => 1];
 
 		foreach ($config as $key => $value) {
-			if ($value === NULL || ini_get("session.$key") == $value) { // intentionally ==
+			if ($value === null || ini_get("session.$key") == $value) { // intentionally ==
 				continue;
 
 			} elseif (strncmp($key, 'cookie_', 7) === 0) {
@@ -463,7 +463,7 @@ class Session
 	 * @param  bool    secure
 	 * @return static
 	 */
-	public function setCookieParameters($path, $domain = NULL, $secure = NULL)
+	public function setCookieParameters($path, $domain = null, $secure = null)
 	{
 		return $this->setOptions([
 			'cookie_path' => $path,

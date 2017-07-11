@@ -127,7 +127,7 @@ test(function () use ($factory) {
 
 test(function () use ($factory) {
 	$_SERVER = [
-		'REQUEST_URI' => NULL,
+		'REQUEST_URI' => null,
 		'SCRIPT_NAME' => 'c:\\index.php',
 	];
 
@@ -138,7 +138,7 @@ test(function () use ($factory) {
 test(function () use ($factory) {
 	$_SERVER = [
 		'REQUEST_URI' => '/',
-		'SCRIPT_NAME' => NULL,
+		'SCRIPT_NAME' => null,
 	];
 
 	Assert::same('/', $factory->createHttpRequest()->getUrl()->getScriptPath());
@@ -147,8 +147,8 @@ test(function () use ($factory) {
 
 test(function () use ($factory) {
 	$_SERVER = [
-		'REQUEST_URI' => NULL,
-		'SCRIPT_NAME' => NULL,
+		'REQUEST_URI' => null,
+		'SCRIPT_NAME' => null,
 	];
 
 	Assert::same('/', $factory->createHttpRequest()->getUrl()->getScriptPath());
