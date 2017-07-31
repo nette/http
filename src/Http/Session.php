@@ -26,7 +26,7 @@ class Session
 	private $regenerated = false;
 
 	/** @var bool  has been session started? */
-	private static $started;
+	private static $started = false;
 
 	/** @var array default configuration */
 	private $options = [
@@ -61,7 +61,7 @@ class Session
 	{
 		$this->request = $request;
 		$this->response = $response;
-		self::$started = (session_status() === PHP_SESSION_ACTIVE);
+		self::$started = (self::$started && session_status() === PHP_SESSION_ACTIVE);
 	}
 
 
