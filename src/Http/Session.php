@@ -61,6 +61,7 @@ class Session
 	{
 		$this->request = $request;
 		$this->response = $response;
+		self::$started = self::$started && session_status() === PHP_SESSION_ACTIVE;
 	}
 
 
