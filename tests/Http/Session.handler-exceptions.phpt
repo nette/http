@@ -39,5 +39,5 @@ Assert::exception(function () use ($session) {
 	$session->start();
 }, RuntimeException::class, 'Session can\'t be started for whatever reason!');
 
-$session->setHandler(new \SessionHandler());
+$session->setHandler(new \SessionHandler);
 $session->start();

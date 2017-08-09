@@ -84,5 +84,5 @@ class RequestFactoryPortTest extends Tester\TestCase
 	}
 }
 
-$test = new RequestFactoryPortTest();
+$test = new RequestFactoryPortTest;
 $test->run();

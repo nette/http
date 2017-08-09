@@ -18,7 +18,7 @@ require __DIR__ . '/../bootstrap.php';
 $cookies = ['PHPSESSID' => $sessionId = md5('3')];
 file_put_contents(TEMP_DIR . '/sess_' . $sessionId, '__NF|a:1:{s:4:"DATA";a:1:{s:4:"temp";a:1:{s:5:"value";s:3:"yes";}}}');
 
-$session = new Session(new Http\Request(new Http\UrlScript('http://nette.org'), null, [], [], $cookies), new Http\Response());
+$session = new Session(new Http\Request(new Http\UrlScript('http://nette.org'), null, [], [], $cookies), new Http\Response);
 $session->start();
 Assert::same('yes', $session->getSection('temp')->value);
 

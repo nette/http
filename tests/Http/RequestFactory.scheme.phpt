@@ -84,5 +84,5 @@ class RequestFactorySchemeTest extends Tester\TestCase
 }
 
 
-$test = new RequestFactorySchemeTest();
+$test = new RequestFactorySchemeTest;
 $test->run();
