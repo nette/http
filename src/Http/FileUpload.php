@@ -147,10 +147,7 @@ final class FileUpload
 	public function move(string $dest)
 	{
 		$dir = dirname($dest);
-		@mkdir($dir, 0777, true); // @ - dir may already exist
-		if (!is_dir($dir)) {
-			throw new Nette\InvalidStateException("Directory '$dir' cannot be created. " . error_get_last()['message']);
-		}
+		Nette\Utils\FileSystem::createDir($dir);
 		@unlink($dest); // @ - file may not exists
 		Nette\Utils\Callback::invokeSafe(
 			is_uploaded_file($this->tmpName) ? 'move_uploaded_file' : 'rename',
