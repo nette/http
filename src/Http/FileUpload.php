@@ -44,7 +44,7 @@ class FileUpload
 
 	public function __construct($value)
 	{
-		foreach (['name', 'type', 'size', 'tmp_name', 'error'] as $key) {
+		foreach (['name', 'size', 'tmp_name', 'error'] as $key) {
 			if (!isset($value[$key]) || !is_scalar($value[$key])) {
 				$this->error = UPLOAD_ERR_NO_FILE;
 				return; // or throw exception?
