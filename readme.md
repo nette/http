@@ -8,20 +8,30 @@ Nette HTTP Component
 [![Latest Stable Version](https://poser.pugx.org/nette/http/v/stable)](https://github.com/nette/http/releases)
 [![License](https://img.shields.io/badge/license-New%20BSD-blue.svg)](https://github.com/nette/http/blob/master/license.md)
 
+
+Introduction
+------------
+
 HTTP request and response are encapsulated in `Nette\Http\Request` and `Nette\Http\Response` objects which offer comfortable API and also act as
 sanitization filter.
 
-Install it using Composer:
+Documentation can be found on the [website](https://doc.nette.org/http-request-response).
+
+
+Installation
+------------
+
+The recommended way to install is via Composer:
 
 ```
 composer require nette/http
 ```
 
-The last stable release requires PHP version 5.6 or newer (is compatible with PHP 7.0 and 7.1). The dev-master version requires PHP 7.1.
+It requires PHP version 5.6 and supports PHP up to 7.2. The dev-master version requires PHP 7.1.
 
 
 HTTP Request
--------------
+------------
 
 Nette cleans out data sent by user from control and invalid characters.
 
@@ -112,7 +122,7 @@ echo $httpRequest->detectLanguage($langs); // en
 
 
 RequestFactory and URL filtering
-------------------
+--------------------------------
 
 Object holding current HTTP request is created by [api:Nette\Http\RequestFactory]. Its behavior can be modified.
 It's possible to clean up URLs from characters that can get into them because of poorly implemented comment systems on various other websites by using filters:
@@ -139,7 +149,7 @@ $container->addService('httpRequest', $requestFactory->createHttpRequest());
 
 
 HTTP response
---------------
+-------------
 
 Whether it is still possible to send headers or change the status code tells the `isSent()` method. If it returns true,
 it won't be possible to send another header or change the status code.
