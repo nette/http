@@ -44,7 +44,7 @@ class HttpExtension extends Nette\DI\CompilerExtension
 
 		$builder->addDefinition($this->prefix('requestFactory'))
 			->setFactory(Nette\Http\RequestFactory::class)
-			->addSetup('setProxy', [$config['proxy']]);
+			->addSetup('setProxy', is_array($config['proxy']) ? $config['proxy'] : [$config['proxy']]);
 
 		$builder->addDefinition($this->prefix('request'))
 			->setFactory('@Nette\Http\RequestFactory::createHttpRequest')
