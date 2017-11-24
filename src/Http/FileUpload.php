@@ -167,7 +167,7 @@ final class FileUpload
 	 */
 	public function isImage(): bool
 	{
-		return in_array($this->getContentType(), ['image/gif', 'image/png', 'image/jpeg'], true);
+		return in_array($this->getContentType(), ['image/gif', 'image/png', 'image/jpeg', 'image/webp'], true);
 	}
 
 
