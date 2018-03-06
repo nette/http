@@ -77,7 +77,8 @@ class Session
 
 		$id = session_id();
 		if (!is_string($id) || !preg_match('#^[0-9a-zA-Z,-]{22,256}\z#i', $id)) {
-			session_id('');
+			$newId = PHP_VERSION_ID >= 70100 ? session_create_id() : Nette\Utils\Random::generate(128);
+			session_id($newId);
 		}
 
 		try {
