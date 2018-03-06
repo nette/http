@@ -164,7 +164,7 @@ class Session
 			$this->clean();
 			session_write_close();
 			self::$started = false;
-                        $this->regenerated = false;
+			$this->regenerated = false;
 		}
 	}
 
