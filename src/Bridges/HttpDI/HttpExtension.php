@@ -95,6 +95,13 @@ class HttpExtension extends Nette\DI\CompilerExtension
 		}
 
 		if (!empty($config['csp'])) {
+			$reportOnly = false;
+
+			if (array_key_exists('reportOnly', $config['csp'])) {
+				$reportOnly = $config['csp']['reportOnly'];
+				unset($config['csp']['reportOnly']);
+			}
+
 			$value = '';
 			foreach ($config['csp'] as $type => $policy) {
 				$value .= $type;
@@ -109,7 +116,7 @@ class HttpExtension extends Nette\DI\CompilerExtension
 					["'nonce", "'nonce-", $value]
 				);
 			}
-			$headers['Content-Security-Policy'] = $value;
+			$headers['Content-Security-Policy' . ($reportOnly ? '-Report-Only' : '')] = $value;
 		}
 
 		foreach ($headers as $key => $value) {
