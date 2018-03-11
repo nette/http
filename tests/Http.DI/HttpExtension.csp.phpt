@@ -28,6 +28,10 @@ http:
 		style-src:
 			- self
 			- https://example.com
+
+	csp-report:
+		default-src: "'nonce'"
+		report-uri: https://example.com/report
 EOD
 , 'neon'));
 
@@ -40,6 +44,7 @@ $headers = headers_list();
 
 preg_match('#nonce-([\w+/]+=*)#', implode($headers), $nonce);
 Assert::contains("Content-Security-Policy: default-src 'self' https://example.com; upgrade-insecure-requests; script-src 'nonce-$nonce[1]'; style-src 'self' https://example.com;", $headers);
+Assert::contains("Content-Security-Policy-Report-Only: default-src 'nonce-$nonce[1]'; report-uri https://example.com/report;", $headers);
 
 
 echo ' '; @ob_flush(); flush();
