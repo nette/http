@@ -124,7 +124,8 @@ class HttpExtension extends Nette\DI\CompilerExtension
 		}
 	}
 
-	private function mapContentSecurityPolicies(array $csp): string
+
+	private function mapContentSecurityPolicies(array $csp)
 	{
 		$value = '';
 		foreach ($csp as $type => $policy) {
@@ -137,5 +138,4 @@ class HttpExtension extends Nette\DI\CompilerExtension
 
 		return $value;
 	}
-
 }
