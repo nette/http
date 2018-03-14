@@ -65,7 +65,6 @@ $session = new Nette\Http\Session($factory->createHttpRequest(), new Nette\Http\
 
 $session->setHandler(new MySessionStorage);
 $session->start();
-$_COOKIE['PHPSESSID'] = $session->getId();
 
 $namespace = $session->getSection('one');
 $namespace->a = 'apple';
