@@ -114,7 +114,7 @@ class Session
 		// regenerate empty session
 		if (empty($nf['Time'])) {
 			$nf['Time'] = time();
-			$this->regenerated = true;
+			$this->regenerateId();
 		}
 
 		// resend cookie
@@ -137,11 +137,6 @@ class Session
 					}
 				}
 			}
-		}
-
-		if ($this->regenerated) {
-			$this->regenerated = false;
-			$this->regenerateId();
 		}
 
 		register_shutdown_function([$this, 'clean']);
@@ -204,7 +199,10 @@ class Session
 	 */
 	public function regenerateId(): void
 	{
-		if (self::$started && !$this->regenerated) {
+		if ($this->regenerated) {
+			return;
+		}
+		if (self::$started) {
 			if (headers_sent($file, $line)) {
 				throw new Nette\InvalidStateException('Cannot regenerate session ID after HTTP headers have been sent' . ($file ? " (output started at $file:$line)." : '.'));
 			}
@@ -215,6 +213,8 @@ class Session
 			$backup = $_SESSION;
 			session_start();
 			$_SESSION = $backup;
+		} else {
+			session_id(session_create_id());
 		}
 		$this->regenerated = true;
 	}
