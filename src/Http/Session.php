@@ -75,7 +75,7 @@ class Session
 
 		$this->configure($this->options);
 
-		if (!session_id()) {
+		if (!session_id()) { // session is started for first time
 			$id = $this->request->getCookie(session_name());
 			if (is_string($id) && preg_match('#^[0-9a-zA-Z,-]{22,256}\z#i', $id)) {
 				session_id($id);
@@ -113,7 +113,9 @@ class Session
 		// regenerate empty session
 		if (empty($nf['Time'])) {
 			$nf['Time'] = time();
-			$this->regenerated = true;
+			if (!empty($id)) { // ensures that the session was created in strict mode (see use_strict_mode)
+				$this->regenerateId();
+			}
 		}
 
 		// process meta metadata
@@ -133,11 +135,6 @@ class Session
 					}
 				}
 			}
-		}
-
-		if ($this->regenerated) {
-			$this->regenerated = false;
-			$this->regenerateId();
 		}
 
 		register_shutdown_function([$this, 'clean']);
