@@ -12,6 +12,7 @@ require __DIR__ . '/../bootstrap.php';
 
 
 $_COOKIE['PHPSESSID'] = '#';
+session_id('#');
 
 
 $session = new Session(new Nette\Http\Request(new Nette\Http\UrlScript), new Nette\Http\Response);

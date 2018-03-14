@@ -75,11 +75,10 @@ class Session
 
 		$this->configure($this->options);
 
-		$id = $this->request->getCookie(session_name());
-		if (is_string($id) && preg_match('#^[0-9a-zA-Z,-]{22,256}\z#i', $id)) {
-			session_id($id);
-		} else {
-			unset($_COOKIE[session_name()]);
+		$id = session_id();
+		if (!is_string($id) || !preg_match('#^[0-9a-zA-Z,-]{22,256}\z#i', $id)) {
+			$newId = PHP_VERSION_ID >= 70100 ? session_create_id() : Nette\Utils\Random::generate(128);
+			session_id($newId);
 		}
 
 		try {
@@ -165,6 +164,7 @@ class Session
 			$this->clean();
 			session_write_close();
 			self::$started = false;
+			$this->regenerated = false;
 		}
 	}
 
@@ -195,7 +195,7 @@ class Session
 	 */
 	public function exists()
 	{
-		return self::$started || $this->request->getCookie($this->getName()) !== null;
+		return self::$started || session_id() !== '';
 	}
 
 

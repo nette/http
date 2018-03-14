@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Test: Nette\Http\Session accepts cookie from Http\IRequest
+ * Test: Nette\Http\Session is preserved after regenerateId and restarting
  */
 
 use Nette\Http;
@@ -25,8 +25,16 @@ Assert::same($sessionId, $session->getId());
 Assert::same(['PHPSESSID' => $leet], $_COOKIE);
 
 Assert::same('yes', $session->getSection('temp')->value);
+$session->regenerateId();
+Assert::notSame($sessionId, $session->getId());
+$newSessionId = session_id();
+Assert::same($newSessionId, $session->getId());
 $session->close();
 
-// session was not regenerated
-Assert::true(file_exists(TEMP_DIR . '/sess_' . $sessionId));
+$session->start();
+Assert::same('yes', $session->getSection('temp')->value);
+Assert::same($newSessionId, $session->getId());
+
+// new session still exists
+Assert::true(file_exists(TEMP_DIR . '/sess_' . $newSessionId));
 Assert::count(1, glob(TEMP_DIR . '/sess_*'));
