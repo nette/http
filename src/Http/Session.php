@@ -113,7 +113,7 @@ class Session
 		// regenerate empty session
 		if (empty($nf['Time'])) {
 			$nf['Time'] = time();
-			$this->regenerated = true;
+			$this->regenerateId();
 		}
 
 		// resend cookie
@@ -136,11 +136,6 @@ class Session
 					}
 				}
 			}
-		}
-
-		if ($this->regenerated) {
-			$this->regenerated = false;
-			$this->regenerateId();
 		}
 
 		register_shutdown_function([$this, 'clean']);
