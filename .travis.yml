@@ -23,7 +23,7 @@ after_failure:
 
 jobs:
     include:
-        -   env: title="Lowest Dependencies" PHP_BIN=php
+        -   env: title="Lowest Dependencies" PHP_BIN=php-cgi
             install:
                 - travis_retry composer update --no-progress --prefer-dist --prefer-lowest --prefer-stable
 
