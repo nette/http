@@ -373,15 +373,13 @@ class Session
 	private function configure(array $config): void
 	{
 		$special = ['cache_expire' => 1, 'cache_limiter' => 1, 'save_path' => 1, 'name' => 1];
+		$cookie = $origCookie = session_get_cookie_params();
 
 		foreach ($config as $key => $value) {
 			if ($value === null || ini_get("session.$key") == $value) { // intentionally ==
 				continue;
 
 			} elseif (strncmp($key, 'cookie_', 7) === 0) {
-				if (!isset($cookie)) {
-					$cookie = session_get_cookie_params();
-				}
 				$cookie[substr($key, 7)] = $value;
 
 			} else {
@@ -401,7 +399,7 @@ class Session
 			}
 		}
 
-		if (isset($cookie)) {
+		if ($cookie !== $origCookie) {
 			session_set_cookie_params(
 				$cookie['lifetime'], $cookie['path'], $cookie['domain'],
 				$cookie['secure'], $cookie['httponly']
