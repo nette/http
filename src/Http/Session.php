@@ -397,10 +397,12 @@ class Session
 		}
 
 		if (isset($cookie)) {
-			session_set_cookie_params(
-				$cookie['lifetime'], $cookie['path'], $cookie['domain'],
-				$cookie['secure'], $cookie['httponly']
-			);
+			if (!self::$started) {
+				session_set_cookie_params(
+					$cookie['lifetime'], $cookie['path'], $cookie['domain'],
+					$cookie['secure'], $cookie['httponly']
+				);
+			}
 			if (self::$started) {
 				$this->sendCookie();
 			}
