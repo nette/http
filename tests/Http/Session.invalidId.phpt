@@ -4,17 +4,16 @@
  * Test: Nette\Http\Session error in session_start.
  */
 
-use Nette\Http\Session;
+use Nette\Http;
 use Tester\Assert;
 
 
 require __DIR__ . '/../bootstrap.php';
 
 
-$_COOKIE['PHPSESSID'] = '#';
+$cookies = ['PHPSESSID' => '#'];
 
-
-$session = new Session(new Nette\Http\Request(new Nette\Http\UrlScript), new Nette\Http\Response);
+$session = new Http\Session(new Http\Request(new Http\UrlScript, null, [], [], $cookies), new Http\Response);
 
 $session->start();
 
