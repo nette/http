@@ -13,7 +13,7 @@ use Tester\Assert;
 require __DIR__ . '/../bootstrap.php';
 
 
-$cookies = ['PHPSESSID' => '#'];
+$cookies = [session_name() => '#'];
 
 $session = new Http\Session(new Http\Request(new Http\UrlScript, null, [], [], $cookies), new Http\Response);
 
