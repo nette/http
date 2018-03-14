@@ -77,11 +77,13 @@ class Session
 
 		$this->configure($this->options);
 
-		$id = $this->request->getCookie(session_name());
-		if (is_string($id) && preg_match('#^[0-9a-zA-Z,-]{22,256}\z#i', $id)) {
-			session_id($id);
-		} else {
-			unset($_COOKIE[session_name()]);
+		if (!session_id()) {
+			$id = $this->request->getCookie(session_name());
+			if (is_string($id) && preg_match('#^[0-9a-zA-Z,-]{22,256}\z#i', $id)) {
+				session_id($id);
+			} else {
+				unset($_COOKIE[session_name()]);
+			}
 		}
 
 		try {
