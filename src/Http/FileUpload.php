@@ -32,7 +32,7 @@ class FileUpload
 	/** @var string */
 	private $type;
 
-	/** @var string */
+	/** @var int */
 	private $size;
 
 	/** @var string */

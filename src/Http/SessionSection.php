@@ -26,10 +26,10 @@ class SessionSection implements \IteratorAggregate, \ArrayAccess
 	/** @var string */
 	private $name;
 
-	/** @var array  session data storage */
+	/** @var array|null  session data storage */
 	private $data;
 
-	/** @var array  session metadata storage */
+	/** @var array|bool  session metadata storage */
 	private $meta = false;
 
 
