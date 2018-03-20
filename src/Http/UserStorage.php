@@ -118,13 +118,10 @@ class UserStorage implements Nette\Security\IUserStorage
 	 * Enables log out after inactivity. Accepts flag IUserStorage::CLEAR_IDENTITY.
 	 * @return static
 	 */
-	public function setExpiration(/*?string*/ $time, int $flags = 0)
+	public function setExpiration(?string $time, int $flags = 0)
 	{
 		$section = $this->getSessionSection(true);
 		if ($time) {
-			if (!is_string($time)) {
-				trigger_error("Expiration time should be a string like '20 minutes' etc.", E_USER_DEPRECATED);
-			}
 			$time = Nette\Utils\DateTime::from($time)->format('U');
 			$section->expireTime = $time;
 			$section->expireDelta = $time - time();
