@@ -22,7 +22,7 @@ final class Helpers
 
 	/**
 	 * Returns HTTP valid date format.
-	 * @param  string|int|\DateTimeInterface
+	 * @param  string|int|\DateTimeInterface  $time
 	 */
 	public static function formatDate($time): string
 	{

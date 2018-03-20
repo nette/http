@@ -32,7 +32,7 @@ class RequestFactory
 	/** @var bool */
 	private $binary = false;
 
-	/** @var array */
+	/** @var string[] */
 	private $proxies = [];
 
 
@@ -47,7 +47,7 @@ class RequestFactory
 
 
 	/**
-	 * @param  array|string
+	 * @param  string|string[]  $proxy
 	 * @return static
 	 */
 	public function setProxy($proxy)

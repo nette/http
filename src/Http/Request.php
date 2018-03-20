@@ -268,7 +268,7 @@ class Request implements IRequest
 
 	/**
 	 * Parse Accept-Language header and returns preferred language.
-	 * @param  string[] supported languages
+	 * @param  string[]  $langs  supported languages
 	 */
 	public function detectLanguage(array $langs): ?string
 	{

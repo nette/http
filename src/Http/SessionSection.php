@@ -155,8 +155,8 @@ class SessionSection implements \IteratorAggregate, \ArrayAccess
 
 	/**
 	 * Sets the expiration of the section or specific variables.
-	 * @param  string|int|\DateTimeInterface
-	 * @param  mixed   optional list of variables / single variable to expire
+	 * @param  string|int|\DateTimeInterface  $time
+	 * @param  string|string[]  $variables  list of variables / single variable to expire
 	 * @return static
 	 */
 	public function setExpiration($time, $variables = null)
@@ -179,7 +179,7 @@ class SessionSection implements \IteratorAggregate, \ArrayAccess
 
 	/**
 	 * Removes the expiration from the section or specific variables.
-	 * @param  mixed   optional list of variables / single variable to expire
+	 * @param  string|string[]  $variables  list of variables / single variable to expire
 	 */
 	public function removeExpiration($variables = null): void
 	{

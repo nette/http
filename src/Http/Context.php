@@ -35,7 +35,7 @@ class Context
 
 	/**
 	 * Attempts to cache the sent entity by its last modification date.
-	 * @param  string|int|\DateTimeInterface  last modified time
+	 * @param  string|int|\DateTimeInterface  $lastModified
 	 */
 	public function isModified($lastModified = null, string $etag = null): bool
 	{

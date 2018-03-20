@@ -416,11 +416,11 @@ class Session
 
 
 	/**
-	 * Sets the amount of time allowed between requests before the session will be terminated.
-	 * @param  string|null like '20 minutes', null means "until the browser is closed"
+	 * Sets the amount of time (like '20 minutes') allowed between requests before the session will be terminated,
+	 * null means "until the browser is closed".
 	 * @return static
 	 */
-	public function setExpiration($time)
+	public function setExpiration(?string $time)
 	{
 		if (empty($time)) {
 			return $this->setOptions([

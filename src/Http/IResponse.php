@@ -119,11 +119,10 @@ interface IResponse
 	function redirect(string $url, int $code = self::S302_FOUND): void;
 
 	/**
-	 * Sets the number of seconds before a page cached on a browser expires.
-	 * @param  string|null like '20 minutes', null means "must-revalidate"
+	 * Sets the time (like '20 minutes') before a page cached on a browser expires, null means "must-revalidate".
 	 * @return static
 	 */
-	function setExpiration($seconds);
+	function setExpiration(?string $expire);
 
 	/**
 	 * Checks if headers have been sent.

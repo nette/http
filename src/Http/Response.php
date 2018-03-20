@@ -152,12 +152,11 @@ final class Response implements IResponse
 
 
 	/**
-	 * Sets the number of seconds before a page cached on a browser expires.
-	 * @param  string|null like '20 minutes', null means "must-revalidate"
+	 * Sets the time (like '20 minutes') before a page cached on a browser expires, null means "must-revalidate".
 	 * @return static
 	 * @throws Nette\InvalidStateException  if HTTP headers have been sent
 	 */
-	public function setExpiration($time)
+	public function setExpiration(?string $time)
 	{
 		$this->setHeader('Pragma', null);
 		if (!$time) { // no cache

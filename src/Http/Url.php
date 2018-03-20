@@ -86,7 +86,7 @@ class Url implements \JsonSerializable
 
 
 	/**
-	 * @param  string|self
+	 * @param  string|self  $url
 	 * @throws Nette\InvalidArgumentException if URL is malformed
 	 */
 	public function __construct($url = null)
@@ -253,7 +253,7 @@ class Url implements \JsonSerializable
 
 	/**
 	 * Sets the query part of URI.
-	 * @param  string|array
+	 * @param  string|array  $value
 	 * @return static
 	 */
 	public function setQuery($value)
@@ -265,7 +265,7 @@ class Url implements \JsonSerializable
 
 	/**
 	 * Appends the query part of URI.
-	 * @param  string|array
+	 * @param  string|array  $value
 	 * @return static
 	 */
 	public function appendQuery($value)
@@ -305,7 +305,7 @@ class Url implements \JsonSerializable
 
 
 	/**
-	 * @param mixed $value null unsets the parameter
+	 * @param mixed  $value  null unsets the parameter
 	 * @return static
 	 */
 	public function setQueryParameter(string $name, $value)
@@ -403,7 +403,7 @@ class Url implements \JsonSerializable
 
 	/**
 	 * URL comparison.
-	 * @param  string|self
+	 * @param  string|self  $url
 	 */
 	public function isEqual($url): bool
 	{
