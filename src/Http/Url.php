@@ -474,7 +474,7 @@ class Url implements \JsonSerializable
 	/**
 	 * Parses query string.
 	 */
-	public static function parseQuery($s): array
+	public static function parseQuery(string $s): array
 	{
 		parse_str($s, $res);
 		return $res;

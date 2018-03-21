@@ -149,7 +149,7 @@ class UserStorage implements Nette\Security\IUserStorage
 	/**
 	 * Returns and initializes $this->sessionSection.
 	 */
-	protected function getSessionSection($need): ?SessionSection
+	protected function getSessionSection(bool $need): ?SessionSection
 	{
 		if ($this->sessionSection !== null) {
 			return $this->sessionSection;

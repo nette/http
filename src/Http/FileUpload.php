@@ -44,7 +44,7 @@ final class FileUpload
 	private $error;
 
 
-	public function __construct($value)
+	public function __construct(?array $value)
 	{
 		foreach (['name', 'size', 'tmp_name', 'error'] as $key) {
 			if (!isset($value[$key]) || !is_scalar($value[$key])) {

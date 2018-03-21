@@ -34,7 +34,7 @@ final class Helpers
 	/**
 	 * Is IP address in CIDR block?
 	 */
-	public static function ipMatch($ip, $mask): bool
+	public static function ipMatch(string $ip, string $mask): bool
 	{
 		[$mask, $size] = explode('/', $mask . '/');
 		$tmp = function ($n) { return sprintf('%032b', $n); };

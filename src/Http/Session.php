@@ -465,7 +465,7 @@ class Session
 	 * Sets path of the directory used to save session data.
 	 * @return static
 	 */
-	public function setSavePath($path)
+	public function setSavePath(string $path)
 	{
 		return $this->setOptions([
 			'save_path' => $path,
