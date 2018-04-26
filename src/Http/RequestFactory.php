@@ -69,7 +69,8 @@ class RequestFactory
 		$url->setPassword(isset($_SERVER['PHP_AUTH_PW']) ? $_SERVER['PHP_AUTH_PW'] : '');
 
 		// host & port
-		if ((isset($_SERVER[$tmp = 'HTTP_HOST']) || isset($_SERVER[$tmp = 'SERVER_NAME']))
+		if (
+			(isset($_SERVER[$tmp = 'HTTP_HOST']) || isset($_SERVER[$tmp = 'SERVER_NAME']))
 			&& preg_match('#^([a-z0-9_.-]+|\[[a-f0-9:]+\])(:\d+)?\z#i', $_SERVER[$tmp], $pair)
 		) {
 			$url->setHost(strtolower($pair[1]));
@@ -135,7 +136,9 @@ class RequestFactory
 		$list = [];
 		if (!empty($_FILES)) {
 			foreach ($_FILES as $k => $v) {
-				if (!is_array($v) || !isset($v['name'], $v['type'], $v['size'], $v['tmp_name'], $v['error'])
+				if (
+					!is_array($v)
+					|| !isset($v['name'], $v['type'], $v['size'], $v['tmp_name'], $v['error'])
 					|| (!$this->binary && is_string($k) && (!preg_match($reChars, $k) || preg_last_error()))
 				) {
 					continue;
@@ -266,7 +269,9 @@ class RequestFactory
 
 		// method, eg. GET, PUT, ...
 		$method = isset($_SERVER['REQUEST_METHOD']) ? $_SERVER['REQUEST_METHOD'] : null;
-		if ($method === 'POST' && isset($_SERVER['HTTP_X_HTTP_METHOD_OVERRIDE'])
+		if (
+			$method === 'POST'
+			&& isset($_SERVER['HTTP_X_HTTP_METHOD_OVERRIDE'])
 			&& preg_match('#^[A-Z]+\z#', $_SERVER['HTTP_X_HTTP_METHOD_OVERRIDE'])
 		) {
 			$method = $_SERVER['HTTP_X_HTTP_METHOD_OVERRIDE'];
