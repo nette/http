@@ -17,6 +17,8 @@ sanitization filter.
 
 Documentation can be found on the [website](https://doc.nette.org/http-request-response).
 
+If you like Nette, **[please make a donation now](https://nette.org/donate)**. Thank you!
+
 
 Installation
 ------------
