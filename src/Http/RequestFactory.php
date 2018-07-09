@@ -70,7 +70,7 @@ class RequestFactory
 
 		// host & port
 		if (
-			(isset($_SERVER[$tmp = 'HTTP_HOST']) || isset($_SERVER[$tmp = 'SERVER_NAME']))
+			(isset($_SERVER[$tmp = 'SERVER_NAME']) || isset($_SERVER[$tmp = 'HTTP_HOST']))
 			&& preg_match('#^([a-z0-9_.-]+|\[[a-f0-9:]+\])(:\d+)?\z#i', $_SERVER[$tmp], $pair)
 		) {
 			$url->setHost(strtolower($pair[1]));
