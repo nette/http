@@ -25,6 +25,7 @@ class HttpExtension extends Nette\DI\CompilerExtension
 		'csp' => [], // Content-Security-Policy
 		'cspReportOnly' => [], // Content-Security-Policy-Report-Only
 		'csp-report' => null, // for compatibility
+		'featurePolicy' => [], // Feature-Policy
 	];
 
 	/** @var bool */
@@ -95,14 +96,7 @@ class HttpExtension extends Nette\DI\CompilerExtension
 			if (empty($config[$key])) {
 				continue;
 			}
-			$value = '';
-			foreach ($config[$key] as $type => $policy) {
-				$value .= $type;
-				foreach ((array) $policy as $item) {
-					$value .= preg_match('#^[a-z-]+\z#', $item) ? " '$item'" : " $item";
-				}
-				$value .= '; ';
-			}
+			$value = self::buildPolicy($config[$key]);
 			if (strpos($value, "'nonce'")) {
 				$value = Nette\DI\ContainerBuilder::literal(
 					'str_replace(?, ? . (isset($cspNonce) \? $cspNonce : $cspNonce = base64_encode(Nette\Utils\Random::generate(16, "\x00-\xFF"))), ?)',
@@ -112,10 +106,28 @@ class HttpExtension extends Nette\DI\CompilerExtension
 			$headers['Content-Security-Policy' . ($key === 'csp' ? '' : '-Report-Only')] = $value;
 		}
 
+		if (!empty($config['featurePolicy'])) {
+			$headers['Feature-Policy'] = self::buildPolicy($config['featurePolicy']);
+		}
+
 		foreach ($headers as $key => $value) {
 			if ($value != null) { // intentionally ==
 				$initialize->addBody('$this->getService(?)->setHeader(?, ?);', [$this->prefix('response'), $key, $value]);
 			}
 		}
+	}
+
+
+	private static function buildPolicy(array $config)
+	{
+		$value = '';
+		foreach ($config as $type => $policy) {
+			$value .= $type;
+			foreach ((array) $policy as $item) {
+				$value .= preg_match('#^[a-z-]+\z#', $item) ? " '$item'" : " $item";
+			}
+			$value .= '; ';
+		}
+		return $value;
 	}
 }
