@@ -26,7 +26,7 @@ class HttpExtension extends Nette\DI\CompilerExtension
 		'frames' => 'SAMEORIGIN', // X-Frame-Options
 		'csp' => [], // Content-Security-Policy
 		'csp-report' => [], // Content-Security-Policy-Report-Only
-		'fp' => [], // Feature-Policy
+		'feature-policy' => [], // Feature-Policy
 	];
 
 	/** @var bool */
@@ -96,18 +96,29 @@ class HttpExtension extends Nette\DI\CompilerExtension
 			$headers['X-Frame-Options'] = $frames;
 		}
 
+		// function to create CSP and FP header value from configuration array
+		$createValue = static function (array $policyConfig) {
+			static $nonQuoted = [
+				'script', 'style', // require-sri-for
+				'allow-forms', 'allow-modals', 'allow-orientation-lock', 'allow-pointer-lock', 'allow-popups', 'allow-scripts',
+				'allow-popups-to-escape-sandbox', 'allow-presentation', 'allow-same-origin', 'allow-top-navigation', // sandbox
+			];
+			$value = '';
+			foreach ($policyConfig as $type => $policy) {
+				$value .= $type;
+				foreach ((array) $policy as $item) {
+					$value .= (preg_match('#^[a-z-]+\z#', $item) && !in_array($item, $nonQuoted, true)) ? " '$item'" : " $item";
+				}
+				$value .= '; ';
+			}
+			return $value;
+		};
+		
 		foreach (['csp', 'csp-report'] as $key) {
 			if (empty($config[$key])) {
 				continue;
 			}
-			$value = '';
-			foreach ($config[$key] as $type => $policy) {
-				$value .= $type;
-				foreach ((array) $policy as $item) {
-					$value .= preg_match('#^[a-z-]+\z#', $item) ? " '$item'" : " $item";
-				}
-				$value .= '; ';
-			}
+			$value = $createValue($config[$key]);
 			if (strpos($value, "'nonce'")) {
 				$value = Nette\DI\ContainerBuilder::literal(
 					'str_replace(?, ? . ($cspNonce = $cspNonce \?\? base64_encode(random_bytes(16))), ?)',
@@ -117,15 +128,8 @@ class HttpExtension extends Nette\DI\CompilerExtension
 			$headers['Content-Security-Policy' . ($key === 'csp' ? '' : '-Report-Only')] = $value;
 		}
 		
-		if (!empty($config['fp'])) {
-            		$value = '';
-            		foreach ($config['fp'] as $type => $policy) {
-                		$value .= $type;
-				foreach ((array) $policy as $item) {
-				    $value .= preg_match('#^[a-z-]+\z#', $item) ? " '$item'" : " $item";
-				}
-				$value .= '; ';
-            		}
+		if (!empty($config['feature-policy'])) {
+            		$value = $createValue($config['feature-policy']);
             		$headers['Feature-Policy'] = $value;
 		}
 
