@@ -103,7 +103,7 @@ class HttpExtension extends Nette\DI\CompilerExtension
 			foreach ($config[$key] as $type => $policy) {
 				$value .= $type;
 				foreach ((array) $policy as $item) {
-					$value .= preg_match('#^[a-z-]+\z#', $item) ? " '$item'" : " $item";
+					$value .= (preg_match('#^[a-z-]+\z#', $item) && $type !== 'require-sri-for') ? " '$item'" : " $item";
 				}
 				$value .= '; ';
 			}
