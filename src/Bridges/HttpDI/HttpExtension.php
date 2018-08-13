@@ -98,16 +98,12 @@ class HttpExtension extends Nette\DI\CompilerExtension
 
 		// function to create CSP and FP header value from configuration array
 		$createValue = static function (array $policyConfig) {
-			static $nonQuoted = [
-				'script', 'style', // require-sri-for
-				'allow-forms', 'allow-modals', 'allow-orientation-lock', 'allow-pointer-lock', 'allow-popups', 'allow-scripts',
-				'allow-popups-to-escape-sandbox', 'allow-presentation', 'allow-same-origin', 'allow-top-navigation', // sandbox
-			];
+			static $nonQuoted = [ 'require-sri-for', 'sandbox' ]; // those properties contain non quoted keywords
 			$value = '';
 			foreach ($policyConfig as $type => $policy) {
 				$value .= $type;
 				foreach ((array) $policy as $item) {
-					$value .= (preg_match('#^[a-z-]+\z#', $item) && !in_array($item, $nonQuoted, true)) ? " '$item'" : " $item";
+					$value .= (preg_match('#[.:]#', $item) || in_array($type, $nonQuoted, true)) ? " $item" : " '$item'";
 				}
 				$value .= '; ';
 			}
