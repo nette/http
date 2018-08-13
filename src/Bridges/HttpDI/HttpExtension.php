@@ -85,7 +85,7 @@ class HttpExtension extends Nette\DI\CompilerExtension
 		$config = $this->getConfig();
 		$headers = $config['headers'];
 
-		if (isset($config['frames']) && $config['frames'] !== true) {
+		if (isset($config['frames']) && $config['frames'] !== true && !isset($headers['X-Frame-Options'])) {
 			$frames = $config['frames'];
 			if ($frames === false) {
 				$frames = 'DENY';
