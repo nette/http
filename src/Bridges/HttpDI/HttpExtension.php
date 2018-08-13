@@ -127,8 +127,12 @@ class HttpExtension extends Nette\DI\CompilerExtension
 		static $nonQuoted = ['require-sri-for' => 1, 'sandbox' => 1];
 		$value = '';
 		foreach ($config as $type => $policy) {
+			if ($policy === false) {
+				continue;
+			}
+			$policy = $policy === true ? [] : (array) $policy;
 			$value .= $type;
-			foreach ((array) $policy as $item) {
+			foreach ($policy as $item) {
 				$value .= !isset($nonQuoted[$type]) && preg_match('#^[a-z-]+\z#', $item) ? " '$item'" : " $item";
 			}
 			$value .= '; ';
