@@ -30,6 +30,9 @@ http:
 		style-src:
 			- self
 			- https://example.com
+		require-sri-for: style
+		sandbox: allow-forms
+		plugin-types: application/x-java-applet
 
 	cspReportOnly:
 		default-src: "'nonce'"
@@ -45,7 +48,7 @@ $container->initialize();
 $headers = headers_list();
 
 preg_match('#nonce-([\w+/]+=*)#', implode($headers), $nonce);
-Assert::contains("Content-Security-Policy: default-src 'self' https://example.com; upgrade-insecure-requests; script-src 'nonce-$nonce[1]'; style-src 'self' https://example.com;", $headers);
+Assert::contains("Content-Security-Policy: default-src 'self' https://example.com; upgrade-insecure-requests; script-src 'nonce-$nonce[1]'; style-src 'self' https://example.com; require-sri-for style; sandbox allow-forms; plugin-types application/x-java-applet;", $headers);
 Assert::contains("Content-Security-Policy-Report-Only: default-src 'nonce-$nonce[1]'; report-uri https://example.com/report;", $headers);
 
 
