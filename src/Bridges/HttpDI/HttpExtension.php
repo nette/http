@@ -103,7 +103,7 @@ class HttpExtension extends Nette\DI\CompilerExtension
 			foreach ($policyConfig as $type => $policy) {
 				$value .= $type;
 				foreach ((array) $policy as $item) {
-					$value .= (preg_match('#[.:]#', $item) || in_array($type, $nonQuoted, true)) ? " $item" : " '$item'";
+					$value .= (preg_match('#[.:*]#', $item) || in_array($type, $nonQuoted, true)) ? " $item" : " '$item'";
 				}
 				$value .= '; ';
 			}
