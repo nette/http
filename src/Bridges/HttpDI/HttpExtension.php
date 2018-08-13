@@ -26,6 +26,7 @@ class HttpExtension extends Nette\DI\CompilerExtension
 		'frames' => 'SAMEORIGIN', // X-Frame-Options
 		'csp' => [], // Content-Security-Policy
 		'csp-report' => [], // Content-Security-Policy-Report-Only
+		'fp' => [], // Feature-Policy
 	];
 
 	/** @var bool */
@@ -114,6 +115,18 @@ class HttpExtension extends Nette\DI\CompilerExtension
 				);
 			}
 			$headers['Content-Security-Policy' . ($key === 'csp' ? '' : '-Report-Only')] = $value;
+		}
+		
+		if (!empty($config['fp'])) {
+            		$value = '';
+            		foreach ($config['fp'] as $type => $policy) {
+                		$value .= $type;
+				foreach ((array) $policy as $item) {
+				    $value .= preg_match('#^[a-z-]+\z#', $item) ? " '$item'" : " $item";
+				}
+				$value .= '; ';
+            		}
+            		$headers['Feature-Policy'] = $value;
 		}
 
 		foreach ($headers as $key => $value) {
