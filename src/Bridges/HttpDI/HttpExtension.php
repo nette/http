@@ -26,6 +26,7 @@ class HttpExtension extends Nette\DI\CompilerExtension
 		'frames' => 'SAMEORIGIN', // X-Frame-Options
 		'csp' => [], // Content-Security-Policy
 		'csp-report' => [], // Content-Security-Policy-Report-Only
+		'feature-policy' => [], // Feature-Policy
 	];
 
 	/** @var bool */
@@ -95,18 +96,25 @@ class HttpExtension extends Nette\DI\CompilerExtension
 			$headers['X-Frame-Options'] = $frames;
 		}
 
+		// function to create CSP and FP header value from configuration array
+		$createValue = static function (array $policyConfig) {
+			static $nonQuoted = [ 'require-sri-for', 'sandbox', 'plugin-types' ]; // those properties contain non quoted keywords
+			$value = '';
+			foreach ($policyConfig as $type => $policy) {
+				$value .= $type;
+				foreach ((array) $policy as $item) {
+					$value .= (preg_match('#[.:*]#', $item) || in_array($type, $nonQuoted, true)) ? " $item" : " '$item'";
+				}
+				$value .= '; ';
+			}
+			return $value;
+		};
+		
 		foreach (['csp', 'csp-report'] as $key) {
 			if (empty($config[$key])) {
 				continue;
 			}
-			$value = '';
-			foreach ($config[$key] as $type => $policy) {
-				$value .= $type;
-				foreach ((array) $policy as $item) {
-					$value .= preg_match('#^[a-z-]+\z#', $item) ? " '$item'" : " $item";
-				}
-				$value .= '; ';
-			}
+			$value = $createValue($config[$key]);
 			if (strpos($value, "'nonce'")) {
 				$value = Nette\DI\ContainerBuilder::literal(
 					'str_replace(?, ? . ($cspNonce = $cspNonce \?\? base64_encode(random_bytes(16))), ?)',
@@ -114,6 +122,11 @@ class HttpExtension extends Nette\DI\CompilerExtension
 				);
 			}
 			$headers['Content-Security-Policy' . ($key === 'csp' ? '' : '-Report-Only')] = $value;
+		}
+		
+		if (!empty($config['feature-policy'])) {
+            		$value = $createValue($config['feature-policy']);
+            		$headers['Feature-Policy'] = $value;
 		}
 
 		foreach ($headers as $key => $value) {
