@@ -31,7 +31,7 @@ final class FileUpload
 	/** @var string */
 	private $name;
 
-	/** @var string */
+	/** @var string|null|false */
 	private $type;
 
 	/** @var int */
@@ -85,7 +85,7 @@ final class FileUpload
 		if ($this->isOk() && $this->type === null) {
 			$this->type = finfo_file(finfo_open(FILEINFO_MIME_TYPE), $this->tmpName);
 		}
-		return $this->type;
+		return $this->type ?: null;
 	}
 
 
