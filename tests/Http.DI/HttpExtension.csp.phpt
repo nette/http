@@ -31,7 +31,7 @@ http:
 			- self
 			- https://example.com
 
-	csp-report:
+	cspReportOnly:
 		default-src: "'nonce'"
 		report-uri: https://example.com/report
 EOD

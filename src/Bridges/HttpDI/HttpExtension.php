@@ -25,7 +25,7 @@ class HttpExtension extends Nette\DI\CompilerExtension
 		],
 		'frames' => 'SAMEORIGIN', // X-Frame-Options
 		'csp' => [], // Content-Security-Policy
-		'csp-report' => [], // Content-Security-Policy-Report-Only
+		'cspReportOnly' => [], // Content-Security-Policy-Report-Only
 	];
 
 	/** @var bool */
@@ -95,7 +95,7 @@ class HttpExtension extends Nette\DI\CompilerExtension
 			$headers['X-Frame-Options'] = $frames;
 		}
 
-		foreach (['csp', 'csp-report'] as $key) {
+		foreach (['csp', 'cspReportOnly'] as $key) {
 			if (empty($config[$key])) {
 				continue;
 			}
