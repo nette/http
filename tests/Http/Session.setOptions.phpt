@@ -21,11 +21,11 @@ Assert::same([
 	'use_only_cookies' => 1,
 	'use_trans_sid' => 0,
 	'cookie_lifetime' => 0,
+	'cookie_httponly' => true,
+	'gc_maxlifetime' => 10800,
 	'cookie_path' => '/',
 	'cookie_domain' => '',
 	'cookie_secure' => false,
-	'cookie_httponly' => true,
-	'gc_maxlifetime' => 10800,
 ], $session->getOptions());
 
 $session->setOptions([
@@ -38,10 +38,10 @@ Assert::same([
 	'use_only_cookies' => 1,
 	'use_trans_sid' => 0,
 	'cookie_lifetime' => 0,
-	'cookie_path' => '/',
-	'cookie_secure' => false,
 	'cookie_httponly' => true,
 	'gc_maxlifetime' => 10800,
+	'cookie_path' => '/',
+	'cookie_secure' => false,
 ], $session->getOptions());
 
 $session->setOptions([
@@ -54,8 +54,8 @@ Assert::same([
 	'use_only_cookies' => 1,
 	'use_trans_sid' => 0,
 	'cookie_lifetime' => 0,
-	'cookie_path' => '/',
-	'cookie_secure' => false,
 	'cookie_httponly' => true,
 	'gc_maxlifetime' => 10800,
+	'cookie_path' => '/',
+	'cookie_secure' => false,
 ], $session->getOptions());

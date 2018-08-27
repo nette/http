@@ -38,9 +38,6 @@ class Session
 
 		// cookies
 		'cookie_lifetime' => 0,   // until the browser is closed
-		'cookie_path' => '/',     // cookie is available within the entire domain
-		'cookie_domain' => '',    // cookie is available on current subdomain only
-		'cookie_secure' => false, // cookie is available on HTTP & HTTPS
 		'cookie_httponly' => true, // must be enabled to prevent Session Hijacking
 
 		// other
@@ -62,6 +59,9 @@ class Session
 		$this->request = $request;
 		$this->response = $response;
 		self::$started = self::$started && session_status() === PHP_SESSION_ACTIVE;
+		$this->options['cookie_path'] = &$this->response->cookiePath;
+		$this->options['cookie_domain'] = &$this->response->cookieDomain;
+		$this->options['cookie_secure'] = &$this->response->cookieSecure;
 	}
 
 
