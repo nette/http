@@ -26,6 +26,7 @@ class HttpExtension extends Nette\DI\CompilerExtension
 		'cspReportOnly' => [], // Content-Security-Policy-Report-Only
 		'csp-report' => null, // for compatibility
 		'featurePolicy' => [], // Feature-Policy
+		'cookieSecure' => null, // true|false|auto  Whether the cookie is available only through HTTPS
 	];
 
 	/** @var bool */
@@ -63,6 +64,22 @@ class HttpExtension extends Nette\DI\CompilerExtension
 			$builder->addAlias('nette.httpContext', $this->prefix('context'));
 			$builder->addAlias('httpRequest', $this->prefix('request'));
 			$builder->addAlias('httpResponse', $this->prefix('response'));
+		}
+	}
+
+
+	public function beforeCompile()
+	{
+		if (isset($this->config['cookieSecure'])) {
+			$builder = $this->getContainerBuilder();
+			$value = $this->config['cookieSecure'] === 'auto'
+				? $builder::literal('$this->getService(?)->isSecured()', [$this->prefix('request')])
+				: (bool) $this->config['cookieSecure'];
+
+			$builder->getDefinition($this->prefix('response'))
+				->addSetup('$cookieSecure', [$value]);
+			$builder->getDefinitionByType(Nette\Http\Session::class)
+				->addSetup('setOptions', [['cookie_secure' => $value]]);
 		}
 	}
 
