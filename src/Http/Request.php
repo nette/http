@@ -241,7 +241,7 @@ class Request implements IRequest
 
 
 	/**
-	 * Is the request is sent via secure channel (https).
+	 * Is the request sent via secure channel (https)?
 	 * @return bool
 	 */
 	public function isSecured()
