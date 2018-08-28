@@ -251,6 +251,16 @@ class Request implements IRequest
 
 
 	/**
+	 * Is the request sent from the same origin?
+	 * @return bool
+	 */
+	public function isSameSite()
+	{
+		return isset($this->cookies['nette-samesite']);
+	}
+
+
+	/**
 	 * Is AJAX request?
 	 * @return bool
 	 */

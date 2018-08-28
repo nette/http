@@ -27,6 +27,7 @@ class HttpExtension extends Nette\DI\CompilerExtension
 		'csp-report' => null, // for compatibility
 		'featurePolicy' => [], // Feature-Policy
 		'cookieSecure' => null, // true|false|auto  Whether the cookie is available only through HTTPS
+		'sameSiteProtection' => null, // activates Request::isSameSite() protection
 	];
 
 	/** @var bool */
@@ -70,8 +71,8 @@ class HttpExtension extends Nette\DI\CompilerExtension
 
 	public function beforeCompile()
 	{
+		$builder = $this->getContainerBuilder();
 		if (isset($this->config['cookieSecure'])) {
-			$builder = $this->getContainerBuilder();
 			$value = $this->config['cookieSecure'] === 'auto'
 				? $builder::literal('$this->getService(?)->isSecured()', [$this->prefix('request')])
 				: (bool) $this->config['cookieSecure'];
@@ -80,6 +81,11 @@ class HttpExtension extends Nette\DI\CompilerExtension
 				->addSetup('$cookieSecure', [$value]);
 			$builder->getDefinitionByType(Nette\Http\Session::class)
 				->addSetup('setOptions', [['cookie_secure' => $value]]);
+		}
+
+		if (!empty($this->config['sameSiteProtection'])) {
+			$builder->getDefinitionByType(Nette\Http\Session::class)
+				->addSetup('setOptions', [['cookie_samesite' => 'Lax']]);
 		}
 	}
 
@@ -131,6 +137,10 @@ class HttpExtension extends Nette\DI\CompilerExtension
 			if ($value != null) { // intentionally ==
 				$initialize->addBody('$this->getService(?)->setHeader(?, ?);', [$this->prefix('response'), $key, $value]);
 			}
+		}
+
+		if (!empty($config['sameSiteProtection'])) {
+			$initialize->addBody('$this->getService(?)->setCookie(...?);', [$this->prefix('response'), ['nette-samesite', '1', 0, '/', null, null, true, 'Strict']]);
 		}
 	}
 
