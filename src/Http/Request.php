@@ -219,7 +219,7 @@ class Request implements IRequest
 
 
 	/**
-	 * Is the request is sent via secure channel (https).
+	 * Is the request sent via secure channel (https)?
 	 */
 	public function isSecured(): bool
 	{

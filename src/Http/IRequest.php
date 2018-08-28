@@ -93,7 +93,7 @@ interface IRequest
 	function getHeaders(): array;
 
 	/**
-	 * Is the request is sent via secure channel (https).
+	 * Is the request sent via secure channel (https)?
 	 */
 	function isSecured(): bool;
 
