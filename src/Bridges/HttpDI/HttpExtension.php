@@ -28,6 +28,7 @@ class HttpExtension extends Nette\DI\CompilerExtension
 		'cspReportOnly' => [], // Content-Security-Policy-Report-Only
 		'featurePolicy' => [], // Feature-Policy
 		'cookieSecure' => 'auto', // true|false|auto  Whether the cookie is available only through HTTPS
+		'sameSiteProtection' => true, // activates Request::isSameSite() protection
 	];
 
 	/** @var bool */
@@ -126,6 +127,10 @@ class HttpExtension extends Nette\DI\CompilerExtension
 			if ($value != null) { // intentionally ==
 				$initialize->addBody('$this->getService(?)->setHeader(?, ?);', [$this->prefix('response'), $key, $value]);
 			}
+		}
+
+		if (!empty($config['sameSiteProtection'])) {
+			$initialize->addBody('$this->getService(?)->setCookie(...?);', [$this->prefix('response'), ['nette-samesite', '1', 0, '/', null, null, true, 'Strict']]);
 		}
 	}
 
