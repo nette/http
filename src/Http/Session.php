@@ -400,10 +400,17 @@ class Session
 		}
 
 		if ($cookie !== $origCookie) {
-			session_set_cookie_params(
-				$cookie['lifetime'], $cookie['path'], $cookie['domain'],
-				$cookie['secure'], $cookie['httponly']
-			);
+			if (PHP_VERSION_ID >= 70300) {
+				session_set_cookie_params($cookie);
+			} else {
+				session_set_cookie_params(
+					$cookie['lifetime'],
+					$cookie['path'] . (isset($cookie['samesite']) ? '; SameSite=' . $cookie['samesite'] : ''),
+					$cookie['domain'],
+					$cookie['secure'],
+					$cookie['httponly']
+				);
+			}
 			if (self::$started) {
 				$this->sendCookie();
 			}
@@ -442,12 +449,13 @@ class Session
 	 * Sets the session cookie parameters.
 	 * @return static
 	 */
-	public function setCookieParameters(string $path, string $domain = null, bool $secure = null)
+	public function setCookieParameters(string $path, string $domain = null, bool $secure = null, string $samesite = null)
 	{
 		return $this->setOptions([
 			'cookie_path' => $path,
 			'cookie_domain' => $domain,
 			'cookie_secure' => $secure,
+			'cookie_samesite' => $samesite,
 		]);
 	}
 
@@ -496,7 +504,7 @@ class Session
 		$this->response->setCookie(
 			session_name(), session_id(),
 			$cookie['lifetime'] ? $cookie['lifetime'] + time() : 0,
-			$cookie['path'], $cookie['domain'], $cookie['secure'], $cookie['httponly']
+			$cookie['path'], $cookie['domain'], $cookie['secure'], $cookie['httponly'], $cookie['samesite'] ?? null
 		);
 	}
 }
