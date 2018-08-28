@@ -39,6 +39,7 @@ class Session
 		// cookies
 		'cookie_lifetime' => 0,   // until the browser is closed
 		'cookie_httponly' => true, // must be enabled to prevent Session Hijacking
+		'cookie_samesite' => 'Lax', // must be enabled to prevent CSRF
 
 		// other
 		'gc_maxlifetime' => self::DEFAULT_FILE_LIFETIME, // 3 hours

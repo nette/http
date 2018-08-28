@@ -15,10 +15,7 @@ if (PHP_SAPI === 'cli') {
 $factory = new Nette\Http\RequestFactory;
 $session = new Nette\Http\Session($factory->createHttpRequest(), new Nette\Http\Response);
 
-$session->setOptions([
-	'cookie_samesite' => 'Lax',
-]);
-
+// is samesite=Lax by default
 $session->start();
 
 Assert::contains(
