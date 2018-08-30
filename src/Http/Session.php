@@ -453,7 +453,7 @@ class Session
 
 
 	/**
-	 * Returns the session cookie parameters containing items: lifetime, path, domain, secure, httponly.
+	 * @deprecated
 	 */
 	public function getCookieParameters(): array
 	{
@@ -492,7 +492,7 @@ class Session
 	 */
 	private function sendCookie(): void
 	{
-		$cookie = $this->getCookieParameters();
+		$cookie = session_get_cookie_params();
 		$this->response->setCookie(
 			session_name(), session_id(),
 			$cookie['lifetime'] ? $cookie['lifetime'] + time() : 0,
