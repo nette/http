@@ -52,6 +52,9 @@ class SessionExtension extends Nette\DI\CompilerExtension
 		if (($config['cookieDomain'] ?? null) === 'domain') {
 			$config['cookieDomain'] = $builder::literal('$this->getByType(Nette\Http\IRequest::class)->getUrl()->getDomain(2)');
 		}
+		if (($config['cookieSecure'] ?? null) === 'auto') {
+			$config['cookieSecure'] = $builder::literal('$this->getByType(Nette\Http\IRequest::class)->isSecured()');
+		}
 
 		if ($this->debugMode && $config['debugger']) {
 			$session->addSetup('@Tracy\Bar::addPanel', [
