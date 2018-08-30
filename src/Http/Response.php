@@ -237,17 +237,28 @@ final class Response implements IResponse
 	 */
 	public function setCookie(string $name, string $value, $time, string $path = null, string $domain = null, bool $secure = null, bool $httpOnly = null, string $sameSite = null)
 	{
-		$sameSite = $sameSite ? "; SameSite=$sameSite" : '';
 		self::checkHeaders();
-		setcookie(
-			$name,
-			$value,
-			$time ? (int) DateTime::from($time)->format('U') : 0,
-			($path === null ? $this->cookiePath : $path) . $sameSite,
-			$domain === null ? $this->cookieDomain : $domain,
-			$secure === null ? $this->cookieSecure : $secure,
-			$httpOnly === null ? $this->cookieHttpOnly : $httpOnly
-		);
+		$options = [
+			'expires' => $time ? (int) DateTime::from($time)->format('U') : 0,
+			'path' => $path === null ? $this->cookiePath : $path,
+			'domain' => $domain === null ? $this->cookieDomain : $domain,
+			'secure' => $secure === null ? $this->cookieSecure : $secure,
+			'httponly' => $httpOnly === null ? $this->cookieHttpOnly : $httpOnly,
+			'samesite' => $sameSite,
+		];
+		if (PHP_VERSION_ID >= 70300) {
+			setcookie($name, $value, $options);
+		} else {
+			setcookie(
+				$name,
+				$value,
+				$options['expires'],
+				$options['path'] . ($sameSite ? "; SameSite=$sameSite" : ''),
+				$options['domain'],
+				$options['secure'],
+				$options['httponly']
+			);
+		}
 		Helpers::removeDuplicateCookies();
 		return $this;
 	}
