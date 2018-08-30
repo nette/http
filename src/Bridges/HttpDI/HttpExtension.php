@@ -27,7 +27,7 @@ class HttpExtension extends Nette\DI\CompilerExtension
 		'csp' => [], // Content-Security-Policy
 		'cspReportOnly' => [], // Content-Security-Policy-Report-Only
 		'featurePolicy' => [], // Feature-Policy
-		'cookieSecure' => null, // true|false|auto  Whether the cookie is available only through HTTPS
+		'cookieSecure' => 'auto', // true|false|auto  Whether the cookie is available only through HTTPS
 	];
 
 	/** @var bool */
