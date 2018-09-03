@@ -35,6 +35,7 @@ class Session
 		'use_cookies' => 1,       // must be enabled to prevent Session Hijacking and Fixation
 		'use_only_cookies' => 1,  // must be enabled to prevent Session Fixation
 		'use_trans_sid' => 0,     // must be disabled to prevent Session Hijacking and Fixation
+		'use_strict_mode' => 1,   // must be enabled to prevent Session Fixation
 
 		// cookies
 		'cookie_lifetime' => 0,   // until the browser is closed

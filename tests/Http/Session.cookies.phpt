@@ -23,6 +23,7 @@ Assert::same([
 	'use_cookies' => 1,
 	'use_only_cookies' => 1,
 	'use_trans_sid' => 0,
+	'use_strict_mode' => 1,
 	'cookie_lifetime' => 0,
 	'cookie_httponly' => true,
 	'cookie_samesite' => 'Lax',
