@@ -118,9 +118,6 @@ class Session
 			$this->regenerateId();
 		}
 
-		// resend cookie
-		$this->sendCookie();
-
 		// process meta metadata
 		if (isset($nf['META'])) {
 			$now = time();
