@@ -46,27 +46,4 @@ final class Helpers
 		}
 		return strncmp($ip, $mask, $size === '' ? $max : (int) $size) === 0;
 	}
-
-
-	/**
-	 * Removes duplicate cookies from response.
-	 * @internal
-	 */
-	public static function removeDuplicateCookies(): void
-	{
-		if (headers_sent($file, $line) || ini_get('suhosin.cookie.encrypt')) {
-			return;
-		}
-
-		$flatten = [];
-		foreach (headers_list() as $header) {
-			if (preg_match('#^Set-Cookie: .+?=#', $header, $m)) {
-				$flatten[$m[0]] = $header;
-				header_remove('Set-Cookie');
-			}
-		}
-		foreach (array_values($flatten) as $key => $header) {
-			header($header, $key === 0);
-		}
-	}
 }

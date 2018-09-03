@@ -259,7 +259,6 @@ final class Response implements IResponse
 				$options['httponly']
 			);
 		}
-		Helpers::removeDuplicateCookies();
 		return $this;
 	}
 
