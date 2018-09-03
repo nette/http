@@ -116,9 +116,6 @@ class Session
 			$this->regenerated = true;
 		}
 
-		// resend cookie
-		$this->sendCookie();
-
 		// process meta metadata
 		if (isset($nf['META'])) {
 			$now = time();
