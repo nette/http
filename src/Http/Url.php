@@ -231,9 +231,7 @@ class Url implements \JsonSerializable
 	 */
 	public function getPort()
 	{
-		return $this->port
-			? $this->port
-			: (isset(self::$defaultPorts[$this->scheme]) ? self::$defaultPorts[$this->scheme] : null);
+		return $this->port ?: (isset(self::$defaultPorts[$this->scheme]) ? self::$defaultPorts[$this->scheme] : null);
 	}
 
 
