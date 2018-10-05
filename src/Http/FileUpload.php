@@ -154,7 +154,7 @@ final class FileUpload
 		Nette\Utils\Callback::invokeSafe(
 			is_uploaded_file($this->tmpName) ? 'move_uploaded_file' : 'rename',
 			[$this->tmpName, $dest],
-			function ($message) use ($dest) {
+			function (string $message) use ($dest): void {
 				throw new Nette\InvalidStateException("Unable to move uploaded file '$this->tmpName' to '$dest'. $message");
 			}
 		);

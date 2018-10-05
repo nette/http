@@ -22,7 +22,7 @@ Tester\Helpers::purge(TEMP_DIR);
 ini_set('session.save_path', TEMP_DIR);
 
 
-function test(\Closure $function)
+function test(\Closure $function): void
 {
 	$function();
 }

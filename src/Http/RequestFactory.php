@@ -197,7 +197,7 @@ class RequestFactory
 		$remoteHost = !empty($_SERVER['REMOTE_HOST']) ? $_SERVER['REMOTE_HOST'] : null;
 
 		// use real client address and host if trusted proxy is used
-		$usingTrustedProxy = $remoteAddr && array_filter($this->proxies, function ($proxy) use ($remoteAddr) {
+		$usingTrustedProxy = $remoteAddr && array_filter($this->proxies, function (string $proxy) use ($remoteAddr): bool {
 			return Helpers::ipMatch($remoteAddr, $proxy);
 		});
 		if ($usingTrustedProxy) {
@@ -249,8 +249,8 @@ class RequestFactory
 				}
 
 				if (!empty($_SERVER['HTTP_X_FORWARDED_FOR'])) {
-					$xForwardedForWithoutProxies = array_filter(explode(',', $_SERVER['HTTP_X_FORWARDED_FOR']), function ($ip) {
-						return !array_filter($this->proxies, function ($proxy) use ($ip) {
+					$xForwardedForWithoutProxies = array_filter(explode(',', $_SERVER['HTTP_X_FORWARDED_FOR']), function (string $ip): bool {
+						return !array_filter($this->proxies, function (string $proxy) use ($ip): bool {
 							return filter_var(trim($ip), FILTER_VALIDATE_IP) !== false && Helpers::ipMatch(trim($ip), $proxy);
 						});
 					});
@@ -278,7 +278,7 @@ class RequestFactory
 		}
 
 		// raw body
-		$rawBodyCallback = function () {
+		$rawBodyCallback = function (): string {
 			return file_get_contents('php://input');
 		};
 

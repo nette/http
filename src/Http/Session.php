@@ -89,7 +89,7 @@ class Session
 
 		try {
 			// session_start returns false on failure only sometimes
-			Nette\Utils\Callback::invokeSafe('session_start', [], function ($message) use (&$e) {
+			Nette\Utils\Callback::invokeSafe('session_start', [], function (string $message) use (&$e): void {
 				$e = new Nette\InvalidStateException($message);
 			});
 		} catch (\Exception $e) {

@@ -37,7 +37,7 @@ final class Helpers
 	public static function ipMatch(string $ip, string $mask): bool
 	{
 		[$mask, $size] = explode('/', $mask . '/');
-		$tmp = function ($n) { return sprintf('%032b', $n); };
+		$tmp = function (int $n): string { return sprintf('%032b', $n); };
 		$ip = implode('', array_map($tmp, unpack('N*', inet_pton($ip))));
 		$mask = implode('', array_map($tmp, unpack('N*', inet_pton($mask))));
 		$max = strlen($ip);
