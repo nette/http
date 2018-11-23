@@ -19,6 +19,7 @@ class SessionExtension extends Nette\DI\CompilerExtension
 		'debugger' => false,
 		'autoStart' => 'smart', // true|false|smart
 		'expiration' => null,
+		'handler' => null,
 	];
 
 	/** @var bool */
@@ -47,6 +48,9 @@ class SessionExtension extends Nette\DI\CompilerExtension
 		if ($config['expiration']) {
 			$session->addSetup('setExpiration', [$config['expiration']]);
 		}
+		if ($config['handler']) {
+			$session->addSetup('setHandler', [$config['handler']]);
+		}
 		if (isset($config['cookieDomain']) && $config['cookieDomain'] === 'domain') {
 			$config['cookieDomain'] = $builder::literal('$this->getByType(Nette\Http\IRequest::class)->getUrl()->getDomain(2)');
 		}
@@ -60,7 +64,7 @@ class SessionExtension extends Nette\DI\CompilerExtension
 			]);
 		}
 
-		unset($config['expiration'], $config['autoStart'], $config['debugger']);
+		unset($config['expiration'], $config['handler'], $config['autoStart'], $config['debugger']);
 		if (!empty($config)) {
 			$session->addSetup('setOptions', [$config]);
 		}
