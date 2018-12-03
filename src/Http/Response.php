@@ -58,7 +58,7 @@ final class Response implements IResponse
 	 * @throws Nette\InvalidArgumentException  if code is invalid
 	 * @throws Nette\InvalidStateException  if HTTP headers have been sent
 	 */
-	public function setCode(int $code, string $reason = null)
+	public function setCode(int $code, ?string $reason = null)
 	{
 		if ($code < 100 || $code > 599) {
 			throw new Nette\InvalidArgumentException("Bad HTTP response '$code'.");
@@ -129,7 +129,7 @@ final class Response implements IResponse
 	 * @return static
 	 * @throws Nette\InvalidStateException  if HTTP headers have been sent
 	 */
-	public function setContentType(string $type, string $charset = null)
+	public function setContentType(string $type, ?string $charset = null)
 	{
 		$this->setHeader('Content-Type', $type . ($charset ? '; charset=' . $charset : ''));
 		return $this;
@@ -235,7 +235,7 @@ final class Response implements IResponse
 	 * @return static
 	 * @throws Nette\InvalidStateException  if HTTP headers have been sent
 	 */
-	public function setCookie(string $name, string $value, $time, string $path = null, string $domain = null, bool $secure = null, bool $httpOnly = null, string $sameSite = null)
+	public function setCookie(string $name, string $value, $time, ?string $path = null, ?string $domain = null, ?bool $secure = null, ?bool $httpOnly = null, ?string $sameSite = null)
 	{
 		self::checkHeaders();
 		$options = [
@@ -267,7 +267,7 @@ final class Response implements IResponse
 	 * Deletes a cookie.
 	 * @throws Nette\InvalidStateException  if HTTP headers have been sent
 	 */
-	public function deleteCookie(string $name, string $path = null, string $domain = null, bool $secure = null): void
+	public function deleteCookie(string $name, ?string $path = null, ?string $domain = null, ?bool $secure = null): void
 	{
 		$this->setCookie($name, '', 0, $path, $domain, $secure);
 	}
