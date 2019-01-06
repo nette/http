@@ -265,8 +265,17 @@ class RequestFactory
 					}
 				}
 			}
-		}
+		} else {
+			if (!empty($_SERVER['HTTP_X_FORWARDED_PROTO'])) {
+				$url->setScheme(strcasecmp($_SERVER['HTTP_X_FORWARDED_PROTO'], 'https') === 0 ? 'https' : 'http');
+				$url->setPort($url->getScheme() === 'https' ? 443 : 80);
+			}
 
+			if (!empty($_SERVER['HTTP_X_FORWARDED_PORT'])) {
+				$url->setPort((int) $_SERVER['HTTP_X_FORWARDED_PORT']);
+			}
+		}
+		
 		// method, eg. GET, PUT, ...
 		$method = $_SERVER['REQUEST_METHOD'] ?? null;
 		if (
