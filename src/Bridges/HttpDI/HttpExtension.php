@@ -53,13 +53,11 @@ class HttpExtension extends Nette\DI\CompilerExtension
 
 		$builder->addDefinition($this->prefix('request'))
 			->setFactory('@Nette\Http\RequestFactory::createHttpRequest')
-			->setType(Nette\Http\IRequest::class)
-			->setExported();
+			->setType(Nette\Http\IRequest::class);
 
 		$response = $builder->addDefinition($this->prefix('response'))
 			->setFactory(Nette\Http\Response::class)
-			->setType(Nette\Http\IResponse::class)
-			->setExported();
+			->setType(Nette\Http\IResponse::class);
 
 		if (isset($config['cookieSecure'])) {
 			$value = $config['cookieSecure'] === 'auto'
