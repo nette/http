@@ -45,7 +45,8 @@ class SessionExtension extends Nette\DI\CompilerExtension
 		$this->setConfig($config);
 
 		$session = $builder->addDefinition($this->prefix('session'))
-			->setFactory(Nette\Http\Session::class);
+			->setFactory(Nette\Http\Session::class)
+			->setExported();
 
 		if ($config['expiration']) {
 			$session->addSetup('setExpiration', [$config['expiration']]);
