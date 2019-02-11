@@ -12,7 +12,7 @@ namespace Nette\Http;
 
 /**
  * IHttpRequest provides access scheme for request sent via HTTP.
- * @method Url|null getReferer() Returns referrer.
+ * @method UrlImmutable|null getReferer() Returns referrer.
  */
 interface IRequest
 {

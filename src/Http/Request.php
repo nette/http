@@ -208,9 +208,11 @@ class Request implements IRequest
 	/**
 	 * Returns referrer.
 	 */
-	public function getReferer(): ?Url
+	public function getReferer(): ?UrlImmutable
 	{
-		return isset($this->headers['referer']) ? new Url($this->headers['referer']) : null;
+		return isset($this->headers['referer'])
+			? new UrlImmutable($this->headers['referer'])
+			: null;
 	}
 
 
