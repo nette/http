@@ -66,6 +66,9 @@ class UrlImmutable implements \JsonSerializable
 	/** @var string */
 	private $fragment = '';
 
+	/** @var string */
+	private $authority = '';
+
 
 	/**
 	 * @param  string|self|Url  $url
@@ -80,9 +83,7 @@ class UrlImmutable implements \JsonSerializable
 			throw new Nette\InvalidArgumentException;
 		}
 
-		if ($this->host && substr($this->path, 0, 1) !== '/') {
-			$this->path = '/' . $this->path;
-		}
+		$this->build();
 	}
 
 
@@ -173,15 +174,7 @@ class UrlImmutable implements \JsonSerializable
 	 */
 	public function getAuthority(): string
 	{
-		return $this->host === ''
-			? ''
-			: ($this->user !== ''
-				? rawurlencode($this->user) . ($this->password === '' ? '' : ':' . rawurlencode($this->password)) . '@'
-				: '')
-			. $this->host
-			. ($this->port && (!isset(Url::$defaultPorts[$this->scheme]) || $this->port !== Url::$defaultPorts[$this->scheme])
-				? ':' . $this->port
-				: '');
+		return $this->authority;
 	}
 
 
@@ -191,7 +184,7 @@ class UrlImmutable implements \JsonSerializable
 	public function getHostUrl(): string
 	{
 		return ($this->scheme ? $this->scheme . ':' : '')
-			. (($authority = $this->getAuthority()) ? '//' . $authority : '');
+			. ($this->authority ? '//' . $this->authority : '');
 	}
 
 
@@ -220,5 +213,23 @@ class UrlImmutable implements \JsonSerializable
 	final public function export(): array
 	{
 		return [$this->scheme, $this->user, $this->password, $this->host, $this->port, $this->path, $this->query, $this->fragment];
+	}
+
+
+	protected function build(): void
+	{
+		if ($this->host && substr($this->path, 0, 1) !== '/') {
+			$this->path = '/' . $this->path;
+		}
+
+		$this->authority = $this->host === ''
+			? ''
+			: ($this->user !== ''
+				? rawurlencode($this->user) . ($this->password === '' ? '' : ':' . rawurlencode($this->password)) . '@'
+				: '')
+			. $this->host
+			. ($this->port && (!isset(Url::$defaultPorts[$this->scheme]) || $this->port !== Url::$defaultPorts[$this->scheme])
+				? ':' . $this->port
+				: '');
 	}
 }
