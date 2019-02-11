@@ -78,7 +78,7 @@ class Url implements \JsonSerializable
 
 
 	/**
-	 * @param  string|self  $url
+	 * @param  string|self|UrlImmutable  $url
 	 * @throws Nette\InvalidArgumentException if URL is malformed
 	 */
 	public function __construct($url = null)
@@ -98,10 +98,11 @@ class Url implements \JsonSerializable
 			$this->setQuery($p['query'] ?? []);
 			$this->fragment = isset($p['fragment']) ? rawurldecode($p['fragment']) : '';
 
-		} elseif ($url instanceof self) {
-			foreach ($this as $key => $val) {
-				$this->$key = $url->$key;
-			}
+		} elseif ($url instanceof UrlImmutable || $url instanceof self) {
+			[$this->scheme, $this->user, $this->password, $this->host, $this->port, $this->path, $this->query, $this->fragment] = $url->export();
+
+		} elseif ($url !== null) {
+			throw new Nette\InvalidArgumentException;
 		}
 	}
 
@@ -393,6 +394,13 @@ class Url implements \JsonSerializable
 	public function jsonSerialize(): string
 	{
 		return $this->getAbsoluteUrl();
+	}
+
+
+	/** @internal */
+	final public function export(): array
+	{
+		return [$this->scheme, $this->user, $this->password, $this->host, $this->port, $this->path, $this->query, $this->fragment];
 	}
 
 
