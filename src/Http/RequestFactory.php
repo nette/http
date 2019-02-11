@@ -71,7 +71,6 @@ class RequestFactory
 
 		return new Request(
 			$url,
-			null,
 			$post,
 			$this->getFiles(),
 			$cookies,

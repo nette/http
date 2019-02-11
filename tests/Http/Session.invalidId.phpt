@@ -15,7 +15,7 @@ require __DIR__ . '/../bootstrap.php';
 
 $cookies = [session_name() => '#'];
 
-$session = new Http\Session(new Http\Request(new Http\UrlScript, null, [], [], $cookies), new Http\Response);
+$session = new Http\Session(new Http\Request(new Http\UrlScript, [], [], $cookies), new Http\Response);
 
 $session->start();
 
