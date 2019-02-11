@@ -351,7 +351,7 @@ class Url implements \JsonSerializable
 	{
 		return $this->host === ''
 			? ''
-			: ($this->user !== '' && $this->scheme !== 'http' && $this->scheme !== 'https'
+			: ($this->user !== ''
 				? rawurlencode($this->user) . ($this->password === '' ? '' : ':' . rawurlencode($this->password)) . '@'
 				: '')
 			. $this->host
@@ -410,12 +410,11 @@ class Url implements \JsonSerializable
 		ksort($query);
 		$query2 = $this->query;
 		ksort($query2);
-		$http = in_array($this->scheme, ['http', 'https'], true);
 		return $url->scheme === $this->scheme
 			&& !strcasecmp($url->host, $this->host)
 			&& $url->getPort() === $this->getPort()
-			&& ($http || $url->user === $this->user)
-			&& ($http || $url->password === $this->password)
+			&& $url->user === $this->user
+			&& $url->password === $this->password
 			&& self::unescape($url->path, '%/') === self::unescape($this->path, '%/')
 			&& $query === $query2
 			&& $url->fragment === $this->fragment;

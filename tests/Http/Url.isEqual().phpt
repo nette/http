@@ -42,7 +42,7 @@ Assert::false($url->isEqual('http://example.com/?a=456&b=123'));
 
 
 $url = new Url('http://user:pass@example.com');
-Assert::true($url->isEqual('http://example.com'));
+Assert::false($url->isEqual('http://example.com'));
 
 
 $url = new Url('ftp://user:pass@example.com');
