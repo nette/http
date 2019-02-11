@@ -81,7 +81,7 @@ class Request implements IRequest
 	 */
 	public function getUrl(): UrlScript
 	{
-		return clone $this->url;
+		return $this->url;
 	}
 
 

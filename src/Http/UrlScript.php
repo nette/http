@@ -11,68 +11,69 @@ namespace Nette\Http;
 
 
 /**
- * Extended HTTP URL.
+ * Immutable representation of a URL with application base-path.
  *
  * <pre>
+ *      baseUrl    basePath  relativePath  relativeUrl
+ *         |          |        |               |
+ * /---------------/-----\/--------\-----------------------------\
  * http://nette.org/admin/script.php/pathinfo/?name=param#fragment
  *                 \_______________/\________/
  *                        |              |
  *                   scriptPath       pathInfo
  * </pre>
  *
- * - scriptPath:  /admin/script.php (or simply /admin/ when script is directory index)
- * - pathInfo:    /pathinfo/ (additional path information)
- *
- * @property   string $scriptPath
+ * @property-read string $scriptPath
+ * @property-read string $basePath
  * @property-read string $relativePath
+ * @property-read string $baseUrl
+ * @property-read string $relativeUrl
  * @property-read string $pathInfo
  */
-class UrlScript extends Url
+class UrlScript extends UrlImmutable
 {
 	/** @var string */
 	private $scriptPath;
 
+	/** @var string */
+	private $basePath;
 
-	public function __construct($url = null, string $scriptPath = '')
+
+	public function __construct($url = '/', string $scriptPath = '')
 	{
 		parent::__construct($url);
-		$this->setScriptPath($scriptPath);
+		$this->scriptPath = $scriptPath;
+		$this->build();
 	}
 
 
-	/**
-	 * Sets the script-path part of URI.
-	 * @return static
-	 */
-	public function setScriptPath(string $value)
-	{
-		$this->scriptPath = $value;
-		return $this;
-	}
-
-
-	/**
-	 * Returns the script-path part of URI.
-	 */
 	public function getScriptPath(): string
 	{
-		return $this->scriptPath ?: $this->path;
+		return $this->scriptPath;
+	}
+
+
+	public function getBasePath(): string
+	{
+		return $this->basePath;
 	}
 
 
 	public function getRelativePath(): string
 	{
-		return substr($this->getPath(), strrpos($this->scriptPath, '/') + 1);
+		return substr($this->getPath(), strlen($this->basePath));
 	}
 
 
-	/**
-	 * Returns the base-path.
-	 */
-	public function getBasePath(): string
+	public function getBaseUrl(): string
 	{
-		$pos = strrpos($this->getScriptPath(), '/');
-		return $pos === false ? '' : substr($this->getPath(), 0, $pos + 1);
+		return $this->getHostUrl() . $this->basePath;
+	}
+
+
+	public function getRelativeUrl(): string
+	{
+		return substr($this->getAbsoluteUrl(), strlen($this->getBaseUrl()));
 	}
 
 
@@ -81,6 +82,15 @@ class UrlScript extends Url
 	 */
 	public function getPathInfo(): string
 	{
-		return (string) substr($this->getPath(), strlen($this->getScriptPath()));
+		return (string) substr($this->getPath(), strlen($this->scriptPath));
+	}
+
+
+	protected function build(): void
+	{
+		parent::build();
+		$this->scriptPath = $this->scriptPath ?: $this->getPath();
+		$pos = strrpos($this->scriptPath, '/');
+		$this->basePath = $pos === false ? '' : substr($this->scriptPath, 0, $pos + 1);
 	}
 }

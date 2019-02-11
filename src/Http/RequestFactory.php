@@ -62,15 +62,14 @@ class RequestFactory
 	 */
 	public function createHttpRequest(): Request
 	{
-		$url = new UrlScript;
+		$url = new Url;
 		$this->getServer($url);
 		$this->getPathAndQuery($url);
-		$this->getScriptPath($url);
 		[$post, $cookies] = $this->getGetPostCookie($url);
 		[$remoteAddr, $remoteHost] = $this->getClient($url);
 
 		return new Request(
-			$url,
+			new UrlScript($url, $this->getScriptPath($url)),
 			$post,
 			$this->getFiles(),
 			$cookies,
@@ -117,7 +116,7 @@ class RequestFactory
 	}
 
 
-	private function getScriptPath(Url $url): void
+	private function getScriptPath(Url $url): string
 	{
 		$path = $url->getPath();
 		$lpath = strtolower($path);
@@ -127,7 +126,7 @@ class RequestFactory
 			for ($i = 0; $i < $max && $lpath[$i] === $script[$i]; $i++);
 			$path = $i ? substr($path, 0, strrpos($path, '/', $i - strlen($path) - 1) + 1) : '/';
 		}
-		$url->setScriptPath($path);
+		return $path;
 	}
 
 
