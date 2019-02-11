@@ -65,8 +65,6 @@ class RequestFactory
 		// DETECTS URI, base path and script path of the request.
 		$url = new UrlScript;
 		$url->setScheme(!empty($_SERVER['HTTPS']) && strcasecmp($_SERVER['HTTPS'], 'off') ? 'https' : 'http');
-		$url->setUser($_SERVER['PHP_AUTH_USER'] ?? '');
-		$url->setPassword($_SERVER['PHP_AUTH_PW'] ?? '');
 
 		// host & port
 		if (
