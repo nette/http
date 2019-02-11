@@ -62,11 +62,34 @@ class RequestFactory
 	 */
 	public function createHttpRequest(): Request
 	{
-		// DETECTS URI, base path and script path of the request.
 		$url = new UrlScript;
+		$this->getServer($url);
+		$this->getPathAndQuery($url);
+		$this->getScriptPath($url);
+		[$post, $cookies] = $this->getGetPostCookie($url);
+		[$remoteAddr, $remoteHost] = $this->getClient($url);
+
+		return new Request(
+			$url,
+			null,
+			$post,
+			$this->getFiles(),
+			$cookies,
+			$this->getHeaders(),
+			$this->getMethod(),
+			$remoteAddr,
+			$remoteHost,
+			function (): string {
+				return file_get_contents('php://input');
+			}
+		);
+	}
+
+
+	private function getServer(Url $url): void
+	{
 		$url->setScheme(!empty($_SERVER['HTTPS']) && strcasecmp($_SERVER['HTTPS'], 'off') ? 'https' : 'http');
 
-		// host & port
 		if (
 			(isset($_SERVER[$tmp = 'HTTP_HOST']) || isset($_SERVER[$tmp = 'SERVER_NAME']))
 			&& preg_match('#^([a-z0-9_.-]+|\[[a-f0-9:]+\])(:\d+)?\z#i', $_SERVER[$tmp], $pair)
@@ -78,18 +101,26 @@ class RequestFactory
 				$url->setPort((int) $_SERVER['SERVER_PORT']);
 			}
 		}
+	}
 
-		// path & query
+
+	private function getPathAndQuery(Url $url): void
+	{
 		$requestUrl = $_SERVER['REQUEST_URI'] ?? '/';
 		$requestUrl = preg_replace('#^\w++://[^/]++#', '', $requestUrl);
 		$requestUrl = Strings::replace($requestUrl, $this->urlFilters['url']);
+
 		$tmp = explode('?', $requestUrl, 2);
 		$path = Url::unescape($tmp[0], '%/?#');
 		$path = Strings::fixEncoding(Strings::replace($path, $this->urlFilters['path']));
 		$url->setPath($path);
 		$url->setQuery($tmp[1] ?? '');
+	}
 
-		// detect script path
+
+	private function getScriptPath(Url $url): void
+	{
+		$path = $url->getPath();
 		$lpath = strtolower($path);
 		$script = isset($_SERVER['SCRIPT_NAME']) ? strtolower($_SERVER['SCRIPT_NAME']) : '';
 		if ($lpath !== $script) {
@@ -98,8 +129,11 @@ class RequestFactory
 			$path = $i ? substr($path, 0, strrpos($path, '/', $i - strlen($path) - 1) + 1) : '/';
 		}
 		$url->setScriptPath($path);
+	}
 
-		// GET, POST, COOKIE
+
+	private function getGetPostCookie(Url $url): array
+	{
 		$useFilter = (!in_array(ini_get('filter.default'), ['', 'unsafe_raw'], true) || ini_get('filter.default_flags'));
 
 		$query = $url->getQueryParameters();
@@ -126,26 +160,30 @@ class RequestFactory
 			}
 			unset($list, $key, $val, $k, $v);
 		}
+
 		$url->setQuery($query);
+		return [$post, $cookies];
+	}
 
 
-		// FILES and create FileUpload objects
+	private function getFiles(): array
+	{
+		$reChars = '#^[' . self::CHARS . ']*+\z#u';
 		$files = [];
 		$list = [];
-		if (!empty($_FILES)) {
-			foreach ($_FILES as $k => $v) {
-				if (
-					!is_array($v)
-					|| !isset($v['name'], $v['type'], $v['size'], $v['tmp_name'], $v['error'])
-					|| (!$this->binary && is_string($k) && (!preg_match($reChars, $k) || preg_last_error()))
-				) {
-					continue;
-				}
-				$v['@'] = &$files[$k];
-				$list[] = $v;
+		foreach ($_FILES ?? [] as $k => $v) {
+			if (
+				!is_array($v)
+				|| !isset($v['name'], $v['type'], $v['size'], $v['tmp_name'], $v['error'])
+				|| (!$this->binary && is_string($k) && (!preg_match($reChars, $k) || preg_last_error()))
+			) {
+				continue;
 			}
+			$v['@'] = &$files[$k];
+			$list[] = $v;
 		}
 
+		// create FileUpload objects
 		foreach ($list as &$v) {
 			if (!isset($v['name'])) {
 				continue;
@@ -174,98 +212,31 @@ class RequestFactory
 				];
 			}
 		}
+		return $files;
+	}
 
 
-		// HEADERS
+	private function getHeaders(): array
+	{
 		if (function_exists('apache_request_headers')) {
-			$headers = apache_request_headers();
-		} else {
-			$headers = [];
-			foreach ($_SERVER as $k => $v) {
-				if (strncmp($k, 'HTTP_', 5) == 0) {
-					$k = substr($k, 5);
-				} elseif (strncmp($k, 'CONTENT_', 8)) {
-					continue;
-				}
-				$headers[strtr($k, '_', '-')] = $v;
-			}
+			return apache_request_headers();
 		}
 
-		$remoteAddr = !empty($_SERVER['REMOTE_ADDR']) ? $_SERVER['REMOTE_ADDR'] : null;
-		$remoteHost = !empty($_SERVER['REMOTE_HOST']) ? $_SERVER['REMOTE_HOST'] : null;
-
-		// use real client address and host if trusted proxy is used
-		$usingTrustedProxy = $remoteAddr && array_filter($this->proxies, function (string $proxy) use ($remoteAddr): bool {
-			return Helpers::ipMatch($remoteAddr, $proxy);
-		});
-		if ($usingTrustedProxy) {
-			if (!empty($_SERVER['HTTP_FORWARDED'])) {
-				$forwardParams = preg_split('/[,;]/', $_SERVER['HTTP_FORWARDED']);
-				foreach ($forwardParams as $forwardParam) {
-					[$key, $value] = explode('=', $forwardParam, 2) + [1 => null];
-					$proxyParams[strtolower(trim($key))][] = trim($value, " \t\"");
-				}
-
-				if (isset($proxyParams['for'])) {
-					$address = $proxyParams['for'][0];
-					if (strpos($address, '[') === false) { //IPv4
-						$remoteAddr = explode(':', $address)[0];
-					} else { //IPv6
-						$remoteAddr = substr($address, 1, strpos($address, ']') - 1);
-					}
-				}
-
-				if (isset($proxyParams['host']) && count($proxyParams['host']) === 1) {
-					$host = $proxyParams['host'][0];
-					$startingDelimiterPosition = strpos($host, '[');
-					if ($startingDelimiterPosition === false) { //IPv4
-						$remoteHostArr = explode(':', $host);
-						$remoteHost = $remoteHostArr[0];
-						if (isset($remoteHostArr[1])) {
-							$url->setPort((int) $remoteHostArr[1]);
-						}
-					} else { //IPv6
-						$endingDelimiterPosition = strpos($host, ']');
-						$remoteHost = substr($host, strpos($host, '[') + 1, $endingDelimiterPosition - 1);
-						$remoteHostArr = explode(':', substr($host, $endingDelimiterPosition));
-						if (isset($remoteHostArr[1])) {
-							$url->setPort((int) $remoteHostArr[1]);
-						}
-					}
-				}
-
-				$scheme = (isset($proxyParams['proto']) && count($proxyParams['proto']) === 1) ? $proxyParams['proto'][0] : 'http';
-				$url->setScheme(strcasecmp($scheme, 'https') === 0 ? 'https' : 'http');
-			} else {
-				if (!empty($_SERVER['HTTP_X_FORWARDED_PROTO'])) {
-					$url->setScheme(strcasecmp($_SERVER['HTTP_X_FORWARDED_PROTO'], 'https') === 0 ? 'https' : 'http');
-					$url->setPort($url->getScheme() === 'https' ? 443 : 80);
-				}
-
-				if (!empty($_SERVER['HTTP_X_FORWARDED_PORT'])) {
-					$url->setPort((int) $_SERVER['HTTP_X_FORWARDED_PORT']);
-				}
-
-				if (!empty($_SERVER['HTTP_X_FORWARDED_FOR'])) {
-					$xForwardedForWithoutProxies = array_filter(explode(',', $_SERVER['HTTP_X_FORWARDED_FOR']), function (string $ip): bool {
-						return !array_filter($this->proxies, function (string $proxy) use ($ip): bool {
-							return filter_var(trim($ip), FILTER_VALIDATE_IP) !== false && Helpers::ipMatch(trim($ip), $proxy);
-						});
-					});
-					$remoteAddr = trim(end($xForwardedForWithoutProxies));
-					$xForwardedForRealIpKey = key($xForwardedForWithoutProxies);
-				}
-
-				if (isset($xForwardedForRealIpKey) && !empty($_SERVER['HTTP_X_FORWARDED_HOST'])) {
-					$xForwardedHost = explode(',', $_SERVER['HTTP_X_FORWARDED_HOST']);
-					if (isset($xForwardedHost[$xForwardedForRealIpKey])) {
-						$remoteHost = trim($xForwardedHost[$xForwardedForRealIpKey]);
-					}
-				}
+		$headers = [];
+		foreach ($_SERVER as $k => $v) {
+			if (strncmp($k, 'HTTP_', 5) == 0) {
+				$k = substr($k, 5);
+			} elseif (strncmp($k, 'CONTENT_', 8)) {
+				continue;
 			}
+			$headers[strtr($k, '_', '-')] = $v;
 		}
+		return $headers;
+	}
 
-		// method, eg. GET, PUT, ...
+
+	private function getMethod(): ?string
+	{
 		$method = $_SERVER['REQUEST_METHOD'] ?? null;
 		if (
 			$method === 'POST'
@@ -274,12 +245,96 @@ class RequestFactory
 		) {
 			$method = $_SERVER['HTTP_X_HTTP_METHOD_OVERRIDE'];
 		}
+		return $method;
+	}
 
-		// raw body
-		$rawBodyCallback = function (): string {
-			return file_get_contents('php://input');
-		};
 
-		return new Request($url, null, $post, $files, $cookies, $headers, $method, $remoteAddr, $remoteHost, $rawBodyCallback);
+	private function getClient(Url $url): array
+	{
+		$remoteAddr = !empty($_SERVER['REMOTE_ADDR']) ? $_SERVER['REMOTE_ADDR'] : null;
+		$remoteHost = !empty($_SERVER['REMOTE_HOST']) ? $_SERVER['REMOTE_HOST'] : null;
+
+		// use real client address and host if trusted proxy is used
+		$usingTrustedProxy = $remoteAddr && array_filter($this->proxies, function (string $proxy) use ($remoteAddr): bool {
+			return Helpers::ipMatch($remoteAddr, $proxy);
+		});
+		if ($usingTrustedProxy) {
+			empty($_SERVER['HTTP_FORWARDED'])
+				? $this->useNonstandardProxy($url, $remoteAddr, $remoteHost)
+				: $this->useForwardedProxy($url, $remoteAddr, $remoteHost);
+		}
+
+		return [$remoteAddr, $remoteHost];
+	}
+
+
+	private function useForwardedProxy(Url $url, &$remoteAddr, &$remoteHost): void
+	{
+		$forwardParams = preg_split('/[,;]/', $_SERVER['HTTP_FORWARDED']);
+		foreach ($forwardParams as $forwardParam) {
+			[$key, $value] = explode('=', $forwardParam, 2) + [1 => null];
+			$proxyParams[strtolower(trim($key))][] = trim($value, " \t\"");
+		}
+
+		if (isset($proxyParams['for'])) {
+			$address = $proxyParams['for'][0];
+			if (strpos($address, '[') === false) { //IPv4
+				$remoteAddr = explode(':', $address)[0];
+			} else { //IPv6
+				$remoteAddr = substr($address, 1, strpos($address, ']') - 1);
+			}
+		}
+
+		if (isset($proxyParams['host']) && count($proxyParams['host']) === 1) {
+			$host = $proxyParams['host'][0];
+			$startingDelimiterPosition = strpos($host, '[');
+			if ($startingDelimiterPosition === false) { //IPv4
+				$remoteHostArr = explode(':', $host);
+				$remoteHost = $remoteHostArr[0];
+				if (isset($remoteHostArr[1])) {
+					$url->setPort((int) $remoteHostArr[1]);
+				}
+			} else { //IPv6
+				$endingDelimiterPosition = strpos($host, ']');
+				$remoteHost = substr($host, strpos($host, '[') + 1, $endingDelimiterPosition - 1);
+				$remoteHostArr = explode(':', substr($host, $endingDelimiterPosition));
+				if (isset($remoteHostArr[1])) {
+					$url->setPort((int) $remoteHostArr[1]);
+				}
+			}
+		}
+
+		$scheme = (isset($proxyParams['proto']) && count($proxyParams['proto']) === 1) ? $proxyParams['proto'][0] : 'http';
+		$url->setScheme(strcasecmp($scheme, 'https') === 0 ? 'https' : 'http');
+	}
+
+
+	private function useNonstandardProxy(Url $url, &$remoteAddr, &$remoteHost): void
+	{
+		if (!empty($_SERVER['HTTP_X_FORWARDED_PROTO'])) {
+			$url->setScheme(strcasecmp($_SERVER['HTTP_X_FORWARDED_PROTO'], 'https') === 0 ? 'https' : 'http');
+			$url->setPort($url->getScheme() === 'https' ? 443 : 80);
+		}
+
+		if (!empty($_SERVER['HTTP_X_FORWARDED_PORT'])) {
+			$url->setPort((int) $_SERVER['HTTP_X_FORWARDED_PORT']);
+		}
+
+		if (!empty($_SERVER['HTTP_X_FORWARDED_FOR'])) {
+			$xForwardedForWithoutProxies = array_filter(explode(',', $_SERVER['HTTP_X_FORWARDED_FOR']), function (string $ip): bool {
+				return !array_filter($this->proxies, function (string $proxy) use ($ip): bool {
+					return filter_var(trim($ip), FILTER_VALIDATE_IP) !== false && Helpers::ipMatch(trim($ip), $proxy);
+				});
+			});
+			$remoteAddr = trim(end($xForwardedForWithoutProxies));
+			$xForwardedForRealIpKey = key($xForwardedForWithoutProxies);
+		}
+
+		if (isset($xForwardedForRealIpKey) && !empty($_SERVER['HTTP_X_FORWARDED_HOST'])) {
+			$xForwardedHost = explode(',', $_SERVER['HTTP_X_FORWARDED_HOST']);
+			if (isset($xForwardedHost[$xForwardedForRealIpKey])) {
+				$remoteHost = trim($xForwardedHost[$xForwardedForRealIpKey]);
+			}
+		}
 	}
 }
