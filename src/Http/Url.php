@@ -13,7 +13,7 @@ use Nette;
 
 
 /**
- * URI Syntax (RFC 3986).
+ * Mutable representation of a URL.
  *
  * <pre>
  * scheme  user  password  host  port  basePath   relativeUrl
@@ -24,12 +24,6 @@ use Nette;
  *                     |                     |           |         |
  *                 authority               path        query    fragment
  * </pre>
- *
- * - authority:   [user[:password]@]host[:port]
- * - hostUrl:     http://user:password@nette.org:8042
- * - basePath:    /en/ (everything before relative URI not including the script name)
- * - baseUrl:     http://user:password@nette.org:8042/en/
- * - relativeUrl: manual.php
  *
  * @property   string $scheme
  * @property   string $user
@@ -56,8 +50,6 @@ class Url implements \JsonSerializable
 		'http' => 80,
 		'https' => 443,
 		'ftp' => 21,
-		'news' => 119,
-		'nntp' => 119,
 	];
 
 	/** @var string */
@@ -115,19 +107,15 @@ class Url implements \JsonSerializable
 
 
 	/**
-	 * Sets the scheme part of URI.
 	 * @return static
 	 */
-	public function setScheme(string $value)
+	public function setScheme(string $scheme)
 	{
-		$this->scheme = $value;
+		$this->scheme = $scheme;
 		return $this;
 	}
 
 
-	/**
-	 * Returns the scheme part of URI.
-	 */
 	public function getScheme(): string
 	{
 		return $this->scheme;
@@ -135,19 +123,15 @@ class Url implements \JsonSerializable
 
 
 	/**
-	 * Sets the user name part of URI.
 	 * @return static
 	 */
-	public function setUser(string $value)
+	public function setUser(string $user)
 	{
-		$this->user = $value;
+		$this->user = $user;
 		return $this;
 	}
 
 
-	/**
-	 * Returns the user name part of URI.
-	 */
 	public function getUser(): string
 	{
 		return $this->user;
@@ -155,19 +139,15 @@ class Url implements \JsonSerializable
 
 
 	/**
-	 * Sets the password part of URI.
 	 * @return static
 	 */
-	public function setPassword(string $value)
+	public function setPassword(string $password)
 	{
-		$this->password = $value;
+		$this->password = $password;
 		return $this;
 	}
 
 
-	/**
-	 * Returns the password part of URI.
-	 */
 	public function getPassword(): string
 	{
 		return $this->password;
@@ -175,20 +155,16 @@ class Url implements \JsonSerializable
 
 
 	/**
-	 * Sets the host part of URI.
 	 * @return static
 	 */
-	public function setHost(string $value)
+	public function setHost(string $host)
 	{
-		$this->host = $value;
+		$this->host = $host;
 		$this->setPath($this->path);
 		return $this;
 	}
 
 
-	/**
-	 * Returns the host part of URI.
-	 */
 	public function getHost(): string
 	{
 		return $this->host;
@@ -207,19 +183,15 @@ class Url implements \JsonSerializable
 
 
 	/**
-	 * Sets the port part of URI.
 	 * @return static
 	 */
-	public function setPort(int $value)
+	public function setPort(int $port)
 	{
-		$this->port = $value;
+		$this->port = $port;
 		return $this;
 	}
 
 
-	/**
-	 * Returns the port part of URI.
-	 */
 	public function getPort(): ?int
 	{
 		return $this->port ?: (self::$defaultPorts[$this->scheme] ?? null);
@@ -227,12 +199,11 @@ class Url implements \JsonSerializable
 
 
 	/**
-	 * Sets the path part of URI.
 	 * @return static
 	 */
-	public function setPath(string $value)
+	public function setPath(string $path)
 	{
-		$this->path = $value;
+		$this->path = $path;
 		if ($this->host && substr($this->path, 0, 1) !== '/') {
 			$this->path = '/' . $this->path;
 		}
@@ -240,9 +211,6 @@ class Url implements \JsonSerializable
 	}
 
 
-	/**
-	 * Returns the path part of URI.
-	 */
 	public function getPath(): string
 	{
 		return $this->path;
@@ -250,34 +218,29 @@ class Url implements \JsonSerializable
 
 
 	/**
-	 * Sets the query part of URI.
 	 * @param  string|array  $value
 	 * @return static
 	 */
-	public function setQuery($value)
+	public function setQuery($query)
 	{
-		$this->query = is_array($value) ? $value : self::parseQuery($value);
+		$this->query = is_array($query) ? $query : self::parseQuery($query);
 		return $this;
 	}
 
 
 	/**
-	 * Appends the query part of URI.
 	 * @param  string|array  $value
 	 * @return static
 	 */
-	public function appendQuery($value)
+	public function appendQuery($query)
 	{
-		$this->query = is_array($value)
-			? $value + $this->query
-			: self::parseQuery($this->getQuery() . '&' . $value);
+		$this->query = is_array($query)
+			? $query + $this->query
+			: self::parseQuery($this->getQuery() . '&' . $query);
 		return $this;
 	}
 
 
-	/**
-	 * Returns the query part of URI.
-	 */
 	public function getQuery(): string
 	{
 		return http_build_query($this->query, '', '&', PHP_QUERY_RFC3986);
@@ -314,28 +277,21 @@ class Url implements \JsonSerializable
 
 
 	/**
-	 * Sets the fragment part of URI.
 	 * @return static
 	 */
-	public function setFragment(string $value)
+	public function setFragment(string $fragment)
 	{
-		$this->fragment = $value;
+		$this->fragment = $fragment;
 		return $this;
 	}
 
 
-	/**
-	 * Returns the fragment part of URI.
-	 */
 	public function getFragment(): string
 	{
 		return $this->fragment;
 	}
 
 
-	/**
-	 * Returns the entire URI including query string and fragment.
-	 */
 	public function getAbsoluteUrl(): string
 	{
 		return $this->getHostUrl() . $this->path
@@ -371,9 +327,6 @@ class Url implements \JsonSerializable
 	}
 
 
-	/**
-	 * Returns the base-path.
-	 */
 	public function getBasePath(): string
 	{
 		$pos = strrpos($this->path, '/');
@@ -381,18 +334,12 @@ class Url implements \JsonSerializable
 	}
 
 
-	/**
-	 * Returns the base-URI.
-	 */
 	public function getBaseUrl(): string
 	{
 		return $this->getHostUrl() . $this->getBasePath();
 	}
 
 
-	/**
-	 * Returns the relative-URI.
-	 */
 	public function getRelativeUrl(): string
 	{
 		return substr($this->getAbsoluteUrl(), strlen($this->getBaseUrl()));
