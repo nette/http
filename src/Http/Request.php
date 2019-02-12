@@ -77,6 +77,17 @@ class Request implements IRequest
 
 
 	/**
+	 * @return static
+	 */
+	public function withUrl(UrlScript $url)
+	{
+		$dolly = clone $this;
+		$dolly->url = $url;
+		return $dolly;
+	}
+
+
+	/**
 	 * Returns URL object.
 	 */
 	public function getUrl(): UrlScript

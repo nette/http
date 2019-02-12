@@ -51,7 +51,7 @@ test(function () {
 	Assert::same('/', $url->getPath());
 
 	$url = $url->withHost('')->withPath('');
-	Assert::same('http://?arg=value#anchor', $url->absoluteUrl);
+	Assert::same('http:?arg=value#anchor', $url->absoluteUrl);
 
 	$url = $url->withPath('');
 	Assert::same('', $url->getPath());
