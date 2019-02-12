@@ -9,6 +9,8 @@ declare(strict_types=1);
 
 namespace Nette\Http;
 
+use Nette;
+
 
 /**
  * Immutable representation of a URL with application base-path.
@@ -89,8 +91,12 @@ class UrlScript extends UrlImmutable
 	protected function build(): void
 	{
 		parent::build();
-		$this->scriptPath = $this->scriptPath ?: $this->getPath();
+		$path = $this->getPath();
+		$this->scriptPath = $this->scriptPath ?: $path;
 		$pos = strrpos($this->scriptPath, '/');
-		$this->basePath = $pos === false ? '' : substr($this->scriptPath, 0, $pos + 1);
+		if ($pos === false || strncmp($this->scriptPath, $path, $pos + 1)) {
+			throw new Nette\InvalidArgumentException("ScriptPath '$this->scriptPath' doesn't match path '$path'");
+		}
+		$this->basePath = substr($this->scriptPath, 0, $pos + 1);
 	}
 }
