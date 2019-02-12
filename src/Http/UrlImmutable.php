@@ -87,9 +87,33 @@ class UrlImmutable implements \JsonSerializable
 	}
 
 
+	/**
+	 * @return static
+	 */
+	public function withScheme(string $scheme)
+	{
+		$dolly = clone $this;
+		$dolly->scheme = $scheme;
+		$dolly->build();
+		return $dolly;
+	}
+
+
 	public function getScheme(): string
 	{
 		return $this->scheme;
+	}
+
+
+	/**
+	 * @return static
+	 */
+	public function withUser(string $user)
+	{
+		$dolly = clone $this;
+		$dolly->user = $user;
+		$dolly->build();
+		return $dolly;
 	}
 
 
@@ -99,9 +123,33 @@ class UrlImmutable implements \JsonSerializable
 	}
 
 
+	/**
+	 * @return static
+	 */
+	public function withPassword(string $password)
+	{
+		$dolly = clone $this;
+		$dolly->password = $password;
+		$dolly->build();
+		return $dolly;
+	}
+
+
 	public function getPassword(): string
 	{
 		return $this->password;
+	}
+
+
+	/**
+	 * @return static
+	 */
+	public function withHost(string $host)
+	{
+		$dolly = clone $this;
+		$dolly->host = $host;
+		$dolly->build();
+		return $dolly;
 	}
 
 
@@ -119,15 +167,52 @@ class UrlImmutable implements \JsonSerializable
 	}
 
 
+	/**
+	 * @return static
+	 */
+	public function withPort(int $port)
+	{
+		$dolly = clone $this;
+		$dolly->port = $port;
+		$dolly->build();
+		return $dolly;
+	}
+
+
 	public function getPort(): ?int
 	{
 		return $this->port ?: (Url::$defaultPorts[$this->scheme] ?? null);
 	}
 
 
+	/**
+	 * @return static
+	 */
+	public function withPath(string $path)
+	{
+		$dolly = clone $this;
+		$dolly->path = $path;
+		$dolly->build();
+		return $dolly;
+	}
+
+
 	public function getPath(): string
 	{
 		return $this->path;
+	}
+
+
+	/**
+	 * @param  string|array  $query
+	 * @return static
+	 */
+	public function withQuery($query)
+	{
+		$dolly = clone $this;
+		$dolly->query = is_array($query) ? $query : Url::parseQuery($query);
+		$dolly->build();
+		return $dolly;
 	}
 
 
@@ -149,6 +234,18 @@ class UrlImmutable implements \JsonSerializable
 	public function getQueryParameter(string $name)
 	{
 		return $this->query[$name] ?? null;
+	}
+
+
+	/**
+	 * @return static
+	 */
+	public function withFragment(string $fragment)
+	{
+		$dolly = clone $this;
+		$dolly->fragment = $fragment;
+		$dolly->build();
+		return $dolly;
 	}
 
 
