@@ -221,7 +221,7 @@ final class Response implements IResponse
 			&& isset($_SERVER['HTTP_USER_AGENT'])
 			&& strpos($_SERVER['HTTP_USER_AGENT'], 'MSIE ') !== false
 			&& in_array($this->code, [400, 403, 404, 405, 406, 408, 409, 410, 500, 501, 505], true)
-			&& preg_match('#^text/html(?:;|$)#', $this->getHeader('Content-Type'))
+			&& preg_match('#^text/html(?:;|$)#', (string) $this->getHeader('Content-Type'))
 		) {
 			echo Nette\Utils\Random::generate(2000, " \t\r\n"); // sends invisible garbage for IE
 			self::$fixIE = false;
