@@ -23,3 +23,4 @@ Assert::same(['a' => ['x' => 'val', 'y' => 'val']], Url::parseQuery('%61[x]=val&
 Assert::same(['a b' => 'val', 'c' => ['d e' => 'val']], Url::parseQuery('a b=val&c[d e]=val'));
 Assert::same(['a.b' => 'val', 'c' => ['d.e' => 'val']], Url::parseQuery('a.b=val&c[d.e]=val'));
 Assert::same(['key"\'' => '"\''], Url::parseQuery('key"\'="\'')); // magic quotes
+Assert::same([], Url::parseQuery('%00')); // null

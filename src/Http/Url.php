@@ -431,6 +431,6 @@ class Url implements \JsonSerializable
 		$s = str_replace(['%5B', '%5b'], '[', $s);
 		$s = preg_replace('#&([^[&=]+)([^&]*)#', '&0[$1]$2', '&' . $s);
 		parse_str($s, $res);
-		return $res ? $res[0] : [];
+		return $res[0] ?? [];
 	}
 }
