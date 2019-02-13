@@ -45,7 +45,7 @@ $_SERVER = [
 	'HTTP_HOST' => "a.cz\n",
 ];
 $factory = new RequestFactory;
-Assert::same('http:///', (string) $factory->createHttpRequest()->getUrl());
+Assert::same('http:/', (string) $factory->createHttpRequest()->getUrl());
 
 
 $_SERVER = [

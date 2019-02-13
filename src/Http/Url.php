@@ -367,7 +367,7 @@ class Url implements \JsonSerializable
 	public function getHostUrl(): string
 	{
 		return ($this->scheme ? $this->scheme . ':' : '')
-			. (($authority = $this->getAuthority()) || $this->scheme ? '//' . $authority : '');
+			. (($authority = $this->getAuthority()) ? '//' . $authority : '');
 	}
 
 

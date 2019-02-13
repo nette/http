@@ -29,7 +29,7 @@ test(function () {
 
 test(function () {
 	$url = new Url('file:///D:/dokumentace/rfc3986.txt');
-	Assert::same('file://D:/dokumentace/rfc3986.txt', (string) $url);
+	Assert::same('file:D:/dokumentace/rfc3986.txt', (string) $url);
 	Assert::same('file', $url->scheme);
 	Assert::same('', $url->user);
 	Assert::same('', $url->password);
