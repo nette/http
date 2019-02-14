@@ -94,7 +94,7 @@ class HttpExtension extends Nette\DI\CompilerExtension
 
 		$initialize = $class->getMethod('initialize');
 		$config = $this->getConfig();
-		$headers = $config['headers'];
+		$headers = array_map('strval', $config['headers']);
 
 		if (isset($config['frames']) && $config['frames'] !== true && !isset($headers['X-Frame-Options'])) {
 			$frames = $config['frames'];
@@ -128,7 +128,7 @@ class HttpExtension extends Nette\DI\CompilerExtension
 
 		$code[] = Helpers::formatArgs('$response = $this->getService(?);', [$this->prefix('response')]);
 		foreach ($headers as $key => $value) {
-			if ($value != null) { // intentionally ==
+			if ($value !== '') {
 				$code[] = Helpers::formatArgs('$response->setHeader(?, ?);', [$key, $value]);
 			}
 		}
