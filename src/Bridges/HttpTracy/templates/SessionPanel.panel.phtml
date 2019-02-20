@@ -15,7 +15,7 @@ use Tracy\Dumper;
 	}
 </style>
 
-<h1>Session #<?= htmlspecialchars(session_id(), ENT_IGNORE, 'UTF-8') ?> (Lifetime: <?= htmlspecialchars(ini_get('session.cookie_lifetime'), ENT_NOQUOTES, 'UTF-8'); ?>)</h1>
+<h1>Session #<?= htmlspecialchars(substr(session_id(), 0, 10), ENT_IGNORE, 'UTF-8') ?>… (Lifetime: <?= htmlspecialchars(ini_get('session.cookie_lifetime'), ENT_NOQUOTES, 'UTF-8'); ?>)</h1>
 
 <div class="tracy-inner nette-SessionPanel">
 	<?php if (empty($_SESSION)):?>
