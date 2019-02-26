@@ -21,7 +21,7 @@ use Tracy\Dumper;
 	<?php if (empty($_SESSION)):?>
 	<p><i>empty</i></p>
 	<?php else: ?>
-	<table>
+	<table class="tracy-sortable">
 	<?php
 	foreach ($_SESSION as $k => $v) {
 		if ($k === '__NF') {
