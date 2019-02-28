@@ -125,6 +125,18 @@ final class Response implements IResponse
 
 
 	/**
+	 * @return static
+	 * @throws Nette\InvalidStateException  if HTTP headers have been sent
+	 */
+	public function deleteHeader(string $name)
+	{
+		self::checkHeaders();
+		header_remove($name);
+		return $this;
+	}
+
+
+	/**
 	 * Sends a Content-type HTTP header.
 	 * @return static
 	 * @throws Nette\InvalidStateException  if HTTP headers have been sent

@@ -12,6 +12,7 @@ namespace Nette\Http;
 
 /**
  * IHttpResponse interface.
+ * @method self deleteHeader(string $name)
  */
 interface IResponse
 {

@@ -36,3 +36,9 @@ Assert::same('one', $response->getHeader('APPEND'));
 $headers = $response->getHeaders();
 Assert::contains('two', $headers['replace']);
 Assert::contains('two', $headers['append']);
+
+
+$response->deleteHeader('append');
+$headers = $response->getHeaders();
+Assert::contains('two', $headers['replace']);
+Assert::false(isset($headers['append']));
