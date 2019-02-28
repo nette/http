@@ -89,7 +89,7 @@ interface IResponse
 	 * Sets HTTP response code.
 	 * @return static
 	 */
-	function setCode(int $code);
+	function setCode(int $code, string $reason = null);
 
 	/**
 	 * Returns HTTP response code.
