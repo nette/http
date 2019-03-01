@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace Nette\Bridges\HttpTracy;
 
 use Tracy\Dumper;
+use Tracy\Helpers;
 
 ?>
 <style class="tracy-debug">
@@ -15,7 +16,7 @@ use Tracy\Dumper;
 	}
 </style>
 
-<h1>Session #<?= htmlspecialchars(substr(session_id(), 0, 10), ENT_IGNORE, 'UTF-8') ?>… (Lifetime: <?= htmlspecialchars(ini_get('session.cookie_lifetime'), ENT_NOQUOTES, 'UTF-8'); ?>)</h1>
+<h1>Session #<?= Helpers::escapeHtml(substr(session_id(), 0, 10)) ?>… (Lifetime: <?= Helpers::escapeHtml(ini_get('session.cookie_lifetime')); ?>)</h1>
 
 <div class="tracy-inner nette-SessionPanel">
 	<?php if (empty($_SESSION)):?>
@@ -30,7 +31,7 @@ use Tracy\Dumper;
 		} elseif ($k === '_tracy') {
 			continue;
 		}
-		echo '<tr><th>', htmlspecialchars((string) $k, ENT_IGNORE, 'UTF-8'), '</th><td>', Dumper::toHtml($v, [Dumper::LIVE => true]), "</td></tr>\n";
+		echo '<tr><th>', Helpers::escapeHtml($k), '</th><td>', Dumper::toHtml($v, [Dumper::LIVE => true]), "</td></tr>\n";
 	}?>
 	</table>
 	<?php endif ?>
