@@ -51,12 +51,10 @@ class HttpExtension extends Nette\DI\CompilerExtension
 			->addSetup('setProxy', [$config['proxy']]);
 
 		$builder->addDefinition($this->prefix('request'))
-			->setFactory('@Nette\Http\RequestFactory::createHttpRequest')
-			->setType(Nette\Http\IRequest::class);
+			->setFactory('@Nette\Http\RequestFactory::createHttpRequest');
 
 		$response = $builder->addDefinition($this->prefix('response'))
-			->setFactory(Nette\Http\Response::class)
-			->setType(Nette\Http\IResponse::class);
+			->setFactory(Nette\Http\Response::class);
 
 		if (isset($config['cookieSecure'])) {
 			$value = $config['cookieSecure'] === 'auto'
@@ -69,18 +67,6 @@ class HttpExtension extends Nette\DI\CompilerExtension
 			$builder->addAlias('nette.httpRequestFactory', $this->prefix('requestFactory'));
 			$builder->addAlias('httpRequest', $this->prefix('request'));
 			$builder->addAlias('httpResponse', $this->prefix('response'));
-
-			$builder->addDefinition($this->prefix('oldRequest'))
-				->setFactory($this->prefix('@request'))
-				->setType(Nette\Http\Request::class)
-				->addSetup('::trigger_error', ['Service Nette\Http\Request should be autowired via interface Nette\Http\IRequest.', E_USER_DEPRECATED])
-				->setAutowired(Nette\Http\Request::class);
-
-			$builder->addDefinition($this->prefix('oldResponse'))
-				->setFactory($this->prefix('@response'))
-				->setType(Nette\Http\Response::class)
-				->addSetup('::trigger_error', ['Service Nette\Http\Response should be autowired via interface Nette\Http\IResponse.', E_USER_DEPRECATED])
-				->setAutowired(Nette\Http\Response::class);
 		}
 	}
 
