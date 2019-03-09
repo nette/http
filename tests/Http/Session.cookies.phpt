@@ -26,7 +26,6 @@ Assert::same([
 	'use_strict_mode' => 1,
 	'cookie_lifetime' => 0,
 	'cookie_httponly' => true,
-	'cookie_samesite' => 'Lax',
 	'gc_maxlifetime' => 10800,
 	'cookie_path' => '/user/',
 	'cookie_domain' => 'nette.org',
