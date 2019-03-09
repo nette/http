@@ -25,6 +25,7 @@ session:
 	cookiePath: /x
 	cookieDomain: domain
 	cookieSecure: yes
+	cookieSamesite: true
 
 services:
 	foo.request: Nette\Http\Request(Nette\Http\UrlScript("http://www.nette.org"))
@@ -37,7 +38,7 @@ $container->getService('session')->start();
 
 Assert::same(
 	PHP_VERSION_ID >= 70300
-		? ['lifetime' => 0, 'path' => '/x', 'domain' => 'nette.org', 'secure' => true, 'httponly' => true, 'samesite' => '']
-		: ['lifetime' => 0, 'path' => '/x', 'domain' => 'nette.org', 'secure' => true, 'httponly' => true],
+		? ['lifetime' => 0, 'path' => '/x', 'domain' => 'nette.org', 'secure' => true, 'httponly' => true, 'samesite' => 'Lax']
+		: ['lifetime' => 0, 'path' => '/x; SameSite=Lax', 'domain' => 'nette.org', 'secure' => true, 'httponly' => true],
 	session_get_cookie_params()
 );
