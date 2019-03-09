@@ -373,9 +373,17 @@ class Session
 	{
 		$special = ['cache_expire' => 1, 'cache_limiter' => 1, 'save_path' => 1, 'name' => 1];
 		$cookie = $origCookie = session_get_cookie_params();
+		$allowed = ini_get_all('session', false) + ['session.cookie_samesite' => 1]; // for PHP < 7.3
 
 		foreach ($config as $key => $value) {
-			if ($value === null || ini_get("session.$key") == $value) { // intentionally ==
+			if (!isset($allowed["session.$key"])) {
+				$hint = substr((string) Nette\Utils\ObjectHelpers::getSuggestion(array_keys($allowed), "session.$key"), 8);
+				[$altKey, $altHint] = array_map(function ($s) {
+					return preg_replace_callback('#_(.)#', function ($m) { return strtoupper($m[1]); }, $s); // snake_case -> camelCase
+				}, [$key, (string) $hint]);
+				throw new Nette\InvalidStateException("Invalid session configuration option '$key' or '$altKey'" . ($hint ? ", did you mean '$hint' or '$altHint'?" : '.'));
+
+			} elseif ($value === null || ini_get("session.$key") == $value) { // intentionally ==
 				continue;
 
 			} elseif (strncmp($key, 'cookie_', 7) === 0) {
