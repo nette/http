@@ -36,4 +36,4 @@ Assert::contains(
 		: 'Set-Cookie: nette-samesite=1; path=/; SameSite=Strict; HttpOnly',
 	$headers
 );
-Assert::same('Lax', $container->getService('session.session')->getOptions()['cookie_samesite']);
+Assert::true(empty($container->getService('session.session')->getOptions()['cookie_samesite']));

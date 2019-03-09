@@ -82,11 +82,6 @@ class HttpExtension extends Nette\DI\CompilerExtension
 			$builder->getDefinitionByType(Nette\Http\Session::class)
 				->addSetup('setOptions', [['cookie_secure' => $value]]);
 		}
-
-		if (!empty($this->config['sameSiteProtection'])) {
-			$builder->getDefinitionByType(Nette\Http\Session::class)
-				->addSetup('setOptions', [['cookie_samesite' => 'Lax']]);
-		}
 	}
 
 
