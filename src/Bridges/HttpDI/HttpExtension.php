@@ -29,7 +29,6 @@ class HttpExtension extends Nette\DI\CompilerExtension
 		'cspReportOnly' => [], // Content-Security-Policy-Report-Only
 		'featurePolicy' => [], // Feature-Policy
 		'cookieSecure' => 'auto', // true|false|auto  Whether the cookie is available only through HTTPS
-		'sameSiteProtection' => true, // activates Request::isSameSite() protection
 	];
 
 	/** @var bool */
@@ -133,9 +132,7 @@ class HttpExtension extends Nette\DI\CompilerExtension
 			}
 		}
 
-		if (!empty($config['sameSiteProtection'])) {
-			$code[] = Helpers::formatArgs('$response->setCookie(...?);', [['nette-samesite', '1', 0, '/', null, null, true, 'Strict']]);
-		}
+		$code[] = Helpers::formatArgs('$response->setCookie(...?);', [['nette-samesite', '1', 0, '/', null, null, true, 'Strict']]);
 
 		$initialize->addBody("(function () {\n\t" . implode("\n\t", $code) . "\n})();");
 	}
