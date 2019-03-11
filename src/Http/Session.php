@@ -123,7 +123,9 @@ class Session
 		// regenerate empty session
 		if (empty($nf['Time'])) {
 			$nf['Time'] = time();
-			$this->regenerateId(); // ensures that the session was created in strict mode (see use_strict_mode)
+			if ($this->request->getCookie(session_name())) { // ensures that the session was created in strict mode (see use_strict_mode)
+				$this->regenerateId();
+			}
 		}
 
 		// process meta metadata
