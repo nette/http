@@ -22,6 +22,16 @@ class Session
 	/** Default file lifetime */
 	private const DEFAULT_FILE_LIFETIME = 3 * Nette\Utils\DateTime::HOUR;
 
+	/** @var array default configuration */
+	private const SECURITY_OPTIONS = [
+		'referer_check' => '',    // must be disabled because PHP implementation is invalid
+		'use_cookies' => 1,       // must be enabled to prevent Session Hijacking and Fixation
+		'use_only_cookies' => 1,  // must be enabled to prevent Session Fixation
+		'use_trans_sid' => 0,     // must be disabled to prevent Session Hijacking and Fixation
+		'use_strict_mode' => 1,   // must be enabled to prevent Session Fixation
+		'cookie_httponly' => true, // must be enabled to prevent Session Hijacking
+	];
+
 	/** @var bool  has been session ID regenerated? */
 	private $regenerated = false;
 
@@ -30,18 +40,7 @@ class Session
 
 	/** @var array default configuration */
 	private $options = [
-		// security
-		'referer_check' => '',    // must be disabled because PHP implementation is invalid
-		'use_cookies' => 1,       // must be enabled to prevent Session Hijacking and Fixation
-		'use_only_cookies' => 1,  // must be enabled to prevent Session Fixation
-		'use_trans_sid' => 0,     // must be disabled to prevent Session Hijacking and Fixation
-		'use_strict_mode' => 1,   // must be enabled to prevent Session Fixation
-
-		// cookies
 		'cookie_lifetime' => 0,   // until the browser is closed
-		'cookie_httponly' => true, // must be enabled to prevent Session Hijacking
-
-		// other
 		'gc_maxlifetime' => self::DEFAULT_FILE_LIFETIME, // 3 hours
 	];
 
@@ -73,19 +72,20 @@ class Session
 	{
 		if (session_status() === PHP_SESSION_ACTIVE) {
 			if (!$this->started) {
+				$this->configure(self::SECURITY_OPTIONS);
 				$this->initialize();
 			}
 			return;
 		}
 
-		$this->configure($this->options);
+		$this->configure(self::SECURITY_OPTIONS + $this->options);
 
-		if (!session_id()) {
+		if (!session_id()) { // session is started for first time
 			$id = $this->request->getCookie(session_name());
 			$id = is_string($id) && preg_match('#^[0-9a-zA-Z,-]{22,256}\z#i', $id)
 				? $id
 				: session_create_id();
-			session_id($id);
+			session_id($id); // causes resend of a cookie
 		}
 
 		try {
@@ -123,7 +123,7 @@ class Session
 		// regenerate empty session
 		if (empty($nf['Time'])) {
 			$nf['Time'] = time();
-			$this->regenerateId();
+			$this->regenerateId(); // ensures that the session was created in strict mode (see use_strict_mode)
 		}
 
 		// process meta metadata
