@@ -61,11 +61,7 @@ class SessionSection implements \IteratorAggregate, \ArrayAccess
 	public function getIterator(): \Iterator
 	{
 		$this->start();
-		if (isset($this->data)) {
-			return new \ArrayIterator($this->data);
-		} else {
-			return new \ArrayIterator;
-		}
+		return new \ArrayIterator($this->data ?? []);
 	}
 
 

@@ -120,7 +120,7 @@ class RequestFactory
 	{
 		$path = $url->getPath();
 		$lpath = strtolower($path);
-		$script = isset($_SERVER['SCRIPT_NAME']) ? strtolower($_SERVER['SCRIPT_NAME']) : '';
+		$script = strtolower($_SERVER['SCRIPT_NAME'] ?? '');
 		if ($lpath !== $script) {
 			$max = min(strlen($lpath), strlen($script));
 			for ($i = 0; $i < $max && $lpath[$i] === $script[$i]; $i++);
@@ -238,8 +238,7 @@ class RequestFactory
 		$method = $_SERVER['REQUEST_METHOD'] ?? null;
 		if (
 			$method === 'POST'
-			&& isset($_SERVER['HTTP_X_HTTP_METHOD_OVERRIDE'])
-			&& preg_match('#^[A-Z]+\z#', $_SERVER['HTTP_X_HTTP_METHOD_OVERRIDE'])
+			&& preg_match('#^[A-Z]+\z#', $_SERVER['HTTP_X_HTTP_METHOD_OVERRIDE'] ?? '')
 		) {
 			$method = $_SERVER['HTTP_X_HTTP_METHOD_OVERRIDE'];
 		}

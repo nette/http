@@ -128,21 +128,16 @@ class Session
 			}
 		}
 
-		// process meta metadata
-		if (isset($nf['META'])) {
-			$now = time();
-			// expire section variables
-			foreach ($nf['META'] as $section => $metadata) {
-				if (is_array($metadata)) {
-					foreach ($metadata as $variable => $value) {
-						if (!empty($value['T']) && $now > $value['T']) {
-							if ($variable === '') { // expire whole section
-								unset($nf['META'][$section], $nf['DATA'][$section]);
-								continue 2;
-							}
-							unset($nf['META'][$section][$variable], $nf['DATA'][$section][$variable]);
-						}
+		// expire section variables
+		$now = time();
+		foreach ($nf['META'] ?? [] as $section => $metadata) {
+			foreach ($metadata ?? [] as $variable => $value) {
+				if (!empty($value['T']) && $now > $value['T']) {
+					if ($variable === '') { // expire whole section
+						unset($nf['META'][$section], $nf['DATA'][$section]);
+						continue 2;
 					}
+					unset($nf['META'][$section][$variable], $nf['DATA'][$section][$variable]);
 				}
 			}
 		}
@@ -292,12 +287,7 @@ class Session
 			$this->start();
 		}
 
-		if (isset($_SESSION['__NF']['DATA'])) {
-			return new \ArrayIterator(array_keys($_SESSION['__NF']['DATA']));
-
-		} else {
-			return new \ArrayIterator;
-		}
+		return new \ArrayIterator(array_keys($_SESSION['__NF']['DATA'] ?? []));
 	}
 
 
@@ -312,20 +302,10 @@ class Session
 		}
 
 		$nf = &$_SESSION['__NF'];
-		if (isset($nf['META']) && is_array($nf['META'])) {
-			foreach ($nf['META'] as $name => $foo) {
-				if (empty($nf['META'][$name])) {
-					unset($nf['META'][$name]);
-				}
+		foreach ($nf['META'] ?? [] as $name => $foo) {
+			if (empty($nf['META'][$name])) {
+				unset($nf['META'][$name]);
 			}
-		}
-
-		if (empty($nf['META'])) {
-			unset($nf['META']);
-		}
-
-		if (empty($nf['DATA'])) {
-			unset($nf['DATA']);
 		}
 	}
 

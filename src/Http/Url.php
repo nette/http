@@ -91,12 +91,12 @@ class Url implements \JsonSerializable
 
 			$this->scheme = $p['scheme'] ?? '';
 			$this->port = $p['port'] ?? null;
-			$this->host = isset($p['host']) ? rawurldecode($p['host']) : '';
-			$this->user = isset($p['user']) ? rawurldecode($p['user']) : '';
-			$this->password = isset($p['pass']) ? rawurldecode($p['pass']) : '';
+			$this->host = rawurldecode($p['host'] ?? '');
+			$this->user = rawurldecode($p['user'] ?? '');
+			$this->password = rawurldecode($p['pass'] ?? '');
 			$this->setPath($p['path'] ?? '');
 			$this->setQuery($p['query'] ?? []);
-			$this->fragment = isset($p['fragment']) ? rawurldecode($p['fragment']) : '';
+			$this->fragment = rawurldecode($p['fragment'] ?? '');
 
 		} elseif ($url instanceof UrlImmutable || $url instanceof self) {
 			[$this->scheme, $this->user, $this->password, $this->host, $this->port, $this->path, $this->query, $this->fragment] = $url->export();
