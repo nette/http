@@ -25,7 +25,7 @@ class Session
 	/** @var bool  has been session ID regenerated? */
 	private $regenerated = false;
 
-	/** @var bool  has been session started? */
+	/** @var bool  has been session started by Nette? */
 	private static $started = false;
 
 	/** @var array default configuration */
@@ -59,7 +59,6 @@ class Session
 	{
 		$this->request = $request;
 		$this->response = $response;
-		self::$started = self::$started && session_status() === PHP_SESSION_ACTIVE;
 		$this->options['cookie_path'] = &$this->response->cookiePath;
 		$this->options['cookie_domain'] = &$this->response->cookieDomain;
 		$this->options['cookie_secure'] = &$this->response->cookieSecure;
@@ -72,7 +71,10 @@ class Session
 	 */
 	public function start(): void
 	{
-		if (self::$started) {
+		if (session_status() === PHP_SESSION_ACTIVE) {
+			if (!self::$started) {
+				$this->initialize();
+			}
 			return;
 		}
 
@@ -99,6 +101,12 @@ class Session
 			throw $e;
 		}
 
+		$this->initialize();
+	}
+
+
+	private function initialize(): void
+	{
 		self::$started = true;
 
 		/* structure:
@@ -146,7 +154,7 @@ class Session
 	 */
 	public function isStarted(): bool
 	{
-		return self::$started;
+		return self::$started && session_status() === PHP_SESSION_ACTIVE;
 	}
 
 
@@ -155,7 +163,7 @@ class Session
 	 */
 	public function close(): void
 	{
-		if (self::$started) {
+		if (session_status() === PHP_SESSION_ACTIVE) {
 			$this->clean();
 			session_write_close();
 			self::$started = false;
@@ -168,7 +176,7 @@ class Session
 	 */
 	public function destroy(): void
 	{
-		if (!self::$started) {
+		if (!session_status() === PHP_SESSION_ACTIVE) {
 			throw new Nette\InvalidStateException('Session is not started.');
 		}
 
@@ -187,7 +195,7 @@ class Session
 	 */
 	public function exists(): bool
 	{
-		return self::$started || $this->request->getCookie($this->getName()) !== null;
+		return session_status() === PHP_SESSION_ACTIVE || $this->request->getCookie($this->getName()) !== null;
 	}
 
 
@@ -200,14 +208,12 @@ class Session
 		if ($this->regenerated) {
 			return;
 		}
-		if (self::$started) {
+		if (session_status() === PHP_SESSION_ACTIVE) {
 			if (headers_sent($file, $line)) {
 				throw new Nette\InvalidStateException('Cannot regenerate session ID after HTTP headers have been sent' . ($file ? " (output started at $file:$line)." : '.'));
 			}
-			if (session_status() === PHP_SESSION_ACTIVE) {
-				session_regenerate_id(true);
-				session_write_close();
-			}
+			session_regenerate_id(true);
+			session_write_close();
 			$backup = $_SESSION;
 			session_start();
 			$_SESSION = $backup;
@@ -303,7 +309,7 @@ class Session
 	 */
 	public function clean(): void
 	{
-		if (!self::$started || empty($_SESSION)) {
+		if (!session_status() === PHP_SESSION_ACTIVE || empty($_SESSION)) {
 			return;
 		}
 
@@ -345,7 +351,7 @@ class Session
 			$key = strtolower(preg_replace('#(.)(?=[A-Z])#', '$1_', $key)); // camelCase -> snake_case
 			$normalized[$key] = $value;
 		}
-		if (self::$started) {
+		if (session_status() === PHP_SESSION_ACTIVE) {
 			$this->configure($normalized);
 		}
 		$this->options = $normalized + $this->options;
@@ -417,7 +423,7 @@ class Session
 					$cookie['httponly']
 				);
 			}
-			if (self::$started) {
+			if (session_status() === PHP_SESSION_ACTIVE) {
 				$this->sendCookie();
 			}
 		}
