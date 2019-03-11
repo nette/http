@@ -26,7 +26,7 @@ class Session
 	private $regenerated = false;
 
 	/** @var bool  has been session started by Nette? */
-	private static $started = false;
+	private $started = false;
 
 	/** @var array default configuration */
 	private $options = [
@@ -72,7 +72,7 @@ class Session
 	public function start(): void
 	{
 		if (session_status() === PHP_SESSION_ACTIVE) {
-			if (!self::$started) {
+			if (!$this->started) {
 				$this->initialize();
 			}
 			return;
@@ -107,7 +107,7 @@ class Session
 
 	private function initialize(): void
 	{
-		self::$started = true;
+		$this->started = true;
 
 		/* structure:
 			__NF: Data, Meta, Time
@@ -154,7 +154,7 @@ class Session
 	 */
 	public function isStarted(): bool
 	{
-		return self::$started && session_status() === PHP_SESSION_ACTIVE;
+		return $this->started && session_status() === PHP_SESSION_ACTIVE;
 	}
 
 
@@ -166,7 +166,7 @@ class Session
 		if (session_status() === PHP_SESSION_ACTIVE) {
 			$this->clean();
 			session_write_close();
-			self::$started = false;
+			$this->started = false;
 		}
 	}
 
@@ -182,7 +182,7 @@ class Session
 
 		session_destroy();
 		$_SESSION = null;
-		self::$started = false;
+		$this->started = false;
 		if (!$this->response->isSent()) {
 			$params = session_get_cookie_params();
 			$this->response->deleteCookie(session_name(), $params['path'], $params['domain'], $params['secure']);
@@ -277,7 +277,7 @@ class Session
 	 */
 	public function hasSection(string $section): bool
 	{
-		if ($this->exists() && !self::$started) {
+		if ($this->exists() && !$this->started) {
 			$this->start();
 		}
 
@@ -290,7 +290,7 @@ class Session
 	 */
 	public function getIterator(): \Iterator
 	{
-		if ($this->exists() && !self::$started) {
+		if ($this->exists() && !$this->started) {
 			$this->start();
 		}
 
@@ -396,7 +396,7 @@ class Session
 
 			} else {
 				if (session_status() === PHP_SESSION_ACTIVE) {
-					throw new Nette\InvalidStateException("Unable to set 'session.$key' to value '$value' when session has been started" . (self::$started ? '.' : ' by session.auto_start or session_start().'));
+					throw new Nette\InvalidStateException("Unable to set 'session.$key' to value '$value' when session has been started" . ($this->started ? '.' : ' by session.auto_start or session_start().'));
 				}
 				if (isset($special[$key])) {
 					$key = "session_$key";
@@ -499,7 +499,7 @@ class Session
 	 */
 	public function setHandler(\SessionHandlerInterface $handler)
 	{
-		if (self::$started) {
+		if ($this->started) {
 			throw new Nette\InvalidStateException('Unable to set handler when session has been started.');
 		}
 		$this->handler = $handler;
