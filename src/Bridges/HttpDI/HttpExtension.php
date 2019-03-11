@@ -11,6 +11,7 @@ namespace Nette\Bridges\HttpDI;
 
 use Nette;
 use Nette\PhpGenerator\Helpers;
+use Nette\Schema\Expect;
 
 
 /**
@@ -18,19 +19,6 @@ use Nette\PhpGenerator\Helpers;
  */
 class HttpExtension extends Nette\DI\CompilerExtension
 {
-	public $defaults = [
-		'proxy' => [],
-		'headers' => [
-			'X-Powered-By' => 'Nette Framework 3',
-			'Content-Type' => 'text/html; charset=utf-8',
-		],
-		'frames' => 'SAMEORIGIN', // X-Frame-Options
-		'csp' => [], // Content-Security-Policy
-		'cspReportOnly' => [], // Content-Security-Policy-Report-Only
-		'featurePolicy' => [], // Feature-Policy
-		'cookieSecure' => 'auto', // true|false|auto  Whether the cookie is available only through HTTPS
-	];
-
 	/** @var bool */
 	private $cliMode;
 
@@ -41,14 +29,31 @@ class HttpExtension extends Nette\DI\CompilerExtension
 	}
 
 
+	public function getConfigSchema(): Nette\Schema\Schema
+	{
+		return Expect::structure([
+			'proxy' => Expect::arrayOf('string')->dynamic(),
+			'headers' => Expect::arrayOf('scalar|null')->default([
+				'X-Powered-By' => 'Nette Framework 3',
+				'Content-Type' => 'text/html; charset=utf-8',
+			]),
+			'frames' => Expect::anyOf(Expect::string(), Expect::bool(), null)->default('SAMEORIGIN'), // X-Frame-Options
+			'csp' => Expect::arrayOf('array|scalar|null'), // Content-Security-Policy
+			'cspReportOnly' => Expect::arrayOf('array|scalar|null'), // Content-Security-Policy-Report-Only
+			'featurePolicy' => Expect::arrayOf('array|scalar|null'), // Feature-Policy
+			'cookieSecure' => Expect::anyOf(null, true, false, 'auto'), // true|false|auto  Whether the cookie is available only through HTTPS
+		]);
+	}
+
+
 	public function loadConfiguration()
 	{
 		$builder = $this->getContainerBuilder();
-		$config = $this->validateConfig($this->defaults);
+		$config = $this->config;
 
 		$builder->addDefinition($this->prefix('requestFactory'))
 			->setFactory(Nette\Http\RequestFactory::class)
-			->addSetup('setProxy', [$config['proxy']]);
+			->addSetup('setProxy', [$config->proxy]);
 
 		$builder->addDefinition($this->prefix('request'))
 			->setFactory('@Nette\Http\RequestFactory::createHttpRequest');
@@ -56,10 +61,10 @@ class HttpExtension extends Nette\DI\CompilerExtension
 		$response = $builder->addDefinition($this->prefix('response'))
 			->setFactory(Nette\Http\Response::class);
 
-		if (isset($config['cookieSecure'])) {
-			$value = $config['cookieSecure'] === 'auto'
+		if ($config->cookieSecure !== null) {
+			$value = $config->cookieSecure === 'auto'
 				? $builder::literal('$this->getService(?)->isSecured()', [$this->prefix('request')])
-				: (bool) $config['cookieSecure'];
+				: $config->cookieSecure;
 			$response->addSetup('$cookieSecure', [$value]);
 		}
 
@@ -78,11 +83,11 @@ class HttpExtension extends Nette\DI\CompilerExtension
 		}
 
 		$initialize = $class->getMethod('initialize');
-		$config = $this->getConfig();
-		$headers = array_map('strval', $config['headers']);
+		$config = $this->config;
+		$headers = array_map('strval', $config->headers);
 
-		if (isset($config['frames']) && $config['frames'] !== true && !isset($headers['X-Frame-Options'])) {
-			$frames = $config['frames'];
+		if (isset($config->frames) && $config->frames !== true && !isset($headers['X-Frame-Options'])) {
+			$frames = $config->frames;
 			if ($frames === false) {
 				$frames = 'DENY';
 			} elseif (preg_match('#^https?:#', $frames)) {
@@ -93,10 +98,10 @@ class HttpExtension extends Nette\DI\CompilerExtension
 
 		$code = [];
 		foreach (['csp', 'cspReportOnly'] as $key) {
-			if (empty($config[$key])) {
+			if (empty($config->$key)) {
 				continue;
 			}
-			$value = self::buildPolicy($config[$key]);
+			$value = self::buildPolicy($config->$key);
 			if (strpos($value, "'nonce'")) {
 				$code[0] = '$cspNonce = base64_encode(random_bytes(16));';
 				$value = Nette\DI\ContainerBuilder::literal(
@@ -107,8 +112,8 @@ class HttpExtension extends Nette\DI\CompilerExtension
 			$headers['Content-Security-Policy' . ($key === 'csp' ? '' : '-Report-Only')] = $value;
 		}
 
-		if (!empty($config['featurePolicy'])) {
-			$headers['Feature-Policy'] = self::buildPolicy($config['featurePolicy']);
+		if (!empty($config->featurePolicy)) {
+			$headers['Feature-Policy'] = self::buildPolicy($config->featurePolicy);
 		}
 
 		$code[] = Helpers::formatArgs('$response = $this->getService(?);', [$this->prefix('response')]);
