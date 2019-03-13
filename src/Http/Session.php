@@ -213,10 +213,6 @@ class Session
 				throw new Nette\InvalidStateException('Cannot regenerate session ID after HTTP headers have been sent' . ($file ? " (output started at $file:$line)." : '.'));
 			}
 			session_regenerate_id(true);
-			session_write_close();
-			$backup = $_SESSION;
-			session_start();
-			$_SESSION = $backup;
 		} else {
 			session_id(session_create_id());
 		}
