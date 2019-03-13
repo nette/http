@@ -52,4 +52,4 @@ test(function () use ($session) { // try to expire only 1 of the keys
 Assert::error(function () use ($session) {
 	$namespace = $session->getSection('tmp');
 	$namespace->setExpiration(100);
-}, E_USER_NOTICE, 'The expiration time is greater than the session expiration 10 seconds');
+}, E_USER_NOTICE, 'The expiration time is greater than the session expiration %d% seconds');
