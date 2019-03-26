@@ -66,6 +66,7 @@ class SessionExtension extends Nette\DI\CompilerExtension
 		if (($config->cookieSamesite ?? null) === true) {
 			$config->cookieSamesite = 'Lax';
 		}
+		$this->compiler->addExportedType(Nette\Http\IRequest::class);
 
 		if ($this->debugMode && $config->debugger) {
 			$session->addSetup('@Tracy\Bar::addPanel', [
