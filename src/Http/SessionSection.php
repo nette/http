@@ -151,7 +151,7 @@ class SessionSection implements \IteratorAggregate, \ArrayAccess
 
 	/**
 	 * Sets the expiration of the section or specific variables.
-	 * @param  string|int|\DateTimeInterface  $time
+	 * @param  ?string  $time
 	 * @param  string|string[]  $variables  list of variables / single variable to expire
 	 * @return static
 	 */
