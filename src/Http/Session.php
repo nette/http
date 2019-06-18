@@ -53,6 +53,9 @@ class Session
 	/** @var \SessionHandlerInterface */
 	private $handler;
 
+	/** @var bool */
+	private $readAndClose = false;
+
 
 	public function __construct(IRequest $request, IResponse $response)
 	{
@@ -90,7 +93,7 @@ class Session
 
 		try {
 			// session_start returns false on failure only sometimes
-			Nette\Utils\Callback::invokeSafe('session_start', [], function (string $message) use (&$e): void {
+			Nette\Utils\Callback::invokeSafe('session_start', [['read_and_close' => $this->readAndClose]], function (string $message) use (&$e): void {
 				$e = new Nette\InvalidStateException($message);
 			});
 		} catch (\Exception $e) {
@@ -328,6 +331,13 @@ class Session
 			}
 			$key = strtolower(preg_replace('#(.)(?=[A-Z])#', '$1_', $key)); // camelCase -> snake_case
 			$normalized[$key] = $value;
+		}
+		if (!empty($normalized['read_and_close'])) {
+			if (session_status() === PHP_SESSION_ACTIVE) {
+				throw new Nette\InvalidStateException('Cannot configure "read_and_close" for already started session.');
+			}
+			$this->readAndClose = (bool) $normalized['read_and_close'];
+			unset($normalized['read_and_close']);
 		}
 		if (session_status() === PHP_SESSION_ACTIVE) {
 			$this->configure($normalized);
