@@ -281,7 +281,7 @@ class UrlImmutable implements \JsonSerializable
 	public function getHostUrl(): string
 	{
 		return ($this->scheme ? $this->scheme . ':' : '')
-			. ($this->authority ? '//' . $this->authority : '');
+			. ($this->authority !== '' ? '//' . $this->authority : '');
 	}
 
 
