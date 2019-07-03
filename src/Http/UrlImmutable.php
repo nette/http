@@ -144,6 +144,18 @@ class UrlImmutable implements \JsonSerializable
 	/**
 	 * @return static
 	 */
+	public function withoutUserInfo()
+	{
+		$dolly = clone $this;
+		$dolly->user = $dolly->password = '';
+		$dolly->build();
+		return $dolly;
+	}
+
+
+	/**
+	 * @return static
+	 */
 	public function withHost(string $host)
 	{
 		$dolly = clone $this;

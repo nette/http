@@ -29,6 +29,9 @@ test(function () {
 
 	$url = $url->withFragment('hello');
 	Assert::same('//name:secret@localhost:123/p%61th/script.php?arg=value#hello', $url->absoluteUrl);
+
+	$url = $url->withoutUserInfo();
+	Assert::same('//localhost:123/p%61th/script.php?arg=value#hello', $url->absoluteUrl);
 });
 
 
