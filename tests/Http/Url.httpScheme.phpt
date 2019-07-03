@@ -55,3 +55,6 @@ Assert::same('?arg=value#anchor', $url->absoluteUrl);
 
 $url->setPath('');
 Assert::same('', $url->getPath());
+
+$url = new Url('https://0/0');
+Assert::same('https://0', $url->hostUrl);

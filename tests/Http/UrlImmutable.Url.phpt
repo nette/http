@@ -32,3 +32,6 @@ Assert::same('anchor', $url->fragment);
 Assert::same('username%3A:password%3A@hostname:60', $url->authority);
 Assert::same('http://username%3A:password%3A@hostname:60', $url->hostUrl);
 Assert::same('http://username%3A:password%3A@hostname:60/p%61th/script.php?arg=value#anchor', $url->absoluteUrl);
+
+$url = new UrlImmutable('https://0/0');
+Assert::same('https://0', $url->hostUrl);
