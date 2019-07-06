@@ -10,7 +10,6 @@ declare(strict_types=1);
 namespace Nette\Bridges\HttpDI;
 
 use Nette;
-use Nette\PhpGenerator\Helpers;
 use Nette\Schema\Expect;
 
 
@@ -76,13 +75,13 @@ class HttpExtension extends Nette\DI\CompilerExtension
 	}
 
 
-	public function afterCompile(Nette\PhpGenerator\ClassType $class)
+	public function beforeCompile()
 	{
 		if ($this->cliMode) {
 			return;
 		}
 
-		$initialize = $class->getMethod('initialize');
+		$builder = $this->getContainerBuilder();
 		$config = $this->config;
 		$headers = array_map('strval', $config->headers);
 
@@ -96,16 +95,14 @@ class HttpExtension extends Nette\DI\CompilerExtension
 			$headers['X-Frame-Options'] = $frames;
 		}
 
-		$code = [];
 		foreach (['csp', 'cspReportOnly'] as $key) {
 			if (empty($config->$key)) {
 				continue;
 			}
 			$value = self::buildPolicy($config->$key);
 			if (strpos($value, "'nonce'")) {
-				$code[0] = '$cspNonce = base64_encode(random_bytes(16));';
 				$value = Nette\DI\ContainerBuilder::literal(
-					'str_replace(?, ? . $cspNonce, ?)',
+					'str_replace(?, ? . (isset($cspNonce) \? $cspNonce : $cspNonce = base64_encode(random_bytes(16))), ?)',
 					["'nonce", "'nonce-", $value]
 				);
 			}
@@ -116,16 +113,16 @@ class HttpExtension extends Nette\DI\CompilerExtension
 			$headers['Feature-Policy'] = self::buildPolicy($config->featurePolicy);
 		}
 
-		$code[] = Helpers::formatArgs('$response = $this->getService(?);', [$this->prefix('response')]);
+		$response = $builder->getDefinition($this->prefix('response'));
+		assert($response instanceof Nette\DI\Definitions\ServiceDefinition);
+
 		foreach ($headers as $key => $value) {
 			if ($value !== '') {
-				$code[] = Helpers::formatArgs('$response->setHeader(?, ?);', [$key, $value]);
+				$response->addSetup('?->setHeader(?, ?);', ['@self', $key, $value]);
 			}
 		}
 
-		$code[] = Helpers::formatArgs('$response->setCookie(...?);', [['nette-samesite', '1', 0, '/', null, null, true, 'Strict']]);
-
-		$initialize->addBody("(function () {\n\t" . implode("\n\t", $code) . "\n})();");
+		$response->addSetup('?->setCookie(...?)', ['@self', ['nette-samesite', '1', 0, '/', null, null, true, 'Strict']]);
 	}
 
 

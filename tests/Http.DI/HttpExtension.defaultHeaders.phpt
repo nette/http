@@ -23,7 +23,7 @@ $compiler->addExtension('http', new HttpExtension);
 eval($compiler->compile());
 
 $container = new Container;
-$container->initialize();
+$container->getService('http.response');
 
 $headers = headers_list();
 Assert::contains('X-Frame-Options: SAMEORIGIN', $headers);
