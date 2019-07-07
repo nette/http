@@ -296,12 +296,14 @@ class RequestFactory
 			if ($startingDelimiterPosition === false) { //IPv4
 				$remoteHostArr = explode(':', $host);
 				$remoteHost = $remoteHostArr[0];
+				$url->setHost($remoteHost);
 				if (isset($remoteHostArr[1])) {
 					$url->setPort((int) $remoteHostArr[1]);
 				}
 			} else { //IPv6
 				$endingDelimiterPosition = strpos($host, ']');
 				$remoteHost = substr($host, strpos($host, '[') + 1, $endingDelimiterPosition - 1);
+				$url->setHost($remoteHost);
 				$remoteHostArr = explode(':', substr($host, $endingDelimiterPosition));
 				if (isset($remoteHostArr[1])) {
 					$url->setPort((int) $remoteHostArr[1]);
@@ -339,6 +341,7 @@ class RequestFactory
 			$xForwardedHost = explode(',', $_SERVER['HTTP_X_FORWARDED_HOST']);
 			if (isset($xForwardedHost[$xForwardedForRealIpKey])) {
 				$remoteHost = trim($xForwardedHost[$xForwardedForRealIpKey]);
+				$url->setHost($remoteHost);
 			}
 		}
 	}

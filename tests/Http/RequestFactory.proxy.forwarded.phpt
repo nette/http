@@ -30,6 +30,7 @@ test(function () {
 
 	$url = $factory->createHttpRequest()->getUrl();
 	Assert::same('http', $url->getScheme());
+	Assert::same('192.168.0.1', $url->getHost());
 });
 
 test(function () {
@@ -47,6 +48,7 @@ test(function () {
 
 	$url = $factory->createHttpRequest()->getUrl();
 	Assert::same(8080, $url->getPort());
+	Assert::same('192.168.0.1', $url->getHost());
 });
 
 
@@ -62,6 +64,9 @@ test(function () {
 	$factory->setProxy('127.0.0.3');
 	Assert::same('2001:db8:cafe::17', $factory->createHttpRequest()->getRemoteAddress());
 	Assert::same('2001:db8:cafe::18', $factory->createHttpRequest()->getRemoteHost());
+
+	$url = $factory->createHttpRequest()->getUrl();
+	Assert::same('2001:db8:cafe::18', $url->getHost());
 });
 
 test(function () {
@@ -79,6 +84,7 @@ test(function () {
 
 	$url = $factory->createHttpRequest()->getUrl();
 	Assert::same(47832, $url->getPort());
+	Assert::same('2001:db8:cafe::18', $url->getHost());
 });
 
 

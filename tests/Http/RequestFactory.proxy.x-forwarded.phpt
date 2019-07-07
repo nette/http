@@ -29,6 +29,9 @@ test(function () {
 	$factory->setProxy('127.0.0.1/8');
 	Assert::same('23.75.45.200', $factory->createHttpRequest()->getRemoteAddress());
 	Assert::same('otherhost', $factory->createHttpRequest()->getRemoteHost());
+
+	$url = $factory->createHttpRequest()->getUrl();
+	Assert::same('otherhost', $url->getHost());
 });
 
 test(function () {
@@ -47,4 +50,7 @@ test(function () {
 	$factory->setProxy(['10.0.0.1', '10.0.0.2']);
 	Assert::same('172.16.0.1', $factory->createHttpRequest()->getRemoteAddress());
 	Assert::same('real', $factory->createHttpRequest()->getRemoteHost());
+
+	$url = $factory->createHttpRequest()->getUrl();
+	Assert::same('real', $url->getHost());
 });
