@@ -39,6 +39,7 @@ class SessionExtension extends Nette\DI\CompilerExtension
 			'autoStart' => Expect::anyOf('smart', true, false)->default('smart'),
 			'expiration' => Expect::string()->dynamic(),
 			'handler' => Expect::string()->dynamic(),
+			'readAndClose' => Expect::bool(),
 		])->otherItems('mixed');
 	}
 
@@ -76,6 +77,9 @@ class SessionExtension extends Nette\DI\CompilerExtension
 
 		$options = (array) $config;
 		unset($options['expiration'], $options['handler'], $options['autoStart'], $options['debugger']);
+		if ($options['readAndClose'] === null) {
+			unset($options['readAndClose']);
+		}
 		if (!empty($options)) {
 			$session->addSetup('setOptions', [$options]);
 		}
