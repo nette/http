@@ -70,4 +70,10 @@ test(function () {
 
 	$url = $url->withQuery([null]);
 	Assert::same('http://hostname/path', $url->getAbsoluteUrl());
+
+	$url = $url->withQuery('');
+	Assert::same('http://hostname/path', $url->getAbsoluteUrl());
+
+	$url = $url->withQuery('a=1');
+	Assert::same('http://hostname/path?a=1', $url->getAbsoluteUrl());
 });
