@@ -36,7 +36,7 @@ use Nette;
  * @property-read string $absoluteUrl
  * @property-read string $authority
  * @property-read string $hostUrl
- * @property-read array $queryParameters
+ * @property-read mixed[] $queryParameters
  */
 class UrlImmutable implements \JsonSerializable
 {
@@ -60,7 +60,7 @@ class UrlImmutable implements \JsonSerializable
 	/** @var string */
 	private $path = '';
 
-	/** @var array */
+	/** @var mixed[] */
 	private $query = [];
 
 	/** @var string */
@@ -216,7 +216,7 @@ class UrlImmutable implements \JsonSerializable
 
 
 	/**
-	 * @param  string|array  $query
+	 * @param  string|mixed[]  $query
 	 * @return static
 	 */
 	public function withQuery($query)
