@@ -236,7 +236,7 @@ class UrlImmutable implements \JsonSerializable
 
 	public function getQueryParameters(): array
 	{
-		return $this->query;
+		return $this->queryParameters;
 	}
 
 
