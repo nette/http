@@ -140,7 +140,7 @@ class HttpExtension extends Nette\DI\CompilerExtension
 			$policy = $policy === true ? [] : (array) $policy;
 			$value .= $type;
 			foreach ($policy as $item) {
-				$value .= !isset($nonQuoted[$type]) && preg_match('#^[a-z-]+\z#', $item) ? " '$item'" : " $item";
+				$value .= !isset($nonQuoted[$type]) && preg_match('#^[a-z-]+$#D', $item) ? " '$item'" : " $item";
 			}
 			$value .= '; ';
 		}
