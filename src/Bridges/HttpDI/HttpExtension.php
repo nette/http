@@ -32,7 +32,7 @@ class HttpExtension extends Nette\DI\CompilerExtension
 	public function getConfigSchema(): Nette\Schema\Schema
 	{
 		return Expect::structure([
-			'proxy' => Expect::arrayOf('string')->dynamic(),
+			'proxy' => Expect::anyOf(Expect::arrayOf('string'), Expect::string()->castTo('array'))->default([])->dynamic(),
 			'headers' => Expect::arrayOf('scalar|null')->default([
 				'X-Powered-By' => 'Nette Framework 3',
 				'Content-Type' => 'text/html; charset=utf-8',
