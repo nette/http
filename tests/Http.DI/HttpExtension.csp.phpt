@@ -45,7 +45,7 @@ EOD
 eval($compiler->addConfig($config)->compile());
 
 $container = new Container;
-$container->initialize();
+$container->getService('http.response');
 
 $headers = headers_list();
 
@@ -59,5 +59,5 @@ echo ' '; @ob_flush(); flush();
 Assert::true(headers_sent());
 
 Assert::exception(function () use ($container) {
-	$container->initialize();
+	$container->createService('http.response');
 }, Nette\InvalidStateException::class, 'Cannot send header after %a%');
