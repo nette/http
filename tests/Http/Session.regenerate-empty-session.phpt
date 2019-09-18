@@ -16,7 +16,7 @@ require __DIR__ . '/../bootstrap.php';
 
 // create fake session
 $cookies = [session_name() => $sessionId = md5('3')];
-file_put_contents(TEMP_DIR . '/sess_' . $sessionId, '__NF|a:1:{s:4:"DATA";a:1:{s:4:"temp";a:1:{s:5:"value";s:3:"yes";}}}');
+file_put_contents(getTempDir() . '/sess_' . $sessionId, '__NF|a:1:{s:4:"DATA";a:1:{s:4:"temp";a:1:{s:5:"value";s:3:"yes";}}}');
 
 $session = new Session(new Http\Request(new Http\UrlScript('http://nette.org'), [], [], $cookies), new Http\Response);
 $session->start();
@@ -26,6 +26,6 @@ $newSessionId = $session->getId();
 $session->close();
 
 // session was regenerated
-Assert::false(file_exists(TEMP_DIR . '/sess_' . $sessionId));
-Assert::true(file_exists(TEMP_DIR . '/sess_' . $newSessionId));
-Assert::count(1, glob(TEMP_DIR . '/sess_*'));
+Assert::false(file_exists(getTempDir() . '/sess_' . $sessionId));
+Assert::true(file_exists(getTempDir() . '/sess_' . $newSessionId));
+Assert::count(1, glob(getTempDir() . '/sess_*'));
