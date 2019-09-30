@@ -1,0 +1,31 @@
+<?php
+
+/**
+ * Test: Nette\Http\Url::parseQuery()
+ */
+
+declare(strict_types=1);
+
+use Nette\Http\Url;
+use Tester\Assert;
+
+
+require __DIR__ . '/../bootstrap.php';
+
+
+if (strpos(ini_get('arg_separator.input'), ';') === false) {
+	Tester\Environment::skip('arg_separator.input doesn\'t contain ;');
+}
+
+
+Assert::same([], Url::parseQuery(''));
+Assert::same(['key' => ''], Url::parseQuery('key'));
+Assert::same(['key' => ''], Url::parseQuery('key='));
+Assert::same(['key' => 'val'], Url::parseQuery('key=val'));
+Assert::same(['key' => ''], Url::parseQuery(';key=;'));
+Assert::same(['a' => ['val', 'val']], Url::parseQuery('a[]=val;a[]=val'));
+Assert::same(['a' => ['x' => 'val', 'y' => 'val']], Url::parseQuery('%61[x]=val;%61[y]=val'));
+Assert::same(['a b' => 'val', 'c' => ['d e' => 'val']], Url::parseQuery('a b=val;c[d e]=val'));
+Assert::same(['a.b' => 'val', 'c' => ['d.e' => 'val']], Url::parseQuery('a.b=val;c[d.e]=val'));
+Assert::same(['key"\'' => '"\''], Url::parseQuery('key"\'="\'')); // magic quotes
+Assert::same([], Url::parseQuery('%00')); // null
