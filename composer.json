@@ -22,7 +22,7 @@
 		"nette/di": "^3.0",
 		"nette/tester": "^2.0",
 		"tracy/tracy": "^2.4",
-		"mockery/mockery": "^1.2@dev"
+		"mockery/mockery": "^1.2"
 	},
 	"conflict": {
 		"nette/di": "<3.0.0-stable"
