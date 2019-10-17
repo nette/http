@@ -105,6 +105,7 @@ class Session
 		}
 
 		$this->sendCookie();
+		$this->sendCachingCookie();
 
 		$this->initialize();
 	}
@@ -508,5 +509,34 @@ class Session
 			$cookie['lifetime'] ? $cookie['lifetime'] + time() : 0,
 			$tmp[0], $cookie['domain'], $cookie['secure'], $cookie['httponly'], $cookie['samesite'] ?? $tmp[1] ?? null
 		);
+	}
+
+
+	/**
+	 * Sends the cache control HTTP headers.
+	 */
+	private function sendCachingCookie(): void
+	{
+		$expire = 60 * ini_get('session.cache_expire');
+		switch (ini_get('session.cache_limiter')) {
+			case 'public':
+				$this->response->setHeader('Expires', Helpers::formatDate(time() + $expire));
+				$this->response->setHeader('Cache-Control', "public, max-age=$expire");
+				$this->response->setHeader('Last-Modified', Helpers::formatDate(getlastmod()));
+				return;
+			case 'private_no_expire':
+				$this->response->setHeader('Cache-Control', "private, max-age=$expire");
+				$this->response->setHeader('Last-Modified', Helpers::formatDate(getlastmod()));
+				return;
+			case 'private':
+				$this->response->setHeader('Expires', 'Mon, 23 Jan 1978 10:00:00 GMT');
+				$this->response->setHeader('Cache-Control', "private, max-age=$expire");
+				$this->response->setHeader('Last-Modified', Helpers::formatDate(getlastmod()));
+				return;
+			case 'nocache':
+				$this->response->setHeader('Expires', 'Mon, 23 Jan 1978 10:00:00 GMT');
+				$this->response->setHeader('Cache-Control', 'no-store, no-cache, must-revalidate'); // For HTTP/1.1 conforming clients
+				$this->response->setHeader('Pragma', 'no-cache'); // For HTTP/1.0 conforming clients
+		}
 	}
 }
