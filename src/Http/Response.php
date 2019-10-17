@@ -8,6 +8,7 @@
 namespace Nette\Http;
 
 use Nette;
+use function is_string;
 use const ENT_IGNORE, ENT_QUOTES;
 
 
@@ -287,5 +288,31 @@ final class Response implements IResponse
 	public function getBody(): string|\Closure
 	{
 		return $this->body;
+	}
+
+
+	public function __toString(): string
+	{
+		$res = "HTTP/$this->version $this->code $this->reason\r\n";
+		foreach ($this->headers as [$name, $values]) {
+			foreach ($values as $value) {
+				$res .= $name . ': ' . $value . "\r\n";
+			}
+		}
+
+		if (is_string($this->body)) {
+			$res .= "\r\n" . $this->body;
+		} else {
+			ob_start(function (): void {});
+			try {
+				($this->body)();
+				$res .= "\r\n" . ob_get_clean();
+			} catch (\Throwable $e) {
+				ob_end_clean();
+				throw $e;
+			}
+		}
+
+		return $res;
 	}
 }
