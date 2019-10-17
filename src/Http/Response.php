@@ -187,9 +187,6 @@ final class Response implements IResponse
 	 */
 	public function getHeader(string $header): ?string
 	{
-		if (func_num_args() > 1) {
-			trigger_error(__METHOD__ . '() parameter $default is deprecated, use operator ??', E_USER_DEPRECATED);
-		}
 		$header .= ':';
 		$len = strlen($header);
 		foreach (headers_list() as $item) {
