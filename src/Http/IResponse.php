@@ -385,7 +385,7 @@ interface IResponse
 
 	/**
 	 * Returns all sent HTTP headers as an associative array.
-	 * @return array<string, string>
+	 * @return array<string, list<string>>
 	 */
 	function getHeaders(): array;
 

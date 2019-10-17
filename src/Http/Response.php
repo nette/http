@@ -15,7 +15,7 @@ use const ENT_IGNORE, ENT_QUOTES, PHP_SAPI;
 /**
  * Mutable HTTP response for setting status code, headers, cookies, and redirects.
  *
- * @property-read array<string,string> $headers
+ * @property-read array<string, list<string>> $headers
  */
 final class Response implements IResponse
 {
@@ -207,7 +207,7 @@ final class Response implements IResponse
 
 	/**
 	 * Returns all sent HTTP headers as associative array.
-	 * @return array<string, string>
+	 * @return array<string, list<string>>
 	 */
 	public function getHeaders(): array
 	{
@@ -215,7 +215,7 @@ final class Response implements IResponse
 		foreach (headers_list() as $header) {
 			$parts = explode(':', $header, 2);
 			if (isset($parts[1])) {
-				$headers[$parts[0]] = ltrim($parts[1]);
+				$headers[$parts[0]][] = ltrim($parts[1]);
 			}
 		}
 
