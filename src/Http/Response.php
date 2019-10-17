@@ -271,4 +271,30 @@ final class Response implements IResponse
 	{
 		return $this->body;
 	}
+
+
+	public function __toString(): string
+	{
+		$res = "HTTP/$this->version $this->code $this->reason\r\n";
+		foreach ($this->headers as $name => $info) {
+			foreach ($info[1] as $value) {
+				$res .= $info[0] . ': ' . $value . "\r\n";
+			}
+		}
+
+		if (is_string($this->body)) {
+			$res .= "\r\n" . $this->body;
+		} else {
+			ob_start(function () {});
+			try {
+				($this->body)();
+				$res .= "\r\n" . ob_get_clean();
+			} catch (\Throwable $e) {
+				ob_end_clean();
+				throw $e;
+			}
+		}
+
+		return $res;
+	}
 }
