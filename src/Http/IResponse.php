@@ -193,6 +193,7 @@ interface IResponse
 
 	/**
 	 * Returns a associative array of headers to sent.
+	 * @return string[][]
 	 */
 	function getHeaders(): array;
 
