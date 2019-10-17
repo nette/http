@@ -11,7 +11,7 @@ namespace Nette\Http;
 
 
 /**
- * IHttpResponse interface.
+ * HTTP response interface.
  * @method self deleteHeader(string $name)
  */
 interface IResponse

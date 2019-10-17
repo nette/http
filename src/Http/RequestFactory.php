@@ -14,7 +14,7 @@ use Nette\Utils\Strings;
 
 
 /**
- * Current HTTP request factory.
+ * HTTP request factory.
  */
 class RequestFactory
 {
@@ -58,7 +58,7 @@ class RequestFactory
 
 
 	/**
-	 * Creates current HttpRequest object.
+	 * Returns new Request instance, using values from superglobals.
 	 */
 	public function createHttpRequest(): Request
 	{

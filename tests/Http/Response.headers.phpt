@@ -17,7 +17,6 @@ if (PHP_SAPI === 'cli') {
 }
 
 
-$old = headers_list();
 $response = new Http\Response;
 
 $response->setHeader('replace', 'one');
