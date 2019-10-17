@@ -200,13 +200,14 @@ final class Response implements IResponse
 
 	/**
 	 * Returns a associative array of headers to sent.
+	 * @return string[][]
 	 */
 	public function getHeaders(): array
 	{
 		$headers = [];
 		foreach (headers_list() as $header) {
-			$a = strpos($header, ':');
-			$headers[substr($header, 0, $a)] = (string) substr($header, $a + 2);
+			$pair = explode(': ', $header);
+			$headers[$pair[0]][] = $pair[1];
 		}
 		return $headers;
 	}
