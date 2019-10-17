@@ -461,15 +461,6 @@ class Session
 
 
 	/**
-	 * @deprecated
-	 */
-	public function getCookieParameters(): array
-	{
-		return session_get_cookie_params();
-	}
-
-
-	/**
 	 * Sets path of the directory used to save session data.
 	 * @return static
 	 */
