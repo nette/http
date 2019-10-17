@@ -16,10 +16,10 @@ namespace Nette\Http;
  */
 interface IResponse
 {
-	/** @var int cookie expiration: forever (23.1.2037) */
+	/** @deprecated */
 	public const PERMANENT = 2116333333;
 
-	/** @var int cookie expiration: until the browser is closed */
+	/** @deprecated */
 	public const BROWSER = 0;
 
 	/** HTTP 1.1 response code */
