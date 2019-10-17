@@ -32,6 +32,45 @@ final class ResponseFactory
 	}
 
 
+	public function fromString(string $message): Response
+	{
+		$response = new Response;
+		$parts = explode("\r\n\r\n", $message, 2);
+		$headers = explode("\r\n", $parts[0]);
+		$this->parseStatus($response, array_shift($headers));
+		$this->parseHeaders($response, $headers);
+		$response->setBody($parts[1] ?? '');
+		return $response;
+	}
+
+
+	public function fromUrl(string $url): Response
+	{
+		$response = new Response;
+		$response->setBody(file_get_contents($url));
+		$headers = [];
+		foreach ($http_response_header as $header) {
+			if (substr($header, 0, 5) === 'HTTP/') {
+				$headers = [];
+			}
+			$headers[] = $header;
+		}
+		$this->parseStatus($response, array_shift($headers));
+		$this->parseHeaders($response, $headers);
+		return $response;
+	}
+
+
+	private function parseStatus(Response $response, string $status): void
+	{
+		if (!preg_match('#^HTTP/([\d.]+) (\d+) (.+)$#', $status, $m)) {
+			throw new Nette\InvalidArgumentException("Invalid status line '$status'.");
+		}
+		$response->setProtocolVersion($m[1]);
+		$response->setCode((int) $m[2], $m[3]);
+	}
+
+
 	private function parseHeaders(Response $response, array $headers): void
 	{
 		foreach ($headers as $header) {
