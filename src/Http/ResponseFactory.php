@@ -32,6 +32,49 @@ final class ResponseFactory
 	}
 
 
+	public function fromString(string $message): Response
+	{
+		$response = new Response;
+		$parts = explode("\r\n\r\n", $message, 2);
+		$headers = explode("\r\n", $parts[0]);
+		$this->parseStatus($response, array_shift($headers));
+		$this->parseHeaders($response, $headers);
+		$response->setBody($parts[1] ?? '');
+		return $response;
+	}
+
+
+	public function fromUrl(string $url): Response
+	{
+		$response = new Response;
+		$stream = fopen($url, 'r') ?: throw new Nette\IOException("Unable to open '$url'.");
+		$response->setBody((string) stream_get_contents($stream));
+		$headers = [];
+		foreach (stream_get_meta_data($stream)['wrapper_data'] ?? [] as $header) {
+			if (str_starts_with($header, 'HTTP/')) {
+				$headers = [];
+			}
+			$headers[] = $header;
+		}
+
+		fclose($stream);
+		$status = array_shift($headers) ?? throw new Nette\InvalidArgumentException("'$url' did not return an HTTP response.");
+		$this->parseStatus($response, $status);
+		$this->parseHeaders($response, $headers);
+		return $response;
+	}
+
+
+	private function parseStatus(Response $response, string $status): void
+	{
+		if (!preg_match('#^HTTP/([\d.]+) (\d+) (.+)$#', $status, $m)) {
+			throw new Nette\InvalidArgumentException("Invalid status line '$status'.");
+		}
+		$response->setProtocolVersion($m[1]);
+		$response->setCode((int) $m[2], $m[3]);
+	}
+
+
 	/**
 	 * @param  string[]  $headers
 	 */
