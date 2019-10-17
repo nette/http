@@ -65,20 +65,9 @@ final class Response implements IResponse
 		}
 		self::checkHeaders();
 		$this->code = $code;
-
-		static $hasReason = [ // hardcoded in PHP
-			100, 101,
-			200, 201, 202, 203, 204, 205, 206,
-			300, 301, 302, 303, 304, 305, 307, 308,
-			400, 401, 402, 403, 404, 405, 406, 407, 408, 409, 410, 411, 412, 413, 414, 415, 416, 417, 426, 428, 429, 431,
-			500, 501, 502, 503, 504, 505, 506, 511,
-		];
-		if ($reason || !in_array($code, $hasReason, true)) {
-			$protocol = $_SERVER['SERVER_PROTOCOL'] ?? 'HTTP/1.1';
-			header("$protocol $code " . ($reason ?: 'Unknown status'));
-		} else {
-			http_response_code($code);
-		}
+		$protocol = $_SERVER['SERVER_PROTOCOL'] ?? 'HTTP/1.1';
+		$reason = $reason ?? self::REASON_PHRASES[$code] ?? 'Unknown status';
+		header("$protocol $code $reason");
 		return $this;
 	}
 
