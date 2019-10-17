@@ -100,7 +100,7 @@ $_FILES = [
 ];
 
 $factory = new Http\RequestFactory;
-$request = $factory->createHttpRequest();
+$request = $factory->fromGlobals();
 
 Assert::type(Nette\Http\FileUpload::class, $request->files['file1']);
 Assert::type(Nette\Http\FileUpload::class, $request->files['file2'][2]);

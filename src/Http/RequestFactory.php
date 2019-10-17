@@ -60,7 +60,7 @@ class RequestFactory
 	/**
 	 * Returns new Request instance, using values from superglobals.
 	 */
-	public function createHttpRequest(): Request
+	public function fromGlobals(): Request
 	{
 		$url = new Url;
 		$this->getServer($url);
@@ -344,5 +344,12 @@ class RequestFactory
 				$url->setHost($remoteHost);
 			}
 		}
+	}
+
+
+	/** @deprecated */
+	public function createHttpRequest(): Request
+	{
+		return $this->fromGlobals();
 	}
 }

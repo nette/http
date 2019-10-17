@@ -21,7 +21,7 @@ test(function () use ($factory) {
 		'SCRIPT_NAME' => '/projects/modules-usage/www/index.php',
 	];
 
-	Assert::same('/projects/modules-usage/www/', $factory->createHttpRequest()->getUrl()->getScriptPath());
+	Assert::same('/projects/modules-usage/www/', $factory->fromGlobals()->getUrl()->getScriptPath());
 });
 
 
@@ -31,7 +31,7 @@ test(function () use ($factory) {
 		'SCRIPT_NAME' => '/projects/modules-usage/www/index.php',
 	];
 
-	Assert::same('/projects/modules-usage/www/', $factory->createHttpRequest()->getUrl()->getScriptPath());
+	Assert::same('/projects/modules-usage/www/', $factory->fromGlobals()->getUrl()->getScriptPath());
 });
 
 
@@ -41,7 +41,7 @@ test(function () use ($factory) {
 		'SCRIPT_NAME' => '/projects/modules-usage/www/index.php',
 	];
 
-	Assert::same('/projects/modules-usage/www/', $factory->createHttpRequest()->getUrl()->getScriptPath());
+	Assert::same('/projects/modules-usage/www/', $factory->fromGlobals()->getUrl()->getScriptPath());
 });
 
 
@@ -51,7 +51,7 @@ test(function () use ($factory) {
 		'SCRIPT_NAME' => '/www/index.php',
 	];
 
-	Assert::same('/www/index.php', $factory->createHttpRequest()->getUrl()->getScriptPath());
+	Assert::same('/www/index.php', $factory->fromGlobals()->getUrl()->getScriptPath());
 });
 
 
@@ -61,7 +61,7 @@ test(function () use ($factory) {
 		'SCRIPT_NAME' => '/www/',
 	];
 
-	Assert::same('/www/', $factory->createHttpRequest()->getUrl()->getScriptPath());
+	Assert::same('/www/', $factory->fromGlobals()->getUrl()->getScriptPath());
 });
 
 
@@ -71,7 +71,7 @@ test(function () use ($factory) {
 		'SCRIPT_NAME' => '/test/index.php',
 	];
 
-	Assert::same('/test/', $factory->createHttpRequest()->getUrl()->getScriptPath());
+	Assert::same('/test/', $factory->fromGlobals()->getUrl()->getScriptPath());
 });
 
 
@@ -81,7 +81,7 @@ test(function () use ($factory) {
 		'SCRIPT_NAME' => '/test/index.php',
 	];
 
-	Assert::same('/test/', $factory->createHttpRequest()->getUrl()->getScriptPath());
+	Assert::same('/test/', $factory->fromGlobals()->getUrl()->getScriptPath());
 });
 
 
@@ -92,7 +92,7 @@ test(function () use ($factory) {
 		'SCRIPT_NAME' => '/sign/in/',
 	];
 
-	Assert::same('/sign/in/', $factory->createHttpRequest()->getUrl()->getScriptPath());
+	Assert::same('/sign/in/', $factory->fromGlobals()->getUrl()->getScriptPath());
 });
 
 
@@ -103,7 +103,7 @@ test(function () use ($factory) {
 		'SCRIPT_NAME' => '/configuration/www/index.php',
 	];
 
-	Assert::same('/configuration/', $factory->createHttpRequest()->getUrl()->getScriptPath());
+	Assert::same('/configuration/', $factory->fromGlobals()->getUrl()->getScriptPath());
 });
 
 
@@ -113,7 +113,7 @@ test(function () use ($factory) {
 		'SCRIPT_NAME' => '/blog/www/index.php',
 	];
 
-	Assert::same('/blog/WWW/', $factory->createHttpRequest()->getUrl()->getScriptPath());
+	Assert::same('/blog/WWW/', $factory->fromGlobals()->getUrl()->getScriptPath());
 });
 
 
@@ -123,7 +123,7 @@ test(function () use ($factory) {
 		'SCRIPT_NAME' => 'c:\\index.php',
 	];
 
-	Assert::same('/', $factory->createHttpRequest()->getUrl()->getScriptPath());
+	Assert::same('/', $factory->fromGlobals()->getUrl()->getScriptPath());
 });
 
 
@@ -133,7 +133,7 @@ test(function () use ($factory) {
 		'SCRIPT_NAME' => 'c:\\index.php',
 	];
 
-	Assert::same('/', $factory->createHttpRequest()->getUrl()->getScriptPath());
+	Assert::same('/', $factory->fromGlobals()->getUrl()->getScriptPath());
 });
 
 
@@ -143,7 +143,7 @@ test(function () use ($factory) {
 		'SCRIPT_NAME' => null,
 	];
 
-	Assert::same('/', $factory->createHttpRequest()->getUrl()->getScriptPath());
+	Assert::same('/', $factory->fromGlobals()->getUrl()->getScriptPath());
 });
 
 
@@ -153,7 +153,7 @@ test(function () use ($factory) {
 		'SCRIPT_NAME' => null,
 	];
 
-	Assert::same('/', $factory->createHttpRequest()->getUrl()->getScriptPath());
+	Assert::same('/', $factory->fromGlobals()->getUrl()->getScriptPath());
 });
 
 test(function () use ($factory) {
@@ -162,5 +162,5 @@ test(function () use ($factory) {
 		'SCRIPT_NAME' => '/index.php',
 	];
 
-	Assert::same('/', $factory->createHttpRequest()->getUrl()->getScriptPath());
+	Assert::same('/', $factory->fromGlobals()->getUrl()->getScriptPath());
 });

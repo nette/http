@@ -28,7 +28,7 @@ test(function () {
 	$factory = new Http\RequestFactory;
 	$factory->urlFilters['path'] = ['#%20#' => ''];
 	$factory->urlFilters['url'] = ['#[.,)]\z#' => ''];
-	$request = $factory->createHttpRequest();
+	$request = $factory->fromGlobals();
 
 	Assert::same('GET', $request->getMethod());
 	Assert::true($request->isSecured());
@@ -59,7 +59,7 @@ test(function () {
 	$factory = new Http\RequestFactory;
 	$factory->urlFilters['path'] = [];
 	$factory->urlFilters['url'] = [];
-	$request = $factory->createHttpRequest();
+	$request = $factory->fromGlobals();
 
 	Assert::same('https', $request->getUrl()->scheme);
 	Assert::same('', $request->getUrl()->user);

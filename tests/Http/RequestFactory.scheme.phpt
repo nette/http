@@ -22,7 +22,7 @@ class RequestFactorySchemeTest extends Tester\TestCase
 		$_SERVER = $server;
 
 		$factory = new Nette\Http\RequestFactory;
-		$url = $factory->createHttpRequest()->getUrl();
+		$url = $factory->fromGlobals()->getUrl();
 
 		Assert::same($expectedScheme, $url->getScheme());
 		Assert::same($expectedScheme === 'https' ? 443 : 80, $url->getPort());
@@ -60,7 +60,7 @@ class RequestFactorySchemeTest extends Tester\TestCase
 
 		$factory = new Nette\Http\RequestFactory;
 		$factory->setProxy(['10.0.0.1']);
-		$url = $factory->createHttpRequest()->getUrl();
+		$url = $factory->fromGlobals()->getUrl();
 
 		Assert::same($expectedScheme, $url->getScheme());
 		Assert::same($expectedPort, $url->getPort());

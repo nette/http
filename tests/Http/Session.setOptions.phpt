@@ -13,7 +13,7 @@ require __DIR__ . '/../bootstrap.php';
 
 
 $factory = new Nette\Http\RequestFactory;
-$session = new Nette\Http\Session($factory->createHttpRequest(), new Nette\Http\Response);
+$session = new Nette\Http\Session($factory->fromGlobals(), new Nette\Http\Response);
 
 Assert::same([
 	'cookie_lifetime' => 0,

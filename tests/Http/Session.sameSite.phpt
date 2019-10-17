@@ -13,7 +13,8 @@ if (PHP_SAPI === 'cli') {
 
 
 $factory = new Nette\Http\RequestFactory;
-$session = new Nette\Http\Session($factory->createHttpRequest(), new Nette\Http\Response);
+$response = new Nette\Http\Response;
+$session = new Nette\Http\Session($factory->fromGlobals(), $response);
 
 $session->setOptions([
 	'cookie_samesite' => 'Lax',

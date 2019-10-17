@@ -21,7 +21,7 @@ test(function () use ($factory) {
 		'REQUEST_URI' => '/',
 	];
 
-	Assert::same('http://nette.org/', (string) $factory->createHttpRequest()->getUrl());
+	Assert::same('http://nette.org/', (string) $factory->fromGlobals()->getUrl());
 });
 
 
@@ -31,5 +31,5 @@ test(function () use ($factory) {
 		'REQUEST_URI' => '/?a=b',
 	];
 
-	Assert::same('http://nette.org/?a=b', (string) $factory->createHttpRequest()->getUrl());
+	Assert::same('http://nette.org/?a=b', (string) $factory->fromGlobals()->getUrl());
 });

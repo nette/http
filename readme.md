@@ -146,7 +146,7 @@ And then we let the factory generate a new `httpRequest` and we store it in a sy
 
 ```php
 // $container is a system container
-$container->addService('httpRequest', $requestFactory->createHttpRequest());
+$container->addService('httpRequest', $requestFactory->fromGlobals());
 ```
 
 

@@ -68,7 +68,7 @@ $_FILES = [
 test(function () { // unfiltered data
 	$factory = new Http\RequestFactory;
 	$factory->setBinary();
-	$request = $factory->createHttpRequest();
+	$request = $factory->fromGlobals();
 
 	Assert::same($request->getQuery('invalid'), INVALID);
 	Assert::same($request->getQuery('control'), CONTROL_CHARACTERS);
@@ -96,7 +96,7 @@ test(function () { // unfiltered data
 
 test(function () { // filtered data
 	$factory = new Http\RequestFactory;
-	$request = $factory->createHttpRequest();
+	$request = $factory->fromGlobals();
 
 	Assert::same('', $request->getQuery('invalid'));
 	Assert::same('ABC', $request->getQuery('control'));

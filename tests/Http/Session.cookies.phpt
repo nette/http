@@ -10,7 +10,7 @@ require __DIR__ . '/../bootstrap.php';
 
 $factory = new Nette\Http\RequestFactory;
 $response = new Nette\Http\Response;
-$session = new Nette\Http\Session($factory->createHttpRequest(), $response);
+$session = new Nette\Http\Session($factory->fromGlobals(), $response);
 
 $session->setOptions([]);
 

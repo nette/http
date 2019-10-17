@@ -25,7 +25,7 @@ $_FILES = [
 ];
 
 $factory = new Http\RequestFactory;
-$request = $factory->createHttpRequest();
+$request = $factory->fromGlobals();
 
 Assert::type('array', $request->files['files']);
 Assert::count(1, $request->files['files']);

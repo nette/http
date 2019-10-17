@@ -22,7 +22,7 @@ class MySessionStorageExtension extends \SessionHandler
 
 
 $factory = new Nette\Http\RequestFactory;
-$session = new Nette\Http\Session($factory->createHttpRequest(), new Nette\Http\Response);
+$session = new Nette\Http\Session($factory->fromGlobals(), new Nette\Http\Response);
 
 $session->setOptions(['save_handler' => 'files']);
 $session->setHandler(new MySessionStorageExtension);

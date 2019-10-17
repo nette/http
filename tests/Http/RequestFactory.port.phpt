@@ -20,7 +20,7 @@ class RequestFactoryPortTest extends Tester\TestCase
 		$_SERVER = $server;
 
 		$factory = new Nette\Http\RequestFactory;
-		Assert::same($expectedPort, $factory->createHttpRequest()->getUrl()->getPort());
+		Assert::same($expectedPort, $factory->fromGlobals()->getUrl()->getPort());
 	}
 
 
@@ -61,7 +61,7 @@ class RequestFactoryPortTest extends Tester\TestCase
 
 		$factory = new Nette\Http\RequestFactory;
 		$factory->setProxy(['10.0.0.1']);
-		Assert::same($expectedPort, $factory->createHttpRequest()->getUrl()->getPort());
+		Assert::same($expectedPort, $factory->fromGlobals()->getUrl()->getPort());
 	}
 
 
