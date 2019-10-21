@@ -401,9 +401,9 @@ class Session
 
 		if ($cookie !== $origCookie) {
 			if (PHP_VERSION_ID >= 70300) {
-				session_set_cookie_params($cookie);
+				@session_set_cookie_params($cookie); // @ may trigger warning when session is active since PHP 7.2
 			} else {
-				session_set_cookie_params(
+				@session_set_cookie_params( // @ may trigger warning when session is active since PHP 7.2
 					$cookie['lifetime'],
 					$cookie['path'] . (isset($cookie['samesite']) ? '; SameSite=' . $cookie['samesite'] : ''),
 					$cookie['domain'],
