@@ -13,10 +13,6 @@ use Tester\Assert;
 
 require __DIR__ . '/../bootstrap.php';
 
-if (PHP_SAPI === 'cli') {
-	Tester\Environment::skip('Headers are not testable in CLI mode');
-}
-
 
 $compiler = new DI\Compiler;
 $compiler->addExtension('http', new HttpExtension);
@@ -25,7 +21,10 @@ eval($compiler->compile());
 $container = new Container;
 $container->initialize();
 
-$headers = headers_list();
-Assert::contains('X-Frame-Options: SAMEORIGIN', $headers);
-Assert::contains('Content-Type: text/html; charset=utf-8', $headers);
-Assert::contains('X-Powered-By: Nette Framework 3', $headers);
+$headers = $container->getByType(Nette\Http\Response::class)->getHeaders();
+Assert::same([
+	'X-Powered-By' => ['Nette Framework 3'],
+	'Content-Type' => ['text/html; charset=utf-8'],
+	'X-Frame-Options' => ['SAMEORIGIN'],
+	'Set-Cookie' => ['nette-samesite=1; path=/; HttpOnly; SameSite=Strict'],
+], $headers);

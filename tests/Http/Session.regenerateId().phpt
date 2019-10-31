@@ -13,7 +13,8 @@ use Tester\Assert;
 require __DIR__ . '/../bootstrap.php';
 
 
-$session = new Session(new Nette\Http\Request(new Nette\Http\UrlScript), new Nette\Http\Response);
+$response = new Nette\Http\Response;
+$session = new Session(new Nette\Http\Request(new Nette\Http\UrlScript), $response);
 
 $path = rtrim(ini_get('session.save_path'), '/\\') . '/sess_';
 
@@ -30,3 +31,5 @@ Assert::true(is_file($path . $newId));
 
 $ref = 20;
 Assert::same(20, $_SESSION['var']);
+
+Assert::same(['PHPSESSID=' . $newId . '; path=/; HttpOnly'], $response->getHeaders()['Set-Cookie']);

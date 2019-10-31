@@ -104,6 +104,8 @@ class Session
 			throw $e;
 		}
 
+		$this->sendCookie();
+
 		$this->initialize();
 	}
 
@@ -183,10 +185,8 @@ class Session
 		session_destroy();
 		$_SESSION = null;
 		$this->started = false;
-		if (!$this->response->isSent()) {
-			$params = session_get_cookie_params();
-			$this->response->deleteCookie(session_name(), $params['path'], $params['domain'], $params['secure']);
-		}
+		$params = session_get_cookie_params();
+		$this->response->deleteCookie(session_name(), $params['path'], $params['domain'], $params['secure']);
 	}
 
 
@@ -213,6 +213,7 @@ class Session
 				throw new Nette\InvalidStateException('Cannot regenerate session ID after HTTP headers have been sent' . ($file ? " (output started at $file:$line)." : '.'));
 			}
 			session_regenerate_id(true);
+			$this->sendCookie();
 		} else {
 			session_id(session_create_id());
 		}
@@ -491,11 +492,21 @@ class Session
 	 */
 	private function sendCookie(): void
 	{
+		// remove old cookie
+		$cookies = $this->response->getHeaders()['Set-Cookie'] ?? [];
+		$this->response->deleteHeader('Set-Cookie');
+		foreach ($cookies as $value) {
+			if (!Nette\Utils\Strings::startsWith($value, session_name() . '=')) {
+				$this->response->addHeader('Set-Cookie', $value);
+			}
+		}
+
 		$cookie = session_get_cookie_params();
+		$tmp = explode('; SameSite=', $cookie['path']); // PHP < 7.3 workaround
 		$this->response->setCookie(
 			session_name(), session_id(),
 			$cookie['lifetime'] ? $cookie['lifetime'] + time() : 0,
-			$cookie['path'], $cookie['domain'], $cookie['secure'], $cookie['httponly'], $cookie['samesite'] ?? null
+			$tmp[0], $cookie['domain'], $cookie['secure'], $cookie['httponly'], $cookie['samesite'] ?? $tmp[1] ?? null
 		);
 	}
 }

@@ -13,10 +13,6 @@ use Tester\Assert;
 
 require __DIR__ . '/../bootstrap.php';
 
-if (PHP_SAPI === 'cli') {
-	Tester\Environment::skip('Headers are not testable in CLI mode');
-}
-
 
 $compiler = new DI\Compiler;
 $compiler->addExtension('http', new HttpExtension);
@@ -35,19 +31,10 @@ eval($compiler->addConfig($config)->compile());
 $container = new Container;
 $container->initialize();
 
-$headers = headers_list();
-Assert::contains('X-Frame-Options: SAMEORIGIN', $headers);
-Assert::contains('Content-Type: text/html; charset=utf-8', $headers);
-Assert::contains('X-Powered-By: Nette Framework 3', $headers);
-Assert::contains('A: b', $headers);
-Assert::contains('D: 0', $headers);
-Assert::notContains('C:', $headers);
-
-
-echo ' '; @ob_flush(); flush();
-
-Assert::true(headers_sent());
-
-Assert::exception(function () use ($container) {
-	$container->initialize();
-}, Nette\InvalidStateException::class, 'Cannot send header after %a%');
+$headers = $container->getByType(Nette\Http\Response::class)->getHeaders();
+Assert::same(['SAMEORIGIN'], $headers['X-Frame-Options']);
+Assert::same(['text/html; charset=utf-8'], $headers['Content-Type']);
+Assert::same(['Nette Framework 3'], $headers['X-Powered-By']);
+Assert::same(['b'], $headers['A']);
+Assert::same(['0'], $headers['D']);
+Assert::false(isset($headers['C']));
