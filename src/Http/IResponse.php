@@ -12,7 +12,6 @@ namespace Nette\Http;
 
 /**
  * HTTP response interface.
- * @method self deleteHeader(string $name)
  */
 interface IResponse
 {
@@ -142,6 +141,17 @@ interface IResponse
 	];
 
 	/**
+	 * Sets HTTP protocol version.
+	 * @return static
+	 */
+	function setProtocolVersion(string $version);
+
+	/**
+	 * Returns HTTP protocol version.
+	 */
+	function getProtocolVersion(): string;
+
+	/**
 	 * Sets HTTP response code.
 	 * @return static
 	 */
@@ -151,6 +161,11 @@ interface IResponse
 	 * Returns HTTP response code.
 	 */
 	function getCode(): int;
+
+	/**
+	 * Returns HTTP reason phrase.
+	 */
+	function getReasonPhrase(): string;
 
 	/**
 	 * Sends a HTTP header and replaces a previous one.
@@ -163,6 +178,11 @@ interface IResponse
 	 * @return static
 	 */
 	function addHeader(string $name, string $value);
+
+	/**
+	 * @return static
+	 */
+	function deleteHeader(string $name);
 
 	/**
 	 * Sends a Content-type HTTP header.
@@ -197,10 +217,21 @@ interface IResponse
 	 * @param  string|int|\DateTimeInterface $expire  time, value 0 means "until the browser is closed"
 	 * @return static
 	 */
-	function setCookie(string $name, string $value, $expire, string $path = null, string $domain = null, bool $secure = null, bool $httpOnly = null);
+	function setCookie(string $name, string $value, $expire, string $path = null, string $domain = null, bool $secure = null, bool $httpOnly = null, string $sameSite = null);
 
 	/**
 	 * Deletes a cookie.
 	 */
 	function deleteCookie(string $name, string $path = null, string $domain = null, bool $secure = null);
+
+	/**
+	 * @param  string|\Closure  $body
+	 * @return static
+	 */
+	function setBody($body);
+
+	/**
+	 * @return string|\Closure
+	 */
+	function getBody();
 }
