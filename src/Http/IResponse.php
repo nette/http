@@ -343,22 +343,22 @@ interface IResponse
 	function getCode(): int;
 
 	/**
-	 * Sends an HTTP header, replacing any previously sent header with the same name.
+	 * Sets an HTTP header, replacing any previously set header with the same name.
 	 */
 	function setHeader(string $name, string $value): static;
 
 	/**
-	 * Adds an HTTP header without replacing a previously sent header with the same name.
+	 * Adds an HTTP header without replacing a previously set header with the same name.
 	 */
 	function addHeader(string $name, string $value): static;
 
 	/**
-	 * Deletes a previously sent HTTP header.
+	 * Deletes a previously set HTTP header.
 	 */
 	function deleteHeader(string $name): static;
 
 	/**
-	 * Sends a Content-type HTTP header.
+	 * Sets a Content-type HTTP header.
 	 */
 	function setContentType(string $type, ?string $charset = null): static;
 
@@ -374,23 +374,18 @@ interface IResponse
 	function setExpiration(?string $expire): static;
 
 	/**
-	 * Checks whether HTTP headers have already been sent.
-	 */
-	function isSent(): bool;
-
-	/**
-	 * Returns the value of a sent HTTP header, or null if it does not exist.
+	 * Returns the value of an HTTP header, or null if it does not exist.
 	 */
 	function getHeader(string $header): ?string;
 
 	/**
-	 * Returns all sent HTTP headers as an associative array.
+	 * Returns all HTTP headers as an associative array.
 	 * @return array<string, list<string>>
 	 */
 	function getHeaders(): array;
 
 	/**
-	 * Sends a cookie.
+	 * Sets a cookie.
 	 */
 	function setCookie(
 		string $name,

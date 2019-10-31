@@ -58,8 +58,11 @@ extension for images, via `getSuggestedExtension`), while `getUntrustedName()` /
 
 ## Cookies and headers on the response
 
-`Response` is mutable and guards every mutation with `headers_sent()`
-(`isSent()`); `setCookie`/`setHeader`/`setCode` throw once output has started.
+`Response` is a mutable store of the status, headers and body; nothing reaches the
+browser until `ResponseEmitter::send()`. The emitter alone checks `headers_sent()`
+and the output buffer, and it removes the headers PHP set on its own (`headers_list()`)
+before sending, which is why `Session` sets the session cookie and the
+`session.cache_limiter` headers on the `Response` itself.
 `setCookie()` builds the `Set-Cookie` header itself (not via PHP's `setcookie()`),
 sending both `expires` and `Max-Age`, and supports the `Partitioned` (CHIPS)
 attribute. Cookie **defaults are secure**: `httpOnly` true, `SameSite=Lax`,

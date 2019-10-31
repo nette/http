@@ -113,6 +113,8 @@ class Session
 			return;
 		}
 
+		$this->sendCookie();
+
 		$this->initialize();
 		Nette\Utils\Arrays::invoke($this->onStart, $this);
 	}
@@ -216,10 +218,9 @@ class Session
 		$_SESSION = null;
 		$this->started = false;
 		$this->fileExists = false;
-		if (!$this->response->isSent()) {
-			$params = session_get_cookie_params();
-			$this->response->deleteCookie(session_name(), $params['path'], $params['domain'], $params['secure']);
-		}
+
+		$params = session_get_cookie_params();
+		$this->response->deleteCookie(session_name(), $params['path'], $params['domain'], $params['secure']);
 	}
 
 
@@ -249,6 +250,7 @@ class Session
 			}
 
 			session_regenerate_id(delete_old_session: true);
+			$this->sendCookie();
 
 		} else {
 			session_id(session_create_id() ?: throw new Nette\InvalidStateException('Failed to create session ID.'));
@@ -551,6 +553,15 @@ class Session
 	 */
 	private function sendCookie(): void
 	{
+		// remove old cookie
+		$cookies = array_change_key_case($this->response->getHeaders())['set-cookie'] ?? [];
+		$this->response->deleteHeader('Set-Cookie');
+		foreach ($cookies as $value) {
+			if (!str_starts_with($value, session_name() . '=')) {
+				$this->response->addHeader('Set-Cookie', $value);
+			}
+		}
+
 		$cookie = session_get_cookie_params();
 		$this->response->setCookie(
 			session_name(),

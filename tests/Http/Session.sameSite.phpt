@@ -4,10 +4,6 @@ use Tester\Assert;
 
 require __DIR__ . '/../bootstrap.php';
 
-if (PHP_SAPI === 'cli') {
-	Tester\Environment::skip('Cookies are not available in CLI');
-}
-
 
 $factory = new Nette\Http\RequestFactory;
 $response = new Nette\Http\Response;
@@ -19,4 +15,7 @@ $session->setOptions([
 
 $session->start();
 
-Assert::contains('Set-Cookie: PHPSESSID=' . $session->getId() . '; path=/; HttpOnly; SameSite=Lax', headers_list());
+Assert::same(
+	['PHPSESSID=' . $session->getId() . '; path=/; HttpOnly; SameSite=Lax'],
+	$response->getHeaders()['Set-Cookie'],
+);

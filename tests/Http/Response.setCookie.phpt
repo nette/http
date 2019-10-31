@@ -9,24 +9,19 @@ use Tester\Assert;
 
 require __DIR__ . '/../bootstrap.php';
 
-if (PHP_SAPI === 'cli') {
-	Tester\Environment::skip('Cookies are not available in CLI');
-}
 
-
-$old = headers_list();
 $response = new Http\Response;
 
 
 $response->setCookie('test', 'value', null);
-$headers = array_values(array_diff(headers_list(), $old, ['Set-Cookie:']));
-Assert::same(['Set-Cookie: test=value; path=/; HttpOnly; SameSite=Lax'], $headers);
+$headers = $response->getHeaders()['Set-Cookie'];
+Assert::same(['test=value; path=/; HttpOnly; SameSite=Lax'], $headers);
 
 
 $response->setCookie('test', 'newvalue', null);
-$headers = array_values(array_diff(headers_list(), $old, ['Set-Cookie:']));
+$headers = $response->getHeaders()['Set-Cookie'];
 Assert::same(
-	['Set-Cookie: test=value; path=/; HttpOnly; SameSite=Lax', 'Set-Cookie: test=newvalue; path=/; HttpOnly; SameSite=Lax'],
+	['test=value; path=/; HttpOnly; SameSite=Lax', 'test=newvalue; path=/; HttpOnly; SameSite=Lax'],
 	$headers,
 );
 
@@ -34,75 +29,70 @@ Assert::same(
 // cookiePath
 $response = new Http\Response;
 $response->cookiePath = '/foo';
-$old = headers_list();
 $response->setCookie('test', 'a', null);
-$headers = array_values(array_diff(headers_list(), $old, ['Set-Cookie:']));
-Assert::same(['Set-Cookie: test=a; path=/foo; HttpOnly; SameSite=Lax'], $headers);
+$headers = $response->getHeaders()['Set-Cookie'];
+Assert::same(['test=a; path=/foo; HttpOnly; SameSite=Lax'], $headers);
 
 // cookiePath + path
-$old = headers_list();
+$response->deleteHeader('Set-Cookie');
 $response->setCookie('test', 'b', null, '/bar');
-$headers = array_values(array_diff(headers_list(), $old, ['Set-Cookie:']));
-Assert::same(['Set-Cookie: test=b; path=/bar; HttpOnly; SameSite=Lax'], $headers);
+$headers = $response->getHeaders()['Set-Cookie'];
+Assert::same(['test=b; path=/bar; HttpOnly; SameSite=Lax'], $headers);
 
 // cookiePath + domain
-$old = headers_list();
+$response->deleteHeader('Set-Cookie');
 $response->setCookie('test', 'c', null, null, 'nette.org');
-$headers = array_values(array_diff(headers_list(), $old, ['Set-Cookie:']));
-Assert::same(['Set-Cookie: test=c; path=/; domain=nette.org; HttpOnly; SameSite=Lax'], $headers);
+$headers = $response->getHeaders()['Set-Cookie'];
+Assert::same(['test=c; path=/; domain=nette.org; HttpOnly; SameSite=Lax'], $headers);
 
 
 // cookieDomain
 $response = new Http\Response;
 $response->cookieDomain = 'nette.org';
-$old = headers_list();
 $response->setCookie('test', 'd', null);
-$headers = array_values(array_diff(headers_list(), $old, ['Set-Cookie:']));
-Assert::same(['Set-Cookie: test=d; path=/; domain=nette.org; HttpOnly; SameSite=Lax'], $headers);
+$headers = $response->getHeaders()['Set-Cookie'];
+Assert::same(['test=d; path=/; domain=nette.org; HttpOnly; SameSite=Lax'], $headers);
 
 // cookieDomain + path
-$old = headers_list();
+$response->deleteHeader('Set-Cookie');
 $response->setCookie('test', 'e', null, '/bar');
-$headers = array_values(array_diff(headers_list(), $old, ['Set-Cookie:']));
-Assert::same(['Set-Cookie: test=e; path=/bar; HttpOnly; SameSite=Lax'], $headers);
+$headers = $response->getHeaders()['Set-Cookie'];
+Assert::same(['test=e; path=/bar; HttpOnly; SameSite=Lax'], $headers);
 
 // cookieDomain + domain
-$old = headers_list();
+$response->deleteHeader('Set-Cookie');
 $response->setCookie('test', 'f', null, null, 'example.org');
-$headers = array_values(array_diff(headers_list(), $old, ['Set-Cookie:']));
-Assert::same(['Set-Cookie: test=f; path=/; domain=example.org; HttpOnly; SameSite=Lax'], $headers);
+$headers = $response->getHeaders()['Set-Cookie'];
+Assert::same(['test=f; path=/; domain=example.org; HttpOnly; SameSite=Lax'], $headers);
 
 // an explicitly empty domain counts as given, so the path widens instead of inheriting cookiePath
 $response = new Http\Response;
 $response->cookiePath = '/foo';
 $response->cookieDomain = 'nette.org';
-$old = headers_list();
 $response->setCookie('test', 'hostonly', null, null, '');
-$headers = array_values(array_diff(headers_list(), $old, ['Set-Cookie:']));
-Assert::same(['Set-Cookie: test=hostonly; path=/; HttpOnly; SameSite=Lax'], $headers);
+$headers = $response->getHeaders()['Set-Cookie'];
+Assert::same(['test=hostonly; path=/; HttpOnly; SameSite=Lax'], $headers);
 
 
 // a future expiration sets Max-Age (and expires for ancient clients)
 $response = new Http\Response;
-$old = headers_list();
 $response->setCookie('test', 'value', 3600);
-$headers = array_values(array_diff(headers_list(), $old, ['Set-Cookie:']));
-Assert::match('Set-Cookie: test=value; expires=%a%; Max-Age=3600; path=/; HttpOnly; SameSite=Lax', $headers[0]);
+$headers = $response->getHeaders()['Set-Cookie'];
+Assert::match('test=value; expires=%a%; Max-Age=3600; path=/; HttpOnly; SameSite=Lax', $headers[0]);
 
 
 // deleteCookie sends Max-Age=0 (immediate deletion)
-$old = headers_list();
+$response->deleteHeader('Set-Cookie');
 $response->deleteCookie('test');
-$headers = array_values(array_diff(headers_list(), $old, ['Set-Cookie:']));
-Assert::match('Set-Cookie: test=; expires=%a%; Max-Age=0; path=/; HttpOnly; SameSite=Lax', $headers[0]);
+$headers = $response->getHeaders()['Set-Cookie'];
+Assert::match('test=; expires=%a%; Max-Age=0; path=/; HttpOnly; SameSite=Lax', $headers[0]);
 
 
 // the value is percent-encoded, the name is kept verbatim (incl. [] for array cookies)
 $response = new Http\Response;
-$old = headers_list();
 $response->setCookie('arr[key]', 'a b;c', null);
-$headers = array_values(array_diff(headers_list(), $old, ['Set-Cookie:']));
-Assert::same(['Set-Cookie: arr[key]=a%20b%3Bc; path=/; HttpOnly; SameSite=Lax'], $headers);
+$headers = $response->getHeaders()['Set-Cookie'];
+Assert::same(['arr[key]=a%20b%3Bc; path=/; HttpOnly; SameSite=Lax'], $headers);
 
 
 // an illegal or empty name is rejected (it cannot be encoded - PHP would not decode it back)
@@ -149,39 +139,35 @@ Assert::exception(
 
 // SameSite=None forces the Secure attribute (otherwise the browser rejects the cookie)
 $response = new Http\Response;
-$old = headers_list();
 $response->setCookie('test', 'value', null, sameSite: Http\SameSite::None);
-$headers = array_values(array_diff(headers_list(), $old, ['Set-Cookie:']));
-Assert::same(['Set-Cookie: test=value; path=/; secure; HttpOnly; SameSite=None'], $headers);
+$headers = $response->getHeaders()['Set-Cookie'];
+Assert::same(['test=value; path=/; secure; HttpOnly; SameSite=None'], $headers);
 
 
 // Partitioned (CHIPS) adds the attribute and forces Secure
 $response = new Http\Response;
-$old = headers_list();
 $response->setCookie('test', 'value', null, sameSite: Http\SameSite::None, partitioned: true);
-$headers = array_values(array_diff(headers_list(), $old, ['Set-Cookie:']));
-Assert::same(['Set-Cookie: test=value; path=/; secure; HttpOnly; SameSite=None; Partitioned'], $headers);
+$headers = $response->getHeaders()['Set-Cookie'];
+Assert::same(['test=value; path=/; secure; HttpOnly; SameSite=None; Partitioned'], $headers);
 
 
 // the SameSite enum and the equivalent string produce the same header
 $response = new Http\Response;
-$old = headers_list();
 $response->setCookie('test', 'a', null, sameSite: Http\SameSite::Strict);
 $response->setCookie('test', 'b', null, sameSite: 'Strict');
-$headers = array_values(array_diff(headers_list(), $old, ['Set-Cookie:']));
+$headers = $response->getHeaders()['Set-Cookie'];
 Assert::same([
-	'Set-Cookie: test=a; path=/; HttpOnly; SameSite=Strict',
-	'Set-Cookie: test=b; path=/; HttpOnly; SameSite=Strict',
+	'test=a; path=/; HttpOnly; SameSite=Strict',
+	'test=b; path=/; HttpOnly; SameSite=Strict',
 ], $headers);
 
 
 // integer 0 is deprecated, but kept as a session cookie for BC
 $response = new Http\Response;
-$old = headers_list();
 Assert::error(
 	fn() => $response->setCookie('test', 'g', 0),
 	E_USER_DEPRECATED,
 	'Passing 0 as $expire is deprecated; use null for a session cookie.',
 );
-$headers = array_values(array_diff(headers_list(), $old, ['Set-Cookie:']));
-Assert::same(['Set-Cookie: test=g; path=/; HttpOnly; SameSite=Lax'], $headers);
+$headers = $response->getHeaders()['Set-Cookie'];
+Assert::same(['test=g; path=/; HttpOnly; SameSite=Lax'], $headers);
