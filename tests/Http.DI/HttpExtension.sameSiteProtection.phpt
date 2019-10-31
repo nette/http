@@ -9,10 +9,6 @@ use Tester\Assert;
 
 require __DIR__ . '/../bootstrap.php';
 
-if (PHP_SAPI === 'cli') {
-	Tester\Environment::skip('Headers are not testable in CLI mode');
-}
-
 
 $compiler = new DI\Compiler;
 $compiler->addExtension('http', new HttpExtension);
@@ -23,10 +19,8 @@ eval($compiler->compile());
 $container = new Container;
 $container->initialize();
 
-$headers = headers_list();
-Assert::contains(
-	PHP_VERSION_ID >= 70300
-		? 'Set-Cookie: nette-samesite=1; path=/; HttpOnly; SameSite=Strict'
-		: 'Set-Cookie: nette-samesite=1; path=/; SameSite=Strict; HttpOnly',
-	$headers
+$headers = $container->getByType(Nette\Http\Response::class)->getHeaders();
+Assert::same(
+	['nette-samesite=1; path=/; HttpOnly; SameSite=Strict'],
+	$headers['Set-Cookie']
 );
