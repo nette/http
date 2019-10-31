@@ -117,4 +117,10 @@ interface IRequest
 	 * Returns raw content of HTTP request body.
 	 */
 	function getRawBody(): ?string;
+
+	/**
+	 * Returns data related to the incoming request environment,
+	 * typically derived from PHP's $_SERVER superglobal.
+	 */
+	function getServerParameters(): array;
 }

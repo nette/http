@@ -80,7 +80,8 @@ class RequestFactory
 			$remoteHost,
 			function (): string {
 				return file_get_contents('php://input');
-			}
+			},
+			$_SERVER
 		);
 	}
 

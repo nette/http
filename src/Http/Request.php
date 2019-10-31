@@ -60,9 +60,12 @@ class Request implements IRequest
 	/** @var callable|null */
 	private $rawBodyCallback;
 
+	/** @var array */
+	private $serverParameters;
+
 
 	public function __construct(UrlScript $url, array $post = null, array $files = null, array $cookies = null,
-		array $headers = null, string $method = null, string $remoteAddress = null, string $remoteHost = null, callable $rawBodyCallback = null)
+		array $headers = null, string $method = null, string $remoteAddress = null, string $remoteHost = null, callable $rawBodyCallback = null, array $serverParameters = [])
 	{
 		$this->url = $url;
 		$this->post = (array) $post;
@@ -73,6 +76,7 @@ class Request implements IRequest
 		$this->remoteAddress = $remoteAddress;
 		$this->remoteHost = $remoteHost;
 		$this->rawBodyCallback = $rawBodyCallback;
+		$this->serverParameters = $serverParameters;
 	}
 
 
@@ -271,6 +275,16 @@ class Request implements IRequest
 	public function getRawBody(): ?string
 	{
 		return $this->rawBodyCallback ? ($this->rawBodyCallback)() : null;
+	}
+
+
+	/**
+	 * Returns data related to the incoming request environment,
+	 * typically derived from PHP's $_SERVER superglobal.
+	 */
+	public function getServerParameters(): array
+	{
+		return $this->serverParameters;
 	}
 
 
