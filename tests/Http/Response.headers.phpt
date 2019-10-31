@@ -12,10 +12,6 @@ use Tester\Assert;
 
 require __DIR__ . '/../bootstrap.php';
 
-if (PHP_SAPI === 'cli') {
-	Tester\Environment::skip('Headers are not available in CLI');
-}
-
 
 $response = new Http\Response;
 
