@@ -23,14 +23,14 @@ final class ResponseEmitter
 	public bool $warnOnBuffer = true;
 
 
-	public function send(Response $response): void
+	public function send(IResponse $response): void
 	{
 		$this->sendHeaders($response);
 		$this->sendBody($response);
 	}
 
 
-	public function sendHeaders(Response $response): void
+	public function sendHeaders(IResponse $response): void
 	{
 		$this->checkHeaders();
 
@@ -52,7 +52,7 @@ final class ResponseEmitter
 	}
 
 
-	public function sendBody(Response $response): void
+	public function sendBody(IResponse $response): void
 	{
 		$body = $response->getBody();
 		if (is_string($body)) {

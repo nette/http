@@ -333,6 +333,16 @@ interface IResponse
 	public const S511_NETWORK_AUTHENTICATION_REQUIRED = self::S511_NetworkAuthenticationRequired;
 
 	/**
+	 * Sets HTTP protocol version.
+	 */
+	function setProtocolVersion(string $version): static;
+
+	/**
+	 * Returns HTTP protocol version.
+	 */
+	function getProtocolVersion(): string;
+
+	/**
 	 * Sets HTTP response code.
 	 */
 	function setCode(int $code, ?string $reason = null): static;
@@ -341,6 +351,11 @@ interface IResponse
 	 * Returns HTTP response code.
 	 */
 	function getCode(): int;
+
+	/**
+	 * Returns HTTP reason phrase.
+	 */
+	function getReasonPhrase(): string;
 
 	/**
 	 * Sets an HTTP header, replacing any previously set header with the same name.
@@ -409,4 +424,10 @@ interface IResponse
 		?string $domain = null,
 		bool $secure = false,
 	);
+
+	/** @param  string|(\Closure(): void)  $body */
+	function setBody(string|\Closure $body): static;
+
+	/** @return string|(\Closure(): void) */
+	function getBody(): string|\Closure;
 }
