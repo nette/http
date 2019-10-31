@@ -182,11 +182,6 @@ interface IResponse
 	function setExpiration(?string $expire);
 
 	/**
-	 * Checks if headers have been sent.
-	 */
-	function isSent(): bool;
-
-	/**
 	 * Returns value of an HTTP header.
 	 */
 	function getHeader(string $header): ?string;

@@ -13,10 +13,6 @@ use Tester\Assert;
 
 require __DIR__ . '/../bootstrap.php';
 
-if (PHP_SAPI === 'cli') {
-	Tester\Environment::skip('Headers are not testable in CLI mode');
-}
-
 
 $compiler = new DI\Compiler;
 $compiler->addExtension('http', new HttpExtension);
@@ -48,17 +44,8 @@ eval($compiler->addConfig($config)->compile());
 $container = new Container;
 $container->initialize();
 
-$headers = headers_list();
+$headers = $container->getByType(Nette\Http\Response::class)->getHeaders();
 
-preg_match('#nonce-([\w+/]+=*)#', implode($headers), $nonce);
-Assert::contains("Content-Security-Policy: default-src 'self' https://example.com; upgrade-insecure-requests; script-src 'nonce-$nonce[1]'; style-src 'self' https://example.com http:; require-sri-for style; sandbox allow-forms; plugin-types application/x-java-applet;", $headers);
-Assert::contains("Content-Security-Policy-Report-Only: default-src 'nonce-$nonce[1]'; report-uri https://example.com/report; upgrade-insecure-requests;", $headers);
-
-
-echo ' '; @ob_flush(); flush();
-
-Assert::true(headers_sent());
-
-Assert::exception(function () use ($container) {
-	$container->initialize();
-}, Nette\InvalidStateException::class, 'Cannot send header after %a%');
+preg_match('#nonce-([\w+/]+=*)#', implode($headers['Content-Security-Policy']), $nonce);
+Assert::same(["default-src 'self' https://example.com; upgrade-insecure-requests; script-src 'nonce-$nonce[1]'; style-src 'self' https://example.com http:; require-sri-for style; sandbox allow-forms; plugin-types application/x-java-applet;"], $headers['Content-Security-Policy']);
+Assert::same(["default-src 'nonce-$nonce[1]'; report-uri https://example.com/report; upgrade-insecure-requests;"], $headers['Content-Security-Policy-Report-Only']);
