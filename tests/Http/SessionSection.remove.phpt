@@ -20,10 +20,12 @@ $namespace->a = 'apple';
 $namespace->p = 'papaya';
 $namespace['c'] = 'cherry';
 
+dump($namespace);
+
 $namespace = $session->getSection('three');
-Assert::same('a=apple&p=papaya&c=cherry', http_build_query($namespace->getIterator()));
+Assert::same('a=apple&p=papaya&c=cherry', http_build_query(iterator_to_array($namespace->getIterator())));
 
 
 // removing
 $namespace->remove();
-Assert::same('', http_build_query($namespace->getIterator()));
+Assert::same('', http_build_query(iterator_to_array($namespace->getIterator())));
