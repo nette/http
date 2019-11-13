@@ -29,7 +29,7 @@ test(function () use ($session) { // try to expire whole namespace
 	$session->start();
 
 	$namespace = $session->getSection('expire');
-	Assert::same('', http_build_query($namespace->getIterator()));
+	Assert::same('', http_build_query(iterator_to_array($namespace->getIterator())));
 });
 
 
@@ -44,7 +44,7 @@ test(function () use ($session) { // try to expire only 1 of the keys
 	$session->start();
 
 	$namespace = $session->getSection('expireSingle');
-	Assert::same('p=plum', http_build_query($namespace->getIterator()));
+	Assert::same('p=plum', http_build_query(iterator_to_array($namespace->getIterator())));
 });
 
 
