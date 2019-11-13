@@ -26,4 +26,4 @@ sleep(3);
 $session->start();
 
 $section = $session->getSection('expireRemove');
-Assert::same('a=apple&b=banana', http_build_query($section->getIterator()));
+Assert::same('a=apple&b=banana', http_build_query(iterator_to_array($section->getIterator())));

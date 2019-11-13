@@ -39,4 +39,4 @@ unset($namespace['a'], $namespace->p, $namespace->o, $namespace->undef);
 
 
 
-Assert::same('', http_build_query($namespace->getIterator()));
+Assert::same('', http_build_query(iterator_to_array($namespace->getIterator())));
