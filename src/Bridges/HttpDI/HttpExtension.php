@@ -123,7 +123,7 @@ class HttpExtension extends Nette\DI\CompilerExtension
 			}
 		}
 
-		$code[] = Helpers::formatArgs('$response->setCookie(...?);', [['nette-samesite', '1', 0, '/', null, null, true, 'Strict']]);
+		$code[] = Helpers::formatArgs('$response->setCookie(...?);', [['nette-samesite', '1', 0, '/', null, $config->cookieSecure === true ? true : null, true, 'Strict']]);
 
 		$initialize->addBody("(function () {\n\t" . implode("\n\t", $code) . "\n})();");
 	}
