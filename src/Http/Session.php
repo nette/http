@@ -370,7 +370,7 @@ class Session
 
 		foreach ($config as $key => $value) {
 			if (!isset($allowed["session.$key"])) {
-				$hint = substr((string) Nette\Utils\ObjectHelpers::getSuggestion(array_keys($allowed), "session.$key"), 8);
+				$hint = substr((string) Nette\Utils\Helpers::getSuggestion(array_keys($allowed), "session.$key"), 8);
 				[$altKey, $altHint] = array_map(function ($s) {
 					return preg_replace_callback('#_(.)#', function ($m) { return strtoupper($m[1]); }, $s); // snake_case -> camelCase
 				}, [$key, (string) $hint]);
