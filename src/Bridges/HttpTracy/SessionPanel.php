@@ -25,9 +25,9 @@ class SessionPanel implements Tracy\IBarPanel
 	 */
 	public function getTab(): string
 	{
-		ob_start(function () {});
-		require __DIR__ . '/templates/SessionPanel.tab.phtml';
-		return ob_get_clean();
+		return Nette\Utils\Helpers::capture(function () {
+			require __DIR__ . '/templates/SessionPanel.tab.phtml';
+		});
 	}
 
 
@@ -36,8 +36,8 @@ class SessionPanel implements Tracy\IBarPanel
 	 */
 	public function getPanel(): string
 	{
-		ob_start(function () {});
-		require __DIR__ . '/templates/SessionPanel.panel.phtml';
-		return ob_get_clean();
+		return Nette\Utils\Helpers::capture(function () {
+			require __DIR__ . '/templates/SessionPanel.panel.phtml';
+		});
 	}
 }
