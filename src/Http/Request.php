@@ -76,9 +76,7 @@ class Request implements IRequest
 	}
 
 
-	/**
-	 * @return static
-	 */
+	/** @return static */
 	public function withUrl(UrlScript $url)
 	{
 		$dolly = clone $this;
