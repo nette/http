@@ -460,9 +460,7 @@ class Session
 	}
 
 
-	/**
-	 * @deprecated
-	 */
+	/** @deprecated */
 	public function getCookieParameters(): array
 	{
 		return session_get_cookie_params();

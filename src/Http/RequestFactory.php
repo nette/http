@@ -36,9 +36,7 @@ class RequestFactory
 	private $proxies = [];
 
 
-	/**
-	 * @return static
-	 */
+	/** @return static */
 	public function setBinary(bool $binary = true)
 	{
 		$this->binary = $binary;

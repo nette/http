@@ -107,9 +107,7 @@ class Url implements \JsonSerializable
 	}
 
 
-	/**
-	 * @return static
-	 */
+	/** @return static */
 	public function setScheme(string $scheme)
 	{
 		$this->scheme = $scheme;
@@ -123,9 +121,7 @@ class Url implements \JsonSerializable
 	}
 
 
-	/**
-	 * @return static
-	 */
+	/** @return static */
 	public function setUser(string $user)
 	{
 		$this->user = $user;
@@ -139,9 +135,7 @@ class Url implements \JsonSerializable
 	}
 
 
-	/**
-	 * @return static
-	 */
+	/** @return static */
 	public function setPassword(string $password)
 	{
 		$this->password = $password;
@@ -155,9 +149,7 @@ class Url implements \JsonSerializable
 	}
 
 
-	/**
-	 * @return static
-	 */
+	/** @return static */
 	public function setHost(string $host)
 	{
 		$this->host = $host;
@@ -183,9 +175,7 @@ class Url implements \JsonSerializable
 	}
 
 
-	/**
-	 * @return static
-	 */
+	/** @return static */
 	public function setPort(int $port)
 	{
 		$this->port = $port;
@@ -199,9 +189,7 @@ class Url implements \JsonSerializable
 	}
 
 
-	/**
-	 * @return static
-	 */
+	/** @return static */
 	public function setPath(string $path)
 	{
 		$this->path = $path;
@@ -254,9 +242,7 @@ class Url implements \JsonSerializable
 	}
 
 
-	/**
-	 * @return mixed
-	 */
+	/** @return mixed */
 	public function getQueryParameter(string $name)
 	{
 		if (func_num_args() > 1) {
@@ -277,9 +263,7 @@ class Url implements \JsonSerializable
 	}
 
 
-	/**
-	 * @return static
-	 */
+	/** @return static */
 	public function setFragment(string $fragment)
 	{
 		$this->fragment = $fragment;
