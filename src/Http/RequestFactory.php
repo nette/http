@@ -331,8 +331,10 @@ class RequestFactory
 					return filter_var(trim($ip), FILTER_VALIDATE_IP) !== false && Helpers::ipMatch(trim($ip), $proxy);
 				});
 			});
-			$remoteAddr = trim(end($xForwardedForWithoutProxies));
-			$xForwardedForRealIpKey = key($xForwardedForWithoutProxies);
+			if ($xForwardedForWithoutProxies) {
+				$remoteAddr = trim(end($xForwardedForWithoutProxies));
+				$xForwardedForRealIpKey = key($xForwardedForWithoutProxies);
+			}
 		}
 
 		if (isset($xForwardedForRealIpKey) && !empty($_SERVER['HTTP_X_FORWARDED_HOST'])) {
