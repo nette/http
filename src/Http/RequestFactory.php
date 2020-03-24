@@ -275,7 +275,7 @@ class RequestFactory
 	{
 		$forwardParams = preg_split('/[,;]/', $_SERVER['HTTP_FORWARDED']);
 		foreach ($forwardParams as $forwardParam) {
-			[$key, $value] = explode('=', $forwardParam, 2) + [1 => null];
+			[$key, $value] = explode('=', $forwardParam, 2) + [1 => ''];
 			$proxyParams[strtolower(trim($key))][] = trim($value, " \t\"");
 		}
 
