@@ -148,7 +148,7 @@ class Session
 			}
 		}
 
-		register_shutdown_function([$this, 'clean']);
+		register_shutdown_function(\Closure::fromCallable([$this, 'clean']));
 	}
 
 
@@ -298,9 +298,8 @@ class Session
 
 	/**
 	 * Cleans and minimizes meta structures. This method is called automatically on shutdown, do not call it directly.
-	 * @internal
 	 */
-	public function clean(): void
+	private function clean(): void
 	{
 		if (!session_status() === PHP_SESSION_ACTIVE || empty($_SESSION)) {
 			return;
