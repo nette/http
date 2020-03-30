@@ -408,12 +408,13 @@ class Url implements \JsonSerializable
 
 
 	/**
-	 * Parses query string.
+	 * Parses query string. Is affected by directive arg_separator.input.
 	 */
 	public static function parseQuery(string $s): array
 	{
 		$s = str_replace(['%5B', '%5b'], '[', $s);
-		$s = preg_replace('#([&;])([^[&;=]+)([^&;]*)#', '&0[$2]$3', '&' . $s);
+		$sep = preg_quote(ini_get('arg_separator.input'));
+		$s = preg_replace("#([$sep])([^[$sep=]+)([^$sep]*)#", '&0[$2]$3', '&' . $s);
 		parse_str($s, $res);
 		return $res[0] ?? [];
 	}
