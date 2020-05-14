@@ -53,6 +53,19 @@ test(function () {
 
 test(function () {
 	$upload = new FileUpload([
+		'name' => 'logo 2020+.pdf',
+		'type' => 'text/plain',
+		'tmp_name' => __DIR__ . '/files/logo.png',
+		'error' => 0,
+		'size' => 209,
+	]);
+
+	Assert::same('logo-2020.pdf', $upload->getSanitizedName());
+});
+
+
+test(function () {
+	$upload = new FileUpload([
 		'name' => '',
 		'type' => '',
 		'tmp_name' => '',
