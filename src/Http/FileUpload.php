@@ -75,7 +75,7 @@ final class FileUpload
 	 */
 	public function getSanitizedName(): string
 	{
-		return trim(Nette\Utils\Strings::webalize($this->name, '.', false), '.-');
+		return trim(str_replace('-.', '.', Nette\Utils\Strings::webalize($this->name, '.', false)), '.-');
 	}
 
 
