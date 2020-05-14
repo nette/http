@@ -37,4 +37,7 @@ Assert::with(new FileUpload([]), function () {
 
 	$this->name = '..\.image.png\\';
 	Assert::same('image.png', $this->getSanitizedName());
+
+	$this->name = '10+.+20.pdf';
+	Assert::same('10.20.pdf', $this->getSanitizedName());
 });
