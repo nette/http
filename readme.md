@@ -40,7 +40,10 @@ Nette cleans out data sent by user from control and invalid characters.
 The URL of the request is available as Nette\Http\UrlScript instance:
 
 ```php
+<?php
+
 $url = $httpRequest->getUrl();
+
 echo $url;       // e.g. https://nette.org/en/documentation?action=edit
 echo $url->host; // nette.org
 ```
@@ -48,6 +51,8 @@ echo $url->host; // nette.org
 Determine current HTTP method:
 
 ```php
+<?php
+
 echo $httpRequest->getMethod(); // GET, POST, HEAD, PUT
 
 if ($httpRequest->isMethod('GET')) ...
@@ -56,18 +61,24 @@ if ($httpRequest->isMethod('GET')) ...
 Is the connection encrypted (HTTPS)?
 
 ```php
+<?php
+
 echo $httpRequest->isSecured() ? 'yes' : 'no';
 ```
 
 Is this an AJAX request?
 
 ```php
+<?php
+
 echo $httpRequest->isAjax() ? 'yes' : 'no';
 ```
 
 What is the user's IP address?
 
 ```php
+<?php
+
 echo $httpRequest->getRemoteAddress(); // user's IP address
 echo $httpRequest->getRemoteHost();    // and its DNS translation
 ```
@@ -75,28 +86,35 @@ echo $httpRequest->getRemoteHost();    // and its DNS translation
 What URL the user came from? Returned as Nette\Http\Url object.
 
 ```php
+<?php
+
 echo $httpRequest->getReferer()->host;
 ```
 
 Request parameters:
 
 ```php
+<?php
+
 $get = $httpRequest->getQuery();    // array of all URL parameters
-$id = $httpRequest->getQuery('id'); // returns GET parameter 'id' (or null)
+$id  = $httpRequest->getQuery('id'); // returns GET parameter 'id' (or null)
 
 $post = $httpRequest->getPost();    // array of all POST parameters
-$id = $httpRequest->getPost('id');  // returns POST parameter 'id' (or null)
+$id   = $httpRequest->getPost('id');  // returns POST parameter 'id' (or null)
 
 $cookies = $httpRequest->getCookies(); // array of all cookies
-$sessId = $httpRequest->getCookie('sess_id'); // returns the cookie (or null)
+$sessId  = $httpRequest->getCookie('sess_id'); // returns the cookie (or null)
 ```
 
 Uploaded files are encapsulated into Nette\Http\FileUpload objects:
 
 ```php
+<?php
+
 $files = $httpRequest->getFiles(); // array of all uploaded files
 
 $file = $httpRequest->getFile('avatar'); // returns one file
+
 echo $file->getName(); // name of the file sent by user
 echo $file->getSanitizedName(); // the name without dangerous characters
 ```
@@ -104,6 +122,8 @@ echo $file->getSanitizedName(); // the name without dangerous characters
 HTTP headers are also accessible:
 
 ```php
+<?php
+
 // returns associative array of HTTP headers
 $headers = $httpRequest->getHeaders();
 
@@ -115,6 +135,8 @@ A useful method is `detectLanguage()`. You can pass it an array with languages s
 It is not magic, the method just uses the `Accept-Language` header.
 
 ```php
+<?php
+
 // Header sent by browser: Accept-Language: cs,en-us;q=0.8,en;q=0.5,sl;q=0.3
 
 $langs = array('hu', 'pl', 'en'); // languages supported in application
@@ -130,6 +152,8 @@ Object holding current HTTP request is created by Nette\Http\RequestFactory. Its
 It's possible to clean up URLs from characters that can get into them because of poorly implemented comment systems on various other websites by using filters:
 
 ```php
+<?php
+
 $requestFactory = new Nette\Http\RequestFactory;
 
 // remove spaces from path
@@ -145,6 +169,8 @@ $requestFactory->addUrlFilter('/{2,}', '/', PHP_URL_PATH);
 And then we let the factory generate a new `httpRequest` and we store it in a system container:
 
 ```php
+<?php
+
 // $container is a system container
 $container->addService('httpRequest', $requestFactory->fromGlobals());
 ```
@@ -161,6 +187,8 @@ In that case, any attempt to send header or change code invokes `Nette\InvalidSt
 Response status code can be sent and retrieved this way:
 
 ```php
+<?php
+
 $httpResponse->setCode(Nette\Http\Response::S404_NOT_FOUND);
 
 echo $httpResponse->getCode(); // 404
@@ -169,6 +197,8 @@ echo $httpResponse->getCode(); // 404
 For better source code readability it is recommended to use predefined constants instead of actual numbers:
 
 ```
+<?php
+
 Http\IResponse::S200_OK
 Http\IResponse::S204_NO_CONTENT
 Http\IResponse::S300_MULTIPLE_CHOICES
@@ -191,13 +221,18 @@ Http\IResponse::S503_SERVICE_UNAVAILABLE
 Method `setContentType($type, $charset=null)` changes `Content-Type` response header:
 
 ```php
+<?php
+
 $httpResponse->setContentType('text/plain', 'UTF-8');
 ```
 
 Redirection to another URL is done by `redirect($url, $code=302)` method. Do not forget to terminate the script afterwards!
 
 ```php
+<?php
+
 $httpResponse->redirect('http://example.com');
+
 exit;
 ```
 
@@ -205,6 +240,8 @@ exit;
 To set the document expiration date, we can use `setExpiration()` method. The parameter is either text data, number of seconds or a timestamp:
 
 ```php
+<?php
+
 // browser cache expires in one hour
 $httpResponse->setExpiration('+ 1 hours');
 ```
@@ -212,6 +249,8 @@ $httpResponse->setExpiration('+ 1 hours');
 Now we send the HTTP response header:
 
 ```php
+<?php
+
 $httpResponse->setHeader('Pragma', 'no-cache');
 
 // or if we want to send the same header more times with different values
@@ -221,6 +260,8 @@ $httpResponse->addHeader('Pragma', 'no-cache');
 Sent headers are also available:
 
 ```php
+<?php
+
 // returns associative array of headers
 $headers = $httpResponse->getHeaders();
 
@@ -231,6 +272,8 @@ $pragma = $httpResponse->getHeader('Pragma');
 There are two methods for cookie manipulation: `setCookie()` and `deleteCookie()`.
 
 ```php
+<?php
+
 // setCookie($name, $value, $time, [$path, [$domain, [$secure, [$httpOnly]]]])
 $httpResponse->setCookie('lang', 'en', '100 days'); // send cookie
 
