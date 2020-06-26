@@ -169,6 +169,12 @@ class UrlImmutable implements \JsonSerializable
 	}
 
 
+	public function getDomainWithoutWww(int $level = 2): string
+	{
+		return (string) preg_replace('/^www\./', '', $this->getDomain($level));
+	}
+
+
 	/** @return static */
 	public function withPort(int $port)
 	{
