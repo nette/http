@@ -16,13 +16,13 @@ use Nette;
  * Mutable representation of a URL.
  *
  * <pre>
- * scheme  user  password  host  port  basePath   relativeUrl
- *   |      |      |        |      |    |             |
- * /--\   /--\ /------\ /-------\ /--\/--\/----------------------------\
+ * scheme  user  password  host  port      path        query    fragment
+ *   |      |      |        |      |        |            |         |
+ * /--\   /--\ /------\ /-------\ /--\/------------\ /--------\ /------\
  * http://john:x0y17575@nette.org:8042/en/manual.php?name=param#fragment  <-- absoluteUrl
- *        \__________________________/\____________/^\________/^\______/
- *                     |                     |           |         |
- *                 authority               path        query    fragment
+ * \______\__________________________/
+ *     |               |
+ *  hostUrl        authority
  * </pre>
  *
  * @property   string $scheme
@@ -316,6 +316,7 @@ class Url implements \JsonSerializable
 	}
 
 
+	/** @deprecated */
 	public function getBasePath(): string
 	{
 		$pos = strrpos($this->path, '/');
@@ -323,12 +324,14 @@ class Url implements \JsonSerializable
 	}
 
 
+	/** @deprecated */
 	public function getBaseUrl(): string
 	{
 		return $this->getHostUrl() . $this->getBasePath();
 	}
 
 
+	/** @deprecated */
 	public function getRelativeUrl(): string
 	{
 		return substr($this->getAbsoluteUrl(), strlen($this->getBaseUrl()));
