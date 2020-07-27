@@ -120,7 +120,10 @@ class HttpExtension extends Nette\DI\CompilerExtension
 			}
 		}
 
-		$this->initialization->addBody('Nette\Http\Helpers::initCookie($response);');
+		$this->initialization->addBody(
+			'Nette\Http\Helpers::initCookie($this->getService(?), $response);',
+			[$this->prefix('request')]
+		);
 	}
 
 
