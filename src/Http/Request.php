@@ -239,7 +239,7 @@ class Request implements IRequest
 	 */
 	public function isSameSite(): bool
 	{
-		return isset($this->cookies['nette-samesite']);
+		return isset($this->cookies[Helpers::STRICT_COOKIE_NAME]);
 	}
 
 
