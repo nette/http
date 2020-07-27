@@ -120,7 +120,7 @@ class HttpExtension extends Nette\DI\CompilerExtension
 			}
 		}
 
-		$this->initialization->addBody('$response->setCookie(...?);', [['nette-samesite', '1', 0, '/', null, null, true, 'Strict']]);
+		$this->initialization->addBody('Nette\Http\Helpers::initCookie($response);');
 	}
 
 
