@@ -62,7 +62,8 @@ final class FileUpload
 
 
 	/**
-	 * Returns the file name.
+	 * Returns the original file name as submitted by the browser. Do not trust the value returned by this method.
+	 * A client could send a malicious filename with the intention to corrupt or hack your application.
 	 */
 	public function getName(): string
 	{
@@ -71,7 +72,8 @@ final class FileUpload
 
 
 	/**
-	 * Returns the sanitized file name.
+	 * Returns the sanitized file name. The resulting name contains only ASCII characters [a-zA-Z0-9.-].
+	 * Do not blindly trust the value returned by this method.
 	 */
 	public function getSanitizedName(): string
 	{
@@ -80,7 +82,8 @@ final class FileUpload
 
 
 	/**
-	 * Returns the MIME content type of an uploaded file.
+	 * Detects the MIME content type of the uploaded file based on its signature. Requires PHP extension fileinfo.
+	 * If the upload was not successful or the detection failed, it returns null.
 	 */
 	public function getContentType(): ?string
 	{
@@ -92,7 +95,7 @@ final class FileUpload
 
 
 	/**
-	 * Returns the size of an uploaded file.
+	 * Returns the path of the temporary location of the uploaded file.
 	 */
 	public function getSize(): int
 	{
@@ -101,7 +104,7 @@ final class FileUpload
 
 
 	/**
-	 * Returns the path to an uploaded file.
+	 * Returns the path of the temporary location of the uploaded file.
 	 */
 	public function getTemporaryFile(): string
 	{
@@ -110,7 +113,7 @@ final class FileUpload
 
 
 	/**
-	 * Returns the path to an uploaded file.
+	 * Returns the path of the temporary location of the uploaded file.
 	 */
 	public function __toString(): string
 	{
@@ -119,7 +122,8 @@ final class FileUpload
 
 
 	/**
-	 * Returns the error code. {@link http://php.net/manual/en/features.file-upload.errors.php}
+	 * Returns the error code. It is be one of UPLOAD_ERR_XXX constants.
+	 * @see http://php.net/manual/en/features.file-upload.errors.php
 	 */
 	public function getError(): int
 	{
@@ -128,7 +132,7 @@ final class FileUpload
 
 
 	/**
-	 * Is there any error?
+	 * Returns true if the file was uploaded successfully.
 	 */
 	public function isOk(): bool
 	{
@@ -136,6 +140,9 @@ final class FileUpload
 	}
 
 
+	/**
+	 * Returns true if the user has uploaded a file.
+	 */
 	public function hasFile(): bool
 	{
 		return $this->error !== UPLOAD_ERR_NO_FILE;
@@ -143,7 +150,7 @@ final class FileUpload
 
 
 	/**
-	 * Move uploaded file to new location.
+	 * Moves an uploaded file to a new location. If the destination file already exists, it will be overwritten.
 	 * @return static
 	 */
 	public function move(string $dest)
@@ -165,7 +172,8 @@ final class FileUpload
 
 
 	/**
-	 * Is uploaded file GIF, PNG or JPEG?
+	 * Returns true if the uploaded file is a JPEG, PNG, GIF, or WebP image.
+	 * Detection is based on its signature, the integrity of the file is not checked. Requires PHP extension fileinfo.
 	 */
 	public function isImage(): bool
 	{
@@ -174,8 +182,8 @@ final class FileUpload
 
 
 	/**
-	 * Returns the image.
-	 * @throws Nette\Utils\ImageException
+	 * Loads an image.
+	 * @throws Nette\Utils\ImageException  If the upload was not successful or is not a valid image
 	 */
 	public function toImage(): Nette\Utils\Image
 	{
@@ -184,7 +192,7 @@ final class FileUpload
 
 
 	/**
-	 * Returns the dimensions of an uploaded image as array.
+	 * Returns a pair of [width, height] with dimensions of the uploaded image.
 	 */
 	public function getImageSize(): ?array
 	{
@@ -193,7 +201,7 @@ final class FileUpload
 
 
 	/**
-	 * Get file contents.
+	 * Returns the contents of the uploaded file. If the upload was not successful, it returns null.
 	 */
 	public function getContents(): ?string
 	{

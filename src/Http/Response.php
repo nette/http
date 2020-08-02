@@ -82,7 +82,7 @@ final class Response implements IResponse
 
 
 	/**
-	 * Sends a HTTP header and replaces a previous one.
+	 * Sends an HTTP header and overwrites previously sent header of the same name.
 	 * @return static
 	 * @throws Nette\InvalidStateException  if HTTP headers have been sent
 	 */
@@ -101,7 +101,7 @@ final class Response implements IResponse
 
 
 	/**
-	 * Adds HTTP header.
+	 * Sends an HTTP header and doesn't overwrite previously sent header of the same name.
 	 * @return static
 	 * @throws Nette\InvalidStateException  if HTTP headers have been sent
 	 */
@@ -114,6 +114,7 @@ final class Response implements IResponse
 
 
 	/**
+	 * Deletes a previously sent HTTP header.
 	 * @return static
 	 * @throws Nette\InvalidStateException  if HTTP headers have been sent
 	 */
@@ -138,7 +139,7 @@ final class Response implements IResponse
 
 
 	/**
-	 * Redirects to a new URL. Note: call exit() after it.
+	 * Redirects to another URL. Don't forget to quit the script then.
 	 * @throws Nette\InvalidStateException  if HTTP headers have been sent
 	 */
 	public function redirect(string $url, int $code = self::S302_FOUND): void
@@ -153,7 +154,8 @@ final class Response implements IResponse
 
 
 	/**
-	 * Sets the time (like '20 minutes') before a page cached on a browser expires, null means "must-revalidate".
+	 * Sets the expiration of the HTTP document using the `Cache-Control` and `Expires` headers.
+	 * The parameter is either a time interval (as text) or `null`, which disables caching.
 	 * @return static
 	 * @throws Nette\InvalidStateException  if HTTP headers have been sent
 	 */
@@ -174,7 +176,8 @@ final class Response implements IResponse
 
 
 	/**
-	 * Checks if headers have been sent.
+	 * Returns whether headers have already been sent from the server to the browser,
+	 * so it is no longer possible to send headers or change the response code.
 	 */
 	public function isSent(): bool
 	{
@@ -183,7 +186,7 @@ final class Response implements IResponse
 
 
 	/**
-	 * Returns value of an HTTP header.
+	 * Returns the sent HTTP header, or `null` if it does not exist. The parameter is case-insensitive.
 	 */
 	public function getHeader(string $header): ?string
 	{
@@ -202,7 +205,7 @@ final class Response implements IResponse
 
 
 	/**
-	 * Returns a associative array of headers to sent.
+	 * Returns all sent HTTP headers as associative array.
 	 */
 	public function getHeaders(): array
 	{

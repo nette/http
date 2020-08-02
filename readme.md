@@ -67,7 +67,7 @@ $id = $httpRequest->getPost('id');  // returns POST parameter 'id' (or null)
 
 getFile(string $key): Nette\Http\FileUpload|array|null
 ------------------------------------------------------
-Returns upload as object [Nette\Http\FileUpload](https://api.nette.org/3.0/Nette/Http/FileUpload.html):
+Returns [upload](#Uploaded-Files) as object [Nette\Http\FileUpload](https://api.nette.org/3.0/Nette/Http/FileUpload.html):
 
 ```php
 $file = $httpRequest->getFile('avatar');
@@ -79,7 +79,7 @@ if ($file->hasFile()) { // was any file uploaded?
 
 getFiles(): array
 -----------------
-Returns tree of upload files in a normalized structure, with each leaf an instance of [Nette\Http\FileUpload](https://api.nette.org/3.0/Nette/Http/FileUpload.html):
+Returns tree of [upload files](#Uploaded-Files) in a normalized structure, with each leaf an instance of [Nette\Http\FileUpload](https://api.nette.org/3.0/Nette/Http/FileUpload.html):
 
 ```php
 $files = $httpRequest->getFiles();
@@ -209,7 +209,7 @@ $requestFactory->urlFilters['path']['/{2,}'] = '/';
 HTTP Response
 =============
 
-An HTTP response is an [Nette\Http\Response](https://api.nette.org/3.0/Nette/Http/Response.html) object. Unlike the [Request](#HTTP-Request), the object is mutable, so you can use setters to change the state, ie to send headers. Whether it is still possible to send headers or change the status code tells the `isSent()` method. If it returns true, it won't be possible to send another header or change the status code. In this case, any attempt to send will throw an exception `Nette\InvalidStateException`.
+An HTTP response is an [Nette\Http\Response](https://api.nette.org/3.0/Nette/Http/Response.html) object. Unlike the [Request](#HTTP-Request), the object is mutable, so you can use setters to change the state, ie to send headers. Remember that all setters **must be called before any actual output is sent.** The `isSent()` method tells if output have been sent. If it returns `true`, each attempt to send a header throws an `Nette\InvalidStateException` exception.
 
 
 setCode(int $code, string $reason = null)
@@ -317,7 +317,6 @@ Deletes a cookie. The default values ​​of the parameters are:
 ```php
 $httpResponse->deleteCookie('lang');
 ```
-
 
 
 Uploaded Files
@@ -442,7 +441,7 @@ Do not trust the value returned by this method. A client could send a malicious 
 
 getSanitizedName(): string
 --------------------------
-Returns the sanitized file name. It contains only ASCII characters `[a-zA-Z0-9.-]`. If the image is in JPEG, PNG, GIF, or WebP format, it also has the correct file extension (since version 3.0.5).
+Returns the sanitized file name. It contains only ASCII characters `[a-zA-Z0-9.-]`. If the name does not contain such characters, it returns 'unknown'. If the file is JPEG, PNG, GIF, or WebP image, it returns the correct file extension.
 
 getSize(): int
 --------------
