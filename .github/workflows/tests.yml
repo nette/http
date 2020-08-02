@@ -8,7 +8,7 @@ jobs:
         strategy:
             matrix:
                 os: [ubuntu-latest, windows-latest, macOS-latest]
-                php: ['7.1', '7.2', '7.3', '7.4', '8.0']
+                php: ['7.2', '7.3', '7.4', '8.0']
 #                sapi: ['php', 'php-cgi']
 
             fail-fast: false
@@ -38,7 +38,7 @@ jobs:
             - uses: actions/checkout@v2
             - uses: shivammathur/setup-php@v2
               with:
-                  php-version: 7.1
+                  php-version: 7.2
                   coverage: none
                   extensions: fileinfo, intl
 
