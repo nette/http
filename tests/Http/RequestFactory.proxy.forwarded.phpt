@@ -12,7 +12,7 @@ use Tester\Assert;
 
 require __DIR__ . '/../bootstrap.php';
 
-test(function () {
+test('', function () {
 	$_SERVER = [
 		'REMOTE_ADDR' => '127.0.0.3',
 		'REMOTE_HOST' => 'localhost',
@@ -33,7 +33,7 @@ test(function () {
 	Assert::same('192.168.0.1', $url->getHost());
 });
 
-test(function () {
+test('', function () {
 	$_SERVER = [
 		'REMOTE_ADDR' => '127.0.0.3',
 		'REMOTE_HOST' => 'localhost',
@@ -52,7 +52,7 @@ test(function () {
 });
 
 
-test(function () {
+test('', function () {
 	$_SERVER = [
 		'REMOTE_ADDR' => '127.0.0.3',
 		'REMOTE_HOST' => 'localhost',
@@ -69,7 +69,7 @@ test(function () {
 	Assert::same('2001:db8:cafe::18', $url->getHost());
 });
 
-test(function () {
+test('', function () {
 	$_SERVER = [
 		'REMOTE_ADDR' => '127.0.0.3',
 		'REMOTE_HOST' => 'localhost',
@@ -88,7 +88,7 @@ test(function () {
 });
 
 
-test(function () {
+test('', function () {
 	$_SERVER = [
 		'REMOTE_ADDR' => '127.0.0.3',
 		'REMOTE_HOST' => 'localhost',

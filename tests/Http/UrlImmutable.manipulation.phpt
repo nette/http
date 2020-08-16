@@ -9,7 +9,7 @@ use Tester\Assert;
 require __DIR__ . '/../bootstrap.php';
 
 
-test(function () {
+test('', function () {
 	$url = new UrlImmutable('http://username%3A:password%3A@hostn%61me:60/p%61th/script.php?%61rg=value#%61nchor');
 
 	$url = $url->withScheme('');
@@ -35,7 +35,7 @@ test(function () {
 });
 
 
-test(function () {
+test('', function () {
 	$url = new UrlImmutable('http://username%3A:password%3A@hostn%61me:60/p%61th/script.php?%61rg=value#%61nchor');
 
 	$url = $url->withPath('');
@@ -61,7 +61,7 @@ test(function () {
 });
 
 
-test(function () {
+test('', function () {
 	$url = new UrlImmutable('http://hostname/path?arg=value');
 	Assert::same('arg=value', $url->query);
 

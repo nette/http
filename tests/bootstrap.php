@@ -39,7 +39,7 @@ function getTempDir(): string
 ini_set('session.save_path', getTempDir());
 
 
-function test(\Closure $function): void
+function test(string $title, Closure $function): void
 {
 	$function();
 }

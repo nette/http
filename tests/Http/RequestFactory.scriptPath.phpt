@@ -15,7 +15,7 @@ require __DIR__ . '/../bootstrap.php';
 
 $factory = new RequestFactory;
 
-test(function () use ($factory) {
+test('', function () use ($factory) {
 	$_SERVER = [
 		'REQUEST_URI' => '/projects/modules-usage/www/',
 		'SCRIPT_NAME' => '/projects/modules-usage/www/index.php',
@@ -25,7 +25,7 @@ test(function () use ($factory) {
 });
 
 
-test(function () use ($factory) {
+test('', function () use ($factory) {
 	$_SERVER = [
 		'REQUEST_URI' => '/projects/modules-usage/%77%77%77/',
 		'SCRIPT_NAME' => '/projects/modules-usage/www/index.php',
@@ -35,7 +35,7 @@ test(function () use ($factory) {
 });
 
 
-test(function () use ($factory) {
+test('', function () use ($factory) {
 	$_SERVER = [
 		'REQUEST_URI' => '/projects/modules-usage/www/default/add-item',
 		'SCRIPT_NAME' => '/projects/modules-usage/www/index.php',
@@ -45,7 +45,7 @@ test(function () use ($factory) {
 });
 
 
-test(function () use ($factory) {
+test('', function () use ($factory) {
 	$_SERVER = [
 		'REQUEST_URI' => '/www/index.php',
 		'SCRIPT_NAME' => '/www/index.php',
@@ -55,7 +55,7 @@ test(function () use ($factory) {
 });
 
 
-test(function () use ($factory) {
+test('', function () use ($factory) {
 	$_SERVER = [
 		'REQUEST_URI' => '/www/',
 		'SCRIPT_NAME' => '/www/',
@@ -65,7 +65,7 @@ test(function () use ($factory) {
 });
 
 
-test(function () use ($factory) {
+test('', function () use ($factory) {
 	$_SERVER = [
 		'REQUEST_URI' => '/test/in',
 		'SCRIPT_NAME' => '/test/index.php',
@@ -75,7 +75,7 @@ test(function () use ($factory) {
 });
 
 
-test(function () use ($factory) {
+test('', function () use ($factory) {
 	$_SERVER = [
 		'REQUEST_URI' => '/test//',
 		'SCRIPT_NAME' => '/test/index.php',
@@ -85,8 +85,7 @@ test(function () use ($factory) {
 });
 
 
-// http://forum.nette.org/cs/5932-lepsi-detekce-requesturi-a-scriptpath
-test(function () use ($factory) {
+test('http://forum.nette.org/cs/5932-lepsi-detekce-requesturi-a-scriptpath', function () use ($factory) {
 	$_SERVER = [
 		'REQUEST_URI' => '/sign/in/',
 		'SCRIPT_NAME' => '/sign/in/',
@@ -96,8 +95,7 @@ test(function () use ($factory) {
 });
 
 
-// http://forum.nette.org/cs/9139-spatny-urlscript-scriptpath
-test(function () use ($factory) {
+test('http://forum.nette.org/cs/9139-spatny-urlscript-scriptpath', function () use ($factory) {
 	$_SERVER = [
 		'REQUEST_URI' => '/configuration/',
 		'SCRIPT_NAME' => '/configuration/www/index.php',
@@ -107,7 +105,7 @@ test(function () use ($factory) {
 });
 
 
-test(function () use ($factory) {
+test('', function () use ($factory) {
 	$_SERVER = [
 		'REQUEST_URI' => '/blog/WWW/',
 		'SCRIPT_NAME' => '/blog/www/index.php',
@@ -117,7 +115,7 @@ test(function () use ($factory) {
 });
 
 
-test(function () use ($factory) {
+test('', function () use ($factory) {
 	$_SERVER = [
 		'REQUEST_URI' => '/',
 		'SCRIPT_NAME' => 'c:\\index.php',
@@ -127,7 +125,7 @@ test(function () use ($factory) {
 });
 
 
-test(function () use ($factory) {
+test('', function () use ($factory) {
 	$_SERVER = [
 		'REQUEST_URI' => null,
 		'SCRIPT_NAME' => 'c:\\index.php',
@@ -137,7 +135,7 @@ test(function () use ($factory) {
 });
 
 
-test(function () use ($factory) {
+test('', function () use ($factory) {
 	$_SERVER = [
 		'REQUEST_URI' => '/',
 		'SCRIPT_NAME' => null,
@@ -147,7 +145,7 @@ test(function () use ($factory) {
 });
 
 
-test(function () use ($factory) {
+test('', function () use ($factory) {
 	$_SERVER = [
 		'REQUEST_URI' => null,
 		'SCRIPT_NAME' => null,
@@ -156,7 +154,7 @@ test(function () use ($factory) {
 	Assert::same('/', $factory->fromGlobals()->getUrl()->getScriptPath());
 });
 
-test(function () use ($factory) {
+test('', function () use ($factory) {
 	$_SERVER = [
 		'REQUEST_URI' => '/documents/show/5474',
 		'SCRIPT_NAME' => '/index.php',

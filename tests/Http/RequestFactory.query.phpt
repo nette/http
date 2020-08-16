@@ -15,7 +15,7 @@ require __DIR__ . '/../bootstrap.php';
 
 $factory = new RequestFactory;
 
-test(function () use ($factory) {
+test('', function () use ($factory) {
 	$_SERVER = [
 		'HTTP_HOST' => 'nette.org',
 		'REQUEST_URI' => '/',
@@ -25,7 +25,7 @@ test(function () use ($factory) {
 });
 
 
-test(function () use ($factory) {
+test('', function () use ($factory) {
 	$_SERVER = [
 		'HTTP_HOST' => 'nette.org',
 		'REQUEST_URI' => '/?a=b',

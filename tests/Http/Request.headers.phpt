@@ -13,17 +13,17 @@ use Tester\Assert;
 require __DIR__ . '/../bootstrap.php';
 
 
-test(function () {
+test('', function () {
 	$request = new Http\Request(new Http\UrlScript);
 	Assert::same([], $request->getHeaders());
 });
 
-test(function () {
+test('', function () {
 	$request = new Http\Request(new Http\UrlScript, null, null, null, []);
 	Assert::same([], $request->getHeaders());
 });
 
-test(function () {
+test('', function () {
 	$request = new Http\Request(new Http\UrlScript, null, null, null, [
 		'one' => '1',
 		'TWO' => '2',

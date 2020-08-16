@@ -24,7 +24,7 @@ $_SERVER = [
 	'SCRIPT_NAME' => '/file.php',
 ];
 
-test(function () {
+test('', function () {
 	$factory = new Http\RequestFactory;
 	$factory->urlFilters['path'] = ['#%20#' => ''];
 	$factory->urlFilters['url'] = ['#[.,)]\z#' => ''];
@@ -55,7 +55,7 @@ test(function () {
 });
 
 
-test(function () {
+test('', function () {
 	$factory = new Http\RequestFactory;
 	$factory->urlFilters['path'] = [];
 	$factory->urlFilters['url'] = [];

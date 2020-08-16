@@ -13,7 +13,7 @@ use Tester\Assert;
 require __DIR__ . '/../bootstrap.php';
 
 
-test(function () {
+test('', function () {
 	$upload = new FileUpload([
 		'name' => 'readme.txt',
 		'type' => 'text/plain',
@@ -35,7 +35,7 @@ test(function () {
 });
 
 
-test(function () {
+test('', function () {
 	$upload = new FileUpload([
 		'name' => '../.image.png',
 		'type' => 'text/plain',
@@ -51,7 +51,7 @@ test(function () {
 });
 
 
-test(function () {
+test('', function () {
 	$upload = new FileUpload([
 		'name' => '',
 		'type' => '',

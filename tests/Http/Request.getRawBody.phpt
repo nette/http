@@ -13,7 +13,7 @@ use Tester\Assert;
 require __DIR__ . '/../bootstrap.php';
 
 
-test(function () {
+test('', function () {
 	$request = new Http\Request(new Http\UrlScript, null, null, null, null, null, null, null, function () {
 		return 'raw body';
 	});
@@ -22,7 +22,7 @@ test(function () {
 });
 
 
-test(function () {
+test('', function () {
 	$request = new Http\Request(new Http\UrlScript);
 
 	Assert::null($request->getRawBody());

@@ -17,7 +17,7 @@ $session = new Session(new Nette\Http\Request(new Nette\Http\UrlScript), new Net
 
 $session->setExpiration('+10 seconds');
 
-test(function () use ($session) { // try to expire whole namespace
+test('try to expire whole namespace', function () use ($session) {
 	$namespace = $session->getSection('expire');
 	$namespace->a = 'apple';
 	$namespace->p = 'pear';
@@ -33,7 +33,7 @@ test(function () use ($session) { // try to expire whole namespace
 });
 
 
-test(function () use ($session) { // try to expire only 1 of the keys
+test('try to expire only 1 of the keys', function () use ($session) {
 	$namespace = $session->getSection('expireSingle');
 	$namespace->setExpiration(1, 'g');
 	$namespace->g = 'guava';

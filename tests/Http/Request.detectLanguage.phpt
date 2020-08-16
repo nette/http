@@ -13,7 +13,7 @@ use Tester\Assert;
 require __DIR__ . '/../bootstrap.php';
 
 
-test(function () {
+test('', function () {
 	$headers = ['Accept-Language' => 'en, cs'];
 	$request = new Http\Request(new Http\UrlScript, null, null, null, $headers);
 
@@ -23,7 +23,7 @@ test(function () {
 });
 
 
-test(function () {
+test('', function () {
 	$headers = ['Accept-Language' => 'da, en-gb;q=0.8, en;q=0.7'];
 	$request = new Http\Request(new Http\UrlScript, null, null, null, $headers);
 
@@ -32,7 +32,7 @@ test(function () {
 });
 
 
-test(function () {
+test('', function () {
 	$headers = [];
 	$request = new Http\Request(new Http\UrlScript, null, null, null, $headers);
 
@@ -40,7 +40,7 @@ test(function () {
 });
 
 
-test(function () {
+test('', function () {
 	$headers = ['Accept-Language' => 'garbage'];
 	$request = new Http\Request(new Http\UrlScript, null, null, null, $headers);
 

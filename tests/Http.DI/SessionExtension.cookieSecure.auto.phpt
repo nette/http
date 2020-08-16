@@ -15,7 +15,7 @@ use Tester\Assert;
 require __DIR__ . '/../bootstrap.php';
 
 
-test(function () {
+test('', function () {
 	$compiler = new DI\Compiler;
 	$compiler->addExtension('foo', new HttpExtension);
 	$compiler->addExtension('session', new SessionExtension(false, PHP_SAPI === 'cli'));
@@ -44,7 +44,7 @@ test(function () {
 });
 
 
-test(function () {
+test('', function () {
 	$compiler = new DI\Compiler;
 	$compiler->addExtension('foo', new HttpExtension);
 	$compiler->addExtension('session', new SessionExtension(false, PHP_SAPI === 'cli'));

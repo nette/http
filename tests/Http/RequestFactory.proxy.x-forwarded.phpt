@@ -13,7 +13,7 @@ use Tester\Assert;
 require __DIR__ . '/../bootstrap.php';
 
 
-test(function () {
+test('', function () {
 	$_SERVER = [
 		'REMOTE_ADDR' => '127.0.0.3',
 		'REMOTE_HOST' => 'localhost',
@@ -34,7 +34,7 @@ test(function () {
 	Assert::same('otherhost', $url->getHost());
 });
 
-test(function () {
+test('', function () {
 	$_SERVER = [
 		'REMOTE_ADDR' => '10.0.0.2', //proxy2
 		'REMOTE_HOST' => 'proxy2',
