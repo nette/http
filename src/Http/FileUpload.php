@@ -200,7 +200,7 @@ final class FileUpload
 	 */
 	public function getImageSize(): ?array
 	{
-		return $this->isOk() ? @getimagesize($this->tmpName) : null; // @ - files smaller than 12 bytes causes read error
+		return $this->isImage() ? getimagesize($this->tmpName) : null;
 	}
 
 
