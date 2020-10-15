@@ -163,8 +163,11 @@ class RequestFactory
 						$list[$key][$k] = $v;
 						$list[] = &$list[$key][$k];
 
-					} else {
+					} elseif (is_string($v)) {
 						$list[$key][$k] = (string) preg_replace('#[^' . self::CHARS . ']+#u', '', $v);
+
+					} else {
+						throw new Nette\InvalidStateException(sprintf('Invalid value in $_POST/$_COOKIE in key %s, expected string, %s given.', "'$k'", gettype($v)));
 					}
 				}
 			}
