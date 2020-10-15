@@ -11,6 +11,8 @@ Nette HTTP Component
 HTTP request and response are encapsulated in `Nette\Http\Request` and `Nette\Http\Response` objects which offer comfortable API and also act as
 sanitization filter.
 
+It requires PHP version 5.6 and supports PHP up to 8.0.
+
 
 HTTP Request
 -------------
