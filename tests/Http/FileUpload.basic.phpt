@@ -23,6 +23,7 @@ test('', function () {
 	]);
 
 	Assert::same('readme.txt', $upload->getName());
+	Assert::same('readme.txt', $upload->getUntrustedName());
 	Assert::same('readme.txt', $upload->getSanitizedName());
 	Assert::same(209, $upload->getSize());
 	Assert::same(__DIR__ . '/files/file.txt', $upload->getTemporaryFile());
