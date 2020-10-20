@@ -216,6 +216,17 @@ final class FileUpload
 
 
 	/**
+	 * Returns image file extension based on detected content type (without dot).
+	 */
+	public function getImageFileExtension(): ?string
+	{
+		return $this->isImage()
+			? explode('/', $this->getContentType())[1]
+			: null;
+	}
+
+
+	/**
 	 * Returns the contents of the uploaded file. If the upload was not successful, it returns null.
 	 */
 	public function getContents(): ?string
