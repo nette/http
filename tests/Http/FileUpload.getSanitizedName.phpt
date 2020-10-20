@@ -15,10 +15,10 @@ require __DIR__ . '/../bootstrap.php';
 
 Assert::with(new FileUpload([]), function () {
 	$this->name = '';
-	Assert::same('', $this->getSanitizedName());
+	Assert::same('unknown', $this->getSanitizedName());
 
 	$this->name = '--';
-	Assert::same('', $this->getSanitizedName());
+	Assert::same('unknown', $this->getSanitizedName());
 
 	$this->name = 'foo';
 	Assert::same('foo', $this->getSanitizedName());
