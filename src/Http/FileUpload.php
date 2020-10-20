@@ -73,11 +73,14 @@ final class FileUpload
 
 	/**
 	 * Returns the sanitized file name. The resulting name contains only ASCII characters [a-zA-Z0-9.-].
-	 * Do not blindly trust the value returned by this method.
+	 * If the name does not contain such characters, it returns 'unknown'. Do not blindly trust the value returned by this method.
 	 */
 	public function getSanitizedName(): string
 	{
-		return trim(Nette\Utils\Strings::webalize($this->name, '.', false), '.-');
+		$name = Nette\Utils\Strings::webalize($this->name, '.', false);
+		$name = trim($name, '.-');
+		$name = $name === '' ? 'unknown' : $name;
+		return $name;
 	}
 
 
