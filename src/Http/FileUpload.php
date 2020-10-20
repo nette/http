@@ -62,9 +62,7 @@ final class FileUpload
 
 
 	/**
-	 * Returns the original file name as submitted by the browser. Do not trust the value returned by this method.
-	 * A client could send a malicious filename with the intention to corrupt or hack your application.
-	 * Alias for getUntrustedName()
+	 * @deprecated use getUntrustedName()
 	 */
 	public function getName(): string
 	{
