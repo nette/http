@@ -50,6 +50,8 @@ class RequestFactory
 	 */
 	public function setProxy($proxy)
 	{
+		if( is_array($proxy) )  foreach( $proxy as &$p ) $p = gethostbyname($p);
+        	else $proxy = gethostbyname($proxy);
 		$this->proxies = (array) $proxy;
 		return $this;
 	}
