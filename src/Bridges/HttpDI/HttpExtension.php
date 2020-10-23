@@ -32,6 +32,7 @@ class HttpExtension extends Nette\DI\CompilerExtension
 	{
 		return Expect::structure([
 			'proxy' => Expect::anyOf(Expect::arrayOf('string'), Expect::string()->castTo('array'))->default([])->dynamic(),
+			'docker' => Expect::bool()->default(false),
 			'headers' => Expect::arrayOf('scalar|null')->default([
 				'X-Powered-By' => 'Nette Framework 3',
 				'Content-Type' => 'text/html; charset=utf-8',
@@ -49,10 +50,12 @@ class HttpExtension extends Nette\DI\CompilerExtension
 	{
 		$builder = $this->getContainerBuilder();
 		$config = $this->config;
-
 		$builder->addDefinition($this->prefix('requestFactory'))
 			->setFactory(Nette\Http\RequestFactory::class)
-			->addSetup('setProxy', [$config->proxy]);
+			->addSetup('setDocker', [$config->docker])
+			->addSetup('setProxy', [$config->proxy])
+
+			;
 
 		$builder->addDefinition($this->prefix('request'))
 			->setFactory('@Nette\Http\RequestFactory::fromGlobals');
