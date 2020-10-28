@@ -61,9 +61,17 @@ class Request implements IRequest
 	private $rawBodyCallback;
 
 
-	public function __construct(UrlScript $url, array $post = null, array $files = null, array $cookies = null,
-		array $headers = null, string $method = null, string $remoteAddress = null, string $remoteHost = null, callable $rawBodyCallback = null)
-	{
+	public function __construct(
+		UrlScript $url,
+		array $post = null,
+		array $files = null,
+		array $cookies = null,
+		array $headers = null,
+		string $method = null,
+		string $remoteAddress = null,
+		string $remoteHost = null,
+		callable $rawBodyCallback = null
+	) {
 		$this->url = $url;
 		$this->post = (array) $post;
 		$this->files = (array) $files;

@@ -238,15 +238,23 @@ final class Response implements IResponse
 	 * @return static
 	 * @throws Nette\InvalidStateException  if HTTP headers have been sent
 	 */
-	public function setCookie(string $name, string $value, $time, string $path = null, string $domain = null, bool $secure = null, bool $httpOnly = null, string $sameSite = null)
-	{
+	public function setCookie(
+		string $name,
+		string $value,
+		$time,
+		string $path = null,
+		string $domain = null,
+		bool $secure = null,
+		bool $httpOnly = null,
+		string $sameSite = null
+	) {
 		self::checkHeaders();
 		$options = [
 			'expires' => $time ? (int) DateTime::from($time)->format('U') : 0,
-			'path' => $path === null ? $this->cookiePath : $path,
-			'domain' => $domain === null ? $this->cookieDomain : $domain,
-			'secure' => $secure === null ? $this->cookieSecure : $secure,
-			'httponly' => $httpOnly === null ? $this->cookieHttpOnly : $httpOnly,
+			'path' => $path ?? $this->cookiePath,
+			'domain' => $domain ?? $this->cookieDomain,
+			'secure' => $secure ?? $this->cookieSecure,
+			'httponly' => $httpOnly ?? $this->cookieHttpOnly,
 			'samesite' => $sameSite,
 		];
 		if (PHP_VERSION_ID >= 70300) {

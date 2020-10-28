@@ -207,7 +207,15 @@ interface IResponse
 	 * @param  string|int|\DateTimeInterface $expire  time, value 0 means "until the browser is closed"
 	 * @return static
 	 */
-	function setCookie(string $name, string $value, $expire, string $path = null, string $domain = null, bool $secure = null, bool $httpOnly = null);
+	function setCookie(
+		string $name,
+		string $value,
+		$expire,
+		string $path = null,
+		string $domain = null,
+		bool $secure = null,
+		bool $httpOnly = null
+	);
 
 	/**
 	 * Deletes a cookie.

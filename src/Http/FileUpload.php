@@ -33,7 +33,7 @@ final class FileUpload
 	/** @var string */
 	private $name;
 
-	/** @var string|null|false */
+	/** @var string|false|null */
 	private $type;
 
 	/** @var int */
@@ -237,6 +237,8 @@ final class FileUpload
 	public function getContents(): ?string
 	{
 		// future implementation can try to work around safe_mode and open_basedir limitations
-		return $this->isOk() ? file_get_contents($this->tmpName) : null;
+		return $this->isOk()
+			? file_get_contents($this->tmpName)
+			: null;
 	}
 }

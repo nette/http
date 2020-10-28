@@ -141,7 +141,9 @@ class HttpExtension extends Nette\DI\CompilerExtension
 				if (is_array($item)) {
 					$item = key($item) . ':';
 				}
-				$value .= !isset($nonQuoted[$type]) && preg_match('#^[a-z-]+$#D', $item) ? " '$item'" : " $item";
+				$value .= !isset($nonQuoted[$type]) && preg_match('#^[a-z-]+$#D', $item)
+					? " '$item'"
+					: " $item";
 			}
 			$value .= '; ';
 		}

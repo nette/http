@@ -130,7 +130,9 @@ class RequestFactory
 		if ($lpath !== $script) {
 			$max = min(strlen($lpath), strlen($script));
 			for ($i = 0; $i < $max && $lpath[$i] === $script[$i]; $i++);
-			$path = $i ? substr($path, 0, strrpos($path, '/', $i - strlen($path) - 1) + 1) : '/';
+			$path = $i
+				? substr($path, 0, strrpos($path, '/', $i - strlen($path) - 1) + 1)
+				: '/';
 		}
 		return $path;
 	}
@@ -141,8 +143,12 @@ class RequestFactory
 		$useFilter = (!in_array(ini_get('filter.default'), ['', 'unsafe_raw'], true) || ini_get('filter.default_flags'));
 
 		$query = $url->getQueryParameters();
-		$post = $useFilter ? filter_input_array(INPUT_POST, FILTER_UNSAFE_RAW) : (empty($_POST) ? [] : $_POST);
-		$cookies = $useFilter ? filter_input_array(INPUT_COOKIE, FILTER_UNSAFE_RAW) : (empty($_COOKIE) ? [] : $_COOKIE);
+		$post = $useFilter
+			? filter_input_array(INPUT_POST, FILTER_UNSAFE_RAW)
+			: (empty($_POST) ? [] : $_POST);
+		$cookies = $useFilter
+			? filter_input_array(INPUT_COOKIE, FILTER_UNSAFE_RAW)
+			: (empty($_COOKIE) ? [] : $_COOKIE);
 
 		// remove invalid characters
 		$reChars = '#^[' . self::CHARS . ']*+$#Du';
@@ -254,8 +260,12 @@ class RequestFactory
 
 	private function getClient(Url $url): array
 	{
-		$remoteAddr = !empty($_SERVER['REMOTE_ADDR']) ? trim($_SERVER['REMOTE_ADDR'], '[]') : null; // workaround for PHP 7.3
-		$remoteHost = !empty($_SERVER['REMOTE_HOST']) ? $_SERVER['REMOTE_HOST'] : null;
+		$remoteAddr = !empty($_SERVER['REMOTE_ADDR'])
+			? trim($_SERVER['REMOTE_ADDR'], '[]') // workaround for PHP 7.3.0
+			: null;
+		$remoteHost = !empty($_SERVER['REMOTE_HOST'])
+			? $_SERVER['REMOTE_HOST']
+			: null;
 
 		// use real client address and host if trusted proxy is used
 		$usingTrustedProxy = $remoteAddr && array_filter($this->proxies, function (string $proxy) use ($remoteAddr): bool {
@@ -281,11 +291,9 @@ class RequestFactory
 
 		if (isset($proxyParams['for'])) {
 			$address = $proxyParams['for'][0];
-			if (strpos($address, '[') === false) { //IPv4
-				$remoteAddr = explode(':', $address)[0];
-			} else { //IPv6
-				$remoteAddr = substr($address, 1, strpos($address, ']') - 1);
-			}
+			$remoteAddr = strpos($address, '[') === false
+				? explode(':', $address)[0]  // IPv4
+				: substr($address, 1, strpos($address, ']') - 1); // IPv6
 		}
 
 		if (isset($proxyParams['host']) && count($proxyParams['host']) === 1) {
@@ -309,7 +317,9 @@ class RequestFactory
 			}
 		}
 
-		$scheme = (isset($proxyParams['proto']) && count($proxyParams['proto']) === 1) ? $proxyParams['proto'][0] : 'http';
+		$scheme = (isset($proxyParams['proto']) && count($proxyParams['proto']) === 1)
+			? $proxyParams['proto'][0]
+			: 'http';
 		$url->setScheme(strcasecmp($scheme, 'https') === 0 ? 'https' : 'http');
 	}
 

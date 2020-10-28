@@ -161,7 +161,10 @@ class SessionSection implements \IteratorAggregate, \ArrayAccess
 		if ($time) {
 			$time = Nette\Utils\DateTime::from($time)->format('U');
 			$max = (int) ini_get('session.gc_maxlifetime');
-			if ($max !== 0 && ($time - time() > $max + 3)) { // 0 - unlimited in memcache handler, 3 - bulgarian constant
+			if (
+				$max !== 0 // 0 - unlimited in memcache handler
+				&& ($time - time() > $max + 3) // 3 - bulgarian constant
+			) {
 				trigger_error("The expiration time is greater than the session expiration $max seconds");
 			}
 		}

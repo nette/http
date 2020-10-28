@@ -169,8 +169,12 @@ class Url implements \JsonSerializable
 	 */
 	public function getDomain(int $level = 2): string
 	{
-		$parts = ip2long($this->host) ? [$this->host] : explode('.', $this->host);
-		$parts = $level >= 0 ? array_slice($parts, -$level) : array_slice($parts, 0, $level);
+		$parts = ip2long($this->host)
+			? [$this->host]
+			: explode('.', $this->host);
+		$parts = $level >= 0
+			? array_slice($parts, -$level)
+			: array_slice($parts, 0, $level);
 		return implode('.', $parts);
 	}
 

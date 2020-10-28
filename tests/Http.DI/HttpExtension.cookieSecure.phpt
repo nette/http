@@ -70,7 +70,6 @@ test('', function () {
 	Assert::false($container->getService('http.response')->cookieSecure);
 	Assert::false($container->getService('session.session')->getOptions()['cookie_secure']);
 
-
 	$container = new ContainerAuto;
 	$container->addService('http.request', new Nette\Http\Request(new Nette\Http\UrlScript('https://localhost')));
 

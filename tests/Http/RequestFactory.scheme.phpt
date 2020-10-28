@@ -12,7 +12,6 @@ require __DIR__ . '/../bootstrap.php';
  */
 class RequestFactorySchemeTest extends Tester\TestCase
 {
-
 	/**
 	 * @covers       RequestFactory::getScheme
 	 * @dataProvider providerCreateHttpRequest
