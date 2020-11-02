@@ -234,7 +234,7 @@ class RequestFactory
 
 		$headers = [];
 		foreach ($_SERVER as $k => $v) {
-			if (strncmp($k, 'HTTP_', 5) == 0) {
+			if (strncmp($k, 'HTTP_', 5) === 0) {
 				$k = substr($k, 5);
 			} elseif (strncmp($k, 'CONTENT_', 8)) {
 				continue;

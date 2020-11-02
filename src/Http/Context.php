@@ -53,7 +53,7 @@ class Context
 		} elseif ($ifNoneMatch !== null) {
 			$etag = $this->response->getHeader('ETag');
 
-			if ($etag == null || strpos(' ' . strtr($ifNoneMatch, ",\t", '  '), ' ' . $etag) === false) {
+			if ($etag === null || strpos(' ' . strtr($ifNoneMatch, ",\t", '  '), ' ' . $etag) === false) {
 				return true;
 
 			} else {
@@ -64,7 +64,7 @@ class Context
 		$ifModifiedSince = $this->request->getHeader('If-Modified-Since');
 		if ($ifModifiedSince !== null) {
 			$lastModified = $this->response->getHeader('Last-Modified');
-			if ($lastModified != null && strtotime($lastModified) <= strtotime($ifModifiedSince)) {
+			if ($lastModified !== null && strtotime($lastModified) <= strtotime($ifModifiedSince)) {
 				$match = true;
 
 			} else {
