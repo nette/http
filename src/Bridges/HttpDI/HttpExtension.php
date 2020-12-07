@@ -56,11 +56,8 @@ class HttpExtension extends Nette\DI\CompilerExtension
 			->addSetup('setProxy', [$config->proxy]);
 
 		$builder->addDefinition($this->prefix('request'))
-			->setFactory('@Nette\Http\RequestFactory::fromGlobals');
-
-		$builder->addDefinition($this->prefix('request'))
-			->setFactory(Nette\Http\Request::class)
-			->addSetup('set_cookieNameStrict', [$config->cookieNameStrict]);
+			->setFactory('@Nette\Http\RequestFactory::fromGlobals')
+			->addSetup('set_cookieNameStrict', [$config->cookieNameStrict]);;
 
 		$response = $builder->addDefinition($this->prefix('response'))
 			->setFactory(Nette\Http\Response::class);
