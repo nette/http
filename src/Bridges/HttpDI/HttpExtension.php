@@ -41,6 +41,7 @@ class HttpExtension extends Nette\DI\CompilerExtension
 			'cspReportOnly' => Expect::arrayOf('array|scalar|null'), // Content-Security-Policy-Report-Only
 			'featurePolicy' => Expect::arrayOf('array|scalar|null'), // Feature-Policy
 			'cookieSecure' => Expect::anyOf(null, true, false, 'auto')->default('auto'), // true|false|auto  Whether the cookie is available only through HTTPS
+			'cookieNameStrict' => Expect::anyOf(Expect::string(), Expect::bool(), null)->default('nette-samesite'),
 		]);
 	}
 
@@ -55,7 +56,8 @@ class HttpExtension extends Nette\DI\CompilerExtension
 			->addSetup('setProxy', [$config->proxy]);
 
 		$builder->addDefinition($this->prefix('request'))
-			->setFactory('@Nette\Http\RequestFactory::fromGlobals');
+			->setFactory('@Nette\Http\RequestFactory::fromGlobals')
+			->addSetup('setCookieNameStrict', [$config->cookieNameStrict]);
 
 		$response = $builder->addDefinition($this->prefix('response'))
 			->setFactory(Nette\Http\Response::class);
@@ -121,8 +123,8 @@ class HttpExtension extends Nette\DI\CompilerExtension
 		}
 
 		$this->initialization->addBody(
-			'Nette\Http\Helpers::initCookie($this->getService(?), $response);',
-			[$this->prefix('request')]
+			'Nette\Http\Helpers::initCookie($this->getService(?), $response, ?);',
+			[$this->prefix('request'), $config->cookieNameStrict]
 		);
 	}
 

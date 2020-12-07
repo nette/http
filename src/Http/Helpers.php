@@ -52,10 +52,10 @@ final class Helpers
 	}
 
 
-	public static function initCookie(IRequest $request, IResponse $response)
+	public static function initCookie(IRequest $request, IResponse $response, $cookieName = self::STRICT_COOKIE_NAME)
 	{
-		if (!$request->getCookie(self::STRICT_COOKIE_NAME)) {
-			$response->setCookie(self::STRICT_COOKIE_NAME, '1', 0, '/', null, null, true, 'Strict');
+		if (!$request->getCookie($cookieName)) {
+			$response->setCookie($cookieName, '1', 0, '/', null, null, true, 'Strict');
 		}
 	}
 }

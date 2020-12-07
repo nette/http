@@ -60,6 +60,9 @@ class Request implements IRequest
 	/** @var callable|null */
 	private $rawBodyCallback;
 
+	/** @var string */
+	private $cookieNameStrict;
+
 
 	public function __construct(
 		UrlScript $url,
@@ -81,6 +84,17 @@ class Request implements IRequest
 		$this->remoteAddress = $remoteAddress;
 		$this->remoteHost = $remoteHost;
 		$this->rawBodyCallback = $rawBodyCallback;
+		$this->cookieNameStrict = Helpers::STRICT_COOKIE_NAME;
+	}
+
+
+	/**
+	 * Setter for cookieNameStrict
+	 * @param string $name
+	 */
+	public function setCookieNameStrict(string $name)
+	{
+		$this->cookieNameStrict = $name;
 	}
 
 
@@ -253,7 +267,7 @@ class Request implements IRequest
 	 */
 	public function isSameSite(): bool
 	{
-		return isset($this->cookies[Helpers::STRICT_COOKIE_NAME]);
+		return isset($this->cookies[$this->cookieNameStrict]);
 	}
 
 
