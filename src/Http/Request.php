@@ -87,6 +87,7 @@ class Request implements IRequest
 		$this->cookieNameStrict = Helpers::STRICT_COOKIE_NAME;
 	}
 
+
 	/**
 	 * Setter for cookieNameStrict
 	 * @param string $name
@@ -95,6 +96,7 @@ class Request implements IRequest
 	{
 		$this->cookieNameStrict = $name;
 	}
+
 
 	/**
 	 * Returns a clone with a different URL.
