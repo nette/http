@@ -87,11 +87,12 @@ class Request implements IRequest
 		$this->cookieNameStrict = Helpers::STRICT_COOKIE_NAME;
 	}
 
-	 /**
+	/**
 	 * Setter for cookieNameStrict
 	 * @param string $name
 	 */
-	public function setCookieNameStrict(string $name) {
+	public function setCookieNameStrict(string $name)
+	{
 		$this->cookieNameStrict = $name;
 	}
 
