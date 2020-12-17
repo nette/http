@@ -26,7 +26,8 @@
 		"phpstan/phpstan": "^0.12"
 	},
 	"conflict": {
-		"nette/di": "<3.0.3"
+		"nette/di": "<3.0.3",
+		"nette/schema": "<1.1"
 	},
 	"suggest": {
 		"ext-fileinfo": "to detect type of uploaded files",

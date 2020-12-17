@@ -35,7 +35,7 @@ class HttpExtension extends Nette\DI\CompilerExtension
 			'headers' => Expect::arrayOf('scalar|null')->default([
 				'X-Powered-By' => 'Nette Framework 3',
 				'Content-Type' => 'text/html; charset=utf-8',
-			]),
+			])->mergeDefaults(),
 			'frames' => Expect::anyOf(Expect::string(), Expect::bool(), null)->default('SAMEORIGIN'), // X-Frame-Options
 			'csp' => Expect::arrayOf('array|scalar|null'), // Content-Security-Policy
 			'cspReportOnly' => Expect::arrayOf('array|scalar|null'), // Content-Security-Policy-Report-Only
