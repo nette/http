@@ -91,7 +91,7 @@ class Url implements \JsonSerializable
 
 			$this->scheme = $p['scheme'] ?? '';
 			$this->port = $p['port'] ?? null;
-			$this->host = rawurldecode($p['host'] ?? '');
+			$this->host = self::idnHostToUnicode(rawurldecode($p['host'] ?? ''));
 			$this->user = rawurldecode($p['user'] ?? '');
 			$this->password = rawurldecode($p['pass'] ?? '');
 			$this->setPath($p['path'] ?? '');
@@ -393,6 +393,25 @@ class Url implements \JsonSerializable
 	final public function export(): array
 	{
 		return [$this->scheme, $this->user, $this->password, $this->host, $this->port, $this->path, $this->query, $this->fragment];
+	}
+
+
+	/**
+	 * Convert IDN ASCII host to UTF-8.
+	 * In case of an error, it returns the original input.
+	 *
+	 * @param int[]|null $info
+	 */
+	public static function idnHostToUnicode(string $host, int $options = 0, ?array &$info = []): string
+	{
+		if (strpos($host, '--') !== false) { // host does not contain IDN
+			return $host;
+		}
+		if (\function_exists('idn_to_utf8') && \defined('INTL_IDNA_VARIANT_UTS46')) {
+			return \idn_to_utf8($host, $options, \INTL_IDNA_VARIANT_UTS46, $info) ?: $host;
+		}
+
+		throw new \Error('ext-idn not loaded or too old.');
 	}
 
 
