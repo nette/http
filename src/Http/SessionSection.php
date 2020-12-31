@@ -28,12 +28,6 @@ class SessionSection implements \IteratorAggregate, \ArrayAccess
 	/** @var string */
 	private $name;
 
-	/** @var array|null  session data storage */
-	private $data;
-
-	/** @var array|bool  session metadata storage */
-	private $meta = false;
-
 
 	/**
 	 * Do not call directly. Use Session::getSection().
@@ -45,23 +39,13 @@ class SessionSection implements \IteratorAggregate, \ArrayAccess
 	}
 
 
-	private function start(): void
-	{
-		if ($this->meta === false) {
-			$this->session->start();
-			$this->data = &$_SESSION['__NF']['DATA'][$this->name];
-			$this->meta = &$_SESSION['__NF']['META'][$this->name];
-		}
-	}
-
-
 	/**
 	 * Returns an iterator over all section variables.
 	 */
 	public function getIterator(): \Iterator
 	{
-		$this->start();
-		return new \ArrayIterator($this->data ?? []);
+		$data = $this->getData(false);
+		return new \ArrayIterator($data ?? []);
 	}
 
 
@@ -70,8 +54,7 @@ class SessionSection implements \IteratorAggregate, \ArrayAccess
 	 */
 	public function __set(string $name, $value): void
 	{
-		$this->start();
-		$this->data[$name] = $value;
+		$this->getData(true)[$name] = $value;
 	}
 
 
@@ -81,12 +64,12 @@ class SessionSection implements \IteratorAggregate, \ArrayAccess
 	 */
 	public function &__get(string $name)
 	{
-		$this->start();
-		if ($this->warnOnUndefined && !array_key_exists($name, $this->data)) {
+		$data = $this->getData(false);
+		if ($this->warnOnUndefined && !array_key_exists($name, $data ?? [])) {
 			trigger_error("The variable '$name' does not exist in session section");
 		}
 
-		return $this->data[$name];
+		return $data[$name];
 	}
 
 
@@ -95,10 +78,11 @@ class SessionSection implements \IteratorAggregate, \ArrayAccess
 	 */
 	public function __isset(string $name): bool
 	{
-		if ($this->session->exists()) {
-			$this->start();
+		if (!$this->session->exists()) {
+			return false;
 		}
-		return isset($this->data[$name]);
+		$data = $this->getData(false);
+		return isset($data[$name]);
 	}
 
 
@@ -107,8 +91,9 @@ class SessionSection implements \IteratorAggregate, \ArrayAccess
 	 */
 	public function __unset(string $name): void
 	{
-		$this->start();
-		unset($this->data[$name], $this->meta[$name]);
+		$data = &$this->getData(true);
+		$meta = &$this->getMeta();
+		unset($data[$name], $meta[$name]);
 	}
 
 
@@ -157,7 +142,7 @@ class SessionSection implements \IteratorAggregate, \ArrayAccess
 	 */
 	public function setExpiration($time, $variables = null)
 	{
-		$this->start();
+		$meta = &$this->getMeta();
 		if ($time) {
 			$time = Nette\Utils\DateTime::from($time)->format('U');
 			$max = (int) ini_get('session.gc_maxlifetime');
@@ -170,7 +155,7 @@ class SessionSection implements \IteratorAggregate, \ArrayAccess
 		}
 
 		foreach (is_array($variables) ? $variables : [$variables] as $variable) {
-			$this->meta[$variable]['T'] = $time ?: null;
+			$meta[$variable]['T'] = $time ?: null;
 		}
 		return $this;
 	}
@@ -182,9 +167,9 @@ class SessionSection implements \IteratorAggregate, \ArrayAccess
 	 */
 	public function removeExpiration($variables = null): void
 	{
-		$this->start();
+		$meta = &$this->getMeta();
 		foreach (is_array($variables) ? $variables : [$variables] as $variable) {
-			unset($this->meta[$variable]['T']);
+			unset($meta[$variable]['T']);
 		}
 	}
 
@@ -194,8 +179,23 @@ class SessionSection implements \IteratorAggregate, \ArrayAccess
 	 */
 	public function remove(): void
 	{
-		$this->start();
-		$this->data = null;
-		$this->meta = null;
+		$this->session->start();
+		unset($_SESSION['__NF']['DATA'][$this->name], $_SESSION['__NF']['META'][$this->name]);
+	}
+
+
+	private function &getData(bool $write)
+	{
+		if ($write || !session_id()) {
+			$this->session->start();
+		}
+		return $_SESSION['__NF']['DATA'][$this->name];
+	}
+
+
+	private function &getMeta()
+	{
+		$this->session->start();
+		return $_SESSION['__NF']['META'][$this->name];
 	}
 }
