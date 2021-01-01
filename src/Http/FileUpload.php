@@ -214,7 +214,9 @@ final class FileUpload
 	 */
 	public function getImageSize(): ?array
 	{
-		return $this->isImage() ? getimagesize($this->tmpName) : null;
+		return $this->isImage()
+			? array_intersect_key(getimagesize($this->tmpName), [0, 1])
+			: null;
 	}
 
 

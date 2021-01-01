@@ -50,6 +50,7 @@ test('', function () {
 	Assert::same('image.png', $upload->getSanitizedName());
 	Assert::same('image/png', $upload->getContentType());
 	Assert::same('png', $upload->getImageFileExtension());
+	Assert::same([108, 46], $upload->getImageSize());
 	Assert::true($upload->isImage());
 });
 
