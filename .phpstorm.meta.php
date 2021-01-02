@@ -67,5 +67,13 @@ registerArgumentsSet('nette_http_codes',
 	\Nette\Http\IResponse::S511_NETWORK_AUTHENTICATION_REQUIRED
 );
 
+registerArgumentsSet('nette_same_site',
+	\Nette\Http\IResponse::SAME_SITE_LAX,
+	\Nette\Http\IResponse::SAME_SITE_STRICT,
+	\Nette\Http\IResponse::SAME_SITE_NONE
+);
+
 expectedArguments(\Nette\Http\IResponse::setCode(), 0, argumentsSet('nette_http_codes'));
 expectedReturnValues(\Nette\Http\IResponse::getCode(), argumentsSet('nette_http_codes'));
+expectedArguments(\Nette\Http\IResponse::setCookie(), 7, argumentsSet('nette_same_site'));
+expectedArguments(\Nette\Http\Session::setCookieParameters(), 3, argumentsSet('nette_same_site'));

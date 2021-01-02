@@ -55,7 +55,7 @@ final class Helpers
 	public static function initCookie(IRequest $request, IResponse $response)
 	{
 		if (!$request->getCookie(self::STRICT_COOKIE_NAME)) {
-			$response->setCookie(self::STRICT_COOKIE_NAME, '1', 0, '/', null, null, true, 'Strict');
+			$response->setCookie(self::STRICT_COOKIE_NAME, '1', 0, '/', null, null, true, IResponse::SAME_SITE_STRICT);
 		}
 	}
 }

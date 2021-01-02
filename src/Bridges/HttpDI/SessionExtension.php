@@ -65,7 +65,7 @@ class SessionExtension extends Nette\DI\CompilerExtension
 			$config->cookieSecure = $builder::literal('$this->getByType(Nette\Http\IRequest::class)->isSecured()');
 		}
 		if (($config->cookieSamesite ?? null) === true) {
-			$config->cookieSamesite = 'Lax';
+			$config->cookieSamesite = Nette\Http\IResponse::SAME_SITE_LAX;
 		}
 		$this->compiler->addExportedType(Nette\Http\IRequest::class);
 
