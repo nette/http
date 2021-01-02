@@ -19,6 +19,7 @@ $response->cookieDomain = 'nette.org';
 $response->cookieSecure = true;
 
 Assert::same([
+	'cookie_samesite' => 'Lax',
 	'cookie_lifetime' => 0,
 	'gc_maxlifetime' => 10800,
 	'cookie_path' => '/user/',

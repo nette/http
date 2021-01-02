@@ -37,8 +37,8 @@ test('', function () {
 
 	Assert::same(
 		PHP_VERSION_ID >= 70300
-			? ['lifetime' => 0, 'path' => '/', 'domain' => '', 'secure' => false, 'httponly' => true, 'samesite' => '']
-			: ['lifetime' => 0, 'path' => '/', 'domain' => '', 'secure' => false, 'httponly' => true],
+			? ['lifetime' => 0, 'path' => '/', 'domain' => '', 'secure' => false, 'httponly' => true, 'samesite' => 'Lax']
+			: ['lifetime' => 0, 'path' => '/; SameSite=Lax', 'domain' => '', 'secure' => false, 'httponly' => true],
 		session_get_cookie_params()
 	);
 });
@@ -66,8 +66,8 @@ test('', function () {
 
 	Assert::same(
 		PHP_VERSION_ID >= 70300
-			? ['lifetime' => 0, 'path' => '/', 'domain' => '', 'secure' => true, 'httponly' => true, 'samesite' => '']
-			: ['lifetime' => 0, 'path' => '/', 'domain' => '', 'secure' => true, 'httponly' => true],
+			? ['lifetime' => 0, 'path' => '/', 'domain' => '', 'secure' => true, 'httponly' => true, 'samesite' => 'Lax']
+			: ['lifetime' => 0, 'path' => '/; SameSite=Lax', 'domain' => '', 'secure' => true, 'httponly' => true],
 		session_get_cookie_params()
 	);
 });
