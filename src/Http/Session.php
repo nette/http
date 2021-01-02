@@ -386,13 +386,12 @@ class Session
 					throw new Nette\InvalidStateException("Unable to set 'session.$key' to value '$value' when session has been started" . ($this->started ? '.' : ' by session.auto_start or session_start().'));
 				}
 				if (isset($special[$key])) {
-					$key = "session_$key";
-					$key($value);
+					("session_$key")($value);
 
 				} elseif (function_exists('ini_set')) {
 					ini_set("session.$key", (string) $value);
 
-				} elseif (ini_get("session.$key") != $value) { // intentionally !=
+				} else {
 					throw new Nette\NotSupportedException("Unable to set 'session.$key' to '$value' because function ini_set() is disabled.");
 				}
 			}
@@ -452,13 +451,13 @@ class Session
 		string $path,
 		string $domain = null,
 		bool $secure = null,
-		string $samesite = null
+		string $sameSite = null
 	) {
 		return $this->setOptions([
 			'cookie_path' => $path,
 			'cookie_domain' => $domain,
 			'cookie_secure' => $secure,
-			'cookie_samesite' => $samesite,
+			'cookie_samesite' => $sameSite,
 		]);
 	}
 
