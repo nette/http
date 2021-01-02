@@ -25,7 +25,7 @@ session:
 	cookiePath: /x
 	cookieDomain: domain
 	cookieSecure: yes
-	cookieSamesite: true
+	cookieSamesite: Lax
 
 services:
 	foo.request: Nette\Http\Request(Nette\Http\UrlScript("http://www.nette.org"))
