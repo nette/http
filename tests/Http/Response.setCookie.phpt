@@ -24,24 +24,16 @@ $response = new Http\Response;
 $response->setCookie('test', 'value', 0);
 $headers = array_values(array_diff(headers_list(), $old, ['Set-Cookie:']));
 Assert::same([
-	'Set-Cookie: test=value; path=/; HttpOnly',
+	PHP_VERSION_ID >= 70300
+		? 'Set-Cookie: test=value; path=/; HttpOnly; SameSite=Lax'
+		: 'Set-Cookie: test=value; path=/; SameSite=Lax; HttpOnly',
 ], $headers);
 
 
 $response->setCookie('test', 'newvalue', 0);
 $headers = array_values(array_diff(headers_list(), $old, ['Set-Cookie:']));
-Assert::same([
-	'Set-Cookie: test=value; path=/; HttpOnly',
-	'Set-Cookie: test=newvalue; path=/; HttpOnly',
-], $headers);
-
-
-$response->setCookie('test', 'newvalue', 0, null, null, null, null, $response::SAME_SITE_LAX);
-$headers = array_values(array_diff(headers_list(), $old, ['Set-Cookie:']));
-Assert::same([
-	'Set-Cookie: test=value; path=/; HttpOnly',
-	'Set-Cookie: test=newvalue; path=/; HttpOnly',
+Assert::same(
 	PHP_VERSION_ID >= 70300
-		? 'Set-Cookie: test=newvalue; path=/; HttpOnly; SameSite=Lax'
-		: 'Set-Cookie: test=newvalue; path=/; SameSite=Lax; HttpOnly',
-], $headers);
+		? ['Set-Cookie: test=value; path=/; HttpOnly; SameSite=Lax', 'Set-Cookie: test=newvalue; path=/; HttpOnly; SameSite=Lax']
+		: ['Set-Cookie: test=value; path=/; SameSite=Lax; HttpOnly', 'Set-Cookie: test=newvalue; path=/; SameSite=Lax; HttpOnly']
+, $headers);

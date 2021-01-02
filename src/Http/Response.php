@@ -255,7 +255,7 @@ final class Response implements IResponse
 			'domain' => $domain ?? $this->cookieDomain,
 			'secure' => $secure ?? $this->cookieSecure,
 			'httponly' => $httpOnly ?? $this->cookieHttpOnly,
-			'samesite' => $sameSite,
+			'samesite' => $sameSite = ($sameSite ?? self::SAME_SITE_LAX),
 		];
 		if (PHP_VERSION_ID >= 70300) {
 			setcookie($name, $value, $options);
