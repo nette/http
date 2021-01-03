@@ -39,7 +39,7 @@ class Session
 
 	/** @var array default configuration */
 	private $options = [
-		'cookie_lifetime' => 0,   // until the browser is closed
+		'cookie_lifetime' => 0,   // for a maximum of 3 hours or until the browser is closed
 		'gc_maxlifetime' => self::DEFAULT_FILE_LIFETIME, // 3 hours
 	];
 
@@ -426,7 +426,7 @@ class Session
 
 	/**
 	 * Sets the amount of time (like '20 minutes') allowed between requests before the session will be terminated,
-	 * null means "until the browser is closed".
+	 * null means "for a maximum of 3 hours or until the browser is closed".
 	 * @return static
 	 */
 	public function setExpiration(?string $time)
