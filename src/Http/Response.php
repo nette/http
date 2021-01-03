@@ -251,8 +251,8 @@ final class Response implements IResponse
 		self::checkHeaders();
 		$options = [
 			'expires' => $time ? (int) DateTime::from($time)->format('U') : 0,
-			'path' => $path ?? $this->cookiePath,
-			'domain' => $domain ?? $this->cookieDomain,
+			'path' => $path ?? ($domain ? '/' : $this->cookiePath),
+			'domain' => $domain ?? ($path ? '' : $this->cookieDomain),
 			'secure' => $secure ?? $this->cookieSecure,
 			'httponly' => $httpOnly ?? true,
 			'samesite' => $sameSite = ($sameSite ?? self::SAME_SITE_LAX),
