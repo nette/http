@@ -77,3 +77,15 @@ test('', function () {
 	$url = $url->withQuery('a=1');
 	Assert::same('http://hostname/path?a=1', $url->getAbsoluteUrl());
 });
+
+
+test('', function () {
+	$url = new UrlImmutable('http://hostname/path?arg=value');
+	Assert::same('arg=value', $url->query);
+
+	$url = $url->withQueryParameter('arg3', 'value3');
+	Assert::same('arg=value&arg3=value3', $url->query);
+
+	$url = $url->withQueryParameter('arg', 'value4');
+	Assert::same('arg=value4&arg3=value3', $url->query);
+});

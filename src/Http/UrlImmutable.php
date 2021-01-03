@@ -223,6 +223,18 @@ class UrlImmutable implements \JsonSerializable
 	}
 
 
+	/**
+	 * @param mixed  $value  null unsets the parameter
+	 * @return static
+	 */
+	public function withQueryParameter(string $name, $value)
+	{
+		$dolly = clone $this;
+		$dolly->query[$name] = $value;
+		return $dolly;
+	}
+
+
 	public function getQueryParameters(): array
 	{
 		return $this->query;
