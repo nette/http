@@ -210,7 +210,7 @@ interface IResponse
 
 	/**
 	 * Sends a cookie.
-	 * @param  string|int|\DateTimeInterface $expire  time, value 0 means "until the browser is closed"
+	 * @param  string|int|\DateTimeInterface $expire  time, value null means "until the browser session ends"
 	 * @return static
 	 */
 	function setCookie(

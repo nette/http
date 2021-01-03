@@ -234,7 +234,7 @@ final class Response implements IResponse
 
 	/**
 	 * Sends a cookie.
-	 * @param  string|int|\DateTimeInterface $time  expiration time, value 0 means "until the browser is closed"
+	 * @param  string|int|\DateTimeInterface $time  expiration time, value null means "until the browser session ends"
 	 * @return static
 	 * @throws Nette\InvalidStateException  if HTTP headers have been sent
 	 */
