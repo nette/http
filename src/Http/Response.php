@@ -31,8 +31,8 @@ final class Response implements IResponse
 	/** @var bool Whether the cookie is available only through HTTPS */
 	public $cookieSecure = false;
 
-	/** @var bool Whether the cookie is hidden from client-side */
-	public $cookieHttpOnly = true;
+	/** @deprecated */
+	public $cookieHttpOnly;
 
 	/** @var bool Whether warn on possible problem with data in output buffer */
 	public $warnOnBuffer = true;
@@ -254,7 +254,7 @@ final class Response implements IResponse
 			'path' => $path ?? $this->cookiePath,
 			'domain' => $domain ?? $this->cookieDomain,
 			'secure' => $secure ?? $this->cookieSecure,
-			'httponly' => $httpOnly ?? $this->cookieHttpOnly,
+			'httponly' => $httpOnly ?? true,
 			'samesite' => $sameSite = ($sameSite ?? self::SAME_SITE_LAX),
 		];
 		if (PHP_VERSION_ID >= 70300) {
