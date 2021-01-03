@@ -40,6 +40,8 @@ class HttpExtension extends Nette\DI\CompilerExtension
 			'csp' => Expect::arrayOf('array|scalar|null'), // Content-Security-Policy
 			'cspReportOnly' => Expect::arrayOf('array|scalar|null'), // Content-Security-Policy-Report-Only
 			'featurePolicy' => Expect::arrayOf('array|scalar|null'), // Feature-Policy
+			'cookiePath' => Expect::string(),
+			'cookieDomain' => Expect::string(),
 			'cookieSecure' => Expect::anyOf(null, true, false, 'auto')->default('auto'), // Whether the cookie is available only through HTTPS
 		]);
 	}
@@ -54,15 +56,26 @@ class HttpExtension extends Nette\DI\CompilerExtension
 			->setFactory(Nette\Http\RequestFactory::class)
 			->addSetup('setProxy', [$config->proxy]);
 
-		$builder->addDefinition($this->prefix('request'))
+		$request = $builder->addDefinition($this->prefix('request'))
 			->setFactory('@Nette\Http\RequestFactory::fromGlobals');
 
 		$response = $builder->addDefinition($this->prefix('response'))
 			->setFactory(Nette\Http\Response::class);
 
+		if ($config->cookiePath !== null) {
+			$response->addSetup('$cookiePath', [$config->cookiePath]);
+		}
+
+		if ($config->cookieDomain !== null) {
+			$value = $config->cookieDomain === 'domain'
+				? $builder::literal('$this->getService(?)->getUrl()->getDomain(2)', [$request->getName()])
+				: $config->cookieDomain;
+			$response->addSetup('$cookieDomain', [$value]);
+		}
+
 		if ($config->cookieSecure !== null) {
 			$value = $config->cookieSecure === 'auto'
-				? $builder::literal('$this->getService(?)->isSecured()', [$this->prefix('request')])
+				? $builder::literal('$this->getService(?)->isSecured()', [$request->getName()])
 				: $config->cookieSecure;
 			$response->addSetup('$cookieSecure', [$value]);
 		}
