@@ -431,7 +431,7 @@ class Session
 	 */
 	public function setExpiration(?string $time)
 	{
-		if (empty($time)) {
+		if ($time === null) {
 			return $this->setOptions([
 				'gc_maxlifetime' => self::DEFAULT_FILE_LIFETIME,
 				'cookie_lifetime' => 0,
