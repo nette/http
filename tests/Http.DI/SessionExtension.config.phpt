@@ -21,10 +21,12 @@ $compiler->addExtension('session', new SessionExtension(false, PHP_SAPI === 'cli
 
 $loader = new DI\Config\Loader;
 $config = $loader->load(Tester\FileMock::create('
+foo:
+	cookieSecure: yes
+
 session:
 	cookiePath: /x
 	cookieDomain: domain
-	cookieSecure: yes
 	cookieSamesite: Lax
 
 services:

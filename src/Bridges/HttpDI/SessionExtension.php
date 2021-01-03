@@ -64,8 +64,9 @@ class SessionExtension extends Nette\DI\CompilerExtension
 		if (($config->cookieDomain ?? null) === 'domain') {
 			$config->cookieDomain = $builder::literal('$this->getByType(Nette\Http\IRequest::class)->getUrl()->getDomain(2)');
 		}
-		if (($config->cookieSecure ?? null) === 'auto') {
-			$config->cookieSecure = $builder::literal('$this->getByType(Nette\Http\IRequest::class)->isSecured()');
+		if (isset($config->cookieSecure)) {
+			trigger_error("The item 'session › cookieSecure' is deprecated, use 'http › cookieSecure' (it has default value 'auto').", E_USER_DEPRECATED);
+			unset($config->cookieSecure);
 		}
 		if ($config->cookieSamesite === true) {
 			trigger_error("In 'session › cookieSamesite' replace true with 'Lax'.", E_USER_DEPRECATED);
