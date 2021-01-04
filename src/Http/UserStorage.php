@@ -14,7 +14,7 @@ use Nette\Security\IIdentity;
 
 
 /**
- * Session storage for user object.
+ * @deprecated by Nette\Bridges\SecurityHttp\SessionStorage
  */
 class UserStorage implements Nette\Security\IUserStorage
 {
