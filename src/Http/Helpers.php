@@ -21,7 +21,7 @@ final class Helpers
 	use Nette\StaticClass;
 
 	/** @internal */
-	public const STRICT_COOKIE_NAME = 'nette-samesite';
+	public const STRICT_COOKIE_NAME = '_nss';
 
 
 	/**
