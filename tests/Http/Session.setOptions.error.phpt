@@ -20,10 +20,10 @@ Assert::exception(function () use ($session) {
 	$session->setOptions([
 		'gc_malifetime' => 123,
 	]);
-}, Nette\InvalidStateException::class, "Invalid session configuration option 'gc_malifetime' or 'gcMalifetime', did you mean 'gc_maxlifetime' or 'gcMaxlifetime'?");
+}, Nette\InvalidStateException::class, "Invalid session configuration option 'gc_malifetime', did you mean 'gc_maxlifetime'?");
 
 Assert::exception(function () use ($session) {
 	$session->setOptions([
 		'cookieDoman' => '.domain.com',
 	]);
-}, Nette\InvalidStateException::class, "Invalid session configuration option 'cookie_doman' or 'cookieDoman', did you mean 'cookie_domain' or 'cookieDomain'?");
+}, Nette\InvalidStateException::class, "Invalid session configuration option 'cookieDoman', did you mean 'cookieDomain'?");

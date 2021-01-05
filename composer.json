@@ -30,8 +30,7 @@
 		"nette/schema": "<1.1"
 	},
 	"suggest": {
-		"ext-fileinfo": "to detect type of uploaded files",
-		"nette/security": "allows use Nette\\Http\\UserStorage"
+		"ext-fileinfo": "to detect type of uploaded files"
 	},
 	"autoload": {
 		"classmap": ["src/"]

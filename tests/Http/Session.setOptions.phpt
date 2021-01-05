@@ -16,6 +16,7 @@ $factory = new Nette\Http\RequestFactory;
 $session = new Nette\Http\Session($factory->fromGlobals(), new Nette\Http\Response);
 
 Assert::same([
+	'cookie_samesite' => 'Lax',
 	'cookie_lifetime' => 0,
 	'gc_maxlifetime' => 10800,
 	'cookie_path' => '/',
@@ -28,6 +29,7 @@ $session->setOptions([
 ]);
 Assert::same([
 	'cookie_domain' => '.domain.com',
+	'cookie_samesite' => 'Lax',
 	'cookie_lifetime' => 0,
 	'gc_maxlifetime' => 10800,
 	'cookie_path' => '/',
@@ -39,6 +41,7 @@ $session->setOptions([
 ]);
 Assert::same([
 	'cookie_domain' => '.domain.org',
+	'cookie_samesite' => 'Lax',
 	'cookie_lifetime' => 0,
 	'gc_maxlifetime' => 10800,
 	'cookie_path' => '/',

@@ -31,8 +31,8 @@ final class Response implements IResponse
 	/** @var bool Whether the cookie is available only through HTTPS */
 	public $cookieSecure = false;
 
-	/** @var bool Whether the cookie is hidden from client-side */
-	public $cookieHttpOnly = true;
+	/** @deprecated */
+	public $cookieHttpOnly;
 
 	/** @var bool Whether warn on possible problem with data in output buffer */
 	public $warnOnBuffer = true;
@@ -234,7 +234,7 @@ final class Response implements IResponse
 
 	/**
 	 * Sends a cookie.
-	 * @param  string|int|\DateTimeInterface $time  expiration time, value 0 means "until the browser is closed"
+	 * @param  string|int|\DateTimeInterface $time  expiration time, value null means "until the browser session ends"
 	 * @return static
 	 * @throws Nette\InvalidStateException  if HTTP headers have been sent
 	 */
@@ -251,11 +251,11 @@ final class Response implements IResponse
 		self::checkHeaders();
 		$options = [
 			'expires' => $time ? (int) DateTime::from($time)->format('U') : 0,
-			'path' => $path ?? $this->cookiePath,
-			'domain' => $domain ?? $this->cookieDomain,
+			'path' => $path ?? ($domain ? '/' : $this->cookiePath),
+			'domain' => $domain ?? ($path ? '' : $this->cookieDomain),
 			'secure' => $secure ?? $this->cookieSecure,
-			'httponly' => $httpOnly ?? $this->cookieHttpOnly,
-			'samesite' => $sameSite,
+			'httponly' => $httpOnly ?? true,
+			'samesite' => $sameSite = ($sameSite ?? self::SAME_SITE_LAX),
 		];
 		if (PHP_VERSION_ID >= 70300) {
 			setcookie($name, $value, $options);

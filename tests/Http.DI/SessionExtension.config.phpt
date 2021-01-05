@@ -21,11 +21,13 @@ $compiler->addExtension('session', new SessionExtension(false, PHP_SAPI === 'cli
 
 $loader = new DI\Config\Loader;
 $config = $loader->load(Tester\FileMock::create('
+foo:
+	cookieSecure: yes
+
 session:
 	cookiePath: /x
 	cookieDomain: domain
-	cookieSecure: yes
-	cookieSamesite: true
+	cookieSamesite: Lax
 
 services:
 	foo.request: Nette\Http\Request(Nette\Http\UrlScript("http://www.nette.org"))
