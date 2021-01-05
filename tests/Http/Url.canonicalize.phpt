@@ -30,3 +30,8 @@ $url->canonicalize();
 Assert::same('http://host/%1F%20%20!!%22%22%23$$%25&&\'\'(())**++,,--..%2F/00112233445566778899::;;%3C%3C==%3E%3E%3F@@'
 	. 'AABBCCDDEEFFGGHHIIJJKKLLMMNNOOPPQQRRSSTTUUVVWWXXYYZZ%5B%5B%5C%5C%5D%5D%5E%5E__%60%60'
 	. 'aabbccddeeffgghhiijjkkllmmnnooppqqrrssttuuvvwwxxyyzz%7B%7B%7C%7C%7D%7D~~%7F%C3%A1', (string) $url);
+
+
+$url = new Url('https://xn--tst-qla.de/');
+$url->canonicalize();
+Assert::same('https://täst.de/', (string) $url);

@@ -350,7 +350,8 @@ class Url implements \JsonSerializable
 		$query2 = $this->query;
 		ksort($query2);
 		return $url->scheme === $this->scheme
-			&& !strcasecmp($url->host, $this->host)
+			&& (!strcasecmp($url->host, $this->host)
+				|| self::idnHostToUnicode($url->host) === self::idnHostToUnicode($this->host))
 			&& $url->getPort() === $this->getPort()
 			&& $url->user === $this->user
 			&& $url->password === $this->password
@@ -363,6 +364,7 @@ class Url implements \JsonSerializable
 	/**
 	 * Transforms URL to canonical form.
 	 * @return static
+	 * @deprecated
 	 */
 	public function canonicalize()
 	{
@@ -371,7 +373,7 @@ class Url implements \JsonSerializable
 			function (array $m): string { return rawurlencode($m[0]); },
 			self::unescape($this->path, '%/')
 		);
-		$this->host = strtolower($this->host);
+		$this->host = self::idnHostToUnicode(strtolower($this->host));
 		return $this;
 	}
 
@@ -392,6 +394,21 @@ class Url implements \JsonSerializable
 	final public function export(): array
 	{
 		return [$this->scheme, $this->user, $this->password, $this->host, $this->port, $this->path, $this->query, $this->fragment];
+	}
+
+
+	/**
+	 * Converts IDN ASCII host to UTF-8.
+	 */
+	private static function idnHostToUnicode(string $host): string
+	{
+		if (strpos($host, '--') === false) { // host does not contain IDN
+			return $host;
+		}
+		if (function_exists('idn_to_utf8') && defined('INTL_IDNA_VARIANT_UTS46')) {
+			return idn_to_utf8($host, IDNA_DEFAULT, INTL_IDNA_VARIANT_UTS46) ?: $host;
+		}
+		trigger_error('PHP extension idn is not loaded or is too old', E_USER_WARNING);
 	}
 
 

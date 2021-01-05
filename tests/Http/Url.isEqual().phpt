@@ -53,3 +53,7 @@ $url = new Url;
 $url->setScheme('http');
 $url->setHost('example.com');
 Assert::true($url->isEqual('http://example.com'));
+
+
+$url = new Url('https://xn--tst-qla.de/');
+Assert::true($url->isEqual('https://täst.de/'));
