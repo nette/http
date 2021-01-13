@@ -139,6 +139,22 @@ final class Response implements IResponse
 
 
 	/**
+	 * Response should be downloaded with 'Save as' dialog.
+	 * @return static
+	 * @throws Nette\InvalidStateException  if HTTP headers have been sent
+	 */
+	public function sendAsFile(string $fileName)
+	{
+		$this->setHeader(
+			'Content-Disposition',
+			'attachment; filename="' . str_replace('"', '', $fileName) . '"; '
+			. "filename*=utf-8''" . rawurlencode($fileName)
+		);
+		return $this;
+	}
+
+
+	/**
 	 * Redirects to another URL. Don't forget to quit the script then.
 	 * @throws Nette\InvalidStateException  if HTTP headers have been sent
 	 */
