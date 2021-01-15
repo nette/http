@@ -64,7 +64,7 @@ class SessionSection implements \IteratorAggregate, \ArrayAccess
 	 */
 	public function &__get(string $name)
 	{
-		$data = $this->getData(false);
+		$data = &$this->getData(false);
 		if ($this->warnOnUndefined && !array_key_exists($name, $data ?? [])) {
 			trigger_error("The variable '$name' does not exist in session section");
 		}
