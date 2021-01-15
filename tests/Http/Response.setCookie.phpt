@@ -35,11 +35,12 @@ $headers = array_values(array_diff(headers_list(), $old, ['Set-Cookie:']));
 Assert::same(
 	PHP_VERSION_ID >= 70300
 		? ['Set-Cookie: test=value; path=/; HttpOnly; SameSite=Lax', 'Set-Cookie: test=newvalue; path=/; HttpOnly; SameSite=Lax']
-		: ['Set-Cookie: test=value; path=/; SameSite=Lax; HttpOnly', 'Set-Cookie: test=newvalue; path=/; SameSite=Lax; HttpOnly']
-, $headers);
+		: ['Set-Cookie: test=value; path=/; SameSite=Lax; HttpOnly', 'Set-Cookie: test=newvalue; path=/; SameSite=Lax; HttpOnly'],
+	$headers
+);
 
 
-// cookiePath 
+// cookiePath
 $response = new Http\Response;
 $response->cookiePath = '/foo';
 $old = headers_list();
