@@ -94,7 +94,7 @@ final class Response implements IResponse
 		} elseif (strcasecmp($name, 'Content-Length') === 0 && ini_get('zlib.output_compression')) {
 			// ignore, PHP bug #44164
 		} else {
-			header($name . ': ' . $value, true, $this->code);
+			header($name . ': ' . $value);
 		}
 		return $this;
 	}
@@ -108,7 +108,7 @@ final class Response implements IResponse
 	public function addHeader(string $name, string $value)
 	{
 		self::checkHeaders();
-		header($name . ': ' . $value, false, $this->code);
+		header($name . ': ' . $value, false);
 		return $this;
 	}
 
