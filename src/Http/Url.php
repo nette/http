@@ -316,7 +316,7 @@ class Url implements \JsonSerializable
 	}
 
 
-	/** @deprecated */
+	/** @deprecated use UrlScript::getBasePath() instead */
 	public function getBasePath(): string
 	{
 		$pos = strrpos($this->path, '/');
@@ -324,14 +324,14 @@ class Url implements \JsonSerializable
 	}
 
 
-	/** @deprecated */
+	/** @deprecated use UrlScript::getBaseUrl() instead */
 	public function getBaseUrl(): string
 	{
 		return $this->getHostUrl() . $this->getBasePath();
 	}
 
 
-	/** @deprecated */
+	/** @deprecated use UrlScript::getRelativeUrl() instead */
 	public function getRelativeUrl(): string
 	{
 		return substr($this->getAbsoluteUrl(), strlen($this->getBaseUrl()));
