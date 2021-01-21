@@ -27,7 +27,7 @@
 	},
 	"conflict": {
 		"nette/di": "<3.0.3",
-		"nette/schema": "<1.1"
+		"nette/schema": "<1.2"
 	},
 	"suggest": {
 		"ext-fileinfo": "to detect type of uploaded files"

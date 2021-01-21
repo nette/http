@@ -31,7 +31,7 @@ class HttpExtension extends Nette\DI\CompilerExtension
 	public function getConfigSchema(): Nette\Schema\Schema
 	{
 		return Expect::structure([
-			'proxy' => Expect::anyOf(Expect::arrayOf('string'), Expect::string()->castTo('array'))->default([])->dynamic(),
+			'proxy' => Expect::anyOf(Expect::arrayOf('string'), Expect::string()->castTo('array'))->firstIsDefault()->dynamic(),
 			'headers' => Expect::arrayOf('scalar|null')->default([
 				'X-Powered-By' => 'Nette Framework 3',
 				'Content-Type' => 'text/html; charset=utf-8',
@@ -42,7 +42,7 @@ class HttpExtension extends Nette\DI\CompilerExtension
 			'featurePolicy' => Expect::arrayOf('array|scalar|null'), // Feature-Policy
 			'cookiePath' => Expect::string(),
 			'cookieDomain' => Expect::string(),
-			'cookieSecure' => Expect::anyOf(null, true, false, 'auto')->default('auto'), // Whether the cookie is available only through HTTPS
+			'cookieSecure' => Expect::anyOf('auto', null, true, false)->firstIsDefault(), // Whether the cookie is available only through HTTPS
 		]);
 	}
 

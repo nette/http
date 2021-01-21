@@ -37,12 +37,12 @@ class SessionExtension extends Nette\DI\CompilerExtension
 	{
 		return Expect::structure([
 			'debugger' => Expect::bool(false),
-			'autoStart' => Expect::anyOf('smart', true, false)->default('smart'),
+			'autoStart' => Expect::anyOf('smart', true, false)->firstIsDefault(),
 			'expiration' => Expect::string()->dynamic(),
 			'handler' => Expect::string()->dynamic(),
 			'readAndClose' => Expect::bool(),
 			'cookieSamesite' => Expect::anyOf(IResponse::SAME_SITE_LAX, IResponse::SAME_SITE_STRICT, IResponse::SAME_SITE_NONE, true)
-				->default(IResponse::SAME_SITE_LAX),
+				->firstIsDefault(),
 		])->otherItems('mixed');
 	}
 
