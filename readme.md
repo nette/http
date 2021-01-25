@@ -2,7 +2,7 @@ Nette HTTP Component
 ====================
 
 [![Downloads this Month](https://img.shields.io/packagist/dm/nette/http.svg)](https://packagist.org/packages/nette/http)
-[![Build Status](https://travis-ci.org/nette/http.svg?branch=master)](https://travis-ci.org/nette/http)
+[![Tests](https://github.com/nette/http/workflows/Tests/badge.svg?branch=master)](https://github.com/nette/http/actions)
 [![Build Status Windows](https://ci.appveyor.com/api/projects/status/github/nette/http?branch=master&svg=true)](https://ci.appveyor.com/project/dg/http/branch/master)
 [![Coverage Status](https://coveralls.io/repos/github/nette/http/badge.svg?branch=master)](https://coveralls.io/github/nette/http?branch=master)
 [![Latest Stable Version](https://poser.pugx.org/nette/http/v/stable)](https://github.com/nette/http/releases)
