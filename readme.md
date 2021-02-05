@@ -17,7 +17,19 @@ sanitization filter.
 
 Documentation can be found on the [website](https://doc.nette.org/http-request-response).
 
-Installation:
+
+[Support Me](https://github.com/sponsors/dg)
+--------------------------------------------
+
+Do you like Nette DI? Are you looking forward to the new features?
+
+[![Buy me a coffee](https://files.nette.org/icons/donation-3.svg)](https://github.com/sponsors/dg)
+
+Thank you!
+
+
+Installation
+------------
 
 ```shell
 composer require nette/http
