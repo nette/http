@@ -38,7 +38,6 @@ $container = new Container;
 $container->initialize();
 
 $headers = headers_list();
-var_dump($headers);
 
 Assert::contains("Feature-Policy: unsized-media 'none'; geolocation 'self' https://example.com; camera *;", $headers);
 

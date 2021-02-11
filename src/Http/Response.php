@@ -311,7 +311,7 @@ final class Response implements IResponse
 			ob_get_length() &&
 			!array_filter(ob_get_status(true), function (array $i): bool { return !$i['chunk_size']; })
 		) {
-			trigger_error('Possible problem: you are sending a HTTP header while already having some data in output buffer. Try Tracy\OutputDebugger or start session earlier.');
+			trigger_error('Possible problem: you are sending a HTTP header while already having some data in output buffer. Try Tracy\OutputDebugger or send cookies/start session earlier.');
 		}
 	}
 }
