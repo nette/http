@@ -57,9 +57,8 @@ class SessionSection implements \IteratorAggregate, \ArrayAccess
 
 	/**
 	 * Gets a variable from this session section.
-	 * @return mixed
 	 */
-	public function &__get(string $name)
+	public function &__get(string $name): mixed
 	{
 		$data = &$this->getData(true);
 		if ($this->warnOnUndefined && !array_key_exists($name, $data ?? [])) {
@@ -105,9 +104,8 @@ class SessionSection implements \IteratorAggregate, \ArrayAccess
 
 	/**
 	 * Gets a variable from this session section.
-	 * @return mixed
 	 */
-	public function offsetGet($name)
+	public function offsetGet($name): mixed
 	{
 		return $this->__get($name);
 	}
@@ -133,11 +131,9 @@ class SessionSection implements \IteratorAggregate, \ArrayAccess
 
 	/**
 	 * Sets the expiration of the section or specific variables.
-	 * @param  ?string  $time
 	 * @param  string|string[]  $variables  list of variables / single variable to expire
-	 * @return static
 	 */
-	public function setExpiration($time, $variables = null)
+	public function setExpiration(?string $time, string|array $variables = null): static
 	{
 		$meta = &$this->getMeta();
 		if ($time) {
@@ -162,7 +158,7 @@ class SessionSection implements \IteratorAggregate, \ArrayAccess
 	 * Removes the expiration from the section or specific variables.
 	 * @param  string|string[]  $variables  list of variables / single variable to expire
 	 */
-	public function removeExpiration($variables = null): void
+	public function removeExpiration(string|array $variables = null): void
 	{
 		$meta = &$this->getMeta();
 		foreach (is_array($variables) ? $variables : [$variables] as $variable) {
