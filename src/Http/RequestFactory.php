@@ -277,9 +277,7 @@ class RequestFactory
 
 	private function getClient(Url $url): array
 	{
-		$remoteAddr = !empty($_SERVER['REMOTE_ADDR'])
-			? trim($_SERVER['REMOTE_ADDR'], '[]') // workaround for PHP 7.3.0
-			: null;
+		$remoteAddr = !empty($_SERVER['REMOTE_ADDR']) ? $_SERVER['REMOTE_ADDR'] : null;
 
 		// use real client address and host if trusted proxy is used
 		$usingTrustedProxy = $remoteAddr && Arrays::some($this->proxies, fn(string $proxy): bool => Helpers::ipMatch($remoteAddr, $proxy));
