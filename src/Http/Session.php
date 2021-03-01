@@ -336,7 +336,7 @@ class Session
 			if (!isset($allowed["session.$normKey"])) {
 				$hint = substr((string) Nette\Utils\Helpers::getSuggestion(array_keys($allowed), "session.$normKey"), 8);
 				if ($key !== $normKey) {
-					$hint = preg_replace_callback('#_(.)#', function ($m) { return strtoupper($m[1]); }, $hint); // snake_case -> camelCase
+					$hint = preg_replace_callback('#_(.)#', fn($m) => strtoupper($m[1]), $hint); // snake_case -> camelCase
 				}
 				throw new Nette\InvalidStateException("Invalid session configuration option '$key'" . ($hint ? ", did you mean '$hint'?" : '.'));
 			}
@@ -411,7 +411,7 @@ class Session
 					$cookie['path'] . (isset($cookie['samesite']) ? '; SameSite=' . $cookie['samesite'] : ''),
 					$cookie['domain'],
 					$cookie['secure'],
-					$cookie['httponly']
+					$cookie['httponly'],
 				);
 			}
 			if (session_status() === PHP_SESSION_ACTIVE) {
@@ -456,7 +456,7 @@ class Session
 		string $path,
 		string $domain = null,
 		bool $secure = null,
-		string $sameSite = null
+		string $sameSite = null,
 	) {
 		return $this->setOptions([
 			'cookie_path' => $path,
@@ -515,7 +515,7 @@ class Session
 			$cookie['domain'],
 			$cookie['secure'],
 			$cookie['httponly'],
-			$cookie['samesite'] ?? null
+			$cookie['samesite'] ?? null,
 		);
 	}
 }
