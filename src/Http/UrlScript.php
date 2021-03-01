@@ -34,17 +34,15 @@ use Nette;
  */
 class UrlScript extends UrlImmutable
 {
-	/** @var string */
-	private $scriptPath;
+	private string $scriptPath;
 
-	/** @var string */
-	private $basePath;
+	private string $basePath;
 
 
 	public function __construct($url = '/', string $scriptPath = '')
 	{
-		parent::__construct($url);
 		$this->scriptPath = $scriptPath;
+		parent::__construct($url);
 		$this->build();
 	}
 
