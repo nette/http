@@ -389,7 +389,7 @@ class Session
 	public function setOptions(array $options)
 	{
 		$normalized = [];
-		$allowed = ini_get_all('session', details: false) + ['session.read_and_close' => 1, 'session.cookie_samesite' => 1]; // for PHP < 7.3
+		$allowed = ini_get_all('session', details: false) + ['session.read_and_close' => 1];
 
 		foreach ($options as $key => $value) {
 			if (!strncmp($key, 'session.', 8)) { // back compatibility
@@ -473,17 +473,7 @@ class Session
 		}
 
 		if ($cookie !== $origCookie) {
-			if (PHP_VERSION_ID >= 70300) {
-				@session_set_cookie_params($cookie); // @ may trigger warning when session is active since PHP 7.2
-			} else {
-				@session_set_cookie_params( // @ may trigger warning when session is active since PHP 7.2
-					$cookie['lifetime'],
-					$cookie['path'] . (isset($cookie['samesite']) ? '; SameSite=' . $cookie['samesite'] : ''),
-					$cookie['domain'],
-					$cookie['secure'],
-					$cookie['httponly'],
-				);
-			}
+			@session_set_cookie_params($cookie); // @ may trigger warning when session is active since PHP 7.2
 
 			if (session_status() === PHP_SESSION_ACTIVE) {
 				$this->sendCookie();
