@@ -116,7 +116,7 @@ class HttpExtension extends Nette\DI\CompilerExtension
 				$this->initialization->addBody('$cspNonce = base64_encode(random_bytes(16));');
 				$value = Nette\DI\ContainerBuilder::literal(
 					'str_replace(?, ? . $cspNonce, ?)',
-					["'nonce", "'nonce-", $value]
+					["'nonce", "'nonce-", $value],
 				);
 			}
 			$headers['Content-Security-Policy' . ($key === 'csp' ? '' : '-Report-Only')] = $value;
@@ -135,7 +135,7 @@ class HttpExtension extends Nette\DI\CompilerExtension
 
 		$this->initialization->addBody(
 			'Nette\Http\Helpers::initCookie($this->getService(?), $response);',
-			[$this->prefix('request')]
+			[$this->prefix('request')],
 		);
 	}
 
