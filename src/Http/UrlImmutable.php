@@ -42,32 +42,23 @@ class UrlImmutable implements \JsonSerializable
 {
 	use Nette\SmartObject;
 
-	/** @var string */
-	private $scheme = '';
+	private string $scheme = '';
 
-	/** @var string */
-	private $user = '';
+	private string $user = '';
 
-	/** @var string */
-	private $password = '';
+	private string $password = '';
 
-	/** @var string */
-	private $host = '';
+	private string $host = '';
 
-	/** @var int|null */
-	private $port;
+	private ?int $port = null;
 
-	/** @var string */
-	private $path = '';
+	private string $path = '';
 
-	/** @var array */
-	private $query = [];
+	private array $query = [];
 
-	/** @var string */
-	private $fragment = '';
+	private string $fragment = '';
 
-	/** @var string */
-	private $authority = '';
+	private string $authority = '';
 
 
 	/**
