@@ -20,14 +20,9 @@ class UserStorage implements Nette\Security\IUserStorage
 {
 	use Nette\SmartObject;
 
-	/** @var string */
-	private $namespace = '';
-
-	/** @var Session */
-	private $sessionHandler;
-
-	/** @var SessionSection */
-	private $sessionSection;
+	private string $namespace = '';
+	private Session $sessionHandler;
+	private SessionSection $sessionSection;
 
 
 	public function __construct(Session $sessionHandler)
