@@ -276,7 +276,7 @@ class RequestFactory
 	private function getClient(Url $url): array
 	{
 		$remoteAddr = !empty($_SERVER['REMOTE_ADDR'])
-			? trim($_SERVER['REMOTE_ADDR'], '[]') // workaround for PHP 7.3.0
+			? $_SERVER['REMOTE_ADDR']
 			: null;
 		$remoteHost = !empty($_SERVER['REMOTE_HOST'])
 			? $_SERVER['REMOTE_HOST']
