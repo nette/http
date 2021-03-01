@@ -30,20 +30,15 @@ final class FileUpload
 
 	public const IMAGE_MIME_TYPES = ['image/gif', 'image/png', 'image/jpeg', 'image/webp'];
 
-	/** @var string */
-	private $name;
+	private string $name;
 
-	/** @var string|false|null */
-	private $type;
+	private string|false|null $type = null;
 
-	/** @var int */
-	private $size;
+	private int $size;
 
-	/** @var string */
-	private $tmpName;
+	private string $tmpName;
 
-	/** @var int */
-	private $error;
+	private int $error;
 
 
 	public function __construct(?array $value)

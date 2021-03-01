@@ -19,11 +19,9 @@ class Context
 {
 	use Nette\SmartObject;
 
-	/** @var IRequest */
-	private $request;
+	private IRequest $request;
 
-	/** @var IResponse */
-	private $response;
+	private IResponse $response;
 
 
 	public function __construct(IRequest $request, IResponse $response)
