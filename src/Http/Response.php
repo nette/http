@@ -273,19 +273,7 @@ final class Response implements IResponse
 			'httponly' => $httpOnly ?? true,
 			'samesite' => $sameSite = ($sameSite ?? self::SAME_SITE_LAX),
 		];
-		if (PHP_VERSION_ID >= 70300) {
-			setcookie($name, $value, $options);
-		} else {
-			setcookie(
-				$name,
-				$value,
-				$options['expires'],
-				$options['path'] . ($sameSite ? "; SameSite=$sameSite" : ''),
-				$options['domain'],
-				$options['secure'],
-				$options['httponly'],
-			);
-		}
+		setcookie($name, $value, $options);
 		return $this;
 	}
 
