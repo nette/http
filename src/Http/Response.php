@@ -256,28 +256,14 @@ final class Response implements IResponse
 		?string $sameSite = null,
 	) {
 		self::checkHeaders();
-		$options = [
+		setcookie($name, $value, [
 			'expires' => $expire ? (int) DateTime::from($expire)->format('U') : 0,
 			'path' => $path ?? ($domain ? '/' : $this->cookiePath),
 			'domain' => $domain ?? ($path ? '' : $this->cookieDomain),
 			'secure' => $secure ?? $this->cookieSecure,
 			'httponly' => $httpOnly ?? true,
-			'samesite' => $sameSite = ($sameSite ?? self::SameSiteLax),
-		];
-		if (PHP_VERSION_ID >= 70300) {
-			setcookie($name, $value, $options);
-		} else {
-			setcookie(
-				$name,
-				$value,
-				$options['expires'],
-				$options['path'] . ($sameSite ? "; SameSite=$sameSite" : ''),
-				$options['domain'],
-				$options['secure'],
-				$options['httponly'],
-			);
-		}
-
+			'samesite' => $sameSite ?? self::SameSiteLax,
+		]);
 		return $this;
 	}
 
