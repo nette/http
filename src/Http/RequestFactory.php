@@ -34,8 +34,7 @@ class RequestFactory
 	private array $proxies = [];
 
 
-	/** @return static */
-	public function setBinary(bool $binary = true)
+	public function setBinary(bool $binary = true): static
 	{
 		$this->binary = $binary;
 		return $this;
@@ -44,9 +43,8 @@ class RequestFactory
 
 	/**
 	 * @param  string|string[]  $proxy
-	 * @return static
 	 */
-	public function setProxy($proxy)
+	public function setProxy($proxy): static
 	{
 		$this->proxies = (array) $proxy;
 		return $this;
