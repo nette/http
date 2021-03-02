@@ -322,18 +322,6 @@ class Session
 	}
 
 
-	/** @deprecated */
-	public function getIterator(): \Iterator
-	{
-		trigger_error(__METHOD__ . '() is deprecated', E_USER_DEPRECATED);
-		if ($this->exists() && !$this->started) {
-			$this->autoStart(false);
-		}
-
-		return new \ArrayIterator(array_keys($_SESSION['__NF']['DATA'] ?? []));
-	}
-
-
 	/**
 	 * Cleans and minimizes meta structures.
 	 */
@@ -500,14 +488,6 @@ class Session
 			'cookie_secure' => $secure,
 			'cookie_samesite' => $sameSite,
 		]);
-	}
-
-
-	/** @deprecated */
-	public function getCookieParameters(): array
-	{
-		trigger_error(__METHOD__ . '() is deprecated.', E_USER_DEPRECATED);
-		return session_get_cookie_params();
 	}
 
 
