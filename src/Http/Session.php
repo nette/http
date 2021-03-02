@@ -333,14 +333,6 @@ class Session
 	}
 
 
-	/** @deprecated use getSectionNames() */
-	public function getIterator(): \Iterator
-	{
-		trigger_error(__METHOD__ . '() is deprecated', E_USER_DEPRECATED);
-		return new \ArrayIterator($this->getSectionNames());
-	}
-
-
 	/**
 	 * Cleans and minimizes meta structures.
 	 */
@@ -507,14 +499,6 @@ class Session
 			'cookie_secure' => $secure,
 			'cookie_samesite' => $sameSite,
 		]);
-	}
-
-
-	/** @deprecated */
-	public function getCookieParameters(): array
-	{
-		trigger_error(__METHOD__ . '() is deprecated.', E_USER_DEPRECATED);
-		return session_get_cookie_params();
 	}
 
 
