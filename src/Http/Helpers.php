@@ -22,9 +22,6 @@ final class Helpers
 	/** @internal */
 	public const StrictCookieName = '_nss';
 
-	/** @deprecated */
-	public const STRICT_COOKIE_NAME = self::StrictCookieName;
-
 
 	/**
 	 * Formats a date and time in the HTTP date format (RFC 7231), e.g. 'Mon, 23 Jan 1978 10:00:00 GMT'.
