@@ -125,7 +125,6 @@ class RequestFactory
 			$this->getHeaders(),
 			$this->getMethod(),
 			$remoteAddr,
-			null,
 			fn() => (string) file_get_contents('php://input'),
 		);
 	}

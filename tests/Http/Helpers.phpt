@@ -91,17 +91,9 @@ test('expirationToSeconds', function () {
 	Assert::same(-5, Helpers::expirationToSeconds(-5));
 	Assert::same(-5, Helpers::expirationToSeconds('-5'));
 
-	// just below the threshold is still a plain relative interval (no notice)
+	// all integers are relative seconds, even large ones that look like an absolute UNIX timestamp
 	Assert::same(999_999_999, Helpers::expirationToSeconds(999_999_999));
-
-	// a number that looks like an absolute UNIX timestamp is deprecated, but still interpreted (for BC)
-	Assert::error(
-		function () {
-			Assert::true(abs(Helpers::expirationToSeconds(2_000_000_000) - (2_000_000_000 - time())) <= 1);
-		},
-		E_USER_DEPRECATED,
-		'Passing an absolute timestamp as an expiration is deprecated; pass a relative number of seconds or a DateTimeInterface instead.',
-	);
+	Assert::same(2_000_000_000, Helpers::expirationToSeconds(2_000_000_000));
 
 	// a textual time or DateTimeInterface is resolved as an absolute time, relative to now
 	Assert::true(abs(Helpers::expirationToSeconds('+1 hour') - 3600) <= 1);

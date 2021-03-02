@@ -22,9 +22,6 @@ final class Helpers
 	/** @internal */
 	public const StrictCookieName = '_nss';
 
-	/** @deprecated */
-	public const STRICT_COOKIE_NAME = self::StrictCookieName;
-
 
 	/**
 	 * Formats a date and time in the HTTP date format (RFC 7231), e.g. 'Mon, 23 Jan 1978 10:00:00 GMT'.
@@ -47,26 +44,12 @@ final class Helpers
 	{
 		return match (true) {
 			$expire === null => null,
-			is_int($expire) => self::normalizeToRelative($expire),
+			is_int($expire) => $expire,
 			$expire instanceof \DateTimeInterface => $expire->getTimestamp() - time(),
 			$expire === '' => throw new Nette\InvalidArgumentException('Expiration must not be an empty string; use null instead.'),
-			($seconds = filter_var($expire, FILTER_VALIDATE_INT)) !== false => self::normalizeToRelative($seconds),
+			($seconds = filter_var($expire, FILTER_VALIDATE_INT)) !== false => $seconds,
 			default => (new DateTime($expire))->getTimestamp() - time(),
 		};
-	}
-
-
-	private static function normalizeToRelative(int $seconds): int
-	{
-		// All numbers are now relative seconds. Previously DateTime::from() treated numbers above one
-		// year (~31.5M) as absolute timestamps; the threshold is intentionally raised to 1e9 (~ year 2001)
-		// so that values in between newly work as relative intervals, while genuine timestamps still warn.
-		if ($seconds >= 1_000_000_000) {
-			trigger_error('Passing an absolute timestamp as an expiration is deprecated; pass a relative number of seconds or a DateTimeInterface instead.', E_USER_DEPRECATED);
-			return $seconds - time();
-		}
-
-		return $seconds;
 	}
 
 
