@@ -128,9 +128,6 @@ interface IRequest
 	 */
 	function getRemoteAddress(): ?string;
 
-	#[\Deprecated]
-	function getRemoteHost(): ?string;
-
 	/**
 	 * Returns raw content of HTTP request body.
 	 */
