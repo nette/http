@@ -23,9 +23,6 @@ final class Helpers
 	/** @internal */
 	public const StrictCookieName = '_nss';
 
-	/** @deprecated */
-	public const STRICT_COOKIE_NAME = self::StrictCookieName;
-
 
 	/**
 	 * Returns HTTP valid date format.
