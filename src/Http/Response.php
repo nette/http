@@ -31,9 +31,6 @@ final class Response implements IResponse
 	/** Whether the cookie is available only through HTTPS */
 	public bool $cookieSecure = false;
 
-	/** @deprecated */
-	public $cookieHttpOnly;
-
 	/** Whether warn on possible problem with data in output buffer */
 	public bool $warnOnBuffer = true;
 
@@ -199,9 +196,6 @@ final class Response implements IResponse
 	 */
 	public function getHeader(string $header): ?string
 	{
-		if (func_num_args() > 1) {
-			trigger_error(__METHOD__ . '() parameter $default is deprecated, use operator ??', E_USER_DEPRECATED);
-		}
 		$header .= ':';
 		$len = strlen($header);
 		foreach (headers_list() as $item) {
