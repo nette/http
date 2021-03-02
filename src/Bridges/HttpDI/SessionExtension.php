@@ -38,7 +38,7 @@ class SessionExtension extends Nette\DI\CompilerExtension
 			'expiration' => Expect::string()->dynamic(),
 			'handler' => Expect::string()->dynamic(),
 			'readAndClose' => Expect::bool(),
-			'cookieSamesite' => Expect::anyOf(IResponse::SAME_SITE_LAX, IResponse::SAME_SITE_STRICT, IResponse::SAME_SITE_NONE, true)
+			'cookieSamesite' => Expect::anyOf(IResponse::SAME_SITE_LAX, IResponse::SAME_SITE_STRICT, IResponse::SAME_SITE_NONE)
 				->firstIsDefault(),
 		])->otherItems('mixed');
 	}
@@ -62,16 +62,6 @@ class SessionExtension extends Nette\DI\CompilerExtension
 
 		if (($config->cookieDomain ?? null) === 'domain') {
 			$config->cookieDomain = $builder::literal('$this->getByType(Nette\Http\IRequest::class)->getUrl()->getDomain(2)');
-		}
-
-		if (isset($config->cookieSecure)) {
-			trigger_error("The item 'session\u{a0}›\u{a0}cookieSecure' is deprecated, use 'http\u{a0}›\u{a0}cookieSecure' (it has default value 'auto').", E_USER_DEPRECATED);
-			unset($config->cookieSecure);
-		}
-
-		if ($config->cookieSamesite === true) {
-			trigger_error("In 'session\u{a0}›\u{a0}cookieSamesite' replace true with 'Lax'.", E_USER_DEPRECATED);
-			$config->cookieSamesite = IResponse::SAME_SITE_LAX;
 		}
 
 		$this->compiler->addExportedType(Nette\Http\IRequest::class);
