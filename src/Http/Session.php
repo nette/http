@@ -512,14 +512,6 @@ class Session
 	}
 
 
-	/** @deprecated */
-	public function getCookieParameters(): array
-	{
-		trigger_error(__METHOD__ . '() is deprecated.', E_USER_DEPRECATED);
-		return session_get_cookie_params();
-	}
-
-
 	/**
 	 * Sets path of the directory used to save session data.
 	 */

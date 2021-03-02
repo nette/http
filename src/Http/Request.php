@@ -107,8 +107,6 @@ class Request implements IRequest
 	{
 		if (func_num_args() === 0) {
 			return $this->url->getQueryParameters();
-		} elseif (func_num_args() > 1) {
-			trigger_error(__METHOD__ . '() parameter $default is deprecated, use operator ??', E_USER_DEPRECATED);
 		}
 
 		return $this->url->getQueryParameter($key);
@@ -123,8 +121,6 @@ class Request implements IRequest
 	{
 		if (func_num_args() === 0) {
 			return $this->post;
-		} elseif (func_num_args() > 1) {
-			trigger_error(__METHOD__ . '() parameter $default is deprecated, use operator ??', E_USER_DEPRECATED);
 		}
 
 		return $this->post[$key] ?? null;
@@ -156,10 +152,6 @@ class Request implements IRequest
 	 */
 	public function getCookie(string $key): mixed
 	{
-		if (func_num_args() > 1) {
-			trigger_error(__METHOD__ . '() parameter $default is deprecated, use operator ??', E_USER_DEPRECATED);
-		}
-
 		return $this->cookies[$key] ?? null;
 	}
 
@@ -199,10 +191,6 @@ class Request implements IRequest
 	 */
 	public function getHeader(string $header): ?string
 	{
-		if (func_num_args() > 1) {
-			trigger_error(__METHOD__ . '() parameter $default is deprecated, use operator ??', E_USER_DEPRECATED);
-		}
-
 		$header = strtolower($header);
 		return $this->headers[$header] ?? null;
 	}
