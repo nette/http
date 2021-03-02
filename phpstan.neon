@@ -21,12 +21,6 @@ parameters:
 			count: 1
 			path: src/Http/Request.php
 
-		-   # $remoteHost kept in constructor signature for BC; unused since getRemoteHost() is deprecated and returns null
-			message: '#^Constructor of class Nette\\Http\\Request has an unused parameter \$remoteHost\.$#'
-			identifier: constructor.unusedParameter
-			count: 1
-			path: src/Http/Request.php
-
 		-   # $_FILES may be undefined under non-standard SAPIs (CLI, custom request setup in tests)
 			message: '#^Variable \$_FILES on left side of \?\? always exists and is not nullable\.$#'
 			identifier: nullCoalesce.variable

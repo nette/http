@@ -25,7 +25,6 @@ use function array_change_key_case, array_filter, base64_decode, count, explode,
  * @property-read bool $secured
  * @property-read bool $ajax
  * @property-read ?string $remoteAddress
- * @property-deprecated ?string $remoteHost
  * @property-read ?string $rawBody
  */
 class Request implements IRequest
@@ -54,7 +53,6 @@ class Request implements IRequest
 		array $headers = [],
 		private readonly string $method = 'GET',
 		private readonly ?string $remoteAddress = null,
-		?string $remoteHost = null,
 		?callable $rawBodyCallback = null,
 	) {
 		$this->headers = array_change_key_case($headers);
@@ -288,14 +286,6 @@ class Request implements IRequest
 	public function getRemoteAddress(): ?string
 	{
 		return $this->remoteAddress;
-	}
-
-
-	#[\Deprecated]
-	public function getRemoteHost(): ?string
-	{
-		trigger_error(__METHOD__ . '() is deprecated.', E_USER_DEPRECATED);
-		return null;
 	}
 
 
