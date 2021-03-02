@@ -16,12 +16,6 @@ namespace Nette\Http;
  */
 interface IResponse
 {
-	/** @deprecated */
-	public const PERMANENT = 2116333333;
-
-	/** @deprecated */
-	public const BROWSER = 0;
-
 	/** HTTP 1.1 response code */
 	public const
 		S100_Continue = 100,

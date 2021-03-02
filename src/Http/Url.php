@@ -221,10 +221,6 @@ class Url implements \JsonSerializable
 
 	public function getQueryParameter(string $name): mixed
 	{
-		if (func_num_args() > 1) {
-			trigger_error(__METHOD__ . '() parameter $default is deprecated, use operator ??', E_USER_DEPRECATED);
-		}
-
 		return $this->query[$name] ?? null;
 	}
 
@@ -332,7 +328,6 @@ class Url implements \JsonSerializable
 
 	/**
 	 * Transforms URL to canonical form.
-	 * @deprecated
 	 */
 	public function canonicalize(): static
 	{
