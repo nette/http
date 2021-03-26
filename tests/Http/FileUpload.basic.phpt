@@ -69,3 +69,16 @@ test('', function () {
 	Assert::false($upload->isImage());
 	Assert::null($upload->getImageFileExtension());
 });
+
+
+test('getters should be callable without errors even on empty FileUpload', function () {
+	$upload = new FileUpload([]);
+
+	Assert::noError(function () use ($upload) {
+		$upload->getUntrustedName();
+		$upload->getSanitizedName();
+		$upload->getSize();
+		$upload->getTemporaryFile();
+		$upload->getError();
+	});
+});
