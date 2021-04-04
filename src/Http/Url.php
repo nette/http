@@ -232,6 +232,12 @@ class Url implements \JsonSerializable
 	}
 
 
+	public function removeQueryParameter(string $name): void
+	{
+		$this->query[$name] = null;
+	}
+
+
 	public function setFragment(string $fragment): static
 	{
 		$this->fragment = $fragment;
