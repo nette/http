@@ -45,6 +45,7 @@ class Url implements \JsonSerializable
 {
 	use Nette\SmartObject;
 
+	/** @var array<string, int> */
 	public static array $defaultPorts = [
 		'http' => 80,
 		'https' => 443,
@@ -63,6 +64,7 @@ class Url implements \JsonSerializable
 
 	private string $path = '';
 
+	/** @var array<string|int, mixed> */
 	private array $query = [];
 
 	private string $fragment = '';
