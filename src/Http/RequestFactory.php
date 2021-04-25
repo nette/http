@@ -91,7 +91,7 @@ class RequestFactory
 			(isset($_SERVER[$tmp = 'HTTP_HOST']) || isset($_SERVER[$tmp = 'SERVER_NAME']))
 			&& preg_match('#^([a-z0-9_.-]+|\[[a-f0-9:]+\])(:\d+)?$#Di', $_SERVER[$tmp], $pair)
 		) {
-			$url->setHost(strtolower($pair[1]));
+			$url->setHost(rtrim(strtolower($pair[1]), '.'));
 			if (isset($pair[2])) {
 				$url->setPort((int) substr($pair[2], 1));
 			} elseif (isset($_SERVER['SERVER_PORT'])) {

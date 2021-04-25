@@ -49,6 +49,13 @@ Assert::same('http:/', (string) $factory->fromGlobals()->getUrl());
 
 
 $_SERVER = [
+	'HTTP_HOST' => 'a.cz.',
+];
+$factory = new RequestFactory;
+Assert::same('http://a.cz/', (string) $factory->fromGlobals()->getUrl());
+
+
+$_SERVER = [
 	'HTTP_HOST' => 'AB',
 ];
 $factory = new RequestFactory;
