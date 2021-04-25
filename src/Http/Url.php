@@ -81,7 +81,7 @@ class Url implements \JsonSerializable
 
 			$this->scheme = $p['scheme'] ?? '';
 			$this->port = $p['port'] ?? null;
-			$this->host = rawurldecode(rtrim($p['host'] ?? '', '.'));
+			$this->host = rawurldecode($p['host'] ?? '');
 			$this->user = rawurldecode($p['user'] ?? '');
 			$this->password = rawurldecode($p['pass'] ?? '');
 			$this->setPath($p['path'] ?? '');
@@ -334,7 +334,7 @@ class Url implements \JsonSerializable
 			fn(array $m): string => rawurlencode($m[0]),
 			self::unescape($this->path, '%/'),
 		);
-		$this->host = self::idnHostToUnicode(strtolower($this->host));
+		$this->host = self::idnHostToUnicode(strtolower(rtrim($this->host, '.')));
 		return $this;
 	}
 
