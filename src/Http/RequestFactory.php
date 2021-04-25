@@ -25,7 +25,7 @@ class RequestFactory
 
 	/** @var array */
 	public $urlFilters = [
-		'path' => ['#/{2,}#' => '/'], // '%20' => ''
+		'path' => ['#//#' => '/'], // '%20' => ''
 		'url' => [], // '#[.,)]$#D' => ''
 	];
 
