@@ -2,6 +2,7 @@
 
 /**
  * Test: Nette\Http\Response errors.
+ * @phpIni output_buffering=0
  */
 
 declare(strict_types=1);
