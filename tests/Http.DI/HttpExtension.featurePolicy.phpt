@@ -43,7 +43,8 @@ var_dump($headers);
 Assert::contains("Feature-Policy: unsized-media 'none'; geolocation 'self' https://example.com; camera *;", $headers);
 
 
-echo ' '; @ob_flush(); flush();
+// flush buffers
+echo str_repeat(' ', ini_get('output_buffering') + 1);
 
 Assert::true(headers_sent());
 

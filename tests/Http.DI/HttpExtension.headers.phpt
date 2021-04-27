@@ -44,7 +44,8 @@ Assert::contains('D: 0', $headers);
 Assert::notContains('C:', $headers);
 
 
-echo ' '; @ob_flush(); flush();
+// flush buffers
+echo str_repeat(' ', ini_get('output_buffering') + 1);
 
 Assert::true(headers_sent());
 
