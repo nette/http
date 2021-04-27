@@ -2,6 +2,10 @@ name: Tests
 
 on: [push, pull_request]
 
+env:
+    php-options: -C -d opcache.enable=0
+    php-extensions: fileinfo, intl
+
 jobs:
     tests:
         runs-on: ${{ matrix.os }}
@@ -9,25 +13,25 @@ jobs:
             matrix:
                 os: [ubuntu-latest, windows-latest, macOS-latest]
                 php: ['7.2', '7.3', '7.4', '8.0']
-#                sapi: ['php', 'php-cgi']
+                sapi: ['php', 'php-cgi']
 
             fail-fast: false
 
-        name: PHP ${{ matrix.php }} tests on ${{ matrix.os }}
+        name: PHP ${{ matrix.php }}/${{ matrix.sapi }} tests on ${{ matrix.os }}
         steps:
             - uses: actions/checkout@v2
             - uses: shivammathur/setup-php@v2
               with:
                   php-version: ${{ matrix.php }}
                   coverage: none
-                  extensions: fileinfo, intl
+                  extensions: ${{ env.php-extensions }}
 
             - run: composer install --no-progress --prefer-dist
-            - run: vendor/bin/tester tests -s -C  # -p ${{ matrix.sapi }}
+            - run: vendor/bin/tester tests -p ${{ matrix.sapi }} -s ${{ env.php-options }}
             - if: failure()
               uses: actions/upload-artifact@v2
               with:
-                  name: output
+                  name: output ${{ matrix.php }}-${{ matrix.sapi }}-${{ matrix.os }}
                   path: tests/**/output
 
 
@@ -40,10 +44,10 @@ jobs:
               with:
                   php-version: 7.2
                   coverage: none
-                  extensions: fileinfo, intl
+                  extensions: ${{ env.php-extensions }}
 
             - run: composer update --no-progress --prefer-dist --prefer-lowest --prefer-stable
-            - run: vendor/bin/tester tests -s -C
+            - run: vendor/bin/tester tests -s ${{ env.php-options }}
 
 
     code_coverage:
@@ -55,10 +59,10 @@ jobs:
               with:
                   php-version: 7.4
                   coverage: none
-                  extensions: fileinfo, intl
+                  extensions: ${{ env.php-extensions }}
 
             - run: composer install --no-progress --prefer-dist
-            - run: vendor/bin/tester -p phpdbg tests -s -C --coverage ./coverage.xml --coverage-src ./src
+            - run: vendor/bin/tester tests -p phpdbg -s ${{ env.php-options }} --coverage ./coverage.xml --coverage-src ./src
             - run: wget https://github.com/php-coveralls/php-coveralls/releases/download/v2.4.3/php-coveralls.phar
             - env:
                   COVERALLS_REPO_TOKEN: ${{ secrets.GITHUB_TOKEN }}
