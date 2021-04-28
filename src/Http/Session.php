@@ -93,9 +93,13 @@ class Session
 
 		try {
 			// session_start returns false on failure only sometimes
-			Nette\Utils\Callback::invokeSafe('session_start', [['read_and_close' => $this->readAndClose]], function (string $message) use (&$e): void {
-				$e = new Nette\InvalidStateException($message);
-			});
+			Nette\Utils\Callback::invokeSafe(
+				'session_start',
+				[['read_and_close' => $this->readAndClose]],
+				function (string $message) use (&$e): void {
+					$e = new Nette\InvalidStateException($message);
+				}
+			);
 		} catch (\Throwable $e) {
 		}
 
