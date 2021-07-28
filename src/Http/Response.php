@@ -229,7 +229,7 @@ final class Response implements IResponse
 	{
 		if (
 			self::$fixIE
-			&& strpos($_SERVER['HTTP_USER_AGENT'] ?? '', 'MSIE ') !== false
+			&& str_contains($_SERVER['HTTP_USER_AGENT'] ?? '', 'MSIE ')
 			&& in_array($this->code, [400, 403, 404, 405, 406, 408, 409, 410, 500, 501, 505], true)
 			&& preg_match('#^text/html(?:;|$)#', (string) $this->getHeader('Content-Type'))
 		) {
