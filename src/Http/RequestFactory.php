@@ -300,9 +300,9 @@ class RequestFactory
 
 		if (isset($proxyParams['for'])) {
 			$address = $proxyParams['for'][0];
-			$remoteAddr = strpos($address, '[') === false
-				? explode(':', $address)[0]  // IPv4
-				: substr($address, 1, strpos($address, ']') - 1); // IPv6
+			$remoteAddr = str_contains($address, '[')
+				? substr($address, 1, strpos($address, ']') - 1) // IPv6
+				: explode(':', $address)[0];  // IPv4
 		}
 
 		if (isset($proxyParams['host']) && count($proxyParams['host']) === 1) {
