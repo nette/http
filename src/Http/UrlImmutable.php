@@ -288,7 +288,7 @@ class UrlImmutable implements \JsonSerializable
 
 	protected function build(): void
 	{
-		if ($this->host && substr($this->path, 0, 1) !== '/') {
+		if ($this->host && !str_starts_with($this->path, '/')) {
 			$this->path = '/' . $this->path;
 		}
 

@@ -19,7 +19,7 @@ test('invalid POST', function () {
 
 	Assert::exception(function () {
 		(new Http\RequestFactory)->fromGlobals();
-	}, Nette\InvalidStateException::class, 'Invalid value in $_POST/$_COOKIE in key \'int\', expected string, integer given.');
+	}, Nette\InvalidStateException::class, 'Invalid value in $_POST/$_COOKIE in key \'int\', expected string, int given.');
 });
 
 
@@ -29,5 +29,5 @@ test('invalid COOKIE', function () {
 
 	Assert::exception(function () {
 		(new Http\RequestFactory)->fromGlobals();
-	}, Nette\InvalidStateException::class, 'Invalid value in $_POST/$_COOKIE in key \'0\', expected string, integer given.');
+	}, Nette\InvalidStateException::class, 'Invalid value in $_POST/$_COOKIE in key \'0\', expected string, int given.');
 });
