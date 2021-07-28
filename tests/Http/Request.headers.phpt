@@ -18,12 +18,12 @@ test('', function () {
 });
 
 test('', function () {
-	$request = new Http\Request(new Http\UrlScript, null, null, null, []);
+	$request = new Http\Request(new Http\UrlScript);
 	Assert::same([], $request->getHeaders());
 });
 
 test('', function () {
-	$request = new Http\Request(new Http\UrlScript, null, null, null, [
+	$request = new Http\Request(new Http\UrlScript, headers: [
 		'one' => '1',
 		'TWO' => '2',
 		'X-Header' => 'X',

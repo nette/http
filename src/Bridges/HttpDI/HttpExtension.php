@@ -114,7 +114,7 @@ class HttpExtension extends Nette\DI\CompilerExtension
 			}
 
 			$value = self::buildPolicy($config->$key);
-			if (strpos($value, "'nonce'")) {
+			if (str_contains($value, "'nonce'")) {
 				$this->initialization->addBody('$cspNonce = base64_encode(random_bytes(16));');
 				$value = Nette\DI\ContainerBuilder::literal(
 					'str_replace(?, ? . $cspNonce, ?)',
