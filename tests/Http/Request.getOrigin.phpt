@@ -16,7 +16,7 @@ test('missing origin', function () {
 
 
 test('opaque origin', function () {
-	$request = new Http\Request(new Http\UrlScript, null, null, null, [
+	$request = new Http\Request(new Http\UrlScript, headers: [
 		'Origin' => 'null',
 	]);
 	Assert::null($request->getOrigin());
@@ -24,7 +24,7 @@ test('opaque origin', function () {
 
 
 test('normal origin', function () {
-	$request = new Http\Request(new Http\UrlScript, null, null, null, [
+	$request = new Http\Request(new Http\UrlScript, headers: [
 		'Origin' => 'https://nette.org',
 	]);
 	Assert::equal(new UrlImmutable('https://nette.org'), $request->getOrigin());
