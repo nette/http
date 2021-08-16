@@ -175,7 +175,7 @@ class Session
 	 */
 	public function destroy(): void
 	{
-		if (!session_status() === PHP_SESSION_ACTIVE) {
+		if (session_status() !== PHP_SESSION_ACTIVE) {
 			throw new Nette\InvalidStateException('Session is not started.');
 		}
 
