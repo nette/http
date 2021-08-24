@@ -17,6 +17,7 @@ class MySessionStorage implements SessionHandlerInterface
 	private $path;
 
 
+	#[ReturnTypeWillChange]
 	public function open($savePath, $sessionName)
 	{
 		$this->path = $savePath;
@@ -24,30 +25,35 @@ class MySessionStorage implements SessionHandlerInterface
 	}
 
 
+	#[ReturnTypeWillChange]
 	public function close()
 	{
 		return true;
 	}
 
 
+	#[ReturnTypeWillChange]
 	public function read($id)
 	{
 		return (string) @file_get_contents("$this->path/sess_$id");
 	}
 
 
+	#[ReturnTypeWillChange]
 	public function write($id, $data)
 	{
 		return (bool) file_put_contents("$this->path/sess_$id", $data);
 	}
 
 
+	#[ReturnTypeWillChange]
 	public function destroy($id)
 	{
 		return !is_file("$this->path/sess_$id") || @unlink("$this->path/sess_$id");
 	}
 
 
+	#[ReturnTypeWillChange]
 	public function gc($maxlifetime)
 	{
 		foreach (glob("$this->path/sess_*") as $filename) {

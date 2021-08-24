@@ -20,6 +20,7 @@ class TestHandler extends SessionHandler
 	public $called = false;
 
 
+	#[ReturnTypeWillChange]
 	public function open($save_path, $session_name)
 	{
 		$this->called = true;

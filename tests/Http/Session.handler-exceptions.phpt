@@ -15,12 +15,14 @@ require __DIR__ . '/../bootstrap.php';
 
 class ThrowsOnReadHandler extends \SessionHandler
 {
+	#[ReturnTypeWillChange]
 	public function open($save_path, $session_id)
 	{
 		return true; // never throw an exception from here, the universe might implode
 	}
 
 
+	#[ReturnTypeWillChange]
 	public function read($session_id)
 	{
 		throw new RuntimeException("Session can't be started for whatever reason!");
