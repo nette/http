@@ -41,6 +41,7 @@ class HttpExtension extends Nette\DI\CompilerExtension
 			'cspReportOnly' => Expect::arrayOf('array|scalar|null'), // Content-Security-Policy-Report-Only
 			'featurePolicy' => Expect::arrayOf('array|scalar|null'), // Feature-Policy
 			'cookieSecure' => Expect::anyOf(null, true, false, 'auto'), // true|false|auto  Whether the cookie is available only through HTTPS
+			'disableNetteCookie' => Expect::bool(false), // disables cookie use by Nette
 		]);
 	}
 
@@ -120,10 +121,12 @@ class HttpExtension extends Nette\DI\CompilerExtension
 			}
 		}
 
-		$this->initialization->addBody(
-			'Nette\Http\Helpers::initCookie($this->getService(?), $response);',
-			[$this->prefix('request')]
-		);
+		if (!$config->disableNetteCookie) {
+			$this->initialization->addBody(
+				'Nette\Http\Helpers::initCookie($this->getService(?), $response);',
+				[$this->prefix('request')]
+			);
+		}
 	}
 
 
