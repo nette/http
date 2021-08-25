@@ -28,6 +28,7 @@ session:
 	cookiePath: /x
 	cookieDomain: domain
 	cookieSamesite: Lax
+	readAndClose: yes
 
 services:
 	foo.request: Nette\Http\Request(Nette\Http\UrlScript("http://www.nette.org"))
@@ -44,3 +45,6 @@ Assert::same(
 		: ['lifetime' => 0, 'path' => '/x; SameSite=Lax', 'domain' => 'nette.org', 'secure' => true, 'httponly' => true],
 	session_get_cookie_params()
 );
+
+// readAndClose
+Assert::same(PHP_SESSION_NONE, session_status());
