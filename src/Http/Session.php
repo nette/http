@@ -304,7 +304,7 @@ class Session
 	 */
 	public function clean(): void
 	{
-		if (!session_status() === PHP_SESSION_ACTIVE || empty($_SESSION)) {
+		if (!$this->isStarted()) {
 			return;
 		}
 
