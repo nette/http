@@ -104,7 +104,7 @@ class Session
 		}
 
 		$this->initialize();
-		$this->onStart($this);
+		Nette\Utils\Arrays::invoke($this->onStart, $this);
 	}
 
 
@@ -330,7 +330,7 @@ class Session
 			return;
 		}
 
-		$this->onBeforeWrite($this);
+		Nette\Utils\Arrays::invoke($this->onBeforeWrite, $this);
 
 		$nf = &$_SESSION['__NF'];
 		foreach ($nf['META'] ?? [] as $name => $foo) {
