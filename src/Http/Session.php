@@ -31,6 +31,12 @@ class Session
 		'cookie_httponly' => true, // must be enabled to prevent Session Hijacking
 	];
 
+	/** @var array<callable(self): void>  Occurs when the session is started */
+	public $onStart = [];
+
+	/** @var array<callable(self): void>  Occurs before the session is written to disk */
+	public $onBeforeWrite = [];
+
 	/** @var bool  has been session ID regenerated? */
 	private $regenerated = false;
 
@@ -109,6 +115,7 @@ class Session
 		}
 
 		$this->initialize();
+		$this->onStart($this);
 	}
 
 
@@ -307,6 +314,8 @@ class Session
 		if (!$this->isStarted()) {
 			return;
 		}
+
+		$this->onBeforeWrite($this);
 
 		$nf = &$_SESSION['__NF'];
 		foreach ($nf['META'] ?? [] as $name => $foo) {
