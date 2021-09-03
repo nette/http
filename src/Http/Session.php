@@ -343,7 +343,19 @@ class Session
 		Nette\Utils\Arrays::invoke($this->onBeforeWrite, $this);
 
 		$nf = &$_SESSION['__NF'];
-		foreach ($nf['META'] ?? [] as $name => $foo) {
+		foreach ($nf['DATA'] ?? [] as $name => $data) {
+			foreach ($data ?? [] as $k => $v) {
+				if ($v === null) {
+					unset($nf['DATA'][$name][$k], $nf['META'][$name][$k]);
+				}
+			}
+
+			if (empty($nf['DATA'][$name])) {
+				unset($nf['DATA'][$name], $nf['META'][$name]);
+			}
+		}
+
+		foreach ($nf['META'] ?? [] as $name => $data) {
 			if (empty($nf['META'][$name])) {
 				unset($nf['META'][$name]);
 			}
