@@ -156,8 +156,12 @@ class Session
 				}
 			}
 		}
+	}
 
-		register_shutdown_function([$this, 'clean']);
+
+	public function __destruct()
+	{
+		$this->clean();
 	}
 
 
