@@ -337,9 +337,8 @@ class Session
 
 	/**
 	 * Cleans and minimizes meta structures. This method is called automatically on shutdown, do not call it directly.
-	 * @internal
 	 */
-	public function clean(): void
+	private function clean(): void
 	{
 		if (!$this->isStarted()) {
 			return;
