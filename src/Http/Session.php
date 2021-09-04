@@ -330,11 +330,10 @@ class Session
 	}
 
 
-	/**
-	 * Iteration over all sections.
-	 */
+	/** @deprecated */
 	public function getIterator(): \Iterator
 	{
+		trigger_error(__METHOD__ . '() is deprecated', E_USER_DEPRECATED);
 		if ($this->exists() && !$this->started) {
 			$this->autoStart(false);
 		}
