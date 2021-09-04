@@ -82,9 +82,6 @@ class SessionExtension extends Nette\DI\CompilerExtension
 
 		$options = (array) $config;
 		unset($options['expiration'], $options['handler'], $options['autoStart'], $options['debugger']);
-		if ($options['readAndClose'] === null) {
-			unset($options['readAndClose']);
-		}
 		if (!empty($options)) {
 			$session->addSetup('setOptions', [$options]);
 		}

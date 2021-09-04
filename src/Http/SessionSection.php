@@ -185,9 +185,9 @@ class SessionSection implements \IteratorAggregate, \ArrayAccess
 	}
 
 
-	private function &getData(bool $write)
+	private function &getData(bool $forWrite)
 	{
-		if ($write || !session_id()) {
+		if ($forWrite || !session_id()) {
 			$this->session->start();
 		}
 		return $_SESSION['__NF']['DATA'][$this->name];
