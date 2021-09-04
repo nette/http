@@ -19,8 +19,6 @@ class SessionSection implements \IteratorAggregate, \ArrayAccess
 {
 	use Nette\SmartObject;
 
-	public bool $warnOnUndefined = false;
-
 	private Session $session;
 
 	private string $name;
@@ -104,10 +102,6 @@ class SessionSection implements \IteratorAggregate, \ArrayAccess
 	public function &__get(string $name): mixed
 	{
 		$data = &$this->getData(true);
-		if ($this->warnOnUndefined && !array_key_exists($name, $data ?? [])) {
-			trigger_error("The variable '$name' does not exist in session section");
-		}
-
 		return $data[$name];
 	}
 
