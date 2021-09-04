@@ -28,10 +28,7 @@ class RequestFactorySchemeTest extends Tester\TestCase
 	}
 
 
-	/**
-	 * @return array
-	 */
-	public function providerCreateHttpRequest()
+	public function providerCreateHttpRequest(): array
 	{
 		return [
 			['http', ['SERVER_NAME' => 'localhost:80']],
@@ -66,10 +63,7 @@ class RequestFactorySchemeTest extends Tester\TestCase
 	}
 
 
-	/**
-	 * @return array
-	 */
-	public function providerCreateHttpRequestWithTrustedProxy()
+	public function providerCreateHttpRequestWithTrustedProxy(): array
 	{
 		return [
 			['http', 80, ['SERVER_NAME' => 'localhost:80', 'HTTP_X_FORWARDED_PROTO' => 'http']],

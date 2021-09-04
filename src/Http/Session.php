@@ -79,7 +79,7 @@ class Session
 	 */
 	public function start(): void
 	{
-		if (session_status() === PHP_SESSION_ACTIVE) {
+		if (session_status() === PHP_SESSION_ACTIVE) { // adapt an existing session
 			if (!$this->started) {
 				$this->configure(self::SECURITY_OPTIONS);
 				$this->initialize();
@@ -94,11 +94,11 @@ class Session
 			$id = is_string($id) && preg_match('#^[0-9a-zA-Z,-]{22,256}$#Di', $id)
 				? $id
 				: session_create_id();
-			session_id($id); // causes resend of a cookie
+			session_id($id); // causes resend of a cookie to make sure it has the right parameters
 		}
 
 		try {
-			// session_start returns false on failure only sometimes
+			// session_start returns false on failure only sometimes (even in PHP >= 7.1)
 			Nette\Utils\Callback::invokeSafe(
 				'session_start',
 				[['read_and_close' => $this->readAndClose]],
@@ -207,7 +207,7 @@ class Session
 
 
 	/**
-	 * Does session exists for the current request?
+	 * Does session exist for the current request?
 	 */
 	public function exists(): bool
 	{
@@ -362,7 +362,7 @@ class Session
 			$normalized[$normKey] = $value;
 		}
 
-		if (!empty($normalized['read_and_close'])) {
+		if (array_key_exists('read_and_close', $normalized)) {
 			if (session_status() === PHP_SESSION_ACTIVE) {
 				throw new Nette\InvalidStateException('Cannot configure "read_and_close" for already started session.');
 			}

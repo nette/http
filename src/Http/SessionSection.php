@@ -44,8 +44,7 @@ class SessionSection implements \IteratorAggregate, \ArrayAccess
 	 */
 	public function getIterator(): \Iterator
 	{
-		$data = $this->getData(false);
-		return new \ArrayIterator($data ?? []);
+		return new \ArrayIterator($this->getData(false) ?? []);
 	}
 
 
@@ -81,8 +80,7 @@ class SessionSection implements \IteratorAggregate, \ArrayAccess
 		if (!$this->session->exists()) {
 			return false;
 		}
-		$data = $this->getData(false);
-		return isset($data[$name]);
+		return isset($this->getData(false)[$name]);
 	}
 
 
@@ -138,7 +136,7 @@ class SessionSection implements \IteratorAggregate, \ArrayAccess
 	/**
 	 * Sets the expiration of the section or specific variables.
 	 * @param  ?string  $time
-	 * @param  string|string[]  $variables  list of variables / single variable to expire
+	 * @param  string|string[]|null  $variables  list of variables / single variable to expire
 	 * @return static
 	 */
 	public function setExpiration($time, $variables = null)
@@ -164,14 +162,11 @@ class SessionSection implements \IteratorAggregate, \ArrayAccess
 
 	/**
 	 * Removes the expiration from the section or specific variables.
-	 * @param  string|string[]  $variables  list of variables / single variable to expire
+	 * @param  string|string[]|null  $variables  list of variables / single variable to expire
 	 */
 	public function removeExpiration($variables = null): void
 	{
-		$meta = &$this->getMeta();
-		foreach (is_array($variables) ? $variables : [$variables] as $variable) {
-			unset($meta[$variable]['T']);
-		}
+		$this->setExpiration(null, $variables);
 	}
 
 

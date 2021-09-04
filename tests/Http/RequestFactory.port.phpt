@@ -23,10 +23,7 @@ class RequestFactoryPortTest extends Tester\TestCase
 	}
 
 
-	/**
-	 * @return array
-	 */
-	public function providerCreateHttpRequest()
+	public function providerCreateHttpRequest(): array
 	{
 		return [
 			[80, []],
@@ -64,10 +61,7 @@ class RequestFactoryPortTest extends Tester\TestCase
 	}
 
 
-	/**
-	 * @return array
-	 */
-	public function providerCreateHttpRequestWithTrustedProxy()
+	public function providerCreateHttpRequestWithTrustedProxy(): array
 	{
 		return [
 			[8080, ['HTTP_X_FORWARDED_PORT' => '8080']],
