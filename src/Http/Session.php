@@ -135,7 +135,7 @@ class Session
 		}
 
 		// regenerate empty session
-		if (empty($nf['Time'])) {
+		if (empty($nf['Time']) && !$this->readAndClose) {
 			$nf['Time'] = time();
 			if ($this->request->getCookie(session_name())) { // ensures that the session was created in strict mode (see use_strict_mode)
 				$this->regenerateId();
