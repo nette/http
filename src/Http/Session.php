@@ -87,7 +87,7 @@ class Session
 			$id = is_string($id) && preg_match('#^[0-9a-zA-Z,-]{22,256}$#Di', $id)
 				? $id
 				: session_create_id();
-			session_id($id); // causes resend of a cookie
+			session_id($id); // causes resend of a cookie to make sure it has the right parameters
 		}
 
 		try {
@@ -126,7 +126,7 @@ class Session
 		if (empty($nf['Time']) && !$this->readAndClose) {
 			$nf['Time'] = time();
 			if ($this->request->getCookie(session_name()) === session_id()) {
-				// ensures that the session was created in strict mode (see use_strict_mode)
+				// ensures that the session was created with use_strict_mode (ie by Nette)
 				$this->regenerateId();
 			}
 		}
@@ -344,7 +344,7 @@ class Session
 			$normalized[$normKey] = $value;
 		}
 
-		if (!empty($normalized['read_and_close'])) {
+		if (array_key_exists('read_and_close', $normalized)) {
 			if (session_status() === PHP_SESSION_ACTIVE) {
 				throw new Nette\InvalidStateException('Cannot configure "read_and_close" for already started session.');
 			}
