@@ -38,6 +38,7 @@ test('try to expire only 1 of the keys', function () use ($session) {
 	$namespace->setExpiration(1, 'g');
 	$namespace->g = 'guava';
 	$namespace->p = 'plum';
+	$namespace->set('a', 'apple', '1 second');
 
 	$session->close();
 	sleep(2);
