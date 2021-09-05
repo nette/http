@@ -93,15 +93,8 @@ class SessionExtension extends Nette\DI\CompilerExtension
 			$builder->addAlias('session', $this->prefix('session'));
 		}
 
-		if (!$this->cliMode) {
-			$name = $this->prefix('session');
-
-			if ($config->autoStart === 'smart') {
-				$this->initialization->addBody('$this->getService(?)->autoStart(false);', [$name]);
-
-			} elseif ($config->autoStart === 'always' || $config->autoStart === true) {
-				$this->initialization->addBody('$this->getService(?)->start();', [$name]);
-			}
+		if (!$this->cliMode && ($config->autoStart === 'always' || $config->autoStart === true)) {
+			$this->initialization->addBody('$this->getService(?)->start();', [$this->prefix('session')]);
 		}
 	}
 }
