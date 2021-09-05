@@ -51,6 +51,52 @@ class SessionSection implements \IteratorAggregate, \ArrayAccess
 
 	/**
 	 * Sets a variable in this session section.
+	 * @param  mixed  $value
+	 */
+	public function set(string $name, $value, string $expiration = null): void
+	{
+		if ($value === null) {
+			$this->remove($name);
+		} else {
+			$this->session->autoStart(true);
+			$this->getData()[$name] = $value;
+			$this->setExpiration($expiration, $name);
+		}
+	}
+
+
+	/**
+	 * Gets a variable from this session section.
+	 * @return mixed
+	 */
+	public function get(string $name)
+	{
+		$this->session->autoStart(false);
+		return $this->getData()[$name] ?? null;
+	}
+
+
+	/**
+	 * Removes a variable or whole section.
+	 * @param  string|string[]|null  $name
+	 */
+	public function remove($name = null): void
+	{
+		$this->session->autoStart(false);
+		if (func_num_args()) {
+			$data = &$this->getData();
+			$meta = &$this->getMeta();
+			foreach ((array) $name as $name) {
+				unset($data[$name], $meta[$name]);
+			}
+		} else {
+			unset($_SESSION['__NF']['DATA'][$this->name], $_SESSION['__NF']['META'][$this->name]);
+		}
+	}
+
+
+	/**
+	 * Sets a variable in this session section.
 	 */
 	public function __set(string $name, $value): void
 	{
@@ -90,10 +136,7 @@ class SessionSection implements \IteratorAggregate, \ArrayAccess
 	 */
 	public function __unset(string $name): void
 	{
-		$this->session->autoStart(false);
-		$data = &$this->getData();
-		$meta = &$this->getMeta();
-		unset($data[$name], $meta[$name]);
+		$this->remove($name);
 	}
 
 
@@ -113,7 +156,7 @@ class SessionSection implements \IteratorAggregate, \ArrayAccess
 	 */
 	public function offsetGet($name)
 	{
-		return $this->__get($name);
+		return $this->get($name);
 	}
 
 
@@ -131,7 +174,7 @@ class SessionSection implements \IteratorAggregate, \ArrayAccess
 	 */
 	public function offsetUnset($name): void
 	{
-		$this->__unset($name);
+		$this->remove($name);
 	}
 
 
@@ -170,16 +213,6 @@ class SessionSection implements \IteratorAggregate, \ArrayAccess
 	public function removeExpiration($variables = null): void
 	{
 		$this->setExpiration(null, $variables);
-	}
-
-
-	/**
-	 * Cancels the current session section.
-	 */
-	public function remove(): void
-	{
-		$this->session->autoStart(false);
-		unset($_SESSION['__NF']['DATA'][$this->name], $_SESSION['__NF']['META'][$this->name]);
 	}
 
 
