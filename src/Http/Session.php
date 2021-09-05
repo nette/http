@@ -103,21 +103,10 @@ class Session
 			session_id($id); // causes resend of a cookie to make sure it has the right parameters
 		}
 
-		try {
-			// session_start returns false on failure only sometimes
-			Nette\Utils\Callback::invokeSafe(
-				'session_start',
-				[['read_and_close' => $this->readAndClose]],
-				function (string $message) use (&$e): void {
-					$e = new Nette\InvalidStateException($message);
-				}
-			);
-		} catch (\Throwable $e) {
-		}
-
-		if ($e) {
-			@session_write_close(); // this is needed
-			throw $e;
+		if (!@session_start(['read_and_close' => $this->readAndClose])) { // @ is escalated to exception
+			$message = Nette\Utils\Helpers::getLastError();
+			@session_write_close(); // this is needed?
+			throw new Nette\InvalidStateException($message);
 		}
 
 		$this->initialize();
