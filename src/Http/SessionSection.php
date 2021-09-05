@@ -68,6 +68,45 @@ class SessionSection implements \IteratorAggregate, \ArrayAccess
 	/**
 	 * Sets a variable in this session section.
 	 */
+	public function set(string $name, $value, string $expiration = null): void
+	{
+		$this->start();
+		$this->data[$name] = $value;
+		$this->setExpiration($expiration, $name);
+	}
+
+
+	/**
+	 * Gets a variable from this session section.
+	 * @return mixed
+	 */
+	public function get(string $name)
+	{
+		$this->start();
+		return $this->data[$name];
+	}
+
+
+	/**
+	 * Removes a variable or whole section.
+	 * @param  string|array|null  $name
+	 */
+	public function remove($name = null): void
+	{
+		$this->start();
+		if (func_num_args()) {
+			foreach ((array) $name as $name) {
+				unset($this->data[$name], $this->meta[$name]);
+			}
+		} else {
+			$this->data = $this->meta = null;
+		}
+	}
+
+
+	/**
+	 * Sets a variable in this session section.
+	 */
 	public function __set(string $name, $value): void
 	{
 		$this->start();
@@ -186,16 +225,5 @@ class SessionSection implements \IteratorAggregate, \ArrayAccess
 		foreach (is_array($variables) ? $variables : [$variables] as $variable) {
 			unset($this->meta[$variable]['T']);
 		}
-	}
-
-
-	/**
-	 * Cancels the current session section.
-	 */
-	public function remove(): void
-	{
-		$this->start();
-		$this->data = null;
-		$this->meta = null;
 	}
 }

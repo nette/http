@@ -17,8 +17,12 @@ $session = new Session(new Nette\Http\Request(new Nette\Http\UrlScript), new Net
 
 $namespace = $session->getSection('one');
 $namespace->a = 'apple';
-$namespace->p = 'pear';
+$namespace->set('p', 'pear');
 $namespace['o'] = 'orange';
+
+Assert::same('apple', $namespace->a);
+Assert::same('pear', $namespace->get('p'));
+Assert::same('orange', $namespace['o']);
 
 foreach ($namespace as $key => $val) {
 	$tmp[] = "$key=$val";
@@ -34,7 +38,9 @@ Assert::true(isset($namespace['p']));
 Assert::true(isset($namespace->o));
 Assert::false(isset($namespace->undefined));
 
-unset($namespace['a'], $namespace->p, $namespace->o, $namespace->undef);
+unset($namespace['a'], $namespace->o, $namespace->undef);
+$namespace->remove('p');
+$namespace->remove(['x']);
 
 
 
