@@ -49,7 +49,7 @@ class SessionSection implements \IteratorAggregate, \ArrayAccess
 	/**
 	 * Sets a variable in this session section.
 	 */
-	public function set(string $name, $value, string $expiration = null): void
+	public function set(string $name, mixed $value, string $expiration = null): void
 	{
 		$this->getData($value !== null)[$name] = $value;
 		$this->setExpiration($expiration, $name);
@@ -58,9 +58,8 @@ class SessionSection implements \IteratorAggregate, \ArrayAccess
 
 	/**
 	 * Gets a variable from this session section.
-	 * @return mixed
 	 */
-	public function get(string $name)
+	public function get(string $name): mixed
 	{
 		if (func_num_args() > 1) {
 			throw new \ArgumentCountError(__METHOD__ . '() expects 1 arguments, given more.');
@@ -71,9 +70,8 @@ class SessionSection implements \IteratorAggregate, \ArrayAccess
 
 	/**
 	 * Removes a variable or whole section.
-	 * @param  string|array|null  $name
 	 */
-	public function remove($name = null): void
+	public function remove(string|array $name = null): void
 	{
 		if (func_num_args()) {
 			if (func_num_args() > 1) {
@@ -102,9 +100,8 @@ class SessionSection implements \IteratorAggregate, \ArrayAccess
 
 	/**
 	 * Gets a variable from this session section.
-	 * @return mixed
 	 */
-	public function &__get(string $name)
+	public function &__get(string $name): mixed
 	{
 		$data = &$this->getData(true);
 		if ($this->warnOnUndefined && !array_key_exists($name, $data ?? [])) {
@@ -148,12 +145,10 @@ class SessionSection implements \IteratorAggregate, \ArrayAccess
 	}
 
 
-	#[\ReturnTypeWillChange]
 	/**
 	 * Gets a variable from this session section.
-	 * @return mixed
 	 */
-	public function offsetGet($name)
+	public function offsetGet($name): mixed
 	{
 		return $this->get($name);
 	}
@@ -179,11 +174,9 @@ class SessionSection implements \IteratorAggregate, \ArrayAccess
 
 	/**
 	 * Sets the expiration of the section or specific variables.
-	 * @param  ?string  $time
 	 * @param  string|string[]  $variables  list of variables / single variable to expire
-	 * @return static
 	 */
-	public function setExpiration($time, $variables = null)
+	public function setExpiration(?string $time, string|array $variables = null): static
 	{
 		$meta = &$this->getMeta();
 		if ($time) {
@@ -208,7 +201,7 @@ class SessionSection implements \IteratorAggregate, \ArrayAccess
 	 * Removes the expiration from the section or specific variables.
 	 * @param  string|string[]  $variables  list of variables / single variable to expire
 	 */
-	public function removeExpiration($variables = null): void
+	public function removeExpiration(string|array $variables = null): void
 	{
 		$meta = &$this->getMeta();
 		foreach (is_array($variables) ? $variables : [$variables] as $variable) {

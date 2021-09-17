@@ -54,11 +54,10 @@ final class Response implements IResponse
 
 	/**
 	 * Sets HTTP response code.
-	 * @return static
 	 * @throws Nette\InvalidArgumentException  if code is invalid
 	 * @throws Nette\InvalidStateException  if HTTP headers have been sent
 	 */
-	public function setCode(int $code, string $reason = null)
+	public function setCode(int $code, string $reason = null): static
 	{
 		if ($code < 100 || $code > 599) {
 			throw new Nette\InvalidArgumentException("Bad HTTP response '$code'.");
@@ -83,10 +82,9 @@ final class Response implements IResponse
 
 	/**
 	 * Sends an HTTP header and overwrites previously sent header of the same name.
-	 * @return static
 	 * @throws Nette\InvalidStateException  if HTTP headers have been sent
 	 */
-	public function setHeader(string $name, ?string $value)
+	public function setHeader(string $name, ?string $value): static
 	{
 		self::checkHeaders();
 		if ($value === null) {
@@ -102,10 +100,9 @@ final class Response implements IResponse
 
 	/**
 	 * Sends an HTTP header and doesn't overwrite previously sent header of the same name.
-	 * @return static
 	 * @throws Nette\InvalidStateException  if HTTP headers have been sent
 	 */
-	public function addHeader(string $name, string $value)
+	public function addHeader(string $name, string $value): static
 	{
 		self::checkHeaders();
 		header($name . ': ' . $value, false);
@@ -115,10 +112,9 @@ final class Response implements IResponse
 
 	/**
 	 * Deletes a previously sent HTTP header.
-	 * @return static
 	 * @throws Nette\InvalidStateException  if HTTP headers have been sent
 	 */
-	public function deleteHeader(string $name)
+	public function deleteHeader(string $name): static
 	{
 		self::checkHeaders();
 		header_remove($name);
@@ -128,10 +124,9 @@ final class Response implements IResponse
 
 	/**
 	 * Sends a Content-type HTTP header.
-	 * @return static
 	 * @throws Nette\InvalidStateException  if HTTP headers have been sent
 	 */
-	public function setContentType(string $type, string $charset = null)
+	public function setContentType(string $type, string $charset = null): static
 	{
 		$this->setHeader('Content-Type', $type . ($charset ? '; charset=' . $charset : ''));
 		return $this;
@@ -140,10 +135,9 @@ final class Response implements IResponse
 
 	/**
 	 * Response should be downloaded with 'Save as' dialog.
-	 * @return static
 	 * @throws Nette\InvalidStateException  if HTTP headers have been sent
 	 */
-	public function sendAsFile(string $fileName)
+	public function sendAsFile(string $fileName): static
 	{
 		$this->setHeader(
 			'Content-Disposition',
@@ -172,10 +166,9 @@ final class Response implements IResponse
 	/**
 	 * Sets the expiration of the HTTP document using the `Cache-Control` and `Expires` headers.
 	 * The parameter is either a time interval (as text) or `null`, which disables caching.
-	 * @return static
 	 * @throws Nette\InvalidStateException  if HTTP headers have been sent
 	 */
-	public function setExpiration(?string $time)
+	public function setExpiration(?string $time): static
 	{
 		$this->setHeader('Pragma', null);
 		if (!$time) { // no cache
@@ -251,7 +244,6 @@ final class Response implements IResponse
 	/**
 	 * Sends a cookie.
 	 * @param  string|int|\DateTimeInterface $time  expiration time, value null means "until the browser session ends"
-	 * @return static
 	 * @throws Nette\InvalidStateException  if HTTP headers have been sent
 	 */
 	public function setCookie(
@@ -263,7 +255,7 @@ final class Response implements IResponse
 		bool $secure = null,
 		bool $httpOnly = null,
 		string $sameSite = null,
-	) {
+	): static {
 		self::checkHeaders();
 		$options = [
 			'expires' => $time ? (int) DateTime::from($time)->format('U') : 0,
