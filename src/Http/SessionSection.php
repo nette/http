@@ -82,7 +82,7 @@ class SessionSection implements \IteratorAggregate, \ArrayAccess
 				unset($data[$name], $meta[$name]);
 			}
 		} else {
-			$this->session->start();
+			$this->session->autoStart(true);
 			unset($_SESSION['__NF']['DATA'][$this->name], $_SESSION['__NF']['META'][$this->name]);
 		}
 	}
@@ -216,16 +216,14 @@ class SessionSection implements \IteratorAggregate, \ArrayAccess
 
 	private function &getData(bool $forWrite)
 	{
-		if ($forWrite || !session_id()) {
-			$this->session->start();
-		}
+		$this->session->autoStart($forWrite);
 		return $_SESSION['__NF']['DATA'][$this->name];
 	}
 
 
 	private function &getMeta()
 	{
-		$this->session->start();
+		$this->session->autoStart(true);
 		return $_SESSION['__NF']['META'][$this->name];
 	}
 }
