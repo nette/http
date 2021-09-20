@@ -71,6 +71,9 @@ class SessionSection implements \IteratorAggregate, \ArrayAccess
 	 */
 	public function get(string $name)
 	{
+		if (func_num_args() > 1) {
+			throw new \ArgumentCountError(__METHOD__ . '() expects 1 arguments, given more.');
+		}
 		$this->session->autoStart(false);
 		return $this->getData()[$name] ?? null;
 	}
@@ -83,7 +86,10 @@ class SessionSection implements \IteratorAggregate, \ArrayAccess
 	public function remove($name = null): void
 	{
 		$this->session->autoStart(false);
-		if (func_num_args()) {
+		if (func_num_args() > 1) {
+			throw new \ArgumentCountError(__METHOD__ . '() expects at most 1 arguments, given more.');
+
+		} elseif (func_num_args()) {
 			$data = &$this->getData();
 			$meta = &$this->getMeta();
 			foreach ((array) $name as $name) {
