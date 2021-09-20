@@ -54,7 +54,7 @@ class SessionSection implements \IteratorAggregate, \ArrayAccess
 	 */
 	public function set(string $name, $value, string $expiration = null): void
 	{
-		$this->getData(true)[$name] = $value;
+		$this->getData($value !== null)[$name] = $value;
 		$this->setExpiration($expiration, $name);
 	}
 
@@ -82,13 +82,13 @@ class SessionSection implements \IteratorAggregate, \ArrayAccess
 			if (func_num_args() > 1) {
 				throw new \ArgumentCountError(__METHOD__ . '() expects at most 1 arguments, given more.');
 			}
-			$data = &$this->getData(true);
+			$data = &$this->getData(false);
 			$meta = &$this->getMeta();
 			foreach ((array) $name as $name) {
 				unset($data[$name], $meta[$name]);
 			}
 		} else {
-			$this->session->autoStart(true);
+			$this->session->autoStart(false);
 			unset($_SESSION['__NF']['DATA'][$this->name], $_SESSION['__NF']['META'][$this->name]);
 		}
 	}
@@ -229,7 +229,7 @@ class SessionSection implements \IteratorAggregate, \ArrayAccess
 
 	private function &getMeta()
 	{
-		$this->session->autoStart(true);
+		$this->session->autoStart(false);
 		return $_SESSION['__NF']['META'][$this->name];
 	}
 }
