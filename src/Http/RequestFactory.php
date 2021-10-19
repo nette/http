@@ -221,6 +221,7 @@ class RequestFactory
 					'name' => $v['name'][$k],
 					'type' => $v['type'][$k],
 					'size' => $v['size'][$k],
+					'full_path' => $v['full_path'][$k] ?? null,
 					'tmp_name' => $v['tmp_name'][$k],
 					'error' => $v['error'][$k],
 					'@' => &$v['@'][$k],
