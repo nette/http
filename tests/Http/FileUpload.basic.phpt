@@ -16,6 +16,7 @@ require __DIR__ . '/../bootstrap.php';
 test('', function () {
 	$upload = new FileUpload([
 		'name' => 'readme.txt',
+		'full_path' => 'path/to/readme.txt',
 		'type' => 'text/plain',
 		'tmp_name' => __DIR__ . '/files/file.txt',
 		'error' => 0,
@@ -25,6 +26,7 @@ test('', function () {
 	Assert::same('readme.txt', $upload->getName());
 	Assert::same('readme.txt', $upload->getUntrustedName());
 	Assert::same('readme.txt', $upload->getSanitizedName());
+	Assert::same('path/to/readme.txt', $upload->getUntrustedFullPath());
 	Assert::same(209, $upload->getSize());
 	Assert::same(__DIR__ . '/files/file.txt', $upload->getTemporaryFile());
 	Assert::same(__DIR__ . '/files/file.txt', (string) $upload);
@@ -48,6 +50,7 @@ test('', function () {
 
 	Assert::same('../.image.png', $upload->getName());
 	Assert::same('image.png', $upload->getSanitizedName());
+	Assert::same('../.image.png', $upload->getUntrustedFullPath());
 	Assert::same('image/png', $upload->getContentType());
 	Assert::same('png', $upload->getImageFileExtension());
 	Assert::same([108, 46], $upload->getImageSize());

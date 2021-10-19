@@ -17,6 +17,7 @@ use Nette;
  *
  * @property-read string $name
  * @property-read string $sanitizedName
+ * @property-read string $untrustedFullPath
  * @property-read string|null $contentType
  * @property-read int $size
  * @property-read string $temporaryFile
@@ -31,6 +32,8 @@ final class FileUpload
 	public const IMAGE_MIME_TYPES = ['image/gif', 'image/png', 'image/jpeg', 'image/webp'];
 
 	private string $name;
+
+	private string|null $fullPath;
 
 	private string|false|null $type = null;
 
@@ -51,6 +54,7 @@ final class FileUpload
 		}
 
 		$this->name = $value['name'];
+		$this->fullPath = $value['full_path'] ?? null;
 		$this->size = $value['size'];
 		$this->tmpName = $value['tmp_name'];
 		$this->error = $value['error'];
@@ -93,6 +97,19 @@ final class FileUpload
 		}
 
 		return $name;
+	}
+
+
+	/**
+	 * Returns the original full path as submitted by the browser during directory upload. Do not trust the value
+	 * returned by this method. A client could send a malicious directory structure with the intention to corrupt
+	 * or hack your application.
+	 *
+	 * The full path is only available in PHP 8.1 and above. In previous versions, this method returns the file name.
+	 */
+	public function getUntrustedFullPath(): string
+	{
+		return $this->fullPath ?? $this->name;
 	}
 
 
