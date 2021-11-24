@@ -65,6 +65,9 @@ class Session
 	/** @var bool */
 	private $fileExists = true;
 
+	/** @var bool */
+	private $autoStart = true;
+
 
 	public function __construct(IRequest $request, IResponse $response)
 	{
@@ -138,6 +141,10 @@ class Session
 	public function autoStart(bool $forWrite): void
 	{
 		if ($this->started || (!$forWrite && !$this->exists())) {
+			return;
+
+		} elseif (!$this->autoStart) {
+			trigger_error('Cannot auto-start session because autostarting is disabled', E_USER_WARNING);
 			return;
 		}
 
@@ -398,13 +405,13 @@ class Session
 			$this->readAndClose = (bool) $normalized['read_and_close'];
 			unset($normalized['read_and_close']);
 		}
+		$this->autoStart = $normalized['auto_start'] ?? true;
+		unset($normalized['auto_start']);
+
 		if (session_status() === PHP_SESSION_ACTIVE) {
 			$this->configure($normalized);
 		}
 		$this->options = $normalized + $this->options;
-		if (!empty($normalized['auto_start'])) {
-			$this->start();
-		}
 		return $this;
 	}
 
