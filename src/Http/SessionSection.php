@@ -90,7 +90,7 @@ class SessionSection implements \IteratorAggregate, \ArrayAccess
 	 */
 	public function __unset(string $name): void
 	{
-		$this->session->autoStart(true);
+		$this->session->autoStart(false);
 		$data = &$this->getData();
 		$meta = &$this->getMeta();
 		unset($data[$name], $meta[$name]);
@@ -143,7 +143,7 @@ class SessionSection implements \IteratorAggregate, \ArrayAccess
 	 */
 	public function setExpiration($time, $variables = null)
 	{
-		$this->session->autoStart(true);
+		$this->session->autoStart((bool) $time);
 		$meta = &$this->getMeta();
 		if ($time) {
 			$time = Nette\Utils\DateTime::from($time)->format('U');
@@ -178,7 +178,7 @@ class SessionSection implements \IteratorAggregate, \ArrayAccess
 	 */
 	public function remove(): void
 	{
-		$this->session->start();
+		$this->session->autoStart(false);
 		unset($_SESSION['__NF']['DATA'][$this->name], $_SESSION['__NF']['META'][$this->name]);
 	}
 
