@@ -94,7 +94,7 @@ class SessionExtension extends Nette\DI\CompilerExtension
 			$name = $this->prefix('session');
 
 			if ($config->autoStart === 'smart') {
-				$this->initialization->addBody('$this->getService(?)->exists() && $this->getService(?)->start();', [$name, $name]);
+				$this->initialization->addBody('$this->getService(?)->autoStart(false);', [$name]);
 
 			} elseif ($config->autoStart) {
 				$this->initialization->addBody('$this->getService(?)->start();', [$name]);

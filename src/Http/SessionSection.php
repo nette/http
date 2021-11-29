@@ -44,7 +44,8 @@ class SessionSection implements \IteratorAggregate, \ArrayAccess
 	 */
 	public function getIterator(): \Iterator
 	{
-		return new \ArrayIterator($this->getData(false) ?? []);
+		$this->session->autoStart(false);
+		return new \ArrayIterator($this->getData() ?? []);
 	}
 
 
@@ -53,7 +54,8 @@ class SessionSection implements \IteratorAggregate, \ArrayAccess
 	 */
 	public function __set(string $name, $value): void
 	{
-		$this->getData(true)[$name] = $value;
+		$this->session->autoStart(true);
+		$this->getData()[$name] = $value;
 	}
 
 
@@ -63,7 +65,8 @@ class SessionSection implements \IteratorAggregate, \ArrayAccess
 	 */
 	public function &__get(string $name)
 	{
-		$data = &$this->getData(true);
+		$this->session->autoStart(true);
+		$data = &$this->getData();
 		if ($this->warnOnUndefined && !array_key_exists($name, $data ?? [])) {
 			trigger_error("The variable '$name' does not exist in session section");
 		}
@@ -77,10 +80,8 @@ class SessionSection implements \IteratorAggregate, \ArrayAccess
 	 */
 	public function __isset(string $name): bool
 	{
-		if (!$this->session->exists()) {
-			return false;
-		}
-		return isset($this->getData(false)[$name]);
+		$this->session->autoStart(false);
+		return isset($this->getData()[$name]);
 	}
 
 
@@ -89,7 +90,8 @@ class SessionSection implements \IteratorAggregate, \ArrayAccess
 	 */
 	public function __unset(string $name): void
 	{
-		$data = &$this->getData(true);
+		$this->session->autoStart(true);
+		$data = &$this->getData();
 		$meta = &$this->getMeta();
 		unset($data[$name], $meta[$name]);
 	}
@@ -141,6 +143,7 @@ class SessionSection implements \IteratorAggregate, \ArrayAccess
 	 */
 	public function setExpiration($time, $variables = null)
 	{
+		$this->session->autoStart(true);
 		$meta = &$this->getMeta();
 		if ($time) {
 			$time = Nette\Utils\DateTime::from($time)->format('U');
@@ -180,18 +183,14 @@ class SessionSection implements \IteratorAggregate, \ArrayAccess
 	}
 
 
-	private function &getData(bool $write)
+	private function &getData()
 	{
-		if ($write || !session_id()) {
-			$this->session->start();
-		}
 		return $_SESSION['__NF']['DATA'][$this->name];
 	}
 
 
 	private function &getMeta()
 	{
-		$this->session->start();
 		return $_SESSION['__NF']['META'][$this->name];
 	}
 }

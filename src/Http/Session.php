@@ -62,6 +62,9 @@ class Session
 	/** @var bool */
 	private $readAndClose = false;
 
+	/** @var bool */
+	private $fileExists = true;
+
 
 	public function __construct(IRequest $request, IResponse $response)
 	{
@@ -78,6 +81,12 @@ class Session
 	 * @throws Nette\InvalidStateException
 	 */
 	public function start(): void
+	{
+		$this->doStart();
+	}
+
+
+	private function doStart($mustExists = false): void
 	{
 		if (session_status() === PHP_SESSION_ACTIVE) { // adapt an existing session
 			if (!$this->started) {
@@ -114,14 +123,32 @@ class Session
 			throw $e;
 		}
 
+		if ($mustExists && $this->request->getCookie(session_name()) !== session_id()) {
+			// PHP regenerated the ID which means that the session did not exist and cookie was invalid
+			$this->destroy();
+			return;
+		}
+
 		$this->initialize();
 		$this->onStart($this);
+	}
+
+
+	/** @internal */
+	public function autoStart(bool $forWrite): void
+	{
+		if ($this->started || (!$forWrite && !$this->exists())) {
+			return;
+		}
+
+		$this->doStart(!$forWrite);
 	}
 
 
 	private function initialize(): void
 	{
 		$this->started = true;
+		$this->fileExists = true;
 
 		/* structure:
 			__NF: Data, Meta, Time
@@ -199,6 +226,7 @@ class Session
 		session_destroy();
 		$_SESSION = null;
 		$this->started = false;
+		$this->fileExists = false;
 		if (!$this->response->isSent()) {
 			$params = session_get_cookie_params();
 			$this->response->deleteCookie(session_name(), $params['path'], $params['domain'], $params['secure']);
@@ -211,7 +239,8 @@ class Session
 	 */
 	public function exists(): bool
 	{
-		return session_status() === PHP_SESSION_ACTIVE || $this->request->getCookie($this->getName()) !== null;
+		return session_status() === PHP_SESSION_ACTIVE
+			|| ($this->fileExists && $this->request->getCookie($this->getName()));
 	}
 
 
@@ -290,7 +319,7 @@ class Session
 	public function hasSection(string $section): bool
 	{
 		if ($this->exists() && !$this->started) {
-			$this->start();
+			$this->autoStart(false);
 		}
 
 		return !empty($_SESSION['__NF']['DATA'][$section]);
@@ -303,7 +332,7 @@ class Session
 	public function getIterator(): \Iterator
 	{
 		if ($this->exists() && !$this->started) {
-			$this->start();
+			$this->autoStart(false);
 		}
 
 		return new \ArrayIterator(array_keys($_SESSION['__NF']['DATA'] ?? []));
