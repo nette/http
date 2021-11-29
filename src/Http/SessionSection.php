@@ -104,6 +104,7 @@ class SessionSection implements \IteratorAggregate, \ArrayAccess
 
 	/**
 	 * Sets a variable in this session section.
+	 * @deprecated  use set() instead
 	 */
 	public function __set(string $name, $value): void
 	{
@@ -114,7 +115,7 @@ class SessionSection implements \IteratorAggregate, \ArrayAccess
 
 	/**
 	 * Gets a variable from this session section.
-	 * @return mixed
+	 * @deprecated  use get() instead
 	 */
 	public function &__get(string $name)
 	{
@@ -130,6 +131,7 @@ class SessionSection implements \IteratorAggregate, \ArrayAccess
 
 	/**
 	 * Determines whether a variable in this session section is set.
+	 * @deprecated  use get() instead
 	 */
 	public function __isset(string $name): bool
 	{
@@ -140,6 +142,7 @@ class SessionSection implements \IteratorAggregate, \ArrayAccess
 
 	/**
 	 * Unsets a variable in this session section.
+	 * @deprecated  use remove() instead
 	 */
 	public function __unset(string $name): void
 	{
@@ -149,6 +152,7 @@ class SessionSection implements \IteratorAggregate, \ArrayAccess
 
 	/**
 	 * Sets a variable in this session section.
+	 * @deprecated  use set() instead
 	 */
 	public function offsetSet($name, $value): void
 	{
@@ -158,7 +162,7 @@ class SessionSection implements \IteratorAggregate, \ArrayAccess
 
 	/**
 	 * Gets a variable from this session section.
-	 * @return mixed
+	 * @deprecated  use get() instead
 	 */
 	#[\ReturnTypeWillChange]
 	public function offsetGet($name)
@@ -169,6 +173,7 @@ class SessionSection implements \IteratorAggregate, \ArrayAccess
 
 	/**
 	 * Determines whether a variable in this session section is set.
+	 * @deprecated  use get() instead
 	 */
 	public function offsetExists($name): bool
 	{
@@ -178,6 +183,7 @@ class SessionSection implements \IteratorAggregate, \ArrayAccess
 
 	/**
 	 * Unsets a variable in this session section.
+	 * @deprecated  use remove() instead
 	 */
 	public function offsetUnset($name): void
 	{
