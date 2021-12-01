@@ -124,6 +124,9 @@ class RequestFactory
 
 	private function getScriptPath(Url $url): string
 	{
+		if (PHP_SAPI === 'cli-server') {
+			return '/';
+		}
 		$path = $url->getPath();
 		$lpath = strtolower($path);
 		$script = strtolower($_SERVER['SCRIPT_NAME'] ?? '');
