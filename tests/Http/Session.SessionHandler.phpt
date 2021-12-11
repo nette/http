@@ -16,7 +16,7 @@ if (PHP_SAPI === 'cli') {
 }
 
 
-class MySessionStorageExtension extends \SessionHandler
+class MySessionStorageExtension extends SessionHandler
 {
 }
 
