@@ -13,7 +13,7 @@ use Tester\Assert;
 require __DIR__ . '/../bootstrap.php';
 
 
-class ThrowsOnReadHandler extends \SessionHandler
+class ThrowsOnReadHandler extends SessionHandler
 {
 	#[ReturnTypeWillChange]
 	public function open($save_path, $session_id)
@@ -41,5 +41,5 @@ Assert::exception(function () use ($session) {
 	$session->start();
 }, RuntimeException::class, 'Session can\'t be started for whatever reason!');
 
-$session->setHandler(new \SessionHandler);
+$session->setHandler(new SessionHandler);
 $session->start();

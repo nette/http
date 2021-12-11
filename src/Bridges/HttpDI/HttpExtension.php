@@ -145,7 +145,7 @@ class HttpExtension extends Nette\DI\CompilerExtension
 
 	private static function buildPolicy(array $config): string
 	{
-		static $nonQuoted = ['require-sri-for' => 1, 'sandbox' => 1];
+		$nonQuoted = ['require-sri-for' => 1, 'sandbox' => 1];
 		$value = '';
 		foreach ($config as $type => $policy) {
 			if ($policy === false) {
