@@ -10,7 +10,6 @@ use Nette\Http\Url;
 use Nette\Http\UrlImmutable;
 use Tester\Assert;
 
-
 require __DIR__ . '/../bootstrap.php';
 
 $url = new UrlImmutable(new Url('http://username%3A:password%3A@hostn%61me:60/p%61th/script.php?%61rg=value#%61nchor'));

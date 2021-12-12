@@ -6,7 +6,6 @@ use Nette\Bridges\HttpDI\HttpExtension;
 use Nette\DI;
 use Tester\Assert;
 
-
 require __DIR__ . '/../bootstrap.php';
 
 if (PHP_SAPI === 'cli') {

@@ -10,7 +10,6 @@ use Nette\Http;
 use Nette\Http\Session;
 use Tester\Assert;
 
-
 require __DIR__ . '/../bootstrap.php';
 
 $sessionName = session_name();

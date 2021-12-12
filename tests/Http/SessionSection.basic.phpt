@@ -9,7 +9,6 @@ declare(strict_types=1);
 use Nette\Http\Session;
 use Tester\Assert;
 
-
 require __DIR__ . '/../bootstrap.php';
 
 
@@ -27,6 +26,7 @@ Assert::same('orange', $namespace['o']);
 foreach ($namespace as $key => $val) {
 	$tmp[] = "$key=$val";
 }
+
 Assert::same([
 	'a=apple',
 	'p=pear',

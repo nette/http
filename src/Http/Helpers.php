@@ -48,6 +48,7 @@ final class Helpers
 		if (!$max || $max !== strlen($mask) || (int) $size < 0 || (int) $size > $max) {
 			return false;
 		}
+
 		return strncmp($ip, $mask, $size === '' ? $max : (int) $size) === 0;
 	}
 

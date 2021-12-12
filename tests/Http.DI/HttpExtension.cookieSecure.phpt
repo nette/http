@@ -7,7 +7,6 @@ use Nette\Bridges\HttpDI\SessionExtension;
 use Nette\DI;
 use Tester\Assert;
 
-
 require __DIR__ . '/../bootstrap.php';
 
 

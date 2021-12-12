@@ -107,6 +107,7 @@ class UrlScript extends UrlImmutable
 		if ($pos === false || strncmp($this->scriptPath, $path, $pos + 1)) {
 			throw new Nette\InvalidArgumentException("ScriptPath '$this->scriptPath' doesn't match path '$path'");
 		}
+
 		$this->basePath = substr($this->scriptPath, 0, $pos + 1);
 	}
 }

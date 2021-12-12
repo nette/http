@@ -9,7 +9,6 @@ declare(strict_types=1);
 use Nette\Http;
 use Tester\Assert;
 
-
 require __DIR__ . '/../bootstrap.php';
 
 $cookies = [session_name() => $sessionId = md5('3')];

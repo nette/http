@@ -74,6 +74,7 @@ class SessionSection implements \IteratorAggregate, \ArrayAccess
 		if (func_num_args() > 1) {
 			throw new \ArgumentCountError(__METHOD__ . '() expects 1 arguments, given more.');
 		}
+
 		$this->session->autoStart(false);
 		return $this->getData()[$name] ?? null;
 	}
@@ -208,6 +209,7 @@ class SessionSection implements \IteratorAggregate, \ArrayAccess
 		foreach (is_array($variables) ? $variables : [$variables] as $variable) {
 			$meta[$variable]['T'] = $time ?: null;
 		}
+
 		return $this;
 	}
 
