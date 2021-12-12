@@ -157,7 +157,7 @@ interface IResponse
 	 * Sets HTTP response code.
 	 * @return static
 	 */
-	function setCode(int $code, string $reason = null);
+	function setCode(int $code, ?string $reason = null);
 
 	/**
 	 * Returns HTTP response code.
@@ -180,7 +180,7 @@ interface IResponse
 	 * Sends a Content-type HTTP header.
 	 * @return static
 	 */
-	function setContentType(string $type, string $charset = null);
+	function setContentType(string $type, ?string $charset = null);
 
 	/**
 	 * Redirects to a new URL.
@@ -217,14 +217,14 @@ interface IResponse
 		string $name,
 		string $value,
 		$expire,
-		string $path = null,
-		string $domain = null,
-		bool $secure = null,
-		bool $httpOnly = null
+		?string $path = null,
+		?string $domain = null,
+		?bool $secure = null,
+		?bool $httpOnly = null
 	);
 
 	/**
 	 * Deletes a cookie.
 	 */
-	function deleteCookie(string $name, string $path = null, string $domain = null, bool $secure = null);
+	function deleteCookie(string $name, ?string $path = null, ?string $domain = null, ?bool $secure = null);
 }

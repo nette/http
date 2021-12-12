@@ -520,9 +520,9 @@ class Session
 	 */
 	public function setCookieParameters(
 		string $path,
-		string $domain = null,
-		bool $secure = null,
-		string $sameSite = null
+		?string $domain = null,
+		?bool $secure = null,
+		?string $sameSite = null
 	) {
 		return $this->setOptions([
 			'cookie_path' => $path,
