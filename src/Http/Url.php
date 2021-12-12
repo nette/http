@@ -62,10 +62,9 @@ class Url implements \JsonSerializable
 
 
 	/**
-	 * @param  string|self|UrlImmutable  $url
 	 * @throws Nette\InvalidArgumentException if URL is malformed
 	 */
-	public function __construct($url = null)
+	public function __construct(string|self|UrlImmutable|null $url = null)
 	{
 		if (is_string($url)) {
 			$p = @parse_url($url); // @ - is escalated to exception
@@ -84,15 +83,11 @@ class Url implements \JsonSerializable
 
 		} elseif ($url instanceof UrlImmutable || $url instanceof self) {
 			[$this->scheme, $this->user, $this->password, $this->host, $this->port, $this->path, $this->query, $this->fragment] = $url->export();
-
-		} elseif ($url !== null) {
-			throw new Nette\InvalidArgumentException;
 		}
 	}
 
 
-	/** @return static */
-	public function setScheme(string $scheme)
+	public function setScheme(string $scheme): static
 	{
 		$this->scheme = $scheme;
 		return $this;
@@ -105,8 +100,7 @@ class Url implements \JsonSerializable
 	}
 
 
-	/** @return static */
-	public function setUser(string $user)
+	public function setUser(string $user): static
 	{
 		$this->user = $user;
 		return $this;
@@ -119,8 +113,7 @@ class Url implements \JsonSerializable
 	}
 
 
-	/** @return static */
-	public function setPassword(string $password)
+	public function setPassword(string $password): static
 	{
 		$this->password = $password;
 		return $this;
@@ -133,8 +126,7 @@ class Url implements \JsonSerializable
 	}
 
 
-	/** @return static */
-	public function setHost(string $host)
+	public function setHost(string $host): static
 	{
 		$this->host = $host;
 		$this->setPath($this->path);
@@ -163,8 +155,7 @@ class Url implements \JsonSerializable
 	}
 
 
-	/** @return static */
-	public function setPort(int $port)
+	public function setPort(int $port): static
 	{
 		$this->port = $port;
 		return $this;
@@ -177,8 +168,7 @@ class Url implements \JsonSerializable
 	}
 
 
-	/** @return static */
-	public function setPath(string $path)
+	public function setPath(string $path): static
 	{
 		$this->path = $path;
 		if ($this->host && substr($this->path, 0, 1) !== '/') {
@@ -195,22 +185,14 @@ class Url implements \JsonSerializable
 	}
 
 
-	/**
-	 * @param  string|array  $value
-	 * @return static
-	 */
-	public function setQuery($query)
+	public function setQuery(string|array $query): static
 	{
 		$this->query = is_array($query) ? $query : self::parseQuery($query);
 		return $this;
 	}
 
 
-	/**
-	 * @param  string|array  $value
-	 * @return static
-	 */
-	public function appendQuery($query)
+	public function appendQuery(string|array $query): static
 	{
 		$this->query = is_array($query)
 			? $query + $this->query
@@ -231,8 +213,7 @@ class Url implements \JsonSerializable
 	}
 
 
-	/** @return mixed */
-	public function getQueryParameter(string $name)
+	public function getQueryParameter(string $name): mixed
 	{
 		if (func_num_args() > 1) {
 			trigger_error(__METHOD__ . '() parameter $default is deprecated, use operator ??', E_USER_DEPRECATED);
@@ -242,19 +223,14 @@ class Url implements \JsonSerializable
 	}
 
 
-	/**
-	 * @param mixed  $value  null unsets the parameter
-	 * @return static
-	 */
-	public function setQueryParameter(string $name, $value)
+	public function setQueryParameter(string $name, mixed $value): static
 	{
 		$this->query[$name] = $value;
 		return $this;
 	}
 
 
-	/** @return static */
-	public function setFragment(string $fragment)
+	public function setFragment(string $fragment): static
 	{
 		$this->fragment = $fragment;
 		return $this;
@@ -326,9 +302,8 @@ class Url implements \JsonSerializable
 
 	/**
 	 * URL comparison.
-	 * @param  string|self  $url
 	 */
-	public function isEqual($url): bool
+	public function isEqual(string|self $url): bool
 	{
 		$url = new self($url);
 		$query = $url->query;
@@ -349,10 +324,9 @@ class Url implements \JsonSerializable
 
 	/**
 	 * Transforms URL to canonical form.
-	 * @return static
 	 * @deprecated
 	 */
-	public function canonicalize()
+	public function canonicalize(): static
 	{
 		$this->path = preg_replace_callback(
 			'#[^!$&\'()*+,/:;=@%]+#',
