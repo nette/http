@@ -70,7 +70,7 @@ class Request implements IRequest
 		?string $method = null,
 		?string $remoteAddress = null,
 		?string $remoteHost = null,
-		?callable $rawBodyCallback = null
+		?callable $rawBodyCallback = null,
 	) {
 		$this->url = $url;
 		$this->post = (array) $post;
