@@ -274,9 +274,8 @@ class Session
 
 	/**
 	 * Sets the session name to a specified one.
-	 * @return static
 	 */
-	public function setName(string $name)
+	public function setName(string $name): static
 	{
 		if (!preg_match('#[^0-9.][^.]*$#DA', $name)) {
 			throw new Nette\InvalidArgumentException('Session name cannot contain dot.');
@@ -303,7 +302,6 @@ class Session
 
 	/**
 	 * Returns specified session section.
-	 * @throws Nette\InvalidArgumentException
 	 */
 	public function getSection(string $section, string $class = SessionSection::class): SessionSection
 	{
@@ -368,11 +366,10 @@ class Session
 
 	/**
 	 * Sets session options.
-	 * @return static
 	 * @throws Nette\NotSupportedException
 	 * @throws Nette\InvalidStateException
 	 */
-	public function setOptions(array $options)
+	public function setOptions(array $options): static
 	{
 		$normalized = [];
 		$allowed = ini_get_all('session', details: false) + ['session.read_and_close' => 1];
@@ -475,9 +472,8 @@ class Session
 	/**
 	 * Sets the amount of time (like '20 minutes') allowed between requests before the session will be terminated,
 	 * null means "for a maximum of 3 hours or until the browser is closed".
-	 * @return static
 	 */
-	public function setExpiration(?string $expire)
+	public function setExpiration(?string $expire): static
 	{
 		if ($expire === null) {
 			return $this->setOptions([
@@ -497,14 +493,14 @@ class Session
 
 	/**
 	 * Sets the session cookie parameters.
-	 * @return static
 	 */
 	public function setCookieParameters(
 		string $path,
 		?string $domain = null,
 		?bool $secure = null,
 		?string $sameSite = null,
-	) {
+	): static
+	{
 		return $this->setOptions([
 			'cookie_path' => $path,
 			'cookie_domain' => $domain,
@@ -524,9 +520,8 @@ class Session
 
 	/**
 	 * Sets path of the directory used to save session data.
-	 * @return static
 	 */
-	public function setSavePath(string $path)
+	public function setSavePath(string $path): static
 	{
 		return $this->setOptions([
 			'save_path' => $path,
@@ -536,9 +531,8 @@ class Session
 
 	/**
 	 * Sets user session handler.
-	 * @return static
 	 */
-	public function setHandler(\SessionHandlerInterface $handler)
+	public function setHandler(\SessionHandlerInterface $handler): static
 	{
 		if ($this->started) {
 			throw new Nette\InvalidStateException('Unable to set handler when session has been started.');
