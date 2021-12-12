@@ -53,7 +53,7 @@ class SessionSection implements \IteratorAggregate, \ArrayAccess
 	 * Sets a variable in this session section.
 	 * @param  mixed  $value
 	 */
-	public function set(string $name, $value, string $expiration = null): void
+	public function set(string $name, $value, ?string $expiration = null): void
 	{
 		if ($value === null) {
 			$this->remove($name);

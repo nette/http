@@ -63,14 +63,14 @@ class Request implements IRequest
 
 	public function __construct(
 		UrlScript $url,
-		array $post = null,
-		array $files = null,
-		array $cookies = null,
-		array $headers = null,
-		string $method = null,
-		string $remoteAddress = null,
-		string $remoteHost = null,
-		callable $rawBodyCallback = null
+		?array $post = null,
+		?array $files = null,
+		?array $cookies = null,
+		?array $headers = null,
+		?string $method = null,
+		?string $remoteAddress = null,
+		?string $remoteHost = null,
+		?callable $rawBodyCallback = null
 	) {
 		$this->url = $url;
 		$this->post = (array) $post;
@@ -113,7 +113,7 @@ class Request implements IRequest
 	 * If no key is passed, returns the entire array.
 	 * @return mixed
 	 */
-	public function getQuery(string $key = null)
+	public function getQuery(?string $key = null)
 	{
 		if (func_num_args() === 0) {
 			return $this->url->getQueryParameters();
@@ -130,7 +130,7 @@ class Request implements IRequest
 	 * If no key is passed, returns the entire array.
 	 * @return mixed
 	 */
-	public function getPost(string $key = null)
+	public function getPost(?string $key = null)
 	{
 		if (func_num_args() === 0) {
 			return $this->post;
