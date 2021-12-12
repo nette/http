@@ -29,9 +29,8 @@ final class Helpers
 
 	/**
 	 * Returns HTTP valid date format.
-	 * @param  string|int|\DateTimeInterface  $time
 	 */
-	public static function formatDate($time): string
+	public static function formatDate(string|int|\DateTimeInterface $time): string
 	{
 		$time = DateTime::from($time)->setTimezone(new \DateTimeZone('GMT'));
 		return $time->format('D, d M Y H:i:s \G\M\T');
