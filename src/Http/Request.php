@@ -78,9 +78,8 @@ class Request implements IRequest
 
 	/**
 	 * Returns a clone with a different URL.
-	 * @return static
 	 */
-	public function withUrl(UrlScript $url)
+	public function withUrl(UrlScript $url): static
 	{
 		$dolly = clone $this;
 		$dolly->url = $url;
@@ -103,9 +102,8 @@ class Request implements IRequest
 	/**
 	 * Returns variable provided to the script via URL query ($_GET).
 	 * If no key is passed, returns the entire array.
-	 * @return mixed
 	 */
-	public function getQuery(?string $key = null)
+	public function getQuery(?string $key = null): mixed
 	{
 		if (func_num_args() === 0) {
 			return $this->url->getQueryParameters();
@@ -120,9 +118,8 @@ class Request implements IRequest
 	/**
 	 * Returns variable provided to the script via POST method ($_POST).
 	 * If no key is passed, returns the entire array.
-	 * @return mixed
 	 */
-	public function getPost(?string $key = null)
+	public function getPost(?string $key = null): mixed
 	{
 		if (func_num_args() === 0) {
 			return $this->post;
@@ -137,9 +134,8 @@ class Request implements IRequest
 	/**
 	 * Returns uploaded file.
 	 * @param  string|string[]  $key
-	 * @return ?FileUpload
 	 */
-	public function getFile($key)
+	public function getFile($key): ?FileUpload
 	{
 		$res = Nette\Utils\Arrays::get($this->files, $key, null);
 		return $res instanceof FileUpload ? $res : null;
@@ -157,9 +153,8 @@ class Request implements IRequest
 
 	/**
 	 * Returns a cookie or `null` if it does not exist.
-	 * @return mixed
 	 */
-	public function getCookie(string $key)
+	public function getCookie(string $key): mixed
 	{
 		if (func_num_args() > 1) {
 			trigger_error(__METHOD__ . '() parameter $default is deprecated, use operator ??', E_USER_DEPRECATED);
