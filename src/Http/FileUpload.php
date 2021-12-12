@@ -203,9 +203,8 @@ final class FileUpload
 
 	/**
 	 * Moves an uploaded file to a new location. If the destination file already exists, it will be overwritten.
-	 * @return static
 	 */
-	public function move(string $dest)
+	public function move(string $dest): static
 	{
 		$dir = dirname($dest);
 		Nette\Utils\FileSystem::createDir($dir);

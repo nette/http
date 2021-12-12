@@ -47,7 +47,7 @@ class HttpExtension extends Nette\DI\CompilerExtension
 	}
 
 
-	public function loadConfiguration()
+	public function loadConfiguration(): void
 	{
 		$builder = $this->getContainerBuilder();
 		$config = $this->config;
@@ -92,7 +92,7 @@ class HttpExtension extends Nette\DI\CompilerExtension
 	}
 
 
-	private function sendHeaders()
+	private function sendHeaders(): void
 	{
 		$config = $this->config;
 		$headers = array_map('strval', $config->headers);

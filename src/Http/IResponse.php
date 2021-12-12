@@ -398,13 +398,12 @@ interface IResponse
 
 	/**
 	 * Sends a cookie.
-	 * @param  string|int|\DateTimeInterface $expire  time, value null means "until the browser session ends"
 	 * @return static
 	 */
 	function setCookie(
 		string $name,
 		string $value,
-		$expire,
+		?int $expire,
 		?string $path = null,
 		?string $domain = null,
 		?bool $secure = null,

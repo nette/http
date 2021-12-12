@@ -38,7 +38,7 @@ class UrlScript extends UrlImmutable
 	private string $basePath;
 
 
-	public function __construct($url = '/', string $scriptPath = '')
+	public function __construct(string|Url $url = '/', string $scriptPath = '')
 	{
 		$this->scriptPath = $scriptPath;
 		parent::__construct($url);
@@ -46,8 +46,7 @@ class UrlScript extends UrlImmutable
 	}
 
 
-	/** @return static */
-	public function withPath(string $path, string $scriptPath = '')
+	public function withPath(string $path, string $scriptPath = ''): static
 	{
 		$dolly = clone $this;
 		$dolly->scriptPath = $scriptPath;
