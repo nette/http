@@ -34,7 +34,7 @@ test('try to expire whole namespace', function () use ($session) {
 
 test('try to expire only 1 of the keys', function () use ($session) {
 	$namespace = $session->getSection('expireSingle');
-	$namespace->setExpiration(1, 'g');
+	$namespace->setExpiration('1 second', 'g');
 	$namespace->g = 'guava';
 	$namespace->p = 'plum';
 	$namespace->set('a', 'apple', '1 second');
@@ -51,5 +51,5 @@ test('try to expire only 1 of the keys', function () use ($session) {
 // small expiration
 Assert::error(function () use ($session) {
 	$namespace = $session->getSection('tmp');
-	$namespace->setExpiration(100);
+	$namespace->setExpiration('100 second');
 }, E_USER_NOTICE, 'The expiration time is greater than the session expiration %d% seconds');
