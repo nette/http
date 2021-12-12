@@ -127,6 +127,7 @@ class RequestFactory
 		if (PHP_SAPI === 'cli-server') {
 			return '/';
 		}
+
 		$path = $url->getPath();
 		$lpath = strtolower($path);
 		$script = strtolower($_SERVER['SCRIPT_NAME'] ?? '');
@@ -137,6 +138,7 @@ class RequestFactory
 				? substr($path, 0, strrpos($path, '/', $i - strlen($path) - 1) + 1)
 				: '/';
 		}
+
 		return $path;
 	}
 
@@ -174,6 +176,7 @@ class RequestFactory
 					}
 				}
 			}
+
 			unset($list, $key, $val, $k, $v);
 		}
 
@@ -195,6 +198,7 @@ class RequestFactory
 			) {
 				continue;
 			}
+
 			$v['@'] = &$files[$k];
 			$list[] = $v;
 		}
@@ -208,9 +212,11 @@ class RequestFactory
 				if (!$this->binary && (!preg_match($reChars, $v['name']) || preg_last_error())) {
 					$v['name'] = '';
 				}
+
 				if ($v['error'] !== UPLOAD_ERR_NO_FILE) {
 					$v['@'] = new FileUpload($v);
 				}
+
 				continue;
 			}
 
@@ -218,6 +224,7 @@ class RequestFactory
 				if (!$this->binary && is_string($k) && (!preg_match($reChars, $k) || preg_last_error())) {
 					continue;
 				}
+
 				$list[] = [
 					'name' => $v['name'][$k],
 					'type' => $v['type'][$k],
@@ -228,6 +235,7 @@ class RequestFactory
 				];
 			}
 		}
+
 		return $files;
 	}
 
@@ -245,8 +253,10 @@ class RequestFactory
 			} elseif (strncmp($k, 'CONTENT_', 8)) {
 				continue;
 			}
+
 			$headers[strtr($k, '_', '-')] = $v;
 		}
+
 		return $headers;
 	}
 
@@ -260,6 +270,7 @@ class RequestFactory
 		) {
 			$method = $_SERVER['HTTP_X_HTTP_METHOD_OVERRIDE'];
 		}
+
 		return $method;
 	}
 

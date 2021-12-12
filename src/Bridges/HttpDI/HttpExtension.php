@@ -105,6 +105,7 @@ class HttpExtension extends Nette\DI\CompilerExtension
 			} elseif (preg_match('#^https?:#', $frames)) {
 				$frames = "ALLOW-FROM $frames";
 			}
+
 			$headers['X-Frame-Options'] = $frames;
 		}
 
@@ -112,6 +113,7 @@ class HttpExtension extends Nette\DI\CompilerExtension
 			if (empty($config->$key)) {
 				continue;
 			}
+
 			$value = self::buildPolicy($config->$key);
 			if (strpos($value, "'nonce'")) {
 				$this->initialization->addBody('$cspNonce = base64_encode(random_bytes(16));');
@@ -120,6 +122,7 @@ class HttpExtension extends Nette\DI\CompilerExtension
 					["'nonce", "'nonce-", $value]
 				);
 			}
+
 			$headers['Content-Security-Policy' . ($key === 'csp' ? '' : '-Report-Only')] = $value;
 		}
 
@@ -151,18 +154,22 @@ class HttpExtension extends Nette\DI\CompilerExtension
 			if ($policy === false) {
 				continue;
 			}
+
 			$policy = $policy === true ? [] : (array) $policy;
 			$value .= $type;
 			foreach ($policy as $item) {
 				if (is_array($item)) {
 					$item = key($item) . ':';
 				}
+
 				$value .= !isset($nonQuoted[$type]) && preg_match('#^[a-z-]+$#D', $item)
 					? " '$item'"
 					: " $item";
 			}
+
 			$value .= '; ';
 		}
+
 		return $value;
 	}
 }

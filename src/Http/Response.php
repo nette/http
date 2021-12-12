@@ -63,6 +63,7 @@ final class Response implements IResponse
 		if ($code < 100 || $code > 599) {
 			throw new Nette\InvalidArgumentException("Bad HTTP response '$code'.");
 		}
+
 		self::checkHeaders();
 		$this->code = $code;
 		$protocol = $_SERVER['SERVER_PROTOCOL'] ?? 'HTTP/1.1';
@@ -96,6 +97,7 @@ final class Response implements IResponse
 		} else {
 			header($name . ': ' . $value);
 		}
+
 		return $this;
 	}
 
@@ -209,6 +211,7 @@ final class Response implements IResponse
 		if (func_num_args() > 1) {
 			trigger_error(__METHOD__ . '() parameter $default is deprecated, use operator ??', E_USER_DEPRECATED);
 		}
+
 		$header .= ':';
 		$len = strlen($header);
 		foreach (headers_list() as $item) {
@@ -216,6 +219,7 @@ final class Response implements IResponse
 				return ltrim(substr($item, $len));
 			}
 		}
+
 		return null;
 	}
 
@@ -230,6 +234,7 @@ final class Response implements IResponse
 			$a = strpos($header, ':');
 			$headers[substr($header, 0, $a)] = (string) substr($header, $a + 2);
 		}
+
 		return $headers;
 	}
 
@@ -286,6 +291,7 @@ final class Response implements IResponse
 				$options['httponly']
 			);
 		}
+
 		return $this;
 	}
 

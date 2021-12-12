@@ -42,6 +42,7 @@ class Context
 		if ($lastModified) {
 			$this->response->setHeader('Last-Modified', Helpers::formatDate($lastModified));
 		}
+
 		if ($etag) {
 			$this->response->setHeader('ETag', '"' . addslashes($etag) . '"');
 		}

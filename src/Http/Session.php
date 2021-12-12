@@ -96,6 +96,7 @@ class Session
 				$this->configure(self::SECURITY_OPTIONS);
 				$this->initialize();
 			}
+
 			return;
 		}
 
@@ -186,6 +187,7 @@ class Session
 						unset($nf['META'][$section], $nf['DATA'][$section]);
 						continue 2;
 					}
+
 					unset($nf['META'][$section][$variable], $nf['DATA'][$section][$variable]);
 				}
 			}
@@ -260,14 +262,17 @@ class Session
 		if ($this->regenerated) {
 			return;
 		}
+
 		if (session_status() === PHP_SESSION_ACTIVE) {
 			if (headers_sent($file, $line)) {
 				throw new Nette\InvalidStateException('Cannot regenerate session ID after HTTP headers have been sent' . ($file ? " (output started at $file:$line)." : '.'));
 			}
+
 			session_regenerate_id(true);
 		} else {
 			session_id(session_create_id());
 		}
+
 		$this->regenerated = true;
 	}
 
@@ -385,6 +390,7 @@ class Session
 			if (!strncmp($key, 'session.', 8)) { // back compatibility
 				$key = substr($key, 8);
 			}
+
 			$normKey = strtolower(preg_replace('#(.)(?=[A-Z])#', '$1_', $key)); // camelCase -> snake_case
 
 			if (!isset($allowed["session.$normKey"])) {
@@ -392,6 +398,7 @@ class Session
 				if ($key !== $normKey) {
 					$hint = preg_replace_callback('#_(.)#', function ($m) { return strtoupper($m[1]); }, $hint); // snake_case -> camelCase
 				}
+
 				throw new Nette\InvalidStateException("Invalid session configuration option '$key'" . ($hint ? ", did you mean '$hint'?" : '.'));
 			}
 
@@ -402,15 +409,18 @@ class Session
 			if (session_status() === PHP_SESSION_ACTIVE) {
 				throw new Nette\InvalidStateException('Cannot configure "read_and_close" for already started session.');
 			}
+
 			$this->readAndClose = (bool) $normalized['read_and_close'];
 			unset($normalized['read_and_close']);
 		}
+
 		$this->autoStart = $normalized['auto_start'] ?? true;
 		unset($normalized['auto_start']);
 
 		if (session_status() === PHP_SESSION_ACTIVE) {
 			$this->configure($normalized);
 		}
+
 		$this->options = $normalized + $this->options;
 		return $this;
 	}
@@ -444,6 +454,7 @@ class Session
 				if (session_status() === PHP_SESSION_ACTIVE) {
 					throw new Nette\InvalidStateException("Unable to set 'session.$key' to value '$value' when session has been started" . ($this->started ? '.' : ' by session.auto_start or session_start().'));
 				}
+
 				if (isset($special[$key])) {
 					("session_$key")($value);
 
@@ -468,6 +479,7 @@ class Session
 					$cookie['httponly']
 				);
 			}
+
 			if (session_status() === PHP_SESSION_ACTIVE) {
 				$this->sendCookie();
 			}
@@ -550,6 +562,7 @@ class Session
 		if ($this->started) {
 			throw new Nette\InvalidStateException('Unable to set handler when session has been started.');
 		}
+
 		$this->handler = $handler;
 		return $this;
 	}

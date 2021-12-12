@@ -54,6 +54,7 @@ final class FileUpload
 				return; // or throw exception?
 			}
 		}
+
 		$this->name = $value['name'];
 		$this->size = $value['size'];
 		$this->tmpName = $value['tmp_name'];
@@ -95,6 +96,7 @@ final class FileUpload
 			$name = preg_replace('#\.[^.]+$#D', '', $name);
 			$name .= '.' . ($this->getImageFileExtension() ?? 'unknown');
 		}
+
 		return $name;
 	}
 
@@ -108,6 +110,7 @@ final class FileUpload
 		if ($this->isOk() && $this->type === null) {
 			$this->type = finfo_file(finfo_open(FILEINFO_MIME_TYPE), $this->tmpName);
 		}
+
 		return $this->type ?: null;
 	}
 

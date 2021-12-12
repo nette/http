@@ -120,6 +120,7 @@ class Request implements IRequest
 		} elseif (func_num_args() > 1) {
 			trigger_error(__METHOD__ . '() parameter $default is deprecated, use operator ??', E_USER_DEPRECATED);
 		}
+
 		return $this->url->getQueryParameter($key);
 	}
 
@@ -136,6 +137,7 @@ class Request implements IRequest
 		} elseif (func_num_args() > 1) {
 			trigger_error(__METHOD__ . '() parameter $default is deprecated, use operator ??', E_USER_DEPRECATED);
 		}
+
 		return $this->post[$key] ?? null;
 	}
 
@@ -170,6 +172,7 @@ class Request implements IRequest
 		if (func_num_args() > 1) {
 			trigger_error(__METHOD__ . '() parameter $default is deprecated, use operator ??', E_USER_DEPRECATED);
 		}
+
 		return $this->cookies[$key] ?? null;
 	}
 
@@ -212,6 +215,7 @@ class Request implements IRequest
 		if (func_num_args() > 1) {
 			trigger_error(__METHOD__ . '() parameter $default is deprecated, use operator ??', E_USER_DEPRECATED);
 		}
+
 		$header = strtolower($header);
 		return $this->headers[$header] ?? null;
 	}
@@ -281,6 +285,7 @@ class Request implements IRequest
 		if ($this->remoteHost === null && $this->remoteAddress !== null) {
 			$this->remoteHost = gethostbyaddr($this->remoteAddress);
 		}
+
 		return $this->remoteHost;
 	}
 
