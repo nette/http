@@ -191,9 +191,16 @@ class Request implements IRequest
 	 */
 	public function getReferer(): ?UrlImmutable
 	{
-		return isset($this->headers['referer'])
-			? new UrlImmutable($this->headers['referer'])
-			: null;
+		if (!isset($this->headers['referer'])) {
+			return null;
+		}
+
+		try {
+			return new UrlImmutable($this->headers['referer']);
+		} catch (Nette\InvalidArgumentException $e) {
+			trigger_error("Unable to parse Malformed Referer URI: {$this->headers['referer']}");
+			return null;
+		}
 	}
 
 
