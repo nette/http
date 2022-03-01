@@ -12,7 +12,6 @@ namespace Nette\Http;
 
 /**
  * HTTP response interface.
- * @method self deleteHeader(string $name)
  */
 interface IResponse
 {
@@ -168,6 +167,11 @@ interface IResponse
 	function addHeader(string $name, string $value): static;
 
 	/**
+	 * Deletes a previously sent HTTP header.
+	 */
+	function deleteHeader(string $name): static;
+
+	/**
 	 * Sends a Content-type HTTP header.
 	 */
 	function setContentType(string $type, ?string $charset = null): static;
@@ -180,7 +184,7 @@ interface IResponse
 	/**
 	 * Sets the time (like '20 minutes') before a page cached on a browser expires, null means "must-revalidate".
 	 */
-	function setExpiration(?string $expire): static;
+	function setExpiration(?string $expires): static;
 
 	/**
 	 * Checks if headers have been sent.
@@ -193,7 +197,7 @@ interface IResponse
 	function getHeader(string $header): ?string;
 
 	/**
-	 * Returns a associative array of headers to sent.
+	 * Returns an associative array of headers to sent.
 	 */
 	function getHeaders(): array;
 
@@ -203,11 +207,12 @@ interface IResponse
 	function setCookie(
 		string $name,
 		string $value,
-		?int $expire,
+		string|int|null $expires,
 		?string $path = null,
 		?string $domain = null,
 		bool $secure = false,
 		bool $httpOnly = true,
+		string $sameSite = self::SAME_SITE_LAX,
 	): static;
 
 	/**
