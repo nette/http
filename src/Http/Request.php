@@ -50,11 +50,11 @@ class Request implements IRequest
 
 	public function __construct(
 		UrlScript $url,
-		?array $post = null,
-		?array $files = null,
-		?array $cookies = null,
-		?array $headers = null,
-		?string $method = null,
+		array $post = [],
+		array $files = [],
+		array $cookies = [],
+		array $headers = [],
+		string $method = 'GET',
 		?string $remoteAddress = null,
 		?string $remoteHost = null,
 		?callable $rawBodyCallback = null,
@@ -62,11 +62,11 @@ class Request implements IRequest
 		?string $password = null,
 	) {
 		$this->url = $url;
-		$this->post = (array) $post;
-		$this->files = (array) $files;
-		$this->cookies = (array) $cookies;
-		$this->headers = array_change_key_case((array) $headers, CASE_LOWER);
-		$this->method = $method ?: 'GET';
+		$this->post = $post;
+		$this->files = $files;
+		$this->cookies = $cookies;
+		$this->headers = array_change_key_case($headers, CASE_LOWER);
+		$this->method = $method;
 		$this->remoteAddress = $remoteAddress;
 		$this->remoteHost = $remoteHost;
 		$this->rawBodyCallback = $rawBodyCallback;
