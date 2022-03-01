@@ -52,6 +52,10 @@ class Request implements IRequest
 	/** @var ?callable */
 	private $rawBodyCallback;
 
+	private ?string $user;
+
+	private ?string $password;
+
 
 	public function __construct(
 		UrlScript $url,
@@ -63,6 +67,8 @@ class Request implements IRequest
 		?string $remoteAddress = null,
 		?string $remoteHost = null,
 		?callable $rawBodyCallback = null,
+		?string $user = null,
+		?string $password = null,
 	) {
 		$this->url = $url;
 		$this->post = (array) $post;
@@ -73,6 +79,8 @@ class Request implements IRequest
 		$this->remoteAddress = $remoteAddress;
 		$this->remoteHost = $remoteHost;
 		$this->rawBodyCallback = $rawBodyCallback;
+		$this->user = $user;
+		$this->password = $password;
 	}
 
 
@@ -271,6 +279,18 @@ class Request implements IRequest
 	public function getRawBody(): ?string
 	{
 		return $this->rawBodyCallback ? ($this->rawBodyCallback)() : null;
+	}
+
+
+	public function getUser(): ?string
+	{
+		return $this->user;
+	}
+
+
+	public function getPassword(): ?string
+	{
+		return $this->password;
 	}
 
 
