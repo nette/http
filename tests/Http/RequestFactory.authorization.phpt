@@ -25,7 +25,11 @@ test('Basic', function () {
 		$request->getHeader('Authorization')
 	);
 	Assert::same(['user', 'password'], $request->getBasicCredentials());
+
+	Assert::same('', $request->getUrl()->getUser());
+	Assert::same('', $request->getUrl()->getPassword());
 });
+
 
 
 test('Digest', function () {
