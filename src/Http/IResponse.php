@@ -10,7 +10,6 @@ namespace Nette\Http;
 
 /**
  * HTTP response contract for setting status code, headers, cookies, and redirects.
- * @method self deleteHeader(string $name)
  */
 interface IResponse
 {
@@ -352,6 +351,11 @@ interface IResponse
 	 * Adds an HTTP header without replacing a previously sent header with the same name.
 	 */
 	function addHeader(string $name, string $value): static;
+
+	/**
+	 * Deletes a previously sent HTTP header.
+	 */
+	function deleteHeader(string $name): static;
 
 	/**
 	 * Sends a Content-type HTTP header.
