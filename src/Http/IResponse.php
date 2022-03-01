@@ -12,7 +12,6 @@ namespace Nette\Http;
 
 /**
  * HTTP response interface.
- * @method self deleteHeader(string $name)
  */
 interface IResponse
 {
@@ -356,6 +355,11 @@ interface IResponse
 	function addHeader(string $name, string $value): static;
 
 	/**
+	 * Deletes a previously sent HTTP header.
+	 */
+	function deleteHeader(string $name): static;
+
+	/**
 	 * Sends a Content-type HTTP header.
 	 */
 	function setContentType(string $type, ?string $charset = null): static;
@@ -391,11 +395,12 @@ interface IResponse
 	function setCookie(
 		string $name,
 		string $value,
-		?int $expire,
+		string|int|null $expire,
 		?string $path = null,
 		?string $domain = null,
 		bool $secure = false,
 		bool $httpOnly = true,
+		string $sameSite = self::SAME_SITE_LAX,
 	): static;
 
 	/**
