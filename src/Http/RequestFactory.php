@@ -261,9 +261,9 @@ class RequestFactory
 	}
 
 
-	private function getMethod(): ?string
+	private function getMethod(): string
 	{
-		$method = $_SERVER['REQUEST_METHOD'] ?? null;
+		$method = $_SERVER['REQUEST_METHOD'] ?? 'GET';
 		if (
 			$method === 'POST'
 			&& preg_match('#^[A-Z]+$#D', $_SERVER['HTTP_X_HTTP_METHOD_OVERRIDE'] ?? '')
