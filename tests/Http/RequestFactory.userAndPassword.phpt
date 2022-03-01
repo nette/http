@@ -17,11 +17,11 @@ $_SERVER = [
 	'PHP_AUTH_PW' => 'password',
 ];
 $factory = new RequestFactory;
-Assert::same('user', $factory->fromGlobals()->getUrl()->getUser());
-Assert::same('password', $factory->fromGlobals()->getUrl()->getPassword());
+Assert::same('user', $factory->fromGlobals()->getUser());
+Assert::same('password', $factory->fromGlobals()->getPassword());
 
 
 $_SERVER = [];
 $factory = new RequestFactory;
-Assert::same('', $factory->fromGlobals()->getUrl()->getUser());
-Assert::same('', $factory->fromGlobals()->getUrl()->getPassword());
+Assert::same(null, $factory->fromGlobals()->getUser());
+Assert::same(null, $factory->fromGlobals()->getPassword());
