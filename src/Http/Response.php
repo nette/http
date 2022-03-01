@@ -250,8 +250,8 @@ final class Response implements IResponse
 		?string $path = null,
 		?string $domain = null,
 		?bool $secure = null,
-		?bool $httpOnly = null,
-		?string $sameSite = null,
+		bool $httpOnly = true,
+		string $sameSite = self::SAME_SITE_LAX,
 	): static {
 		self::checkHeaders();
 		setcookie($name, $value, [
@@ -259,8 +259,8 @@ final class Response implements IResponse
 			'path' => $path ?? ($domain ? '/' : $this->cookiePath),
 			'domain' => $domain ?? ($path ? '' : $this->cookieDomain),
 			'secure' => $secure ?? $this->cookieSecure,
-			'httponly' => $httpOnly ?? true,
-			'samesite' => $sameSite ?? self::SAME_SITE_LAX,
+			'httponly' => $httpOnly,
+			'samesite' => $sameSite,
 		]);
 		return $this;
 	}
