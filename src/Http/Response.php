@@ -229,7 +229,7 @@ final class Response implements IResponse
 	public function setCookie(
 		string $name,
 		string $value,
-		string|int|\DateTimeInterface|null $expire,
+		string|int|null $expire,
 		?string $path = null,
 		?string $domain = null,
 		?bool $secure = null,
