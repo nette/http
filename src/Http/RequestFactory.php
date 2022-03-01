@@ -59,9 +59,9 @@ class RequestFactory
 		$url = new Url;
 		$this->getServer($url);
 		$this->getPathAndQuery($url);
-		$this->getUserAndPassword($url);
 		[$post, $cookies] = $this->getGetPostCookie($url);
 		[$remoteAddr, $remoteHost] = $this->getClient($url);
+		[$user, $password] = $this->getUserAndPassword();
 
 		return new Request(
 			new UrlScript($url, $this->getScriptPath($url)),
@@ -73,6 +73,8 @@ class RequestFactory
 			$remoteAddr,
 			$remoteHost,
 			fn(): string => file_get_contents('php://input'),
+			$user,
+			$password,
 		);
 	}
 
@@ -106,13 +108,6 @@ class RequestFactory
 		$path = Strings::fixEncoding(Strings::replace($path, $this->urlFilters['path']));
 		$url->setPath($path);
 		$url->setQuery($tmp[1] ?? '');
-	}
-
-
-	private function getUserAndPassword(Url $url): void
-	{
-		$url->setUser($_SERVER['PHP_AUTH_USER'] ?? '');
-		$url->setPassword($_SERVER['PHP_AUTH_PW'] ?? '');
 	}
 
 
@@ -287,6 +282,15 @@ class RequestFactory
 		}
 
 		return [$remoteAddr, $remoteHost];
+	}
+
+
+	private function getUserAndPassword(): array
+	{
+		$user = $_SERVER['PHP_AUTH_USER'] ?? null;
+		$password = $_SERVER['PHP_AUTH_PW'] ?? null;
+
+		return [$user, $password];
 	}
 
 
