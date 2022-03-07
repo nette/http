@@ -21,7 +21,7 @@ class RequestFactory
 	use Nette\SmartObject;
 
 	/** @internal */
-	private const CHARS = '\x09\x0A\x0D\x20-\x7E\xA0-\x{10FFFF}';
+	private const ValidChars = '\x09\x0A\x0D\x20-\x7E\xA0-\x{10FFFF}';
 
 	/** @var array */
 	public $urlFilters = [
@@ -156,7 +156,7 @@ class RequestFactory
 			: (empty($_COOKIE) ? [] : $_COOKIE);
 
 		// remove invalid characters
-		$reChars = '#^[' . self::CHARS . ']*+$#Du';
+		$reChars = '#^[' . self::ValidChars . ']*+$#Du';
 		if (!$this->binary) {
 			$list = [&$query, &$post, &$cookies];
 			foreach ($list as $key => &$val) {
@@ -169,7 +169,7 @@ class RequestFactory
 						$list[] = &$list[$key][$k];
 
 					} elseif (is_string($v)) {
-						$list[$key][$k] = (string) preg_replace('#[^' . self::CHARS . ']+#u', '', $v);
+						$list[$key][$k] = (string) preg_replace('#[^' . self::ValidChars . ']+#u', '', $v);
 
 					} else {
 						throw new Nette\InvalidStateException(sprintf('Invalid value in $_POST/$_COOKIE in key %s, expected string, %s given.', "'$k'", gettype($v)));
@@ -187,7 +187,7 @@ class RequestFactory
 
 	private function getFiles(): array
 	{
-		$reChars = '#^[' . self::CHARS . ']*+$#Du';
+		$reChars = '#^[' . self::ValidChars . ']*+$#Du';
 		$files = [];
 		$list = [];
 		foreach ($_FILES ?? [] as $k => $v) {

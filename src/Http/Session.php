@@ -20,9 +20,9 @@ class Session
 	use Nette\SmartObject;
 
 	/** Default file lifetime */
-	private const DEFAULT_FILE_LIFETIME = 3 * Nette\Utils\DateTime::HOUR;
+	private const DefaultFileLifetime = 3 * Nette\Utils\DateTime::HOUR;
 
-	private const SECURITY_OPTIONS = [
+	private const SecurityOptions = [
 		'referer_check' => '',    // must be disabled because PHP implementation is invalid
 		'use_cookies' => 1,       // must be enabled to prevent Session Hijacking and Fixation
 		'use_only_cookies' => 1,  // must be enabled to prevent Session Fixation
@@ -47,7 +47,7 @@ class Session
 	private $options = [
 		'cookie_samesite' => IResponse::SAME_SITE_LAX,
 		'cookie_lifetime' => 0,   // for a maximum of 3 hours or until the browser is closed
-		'gc_maxlifetime' => self::DEFAULT_FILE_LIFETIME, // 3 hours
+		'gc_maxlifetime' => self::DefaultFileLifetime, // 3 hours
 	];
 
 	/** @var IRequest */
@@ -93,14 +93,14 @@ class Session
 	{
 		if (session_status() === PHP_SESSION_ACTIVE) { // adapt an existing session
 			if (!$this->started) {
-				$this->configure(self::SECURITY_OPTIONS);
+				$this->configure(self::SecurityOptions);
 				$this->initialize();
 			}
 
 			return;
 		}
 
-		$this->configure(self::SECURITY_OPTIONS + $this->options);
+		$this->configure(self::SecurityOptions + $this->options);
 
 		if (!session_id()) { // session is started for first time
 			$id = $this->request->getCookie(session_name());
@@ -500,7 +500,7 @@ class Session
 	{
 		if ($time === null) {
 			return $this->setOptions([
-				'gc_maxlifetime' => self::DEFAULT_FILE_LIFETIME,
+				'gc_maxlifetime' => self::DefaultFileLifetime,
 				'cookie_lifetime' => 0,
 			]);
 
