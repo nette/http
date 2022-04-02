@@ -232,6 +232,7 @@ class Request implements IRequest
 
 	/**
 	 * What URL did the user come from? Beware, it is not reliable at all.
+	 * @deprecated  deprecated in favor of the getOrigin()
 	 */
 	public function getReferer(): ?UrlImmutable
 	{

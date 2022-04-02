@@ -10,31 +10,22 @@ require __DIR__ . '/../bootstrap.php';
 
 
 test('missing origin', function () {
-	$_SERVER = [];
-	$factory = new Http\RequestFactory;
-	$request = $factory->fromGlobals();
-
+	$request = new Http\Request(new Http\UrlScript);
 	Assert::null($request->getOrigin());
 });
 
 
 test('opaque origin', function () {
-	$_SERVER = [
-		'HTTP_ORIGIN' => 'null',
-	];
-	$factory = new Http\RequestFactory;
-	$request = $factory->fromGlobals();
-
+	$request = new Http\Request(new Http\UrlScript, null, null, null, [
+		'Origin' => 'null',
+	]);
 	Assert::null($request->getOrigin());
 });
 
 
 test('normal origin', function () {
-	$_SERVER = [
-		'HTTP_ORIGIN' => 'https://nette.org',
-	];
-	$factory = new Http\RequestFactory;
-	$request = $factory->fromGlobals();
-
+	$request = new Http\Request(new Http\UrlScript, null, null, null, [
+		'Origin' => 'https://nette.org',
+	]);
 	Assert::equal(new UrlImmutable('https://nette.org'), $request->getOrigin());
 });
