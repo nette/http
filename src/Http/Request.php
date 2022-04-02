@@ -242,6 +242,22 @@ class Request implements IRequest
 
 
 	/**
+	 * What origin did the user come from? It contains scheme, hostname and port.
+	 */
+	public function getOrigin(): ?UrlImmutable
+	{
+		$header = $this->headers['origin'] ?? 'null';
+		try {
+			return $header === 'null'
+				? null
+				: new UrlImmutable($header);
+		} catch (Nette\InvalidArgumentException $e) {
+			return null;
+		}
+	}
+
+
+	/**
 	 * Is the request sent via secure channel (https)?
 	 */
 	public function isSecured(): bool
