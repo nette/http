@@ -39,8 +39,12 @@ class HttpExtension extends Nette\DI\CompilerExtension
 			'csp' => Expect::arrayOf('array|scalar|null'), // Content-Security-Policy
 			'cspReportOnly' => Expect::arrayOf('array|scalar|null'), // Content-Security-Policy-Report-Only
 			'featurePolicy' => Expect::arrayOf('array|scalar|null'), // Feature-Policy
-			'cookiePath' => Expect::string(),
-			'cookieDomain' => Expect::string(),
+			'cookiePath' => Expect::anyOf(
+				Expect::string(), Expect::type(\Nette\DI\Definitions\Statement::class)
+			),
+			'cookieDomain' => Expect::anyOf(
+				Expect::string(), Expect::type(\Nette\DI\Definitions\Statement::class)
+			),
 			'cookieSecure' => Expect::anyOf('auto', null, true, false)->firstIsDefault(), // Whether the cookie is available only through HTTPS
 			'disableNetteCookie' => Expect::bool(false), // disables cookie use by Nette
 		]);
