@@ -63,6 +63,13 @@ class MySessionStorage implements SessionHandlerInterface
 
 		return true;
 	}
+
+
+	#[ReturnTypeWillChange]
+	public function validateId($key)
+	{
+		return true;
+	}
 }
 
 
