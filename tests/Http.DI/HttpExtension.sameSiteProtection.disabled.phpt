@@ -20,7 +20,7 @@ $config = $loader->load(Tester\FileMock::create(<<<'EOD'
 http:
 	disableNetteCookie: yes
 EOD
-, 'neon'));
+	, 'neon'));
 
 eval($compiler->addConfig($config)->compile());
 

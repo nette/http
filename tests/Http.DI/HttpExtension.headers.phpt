@@ -27,7 +27,7 @@ http:
 		C:
 		D: 0
 EOD
-, 'neon'));
+	, 'neon'));
 
 eval($compiler->addConfig($config)->compile());
 

@@ -29,7 +29,7 @@ http:
 			- https://example.com
 		camera: *
 EOD
-, 'neon'));
+	, 'neon'));
 
 eval($compiler->addConfig($config)->compile());
 

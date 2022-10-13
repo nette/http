@@ -40,7 +40,7 @@ http:
 		upgrade-insecure-requests: true
 		block-all-mixed-content: false
 EOD
-, 'neon'));
+	, 'neon'));
 
 eval($compiler->addConfig($config)->compile());
 
