@@ -156,11 +156,11 @@ class SessionSection implements \IteratorAggregate, \ArrayAccess
 	}
 
 
-	#[\ReturnTypeWillChange]
 	/**
 	 * Gets a variable from this session section.
 	 * @return mixed
 	 */
+	#[\ReturnTypeWillChange]
 	public function offsetGet($name)
 	{
 		return $this->get($name);

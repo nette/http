@@ -204,7 +204,7 @@ interface IResponse
 	function getHeader(string $header): ?string;
 
 	/**
-	 * Returns a associative array of headers to sent.
+	 * Returns an associative array of headers to sent.
 	 */
 	function getHeaders(): array;
 
