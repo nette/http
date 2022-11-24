@@ -177,18 +177,18 @@ final class Response implements IResponse
 	 * @return static
 	 * @throws Nette\InvalidStateException  if HTTP headers have been sent
 	 */
-	public function setExpiration(?string $time)
+	public function setExpiration(?string $expire)
 	{
 		$this->setHeader('Pragma', null);
-		if (!$time) { // no cache
+		if (!$expire) { // no cache
 			$this->setHeader('Cache-Control', 's-maxage=0, max-age=0, must-revalidate');
 			$this->setHeader('Expires', 'Mon, 23 Jan 1978 10:00:00 GMT');
 			return $this;
 		}
 
-		$time = DateTime::from($time);
-		$this->setHeader('Cache-Control', 'max-age=' . ($time->format('U') - time()));
-		$this->setHeader('Expires', Helpers::formatDate($time));
+		$expire = DateTime::from($expire);
+		$this->setHeader('Cache-Control', 'max-age=' . ($expire->format('U') - time()));
+		$this->setHeader('Expires', Helpers::formatDate($expire));
 		return $this;
 	}
 
@@ -255,14 +255,14 @@ final class Response implements IResponse
 
 	/**
 	 * Sends a cookie.
-	 * @param  string|int|\DateTimeInterface $time  expiration time, value null means "until the browser session ends"
+	 * @param  string|int|\DateTimeInterface $expire  expiration time, value null means "until the browser session ends"
 	 * @return static
 	 * @throws Nette\InvalidStateException  if HTTP headers have been sent
 	 */
 	public function setCookie(
 		string $name,
 		string $value,
-		$time,
+		$expire,
 		?string $path = null,
 		?string $domain = null,
 		?bool $secure = null,
@@ -271,7 +271,7 @@ final class Response implements IResponse
 	) {
 		self::checkHeaders();
 		$options = [
-			'expires' => $time ? (int) DateTime::from($time)->format('U') : 0,
+			'expires' => $expire ? (int) DateTime::from($expire)->format('U') : 0,
 			'path' => $path ?? ($domain ? '/' : $this->cookiePath),
 			'domain' => $domain ?? ($path ? '' : $this->cookieDomain),
 			'secure' => $secure ?? $this->cookieSecure,

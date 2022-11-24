@@ -496,19 +496,19 @@ class Session
 	 * null means "for a maximum of 3 hours or until the browser is closed".
 	 * @return static
 	 */
-	public function setExpiration(?string $time)
+	public function setExpiration(?string $expire)
 	{
-		if ($time === null) {
+		if ($expire === null) {
 			return $this->setOptions([
 				'gc_maxlifetime' => self::DefaultFileLifetime,
 				'cookie_lifetime' => 0,
 			]);
 
 		} else {
-			$time = Nette\Utils\DateTime::from($time)->format('U') - time();
+			$expire = Nette\Utils\DateTime::from($expire)->format('U') - time();
 			return $this->setOptions([
-				'gc_maxlifetime' => $time,
-				'cookie_lifetime' => $time,
+				'gc_maxlifetime' => $expire,
+				'cookie_lifetime' => $expire,
 			]);
 		}
 	}
