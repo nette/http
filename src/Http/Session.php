@@ -32,41 +32,27 @@ class Session
 	];
 
 	/** @var array<callable(self): void>  Occurs when the session is started */
-	public $onStart = [];
+	public array $onStart = [];
 
 	/** @var array<callable(self): void>  Occurs before the session is written to disk */
-	public $onBeforeWrite = [];
+	public array $onBeforeWrite = [];
 
-	/** @var bool  has been session ID regenerated? */
-	private $regenerated = false;
+	private bool $regenerated = false;
+	private bool $started = false;
 
-	/** @var bool  has been session started by Nette? */
-	private $started = false;
-
-	/** @var array default configuration */
-	private $options = [
+	/** default configuration */
+	private array $options = [
 		'cookie_samesite' => IResponse::SameSiteLax,
 		'cookie_lifetime' => 0,   // for a maximum of 3 hours or until the browser is closed
 		'gc_maxlifetime' => self::DefaultFileLifetime, // 3 hours
 	];
 
-	/** @var IRequest */
-	private $request;
-
-	/** @var IResponse */
-	private $response;
-
-	/** @var \SessionHandlerInterface */
-	private $handler;
-
-	/** @var bool */
-	private $readAndClose = false;
-
-	/** @var bool */
-	private $fileExists = true;
-
-	/** @var bool */
-	private $autoStart = true;
+	private IRequest $request;
+	private IResponse $response;
+	private ?\SessionHandlerInterface $handler = null;
+	private bool $readAndClose = false;
+	private bool $fileExists = true;
+	private bool $autoStart = true;
 
 
 	public function __construct(IRequest $request, IResponse $response)
