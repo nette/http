@@ -24,6 +24,7 @@ test('Basic', function () {
 		'Basic dXNlcjpwYXNzd29yZA==',
 		$request->getHeader('Authorization')
 	);
+	Assert::same(['user', 'password'], $request->getBasicCredentials());
 });
 
 
@@ -38,4 +39,13 @@ test('Digest', function () {
 		'Digest username="admin"',
 		$request->getHeader('Authorization')
 	);
+	Assert::null($request->getBasicCredentials());
+});
+
+
+test('empty', function () {
+	$_SERVER = [];
+	$factory = new RequestFactory;
+	$request = $factory->fromGlobals();
+	Assert::null($request->getBasicCredentials());
 });

@@ -317,6 +317,25 @@ class Request implements IRequest
 
 
 	/**
+	 * Returns basic HTTP authentication credentials.
+	 * @return array{string, string}
+	 */
+	public function getBasicCredentials(): ?array
+	{
+		return preg_match(
+			'~^Basic (\S+)$~',
+			$this->headers['authorization'] ?? '',
+			$t
+		)
+			&& ($t = base64_decode($t[1], true))
+			&& ($t = explode(':', $t, 2))
+			&& (count($t) === 2)
+			? $t
+			: null;
+	}
+
+
+	/**
 	 * Returns the most preferred language by browser. Uses the `Accept-Language` header. If no match is reached, it returns `null`.
 	 * @param  string[]  $langs  supported languages
 	 */
