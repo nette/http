@@ -34,23 +34,12 @@ final class FileUpload
 	/** @deprecated use FileUpload::ImageMimeTypes */
 	public const IMAGE_MIME_TYPES = self::ImageMimeTypes;
 
-	/** @var string */
-	private $name;
-
-	/** @var string|null */
-	private $fullPath;
-
-	/** @var string|false|null */
-	private $type;
-
-	/** @var int */
-	private $size;
-
-	/** @var string */
-	private $tmpName;
-
-	/** @var int */
-	private $error;
+	private string $name;
+	private string|null $fullPath;
+	private string|false|null $type = null;
+	private int $size;
+	private string $tmpName;
+	private int $error;
 
 
 	public function __construct(?array $value)
