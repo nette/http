@@ -19,14 +19,9 @@ class SessionSection implements \IteratorAggregate, \ArrayAccess
 {
 	use Nette\SmartObject;
 
-	/** @var bool */
-	public $warnOnUndefined = false;
-
-	/** @var Session */
-	private $session;
-
-	/** @var string */
-	private $name;
+	public bool $warnOnUndefined = false;
+	private Session $session;
+	private string $name;
 
 
 	/**

@@ -33,31 +33,16 @@ class Request implements IRequest
 {
 	use Nette\SmartObject;
 
-	/** @var string */
-	private $method;
+	private string $method;
+	private UrlScript $url;
+	private array $post;
+	private array $files;
+	private array $cookies;
+	private array $headers;
+	private ?string $remoteAddress;
+	private ?string $remoteHost;
 
-	/** @var UrlScript */
-	private $url;
-
-	/** @var array */
-	private $post;
-
-	/** @var array */
-	private $files;
-
-	/** @var array */
-	private $cookies;
-
-	/** @var array */
-	private $headers;
-
-	/** @var string|null */
-	private $remoteAddress;
-
-	/** @var string|null */
-	private $remoteHost;
-
-	/** @var callable|null */
+	/** @var ?callable */
 	private $rawBodyCallback;
 
 
