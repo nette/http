@@ -335,9 +335,8 @@ interface IResponse
 
 	/**
 	 * Sets HTTP response code.
-	 * @return static
 	 */
-	function setCode(int $code, ?string $reason = null);
+	function setCode(int $code, ?string $reason = null): static;
 
 	/**
 	 * Returns HTTP response code.
@@ -346,21 +345,18 @@ interface IResponse
 
 	/**
 	 * Sends an HTTP header, replacing any previously sent header with the same name.
-	 * @return static
 	 */
-	function setHeader(string $name, string $value);
+	function setHeader(string $name, string $value): static;
 
 	/**
 	 * Adds an HTTP header without replacing a previously sent header with the same name.
-	 * @return static
 	 */
-	function addHeader(string $name, string $value);
+	function addHeader(string $name, string $value): static;
 
 	/**
 	 * Sends a Content-type HTTP header.
-	 * @return static
 	 */
-	function setContentType(string $type, ?string $charset = null);
+	function setContentType(string $type, ?string $charset = null): static;
 
 	/**
 	 * Redirects to a new URL.
@@ -370,9 +366,8 @@ interface IResponse
 	/**
 	 * Sets the Cache-Control and Expires headers. Pass a time string (e.g. '20 minutes') to enable caching,
 	 * or null to disable it.
-	 * @return static
 	 */
-	function setExpiration(?string $expire);
+	function setExpiration(?string $expire): static;
 
 	/**
 	 * Checks whether HTTP headers have already been sent.
@@ -392,7 +387,6 @@ interface IResponse
 
 	/**
 	 * Sends a cookie.
-	 * @return static
 	 */
 	function setCookie(
 		string $name,
@@ -400,13 +394,19 @@ interface IResponse
 		string|int|\DateTimeInterface|null $expire,
 		?string $path = null,
 		?string $domain = null,
-		?bool $secure = null,
-		?bool $httpOnly = null,
-	);
+		bool $secure = false,
+		bool $httpOnly = true,
+		string $sameSite = self::SameSiteLax,
+	): static;
 
 	/**
 	 * Deletes a cookie.
 	 * @return void
 	 */
-	function deleteCookie(string $name, ?string $path = null, ?string $domain = null, ?bool $secure = null);
+	function deleteCookie(
+		string $name,
+		?string $path = null,
+		?string $domain = null,
+		bool $secure = false,
+	);
 }

@@ -56,22 +56,19 @@ interface IRequest
 
 	/**
 	 * Returns a URL query parameter, or all parameters as an array if no key is given.
-	 * @return mixed
 	 */
-	function getQuery(?string $key = null);
+	function getQuery(?string $key = null): mixed;
 
 	/**
 	 * Returns a POST parameter, or all POST parameters as an array if no key is given.
-	 * @return mixed
 	 */
-	function getPost(?string $key = null);
+	function getPost(?string $key = null): mixed;
 
 	/**
 	 * Returns the uploaded file for the given key, or null if not present.
 	 * Accepts a string key or an array of keys for nested file structures (e.g. ['form', 'avatar']).
-	 * @return ?FileUpload
 	 */
-	function getFile(string $key);
+	function getFile(string $key): ?FileUpload;
 
 	/**
 	 * Returns the tree of uploaded files, with each leaf being a FileUpload instance.
@@ -81,9 +78,8 @@ interface IRequest
 
 	/**
 	 * Returns a cookie value, or null if it does not exist.
-	 * @return mixed
 	 */
-	function getCookie(string $key);
+	function getCookie(string $key): mixed;
 
 	/**
 	 * Returns all cookies.
