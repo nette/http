@@ -337,9 +337,8 @@ interface IResponse
 
 	/**
 	 * Sets HTTP response code.
-	 * @return static
 	 */
-	function setCode(int $code, ?string $reason = null);
+	function setCode(int $code, ?string $reason = null): static;
 
 	/**
 	 * Returns HTTP response code.
@@ -348,21 +347,18 @@ interface IResponse
 
 	/**
 	 * Sends a HTTP header and replaces a previous one.
-	 * @return static
 	 */
-	function setHeader(string $name, string $value);
+	function setHeader(string $name, string $value): static;
 
 	/**
 	 * Adds HTTP header.
-	 * @return static
 	 */
-	function addHeader(string $name, string $value);
+	function addHeader(string $name, string $value): static;
 
 	/**
 	 * Sends a Content-type HTTP header.
-	 * @return static
 	 */
-	function setContentType(string $type, ?string $charset = null);
+	function setContentType(string $type, ?string $charset = null): static;
 
 	/**
 	 * Redirects to a new URL.
@@ -371,9 +367,8 @@ interface IResponse
 
 	/**
 	 * Sets the time (like '20 minutes') before a page cached on a browser expires, null means "must-revalidate".
-	 * @return static
 	 */
-	function setExpiration(?string $expire);
+	function setExpiration(?string $expire): static;
 
 	/**
 	 * Checks if headers have been sent.
@@ -392,7 +387,6 @@ interface IResponse
 
 	/**
 	 * Sends a cookie.
-	 * @return static
 	 */
 	function setCookie(
 		string $name,
@@ -400,12 +394,18 @@ interface IResponse
 		string|int|\DateTimeInterface|null $expire,
 		?string $path = null,
 		?string $domain = null,
-		?bool $secure = null,
-		?bool $httpOnly = null,
-	);
+		bool $secure = false,
+		bool $httpOnly = true,
+		string $sameSite = self::SameSiteLax,
+	): static;
 
 	/**
 	 * Deletes a cookie.
 	 */
-	function deleteCookie(string $name, ?string $path = null, ?string $domain = null, ?bool $secure = null);
+	function deleteCookie(
+		string $name,
+		?string $path = null,
+		?string $domain = null,
+		bool $secure = false,
+	);
 }
