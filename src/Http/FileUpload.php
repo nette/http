@@ -205,7 +205,7 @@ final class FileUpload
 			[$this->tmpName, $dest],
 			function (string $message) use ($dest): void {
 				throw new Nette\InvalidStateException("Unable to move uploaded file '$this->tmpName' to '$dest'. $message");
-			}
+			},
 		);
 		@chmod($dest, 0666); // @ - possible low permission to chmod
 		$this->tmpName = $dest;
