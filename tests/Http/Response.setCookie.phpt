@@ -35,7 +35,7 @@ Assert::same(
 	PHP_VERSION_ID >= 70300
 		? ['Set-Cookie: test=value; path=/; HttpOnly; SameSite=Lax', 'Set-Cookie: test=newvalue; path=/; HttpOnly; SameSite=Lax']
 		: ['Set-Cookie: test=value; path=/; SameSite=Lax; HttpOnly', 'Set-Cookie: test=newvalue; path=/; SameSite=Lax; HttpOnly'],
-	$headers
+	$headers,
 );
 
 
