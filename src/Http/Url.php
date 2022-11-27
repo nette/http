@@ -189,7 +189,13 @@ class Url implements \JsonSerializable
 
 	public function getPort(): ?int
 	{
-		return $this->port ?: (self::$defaultPorts[$this->scheme] ?? null);
+		return $this->port ?: $this->getDefaultPort();
+	}
+
+
+	public function getDefaultPort(): ?int
+	{
+		return self::$defaultPorts[$this->scheme] ?? null;
 	}
 
 
@@ -302,7 +308,7 @@ class Url implements \JsonSerializable
 				? rawurlencode($this->user) . ($this->password === '' ? '' : ':' . rawurlencode($this->password)) . '@'
 				: '')
 			. $this->host
-			. ($this->port && (!isset(self::$defaultPorts[$this->scheme]) || $this->port !== self::$defaultPorts[$this->scheme])
+			. ($this->port && $this->port !== $this->getDefaultPort()
 				? ':' . $this->port
 				: '');
 	}

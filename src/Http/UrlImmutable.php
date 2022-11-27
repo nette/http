@@ -184,7 +184,13 @@ class UrlImmutable implements \JsonSerializable
 
 	public function getPort(): ?int
 	{
-		return $this->port ?: (Url::$defaultPorts[$this->scheme] ?? null);
+		return $this->port ?: $this->getDefaultPort();
+	}
+
+
+	public function getDefaultPort(): ?int
+	{
+		return Url::$defaultPorts[$this->scheme] ?? null;
 	}
 
 
@@ -334,7 +340,7 @@ class UrlImmutable implements \JsonSerializable
 				? rawurlencode($this->user) . ($this->password === '' ? '' : ':' . rawurlencode($this->password)) . '@'
 				: '')
 			. $this->host
-			. ($this->port && (!isset(Url::$defaultPorts[$this->scheme]) || $this->port !== Url::$defaultPorts[$this->scheme])
+			. ($this->port && $this->port !== $this->getDefaultPort()
 				? ':' . $this->port
 				: '');
 	}

@@ -21,6 +21,7 @@ Assert::same('username:', $url->user);
 Assert::same('password:', $url->password);
 Assert::same('hostname', $url->host);
 Assert::same(60, $url->port);
+Assert::same(80, $url->getDefaultPort());
 Assert::same('/p%61th/script.php', $url->path);
 Assert::same('/p%61th/', $url->basePath);
 Assert::same('arg=value', $url->query);
@@ -45,6 +46,7 @@ Assert::same('/x', $url->getPath());
 
 $url->setScheme('');
 Assert::same('//username%3A:password%3A@hostname:60/x?arg=value#anchor', $url->absoluteUrl);
+Assert::null($url->getDefaultPort());
 
 $url->setPath('');
 Assert::same('/', $url->getPath());
@@ -57,3 +59,4 @@ Assert::same('', $url->getPath());
 
 $url = new Url('https://0/0');
 Assert::same('https://0', $url->hostUrl);
+Assert::same(443, $url->getDefaultPort());
