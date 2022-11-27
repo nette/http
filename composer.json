@@ -20,10 +20,10 @@
 	},
 	"require-dev": {
 		"nette/di": "^3.0",
-		"nette/tester": "^2.0",
+		"nette/tester": "^2.4",
 		"nette/security": "^3.0",
-		"tracy/tracy": "^2.4",
-		"phpstan/phpstan": "^0.12"
+		"tracy/tracy": "^2.8",
+		"phpstan/phpstan": "^1.0"
 	},
 	"conflict": {
 		"nette/di": "<3.0.3",
