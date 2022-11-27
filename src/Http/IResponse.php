@@ -394,8 +394,8 @@ interface IResponse
 		?int $expire,
 		?string $path = null,
 		?string $domain = null,
-		?bool $secure = null,
-		?bool $httpOnly = null,
+		bool $secure = false,
+		bool $httpOnly = true,
 	): static;
 
 	/**
@@ -405,6 +405,6 @@ interface IResponse
 		string $name,
 		?string $path = null,
 		?string $domain = null,
-		?bool $secure = null,
+		bool $secure = false,
 	);
 }
