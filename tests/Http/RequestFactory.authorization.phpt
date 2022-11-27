@@ -22,7 +22,7 @@ test('Basic', function () {
 	$request = $factory->fromGlobals();
 	Assert::same(
 		'Basic dXNlcjpwYXNzd29yZA==',
-		$request->getHeader('Authorization')
+		$request->getHeader('Authorization'),
 	);
 	Assert::same(['user', 'password'], $request->getBasicCredentials());
 
@@ -41,7 +41,7 @@ test('Digest', function () {
 	$request = $factory->fromGlobals();
 	Assert::same(
 		'Digest username="admin"',
-		$request->getHeader('Authorization')
+		$request->getHeader('Authorization'),
 	);
 	Assert::null($request->getBasicCredentials());
 });

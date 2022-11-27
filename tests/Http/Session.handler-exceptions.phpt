@@ -32,13 +32,17 @@ class ThrowsOnReadHandler extends SessionHandler
 $session = new Nette\Http\Session(new Http\Request(new Http\UrlScript('http://nette.org')), new Http\Response);
 $session->setHandler(new ThrowsOnReadHandler);
 
-Assert::exception(function () use ($session) {
-	$session->start();
-}, RuntimeException::class, 'Session can\'t be started for whatever reason!');
+Assert::exception(
+	fn() => $session->start(),
+	RuntimeException::class,
+	'Session can\'t be started for whatever reason!',
+);
 
-Assert::exception(function () use ($session) {
-	$session->start();
-}, RuntimeException::class, 'Session can\'t be started for whatever reason!');
+Assert::exception(
+	fn() => $session->start(),
+	RuntimeException::class,
+	'Session can\'t be started for whatever reason!',
+);
 
 $session->setHandler(new SessionHandler);
 $session->start();

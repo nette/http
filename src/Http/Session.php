@@ -117,7 +117,7 @@ class Session
 				[['read_and_close' => $this->readAndClose]],
 				function (string $message) use (&$e): void {
 					$e = new Nette\InvalidStateException($message);
-				}
+				},
 			);
 		} catch (\Throwable $e) {
 		}
@@ -389,7 +389,7 @@ class Session
 	public function setOptions(array $options)
 	{
 		$normalized = [];
-		$allowed = ini_get_all('session', false) + ['session.read_and_close' => 1, 'session.cookie_samesite' => 1]; // for PHP < 7.3
+		$allowed = ini_get_all('session', details: false) + ['session.read_and_close' => 1, 'session.cookie_samesite' => 1]; // for PHP < 7.3
 
 		foreach ($options as $key => $value) {
 			if (!strncmp($key, 'session.', 8)) { // back compatibility
@@ -401,7 +401,7 @@ class Session
 			if (!isset($allowed["session.$normKey"])) {
 				$hint = substr((string) Nette\Utils\Helpers::getSuggestion(array_keys($allowed), "session.$normKey"), 8);
 				if ($key !== $normKey) {
-					$hint = preg_replace_callback('#_(.)#', function ($m) { return strtoupper($m[1]); }, $hint); // snake_case -> camelCase
+					$hint = preg_replace_callback('#_(.)#', fn($m) => strtoupper($m[1]), $hint); // snake_case -> camelCase
 				}
 
 				throw new Nette\InvalidStateException("Invalid session configuration option '$key'" . ($hint ? ", did you mean '$hint'?" : '.'));
@@ -481,7 +481,7 @@ class Session
 					$cookie['path'] . (isset($cookie['samesite']) ? '; SameSite=' . $cookie['samesite'] : ''),
 					$cookie['domain'],
 					$cookie['secure'],
-					$cookie['httponly']
+					$cookie['httponly'],
 				);
 			}
 
@@ -527,7 +527,7 @@ class Session
 		string $path,
 		?string $domain = null,
 		?bool $secure = null,
-		?string $sameSite = null
+		?string $sameSite = null,
 	) {
 		return $this->setOptions([
 			'cookie_path' => $path,
@@ -587,7 +587,7 @@ class Session
 			$cookie['domain'],
 			$cookie['secure'],
 			$cookie['httponly'],
-			$cookie['samesite'] ?? null
+			$cookie['samesite'] ?? null,
 		);
 	}
 }

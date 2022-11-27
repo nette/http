@@ -380,8 +380,8 @@ class Url implements \JsonSerializable
 	{
 		$this->path = preg_replace_callback(
 			'#[^!$&\'()*+,/:;=@%]+#',
-			function (array $m): string { return rawurlencode($m[0]); },
-			self::unescape($this->path, '%/')
+			fn(array $m): string => rawurlencode($m[0]),
+			self::unescape($this->path, '%/'),
 		);
 		$this->host = rtrim($this->host, '.');
 		$this->host = self::idnHostToUnicode(strtolower($this->host));
@@ -436,8 +436,8 @@ class Url implements \JsonSerializable
 		if ($reserved !== '') {
 			$s = preg_replace_callback(
 				'#%(' . substr(chunk_split(bin2hex($reserved), 2, '|'), 0, -1) . ')#i',
-				function (array $m): string { return '%25' . strtoupper($m[1]); },
-				$s
+				fn(array $m): string => '%25' . strtoupper($m[1]),
+				$s,
 			);
 		}
 

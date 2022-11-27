@@ -97,7 +97,7 @@ final class FileUpload
 	 */
 	public function getSanitizedName(): string
 	{
-		$name = Nette\Utils\Strings::webalize($this->name, '.', false);
+		$name = Nette\Utils\Strings::webalize($this->name, '.', lower: false);
 		$name = str_replace(['-.', '.-'], '.', $name);
 		$name = trim($name, '.-');
 		$name = $name === '' ? 'unknown' : $name;
@@ -129,8 +129,8 @@ final class FileUpload
 	 */
 	public function getContentType(): ?string
 	{
-		if ($this->isOk() && $this->type === null) {
-			$this->type = finfo_file(finfo_open(FILEINFO_MIME_TYPE), $this->tmpName);
+		if ($this->isOk()) {
+			$this->type ??= finfo_file(finfo_open(FILEINFO_MIME_TYPE), $this->tmpName);
 		}
 
 		return $this->type ?: null;
@@ -227,9 +227,9 @@ final class FileUpload
 			[$this->tmpName, $dest],
 			function (string $message) use ($dest): void {
 				throw new Nette\InvalidStateException("Unable to move uploaded file '$this->tmpName' to '$dest'. $message");
-			}
+			},
 		);
-		@chmod($dest, 0666); // @ - possible low permission to chmod
+		@chmod($dest, 0o666); // @ - possible low permission to chmod
 		$this->tmpName = $dest;
 		return $this;
 	}
@@ -249,7 +249,7 @@ final class FileUpload
 			$flag & IMG_WEBP ? 'image/webp' : null,
 			$flag & 256 ? 'image/avif' : null, // IMG_AVIF
 		]);
-		return in_array($this->getContentType(), $types, true);
+		return in_array($this->getContentType(), $types, strict: true);
 	}
 
 

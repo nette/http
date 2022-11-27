@@ -408,7 +408,7 @@ interface IResponse
 		?string $path = null,
 		?string $domain = null,
 		?bool $secure = null,
-		?bool $httpOnly = null
+		?bool $httpOnly = null,
 	);
 
 	/**

@@ -67,7 +67,7 @@ final class Response implements IResponse
 		self::checkHeaders();
 		$this->code = $code;
 		$protocol = $_SERVER['SERVER_PROTOCOL'] ?? 'HTTP/1.1';
-		$reason = $reason ?? self::ReasonPhrases[$code] ?? 'Unknown status';
+		$reason ??= self::ReasonPhrases[$code] ?? 'Unknown status';
 		header("$protocol $code $reason");
 		return $this;
 	}
@@ -110,7 +110,7 @@ final class Response implements IResponse
 	public function addHeader(string $name, string $value)
 	{
 		self::checkHeaders();
-		header($name . ': ' . $value, false);
+		header($name . ': ' . $value, replace: false);
 		return $this;
 	}
 
@@ -150,7 +150,7 @@ final class Response implements IResponse
 		$this->setHeader(
 			'Content-Disposition',
 			'attachment; filename="' . str_replace('"', '', $fileName) . '"; '
-			. "filename*=utf-8''" . rawurlencode($fileName)
+			. "filename*=utf-8''" . rawurlencode($fileName),
 		);
 		return $this;
 	}
@@ -253,7 +253,7 @@ final class Response implements IResponse
 		?string $domain = null,
 		?bool $secure = null,
 		?bool $httpOnly = null,
-		?string $sameSite = null
+		?string $sameSite = null,
 	) {
 		self::checkHeaders();
 		$options = [
@@ -274,7 +274,7 @@ final class Response implements IResponse
 				$options['path'] . ($sameSite ? "; SameSite=$sameSite" : ''),
 				$options['domain'],
 				$options['secure'],
-				$options['httponly']
+				$options['httponly'],
 			);
 		}
 
@@ -301,7 +301,7 @@ final class Response implements IResponse
 		} elseif (
 			$this->warnOnBuffer &&
 			ob_get_length() &&
-			!array_filter(ob_get_status(true), function (array $i): bool { return !$i['chunk_size']; })
+			!array_filter(ob_get_status(true), fn(array $i): bool => !$i['chunk_size'])
 		) {
 			trigger_error('Possible problem: you are sending a HTTP header while already having some data in output buffer. Try Tracy\OutputDebugger or send cookies/start session earlier.');
 		}

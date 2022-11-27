@@ -76,9 +76,7 @@ class RequestFactory
 			$this->getMethod(),
 			$remoteAddr,
 			$remoteHost,
-			function (): string {
-				return file_get_contents('php://input');
-			}
+			fn(): string => file_get_contents('php://input')
 		);
 	}
 
@@ -284,9 +282,7 @@ class RequestFactory
 			: null;
 
 		// use real client address and host if trusted proxy is used
-		$usingTrustedProxy = $remoteAddr && Arrays::some($this->proxies, function (string $proxy) use ($remoteAddr): bool {
-			return Helpers::ipMatch($remoteAddr, $proxy);
-		});
+		$usingTrustedProxy = $remoteAddr && Arrays::some($this->proxies, fn(string $proxy): bool => Helpers::ipMatch($remoteAddr, $proxy));
 		if ($usingTrustedProxy) {
 			$remoteHost = null;
 			$remoteAddr = empty($_SERVER['HTTP_FORWARDED'])
@@ -346,12 +342,11 @@ class RequestFactory
 		}
 
 		if (!empty($_SERVER['HTTP_X_FORWARDED_FOR'])) {
-			$xForwardedForWithoutProxies = array_filter(explode(',', $_SERVER['HTTP_X_FORWARDED_FOR']), function (string $ip): bool {
-				return filter_var(trim($ip), FILTER_VALIDATE_IP) === false ||
-					!Arrays::some($this->proxies, function (string $proxy) use ($ip): bool {
-						return Helpers::ipMatch(trim($ip), $proxy);
-					});
-			});
+			$xForwardedForWithoutProxies = array_filter(
+				explode(',', $_SERVER['HTTP_X_FORWARDED_FOR']),
+				fn(string $ip): bool => filter_var($ip = trim($ip), FILTER_VALIDATE_IP) === false
+					|| !Arrays::some($this->proxies, fn(string $proxy): bool => Helpers::ipMatch($ip, $proxy)),
+			);
 			if ($xForwardedForWithoutProxies) {
 				$remoteAddr = trim(end($xForwardedForWithoutProxies));
 				$xForwardedForRealIpKey = key($xForwardedForWithoutProxies);
