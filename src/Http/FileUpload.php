@@ -94,7 +94,7 @@ final class FileUpload
 	 */
 	public function getSanitizedName(): string
 	{
-		$name = Nette\Utils\Strings::webalize($this->name, '.', false);
+		$name = Nette\Utils\Strings::webalize($this->name, '.', lower: false);
 		$name = str_replace(['-.', '.-'], '.', $name);
 		$name = trim($name, '.-');
 		$name = $name === '' ? 'unknown' : $name;
@@ -203,7 +203,7 @@ final class FileUpload
 			[$this->tmpName, $dest],
 			function (string $message) use ($dest): void {
 				throw new Nette\InvalidStateException("Unable to move uploaded file '$this->tmpName' to '$dest'. $message");
-			}
+			},
 		);
 		@chmod($dest, 0666); // @ - possible low permission to chmod
 		$this->tmpName = $dest;
@@ -225,7 +225,7 @@ final class FileUpload
 			$flag & IMG_WEBP ? 'image/webp' : null,
 			$flag & 256 ? 'image/avif' : null, // IMG_AVIF
 		]);
-		return in_array($this->getContentType(), $types, true);
+		return in_array($this->getContentType(), $types, strict: true);
 	}
 
 
