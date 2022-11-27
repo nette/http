@@ -61,7 +61,7 @@ class MySessionStorage implements SessionHandlerInterface
 			}
 		}
 
-		return true;
+		return 0;
 	}
 
 
