@@ -77,7 +77,7 @@ class Context
 			return true;
 		}
 
-		$this->response->setCode(IResponse::S304_NOT_MODIFIED);
+		$this->response->setCode(IResponse::S304_NotModified);
 		return false;
 	}
 

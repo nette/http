@@ -16,7 +16,7 @@ $response = new Nette\Http\Response;
 $session = new Nette\Http\Session($factory->fromGlobals(), $response);
 
 $session->setOptions([
-	'cookie_samesite' => $response::SAME_SITE_LAX,
+	'cookie_samesite' => $response::SameSiteLax,
 ]);
 
 $session->start();

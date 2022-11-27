@@ -45,7 +45,7 @@ class Session
 
 	/** @var array default configuration */
 	private $options = [
-		'cookie_samesite' => IResponse::SAME_SITE_LAX,
+		'cookie_samesite' => IResponse::SameSiteLax,
 		'cookie_lifetime' => 0,   // for a maximum of 3 hours or until the browser is closed
 		'gc_maxlifetime' => self::DefaultFileLifetime, // 3 hours
 	];

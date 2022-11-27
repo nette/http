@@ -67,7 +67,7 @@ final class Response implements IResponse
 		self::checkHeaders();
 		$this->code = $code;
 		$protocol = $_SERVER['SERVER_PROTOCOL'] ?? 'HTTP/1.1';
-		$reason = $reason ?? self::REASON_PHRASES[$code] ?? 'Unknown status';
+		$reason = $reason ?? self::ReasonPhrases[$code] ?? 'Unknown status';
 		header("$protocol $code $reason");
 		return $this;
 	}
@@ -160,7 +160,7 @@ final class Response implements IResponse
 	 * Redirects to another URL. Don't forget to quit the script then.
 	 * @throws Nette\InvalidStateException  if HTTP headers have been sent
 	 */
-	public function redirect(string $url, int $code = self::S302_FOUND): void
+	public function redirect(string $url, int $code = self::S302_Found): void
 	{
 		$this->setCode($code);
 		$this->setHeader('Location', $url);
@@ -276,7 +276,7 @@ final class Response implements IResponse
 			'domain' => $domain ?? ($path ? '' : $this->cookieDomain),
 			'secure' => $secure ?? $this->cookieSecure,
 			'httponly' => $httpOnly ?? true,
-			'samesite' => $sameSite = ($sameSite ?? self::SAME_SITE_LAX),
+			'samesite' => $sameSite = ($sameSite ?? self::SameSiteLax),
 		];
 		if (PHP_VERSION_ID >= 70300) {
 			setcookie($name, $value, $options);

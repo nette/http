@@ -29,7 +29,10 @@ final class FileUpload
 {
 	use Nette\SmartObject;
 
-	public const IMAGE_MIME_TYPES = ['image/gif', 'image/png', 'image/jpeg', 'image/webp'];
+	public const ImageMimeTypes = ['image/gif', 'image/png', 'image/jpeg', 'image/webp'];
+
+	/** @deprecated use FileUpload::ImageMimeTypes */
+	public const IMAGE_MIME_TYPES = self::ImageMimeTypes;
 
 	/** @var string */
 	private $name;
@@ -216,7 +219,7 @@ final class FileUpload
 	 */
 	public function isImage(): bool
 	{
-		return in_array($this->getContentType(), self::IMAGE_MIME_TYPES, true);
+		return in_array($this->getContentType(), self::ImageMimeTypes, true);
 	}
 
 

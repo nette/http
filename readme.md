@@ -232,7 +232,7 @@ setCode(int $code, string $reason = null)
 Changes a status [response code](https://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html#sec10). For better source code readability it is recommended to use [predefined constants](https://api.nette.org/3.0/Nette/Http/IResponse.html) instead of actual numbers.
 
 ```php
-$httpResponse->setCode(Nette\Http\Response::S404_NOT_FOUND);
+$httpResponse->setCode(Nette\Http\Response::S404_NotFound);
 ```
 
 getCode(): int
