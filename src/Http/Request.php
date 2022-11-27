@@ -33,38 +33,24 @@ class Request implements IRequest
 {
 	use Nette\SmartObject;
 
-	private string $method;
-	private UrlScript $url;
-	private array $post;
-	private array $files;
-	private array $cookies;
 	private array $headers;
-	private ?string $remoteAddress;
-	private ?string $remoteHost;
 
 	/** @var ?callable */
 	private $rawBodyCallback;
 
 
 	public function __construct(
-		UrlScript $url,
-		?array $post = null,
-		?array $files = null,
-		?array $cookies = null,
-		?array $headers = null,
-		?string $method = null,
-		?string $remoteAddress = null,
-		?string $remoteHost = null,
+		private UrlScript $url,
+		private array $post = [],
+		private array $files = [],
+		private array $cookies = [],
+		array $headers = [],
+		private string $method = 'GET',
+		private ?string $remoteAddress = null,
+		private ?string $remoteHost = null,
 		?callable $rawBodyCallback = null,
 	) {
-		$this->url = $url;
-		$this->post = (array) $post;
-		$this->files = (array) $files;
-		$this->cookies = (array) $cookies;
-		$this->headers = array_change_key_case((array) $headers, CASE_LOWER);
-		$this->method = $method ?: 'GET';
-		$this->remoteAddress = $remoteAddress;
-		$this->remoteHost = $remoteHost;
+		$this->headers = array_change_key_case($headers, CASE_LOWER);
 		$this->rawBodyCallback = $rawBodyCallback;
 	}
 
