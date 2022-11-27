@@ -233,8 +233,8 @@ final class Response implements IResponse
 		?string $path = null,
 		?string $domain = null,
 		?bool $secure = null,
-		?bool $httpOnly = null,
-		?string $sameSite = null,
+		bool $httpOnly = true,
+		string $sameSite = self::SameSiteLax,
 	): static
 	{
 		self::checkHeaders();
@@ -243,8 +243,8 @@ final class Response implements IResponse
 			'path' => $path ?? ($domain ? '/' : $this->cookiePath),
 			'domain' => $domain ?? ($path ? '' : $this->cookieDomain),
 			'secure' => $secure ?? $this->cookieSecure,
-			'httponly' => $httpOnly ?? true,
-			'samesite' => $sameSite ?? self::SameSiteLax,
+			'httponly' => $httpOnly,
+			'samesite' => $sameSite,
 		]);
 		return $this;
 	}
