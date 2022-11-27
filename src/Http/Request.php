@@ -70,7 +70,7 @@ class Request implements IRequest
 		?string $method = null,
 		?string $remoteAddress = null,
 		?string $remoteHost = null,
-		?callable $rawBodyCallback = null
+		?callable $rawBodyCallback = null,
 	) {
 		$this->url = $url;
 		$this->post = (array) $post;
@@ -325,7 +325,7 @@ class Request implements IRequest
 		return preg_match(
 			'~^Basic (\S+)$~',
 			$this->headers['authorization'] ?? '',
-			$t
+			$t,
 		)
 			&& ($t = base64_decode($t[1], true))
 			&& ($t = explode(':', $t, 2))
