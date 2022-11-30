@@ -83,6 +83,7 @@ class UrlImmutable implements \JsonSerializable
 	/** @deprecated */
 	public function withUser(string $user): static
 	{
+		trigger_error(__METHOD__ . '() is deprecated', E_USER_DEPRECATED);
 		$dolly = clone $this;
 		$dolly->user = $user;
 		$dolly->authority = null;
@@ -93,6 +94,7 @@ class UrlImmutable implements \JsonSerializable
 	/** @deprecated */
 	public function getUser(): string
 	{
+		trigger_error(__METHOD__ . '() is deprecated', E_USER_DEPRECATED);
 		return $this->user;
 	}
 
@@ -100,6 +102,7 @@ class UrlImmutable implements \JsonSerializable
 	/** @deprecated */
 	public function withPassword(string $password): static
 	{
+		trigger_error(__METHOD__ . '() is deprecated', E_USER_DEPRECATED);
 		$dolly = clone $this;
 		$dolly->password = $password;
 		$dolly->authority = null;
@@ -110,6 +113,7 @@ class UrlImmutable implements \JsonSerializable
 	/** @deprecated */
 	public function getPassword(): string
 	{
+		trigger_error(__METHOD__ . '() is deprecated', E_USER_DEPRECATED);
 		return $this->password;
 	}
 
@@ -117,6 +121,7 @@ class UrlImmutable implements \JsonSerializable
 	/** @deprecated */
 	public function withoutUserInfo(): static
 	{
+		trigger_error(__METHOD__ . '() is deprecated', E_USER_DEPRECATED);
 		$dolly = clone $this;
 		$dolly->user = $dolly->password = '';
 		$dolly->authority = null;
