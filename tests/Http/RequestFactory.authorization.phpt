@@ -26,8 +26,8 @@ test('Basic', function () {
 	);
 	Assert::same(['user', 'password'], $request->getBasicCredentials());
 
-	Assert::same('', $request->getUrl()->getUser());
-	Assert::same('', $request->getUrl()->getPassword());
+	Assert::same('', @$request->getUrl()->getUser()); // deprecated
+	Assert::same('', @$request->getUrl()->getPassword()); // deprecated
 });
 
 
