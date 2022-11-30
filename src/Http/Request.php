@@ -199,6 +199,7 @@ class Request implements IRequest
 	 */
 	public function getReferer(): ?UrlImmutable
 	{
+		trigger_error(__METHOD__ . '() is deprecated', E_USER_DEPRECATED);
 		return isset($this->headers['referer'])
 			? new UrlImmutable($this->headers['referer'])
 			: null;
@@ -234,6 +235,7 @@ class Request implements IRequest
 	 */
 	public function isSameSite(): bool
 	{
+		trigger_error(__METHOD__ . '() is deprecated, use isFrom() instead', E_USER_DEPRECATED);
 		return $this->isFrom([FetchSite::SameSite, FetchSite::SameOrigin]);
 	}
 
