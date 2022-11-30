@@ -22,7 +22,7 @@ test('basic upload properties', function () {
 		'size' => 209,
 	]);
 
-	Assert::same('readme.txt', $upload->getName());
+	Assert::same('readme.txt', @$upload->getName()); // deprecated
 	Assert::same('readme.txt', $upload->getUntrustedName());
 	Assert::same('readme.txt', $upload->getSanitizedName());
 	Assert::same('path/to/readme.txt', $upload->getUntrustedFullPath());
@@ -47,7 +47,7 @@ test('sanitizing name with image detection', function () {
 		'size' => 209,
 	]);
 
-	Assert::same('../.image.png', $upload->getName());
+	Assert::same('../.image.png', $upload->getUntrustedName());
 	Assert::same('image.png', $upload->getSanitizedName());
 	Assert::same('../.image.png', $upload->getUntrustedFullPath());
 	Assert::same('image/png', $upload->getContentType());

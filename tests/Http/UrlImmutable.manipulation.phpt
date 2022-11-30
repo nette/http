@@ -14,10 +14,10 @@ test('immutable URL component modifications', function () {
 	$url = $url->withScheme('');
 	Assert::same('//username%3A:password%3A@hostname:60/p%61th/script.php?arg=value#anchor', $url->absoluteUrl);
 
-	$url = $url->withUser('name');
+	$url = @$url->withUser('name'); // deprecated
 	Assert::same('//name:password%3A@hostname:60/p%61th/script.php?arg=value#anchor', $url->absoluteUrl);
 
-	$url = $url->withPassword('secret');
+	$url = @$url->withPassword('secret'); // deprecated
 	Assert::same('//name:secret@hostname:60/p%61th/script.php?arg=value#anchor', $url->absoluteUrl);
 
 	$url = $url->withHost('localhost');
@@ -29,7 +29,7 @@ test('immutable URL component modifications', function () {
 	$url = $url->withFragment('hello');
 	Assert::same('//name:secret@localhost:123/p%61th/script.php?arg=value#hello', $url->absoluteUrl);
 
-	$url = $url->withoutUserInfo();
+	$url = @$url->withoutUserInfo(); // deprecated
 	Assert::same('//localhost:123/p%61th/script.php?arg=value#hello', $url->absoluteUrl);
 });
 

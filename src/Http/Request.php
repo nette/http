@@ -191,6 +191,7 @@ class Request implements IRequest
 	 */
 	public function getReferer(): ?UrlImmutable
 	{
+		trigger_error(__METHOD__ . '() is deprecated', E_USER_DEPRECATED);
 		return isset($this->headers['referer'])
 			? new UrlImmutable($this->headers['referer'])
 			: null;
