@@ -17,8 +17,8 @@ $url = new UrlImmutable(new Url('http://username%3A:password%3A@hostn%61me:60/p%
 Assert::same('http://username%3A:password%3A@hostname:60/p%61th/script.php?arg=value#anchor', (string) $url);
 Assert::same('"http:\/\/username%3A:password%3A@hostname:60\/p%61th\/script.php?arg=value#anchor"', json_encode($url));
 Assert::same('http', $url->scheme);
-Assert::same('username:', $url->user);
-Assert::same('password:', $url->password);
+Assert::same('username:', @$url->user); // deprecated
+Assert::same('password:', @$url->password); // deprecated
 Assert::same('hostname', $url->host);
 Assert::same(60, $url->port);
 Assert::same('hostname', $url->getDomain());
