@@ -35,8 +35,8 @@ test('URL parsing with custom filters', function () {
 
 	Assert::same('/file.php', $request->getUrl()->scriptPath);
 	Assert::same('https', $request->getUrl()->scheme);
-	Assert::same('', $request->getUrl()->user);
-	Assert::same('', $request->getUrl()->password);
+	Assert::same('', @$request->getUrl()->user); // deprecated
+	Assert::same('', @$request->getUrl()->password); // deprecated
 	Assert::same('nette.org', $request->getUrl()->host);
 	Assert::same(8080, $request->getUrl()->port);
 	Assert::same('/file.php', $request->getUrl()->path);
@@ -61,8 +61,8 @@ test('URL components with special characters', function () {
 	$request = $factory->fromGlobals();
 
 	Assert::same('https', $request->getUrl()->scheme);
-	Assert::same('', $request->getUrl()->user);
-	Assert::same('', $request->getUrl()->password);
+	Assert::same('', @$request->getUrl()->user); // deprecated
+	Assert::same('', @$request->getUrl()->password); // deprecated
 	Assert::same('nette.org', $request->getUrl()->host);
 	Assert::same(8080, $request->getUrl()->port);
 	Assert::same('/file.php', $request->getUrl()->path);
