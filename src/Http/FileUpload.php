@@ -63,6 +63,7 @@ final class FileUpload
 	 */
 	public function getName(): string
 	{
+		trigger_error(__METHOD__ . '() is deprecated, use getUntrustedName()', E_USER_DEPRECATED);
 		return $this->name;
 	}
 
