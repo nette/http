@@ -100,6 +100,7 @@ class SessionSection implements \IteratorAggregate, \ArrayAccess
 	 */
 	public function __set(string $name, mixed $value): void
 	{
+		trigger_error("Writing to \$session->$name is deprecated, use \$session->set('$name', \$value) instead", E_USER_DEPRECATED);
 		$this->session->autoStart(forWrite: true);
 		$this->getData()[$name] = $value;
 	}
@@ -111,6 +112,7 @@ class SessionSection implements \IteratorAggregate, \ArrayAccess
 	 */
 	public function &__get(string $name): mixed
 	{
+		trigger_error("Reading from \$session->$name is deprecated, use \$session->get('$name') instead", E_USER_DEPRECATED);
 		$this->session->autoStart(forWrite: true);
 		$data = &$this->getData();
 		$data ??= [];
@@ -128,6 +130,7 @@ class SessionSection implements \IteratorAggregate, \ArrayAccess
 	 */
 	public function __isset(string $name): bool
 	{
+		trigger_error("Using \$session->$name is deprecated, use \$session->get('$name') instead", E_USER_DEPRECATED);
 		$this->session->autoStart(forWrite: false);
 		return isset($this->getData()[$name]);
 	}
@@ -139,6 +142,7 @@ class SessionSection implements \IteratorAggregate, \ArrayAccess
 	 */
 	public function __unset(string $name): void
 	{
+		trigger_error("Unset(\$session->$name) is deprecated, use \$session->remove('$name') instead", E_USER_DEPRECATED);
 		$this->remove($name);
 	}
 
@@ -149,6 +153,7 @@ class SessionSection implements \IteratorAggregate, \ArrayAccess
 	 */
 	public function offsetSet($name, $value): void
 	{
+		trigger_error("Writing to \$session['$name'] is deprecated, use \$session->set('$name', \$value) instead", E_USER_DEPRECATED);
 		assert(is_string($name));
 		$this->__set($name, $value);
 	}
@@ -160,6 +165,7 @@ class SessionSection implements \IteratorAggregate, \ArrayAccess
 	 */
 	public function offsetGet($name): mixed
 	{
+		trigger_error("Reading from \$session['$name'] is deprecated, use \$session->get('$name') instead", E_USER_DEPRECATED);
 		return $this->get($name);
 	}
 
@@ -170,6 +176,7 @@ class SessionSection implements \IteratorAggregate, \ArrayAccess
 	 */
 	public function offsetExists($name): bool
 	{
+		trigger_error("Using \$session['$name'] is deprecated, use \$session->get('$name') instead", E_USER_DEPRECATED);
 		return $this->__isset($name);
 	}
 
@@ -180,6 +187,7 @@ class SessionSection implements \IteratorAggregate, \ArrayAccess
 	 */
 	public function offsetUnset($name): void
 	{
+		trigger_error("Unset(\$session['$name']) is deprecated, use \$session->remove('$name') instead", E_USER_DEPRECATED);
 		$this->remove($name);
 	}
 
