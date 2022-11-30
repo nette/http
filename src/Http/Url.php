@@ -104,7 +104,7 @@ class Url implements \JsonSerializable
 	}
 
 
-	/** @deprecated */
+	#[\Deprecated]
 	public function setUser(string $user): static
 	{
 		$this->user = $user;
@@ -112,14 +112,14 @@ class Url implements \JsonSerializable
 	}
 
 
-	/** @deprecated */
+	#[\Deprecated]
 	public function getUser(): string
 	{
 		return $this->user;
 	}
 
 
-	/** @deprecated */
+	#[\Deprecated]
 	public function setPassword(string $password): static
 	{
 		$this->password = $password;
@@ -127,7 +127,7 @@ class Url implements \JsonSerializable
 	}
 
 
-	/** @deprecated */
+	#[\Deprecated]
 	public function getPassword(): string
 	{
 		return $this->password;
@@ -305,7 +305,7 @@ class Url implements \JsonSerializable
 	}
 
 
-	/** @deprecated use UrlScript::getBasePath() instead */
+	#[\Deprecated('use UrlScript::getBasePath() instead')]
 	public function getBasePath(): string
 	{
 		$pos = strrpos($this->path, '/');
@@ -313,14 +313,14 @@ class Url implements \JsonSerializable
 	}
 
 
-	/** @deprecated use UrlScript::getBaseUrl() instead */
+	#[\Deprecated('use UrlScript::getBaseUrl() instead')]
 	public function getBaseUrl(): string
 	{
 		return $this->getHostUrl() . $this->getBasePath();
 	}
 
 
-	/** @deprecated use UrlScript::getRelativeUrl() instead */
+	#[\Deprecated('use UrlScript::getRelativeUrl() instead')]
 	public function getRelativeUrl(): string
 	{
 		return substr($this->getAbsoluteUrl(), strlen($this->getBaseUrl()));

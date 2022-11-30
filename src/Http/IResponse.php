@@ -139,7 +139,7 @@ interface IResponse
 		511 => 'Network Authentication Required',
 	];
 
-	/** @deprecated use Nette\Http\SameSite enum */
+	#[\Deprecated('use Nette\\Http\\SameSite enum')]
 	public const
 		SameSiteLax = 'Lax',
 		SameSiteStrict = 'Strict',
@@ -149,13 +149,13 @@ interface IResponse
 	public const REASON_PHRASES = self::ReasonPhrases;
 
 	#[\Deprecated('use Nette\\Http\\SameSite enum')]
-	public const SAME_SITE_LAX = self::SameSiteLax;
+	public const SAME_SITE_LAX = 'Lax';
 
 	#[\Deprecated('use Nette\\Http\\SameSite enum')]
-	public const SAME_SITE_STRICT = self::SameSiteStrict;
+	public const SAME_SITE_STRICT = 'Strict';
 
 	#[\Deprecated('use Nette\\Http\\SameSite enum')]
-	public const SAME_SITE_NONE = self::SameSiteNone;
+	public const SAME_SITE_NONE = 'None';
 
 	#[\Deprecated('use IResponse::S100_Continue')]
 	public const S100_CONTINUE = self::S100_Continue;

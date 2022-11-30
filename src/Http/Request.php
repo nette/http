@@ -193,8 +193,8 @@ class Request implements IRequest
 
 	/**
 	 * Returns the referrer URL from the Referer header. Unreliable - clients may omit or spoof it.
-	 * @deprecated  use getOrigin()
 	 */
+	#[\Deprecated('use getOrigin()')]
 	public function getReferer(): ?UrlImmutable
 	{
 		return isset($this->headers['referer'])
@@ -228,8 +228,8 @@ class Request implements IRequest
 	/**
 	 * Checks whether the request originated from your own site (same-site), i.e. it was not
 	 * triggered from a foreign website. Serves as a CSRF-like protection for forms and signals.
-	 * @deprecated use isFrom()
 	 */
+	#[\Deprecated('use isFrom()')]
 	public function isSameSite(): bool
 	{
 		return $this->isFrom([FetchSite::SameSite, FetchSite::SameOrigin]);

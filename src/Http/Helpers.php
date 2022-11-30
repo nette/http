@@ -108,8 +108,8 @@ final class Helpers
 
 	/**
 	 * Checks whether an IP address falls within a CIDR block (e.g. '192.168.1.0/24').
-	 * @deprecated use IPAddress class
 	 */
+	#[\Deprecated('use IPAddress class')]
 	public static function ipMatch(string $ip, string $mask): bool
 	{
 		return IPAddress::tryFrom($ip)?->isInRange($mask) ?? false;

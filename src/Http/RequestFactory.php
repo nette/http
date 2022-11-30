@@ -462,7 +462,7 @@ class RequestFactory
 	}
 
 
-	/** @deprecated */
+	#[\Deprecated('use fromGlobals()')]
 	public function createHttpRequest(): Request
 	{
 		return $this->fromGlobals();

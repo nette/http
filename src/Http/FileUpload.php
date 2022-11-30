@@ -62,9 +62,7 @@ final class FileUpload
 	}
 
 
-	/**
-	 * @deprecated use getUntrustedName()
-	 */
+	#[\Deprecated('use getUntrustedName()')]
 	public function getName(): string
 	{
 		return $this->name;
@@ -260,8 +258,8 @@ final class FileUpload
 
 	/**
 	 * Returns image file extension based on detected content type (without dot).
-	 * @deprecated use getSuggestedExtension()
 	 */
+	#[\Deprecated('use getSuggestedExtension()')]
 	public function getImageFileExtension(): ?string
 	{
 		return $this->getSuggestedExtension();

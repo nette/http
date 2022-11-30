@@ -94,23 +94,17 @@ class SessionSection implements \IteratorAggregate, \ArrayAccess
 	}
 
 
-	/**
-	 * Sets a variable in this session section.
-	 * @deprecated  use set() instead
-	 */
 	public function __set(string $name, mixed $value): void
 	{
+		trigger_error("Writing to \$session->$name is deprecated, use \$session->set('$name', \$value) instead", E_USER_DEPRECATED);
 		$this->session->autoStart(forWrite: true);
 		$this->getData()[$name] = $value;
 	}
 
 
-	/**
-	 * Gets a variable from this session section.
-	 * @deprecated  use get() instead
-	 */
 	public function &__get(string $name): mixed
 	{
+		trigger_error("Reading from \$session->$name is deprecated, use \$session->get('$name') instead", E_USER_DEPRECATED);
 		$this->session->autoStart(forWrite: true);
 		$data = &$this->getData();
 		$data ??= [];
@@ -122,64 +116,46 @@ class SessionSection implements \IteratorAggregate, \ArrayAccess
 	}
 
 
-	/**
-	 * Determines whether a variable in this session section is set.
-	 * @deprecated  use get() instead
-	 */
 	public function __isset(string $name): bool
 	{
+		trigger_error("Using \$session->$name is deprecated, use \$session->get('$name') instead", E_USER_DEPRECATED);
 		$this->session->autoStart(forWrite: false);
 		return isset($this->getData()[$name]);
 	}
 
 
-	/**
-	 * Unsets a variable in this session section.
-	 * @deprecated  use remove() instead
-	 */
 	public function __unset(string $name): void
 	{
+		trigger_error("Unset(\$session->$name) is deprecated, use \$session->remove('$name') instead", E_USER_DEPRECATED);
 		$this->remove($name);
 	}
 
 
-	/**
-	 * Sets a variable in this session section.
-	 * @deprecated  use set() instead
-	 */
 	public function offsetSet($name, $value): void
 	{
+		trigger_error("Writing to \$session['$name'] is deprecated, use \$session->set('$name', \$value) instead", E_USER_DEPRECATED);
 		assert(is_string($name));
 		$this->__set($name, $value);
 	}
 
 
-	/**
-	 * Gets a variable from this session section.
-	 * @deprecated  use get() instead
-	 */
 	public function offsetGet($name): mixed
 	{
+		trigger_error("Reading from \$session['$name'] is deprecated, use \$session->get('$name') instead", E_USER_DEPRECATED);
 		return $this->get($name);
 	}
 
 
-	/**
-	 * Determines whether a variable in this session section is set.
-	 * @deprecated  use get() instead
-	 */
 	public function offsetExists($name): bool
 	{
+		trigger_error("Using \$session['$name'] is deprecated, use \$session->get('$name') instead", E_USER_DEPRECATED);
 		return $this->__isset($name);
 	}
 
 
-	/**
-	 * Unsets a variable in this session section.
-	 * @deprecated  use remove() instead
-	 */
 	public function offsetUnset($name): void
 	{
+		trigger_error("Unset(\$session['$name']) is deprecated, use \$session->remove('$name') instead", E_USER_DEPRECATED);
 		$this->remove($name);
 	}
 
