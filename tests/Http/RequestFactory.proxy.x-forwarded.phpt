@@ -23,11 +23,11 @@ test('', function () {
 	$factory = new RequestFactory;
 	$factory->setProxy('127.0.0.1');
 	Assert::same('127.0.0.3', $factory->fromGlobals()->getRemoteAddress());
-	Assert::same('localhost', $factory->fromGlobals()->getRemoteHost());
+	Assert::same('localhost', @$factory->fromGlobals()->getRemoteHost()); // deprecated
 
 	$factory->setProxy('127.0.0.1/8');
 	Assert::same('23.75.45.200', $factory->fromGlobals()->getRemoteAddress());
-	Assert::same('a23-75-45-200.deploy.static.akamaitechnologies.com', $factory->fromGlobals()->getRemoteHost());
+	Assert::same('a23-75-45-200.deploy.static.akamaitechnologies.com', @$factory->fromGlobals()->getRemoteHost()); // deprecated
 
 	$url = $factory->fromGlobals()->getUrl();
 	Assert::same('otherhost', $url->getHost());
@@ -44,11 +44,11 @@ test('', function () {
 	$factory = new RequestFactory;
 	$factory->setProxy('10.0.0.0/24');
 	Assert::same('172.16.0.1', $factory->fromGlobals()->getRemoteAddress());
-	Assert::same('172.16.0.1', $factory->fromGlobals()->getRemoteHost());
+	Assert::same('172.16.0.1', @$factory->fromGlobals()->getRemoteHost()); // deprecated
 	Assert::same('real', $factory->fromGlobals()->getUrl()->getHost());
 
 	$factory->setProxy(['10.0.0.1', '10.0.0.2']);
 	Assert::same('172.16.0.1', $factory->fromGlobals()->getRemoteAddress());
-	Assert::same('172.16.0.1', $factory->fromGlobals()->getRemoteHost());
+	Assert::same('172.16.0.1', @$factory->fromGlobals()->getRemoteHost()); // deprecated
 	Assert::same('real', $factory->fromGlobals()->getUrl()->getHost());
 });
