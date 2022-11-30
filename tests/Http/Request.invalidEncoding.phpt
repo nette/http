@@ -118,5 +118,5 @@ test('invalid encoding sanitization by default', function () {
 	Assert::null($request->getFile(INVALID));
 	Assert::null($request->getFile(CONTROL_CHARACTERS));
 	Assert::type(Nette\Http\FileUpload::class, $request->files['file1']);
-	Assert::same('', $request->files['file1']->name);
+	Assert::same('', $request->files['file1']->getUntrustedName());
 });

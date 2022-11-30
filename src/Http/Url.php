@@ -106,6 +106,7 @@ class Url implements \JsonSerializable
 	/** @deprecated */
 	public function setUser(string $user): static
 	{
+		trigger_error(__METHOD__ . '() is deprecated', E_USER_DEPRECATED);
 		$this->user = $user;
 		return $this;
 	}
@@ -114,6 +115,7 @@ class Url implements \JsonSerializable
 	/** @deprecated */
 	public function getUser(): string
 	{
+		trigger_error(__METHOD__ . '() is deprecated', E_USER_DEPRECATED);
 		return $this->user;
 	}
 
@@ -121,6 +123,7 @@ class Url implements \JsonSerializable
 	/** @deprecated */
 	public function setPassword(string $password): static
 	{
+		trigger_error(__METHOD__ . '() is deprecated', E_USER_DEPRECATED);
 		$this->password = $password;
 		return $this;
 	}
@@ -129,6 +132,7 @@ class Url implements \JsonSerializable
 	/** @deprecated */
 	public function getPassword(): string
 	{
+		trigger_error(__METHOD__ . '() is deprecated', E_USER_DEPRECATED);
 		return $this->password;
 	}
 
@@ -290,6 +294,7 @@ class Url implements \JsonSerializable
 	/** @deprecated use UrlScript::getBasePath() instead */
 	public function getBasePath(): string
 	{
+		trigger_error(__METHOD__ . '() is deprecated, use UrlScript object', E_USER_DEPRECATED);
 		$pos = strrpos($this->path, '/');
 		return $pos === false ? '' : substr($this->path, 0, $pos + 1);
 	}
@@ -298,6 +303,7 @@ class Url implements \JsonSerializable
 	/** @deprecated use UrlScript::getBaseUrl() instead */
 	public function getBaseUrl(): string
 	{
+		trigger_error(__METHOD__ . '() is deprecated, use UrlScript object', E_USER_DEPRECATED);
 		return $this->getHostUrl() . $this->getBasePath();
 	}
 
@@ -305,6 +311,7 @@ class Url implements \JsonSerializable
 	/** @deprecated use UrlScript::getRelativeUrl() instead */
 	public function getRelativeUrl(): string
 	{
+		trigger_error(__METHOD__ . '() is deprecated, use UrlScript object', E_USER_DEPRECATED);
 		return substr($this->getAbsoluteUrl(), strlen($this->getBaseUrl()));
 	}
 

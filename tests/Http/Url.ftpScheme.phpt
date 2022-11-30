@@ -15,8 +15,8 @@ require __DIR__ . '/../bootstrap.php';
 $url = new Url('ftp://ftp.is.co.za/rfc/rfc3986.txt');
 
 Assert::same('ftp', $url->scheme);
-Assert::same('', $url->user);
-Assert::same('', $url->password);
+Assert::same('', @$url->user); // deprecated
+Assert::same('', @$url->password); // deprecated
 Assert::same('ftp.is.co.za', $url->host);
 Assert::same(21, $url->port);
 Assert::same('/rfc/rfc3986.txt', $url->path);
