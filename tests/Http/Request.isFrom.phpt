@@ -123,27 +123,3 @@ test('cookie fallback not used when Sec-Fetch-Site present', function () {
 	Assert::false($request->isFrom(FetchSite::SameOrigin));
 	Assert::true($request->isFrom(FetchSite::CrossSite));
 });
-
-
-test('isSameSite() via Sec-Fetch-Site', function () {
-	foreach (['same-origin', 'same-site'] as $site) {
-		$request = new Http\Request(new Http\UrlScript, headers: ['Sec-Fetch-Site' => $site]);
-		Assert::true($request->isSameSite(), $site);
-	}
-
-	foreach (['cross-site', 'none'] as $site) {
-		$request = new Http\Request(new Http\UrlScript, headers: ['Sec-Fetch-Site' => $site]);
-		Assert::false($request->isSameSite(), $site);
-	}
-});
-
-
-test('isSameSite() via cookie fallback', function () {
-	$request = new Http\Request(new Http\UrlScript, cookies: [
-		Http\Helpers::StrictCookieName => '1',
-	]);
-	Assert::true($request->isSameSite());
-
-	$request = new Http\Request(new Http\UrlScript);
-	Assert::false($request->isSameSite());
-});
