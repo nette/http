@@ -269,7 +269,7 @@ class Request implements IRequest
 
 	/**
 	 * Returns basic HTTP authentication credentials.
-	 * @return array{string, string}
+	 * @return array{string, string}|null
 	 */
 	public function getBasicCredentials(): ?array
 	{
