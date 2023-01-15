@@ -137,7 +137,7 @@ class RequestFactory
 
 	private function getGetPostCookie(Url $url): array
 	{
-		$useFilter = (!in_array(ini_get('filter.default'), ['', 'unsafe_raw'], true) || ini_get('filter.default_flags'));
+		$useFilter = (!in_array((string) ini_get('filter.default'), ['', 'unsafe_raw'], true) || ini_get('filter.default_flags'));
 
 		$query = $url->getQueryParameters();
 		$post = $useFilter
