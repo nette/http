@@ -25,7 +25,7 @@ $session->start();
 Assert::same($sessionId, $session->getId());
 Assert::same([$sessionName => $leet], $_COOKIE);
 
-Assert::same('yes', $session->getSection('temp')->value);
+Assert::same('yes', $session->getSection('temp')->get('value'));
 $session->close();
 
 // session was not regenerated
