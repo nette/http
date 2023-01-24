@@ -73,10 +73,10 @@ $session->setHandler(new MySessionStorage);
 $session->start();
 
 $namespace = $session->getSection('one');
-$namespace->a = 'apple';
+$namespace->set('a', 'apple');
 $session->close();
 unset($_SESSION);
 
 $session->start();
 $namespace = $session->getSection('one');
-Assert::same('apple', $namespace->a);
+Assert::same('apple', $namespace->get('a'));
