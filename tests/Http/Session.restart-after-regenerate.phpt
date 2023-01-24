@@ -18,7 +18,7 @@ $session = new Http\Session(new Http\Request(new Http\UrlScript, [], [], $cookie
 
 $session->start();
 Assert::same($sessionId, $session->getId());
-Assert::same('yes', $session->getSection('temp')->value);
+Assert::same('yes', $session->getSection('temp')->get('value'));
 
 $session->regenerateId();
 Assert::notSame($sessionId, $session->getId());
@@ -26,7 +26,7 @@ Assert::same(session_id(), $session->getId());
 $session->close();
 
 $session->start();
-Assert::same('yes', $session->getSection('temp')->value);
+Assert::same('yes', $session->getSection('temp')->get('value'));
 
 Assert::true(file_exists(getTempDir() . '/sess_' . $session->getId()));
 Assert::count(1, glob(getTempDir() . '/sess_*'));
