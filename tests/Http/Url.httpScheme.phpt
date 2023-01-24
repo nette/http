@@ -23,14 +23,11 @@ Assert::same('hostname', $url->host);
 Assert::same(60, $url->port);
 Assert::same(80, $url->getDefaultPort());
 Assert::same('/p%61th/script.php', $url->path);
-Assert::same('/p%61th/', $url->basePath);
 Assert::same('arg=value', $url->query);
 Assert::same('anchor', $url->fragment);
 Assert::same('username%3A:password%3A@hostname:60', $url->authority);
 Assert::same('http://username%3A:password%3A@hostname:60', $url->hostUrl);
 Assert::same('http://username%3A:password%3A@hostname:60/p%61th/script.php?arg=value#anchor', $url->absoluteUrl);
-Assert::same('http://username%3A:password%3A@hostname:60/p%61th/', $url->baseUrl);
-Assert::same('script.php?arg=value#anchor', $url->relativeUrl);
 
 $url->setPath('');
 Assert::same('/', $url->getPath());
