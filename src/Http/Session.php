@@ -338,15 +338,22 @@ class Session
 	}
 
 
-	/** @deprecated */
-	public function getIterator(): \Iterator
+	/** @return string[] */
+	public function getSectionNames(): array
 	{
-		trigger_error(__METHOD__ . '() is deprecated', E_USER_DEPRECATED);
 		if ($this->exists() && !$this->started) {
 			$this->autoStart(false);
 		}
 
-		return new \ArrayIterator(array_keys($_SESSION['__NF']['DATA'] ?? []));
+		return array_keys($_SESSION['__NF']['DATA'] ?? []);
+	}
+
+
+	/** @deprecated use getSectionNames() */
+	public function getIterator(): \Iterator
+	{
+		trigger_error(__METHOD__ . '() is deprecated', E_USER_DEPRECATED);
+		return new \ArrayIterator($this->getSectionNames());
 	}
 
 
