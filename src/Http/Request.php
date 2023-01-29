@@ -269,6 +269,20 @@ class Request implements IRequest
 
 
 	/**
+	 * Returns decoded content of HTTP request body.
+	 */
+	public function getDecodedBody(): mixed
+	{
+		$type = $this->getHeader('Content-Type');
+		return match ($type) {
+			'application/json' => json_decode($this->getRawBody()),
+			'application/x-www-form-urlencoded' => $_POST,
+			default => throw new \Exception("Unsupported content type: $type"),
+		};
+	}
+
+
+	/**
 	 * Returns basic HTTP authentication credentials.
 	 * @return array{string, string}|null
 	 */
