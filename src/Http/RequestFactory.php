@@ -280,7 +280,14 @@ class RequestFactory
 			: null;
 
 		// use real client address and host if trusted proxy is used
-		$usingTrustedProxy = $remoteAddr && array_filter($this->proxies, fn(string $proxy): bool => Helpers::ipMatch($remoteAddr, $proxy));
+		$usingTrustedProxy = false;
+		if ($remoteAddr) {
+			foreach ($this->proxies as $proxy) {
+				if ($usingTrustedProxy = Helpers::ipMatch($remoteAddr, $proxy)) {
+					break;
+				}
+			}
+		}
 		if ($usingTrustedProxy) {
 			empty($_SERVER['HTTP_FORWARDED'])
 				? $this->useNonstandardProxy($url, $remoteAddr, $remoteHost)
