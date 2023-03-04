@@ -10,6 +10,7 @@ declare(strict_types=1);
 namespace Nette\Http;
 
 use Nette;
+use Nette\Utils\Arrays;
 use Nette\Utils\Strings;
 
 
@@ -286,7 +287,7 @@ class RequestFactory
 			: null;
 
 		// use real client address and host if trusted proxy is used
-		$usingTrustedProxy = $remoteAddr && array_filter($this->proxies, function (string $proxy) use ($remoteAddr): bool {
+		$usingTrustedProxy = $remoteAddr && Arrays::some($this->proxies, function (string $proxy) use ($remoteAddr): bool {
 			return Helpers::ipMatch($remoteAddr, $proxy);
 		});
 		if ($usingTrustedProxy) {
@@ -355,9 +356,10 @@ class RequestFactory
 
 		if (!empty($_SERVER['HTTP_X_FORWARDED_FOR'])) {
 			$xForwardedForWithoutProxies = array_filter(explode(',', $_SERVER['HTTP_X_FORWARDED_FOR']), function (string $ip): bool {
-				return !array_filter($this->proxies, function (string $proxy) use ($ip): bool {
-					return filter_var(trim($ip), FILTER_VALIDATE_IP) !== false && Helpers::ipMatch(trim($ip), $proxy);
-				});
+				return filter_var(trim($ip), FILTER_VALIDATE_IP) === false ||
+					!Arrays::some($this->proxies, function (string $proxy) use ($ip): bool {
+						return Helpers::ipMatch(trim($ip), $proxy);
+					});
 			});
 			if ($xForwardedForWithoutProxies) {
 				$remoteAddr = trim(end($xForwardedForWithoutProxies));
