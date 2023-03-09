@@ -306,9 +306,9 @@ class RequestFactory
 				: explode(':', $address)[0];  // IPv4
 		}
 
-        if (!empty($_SERVER['HTTP_X_FORWARDED_PORT'])) {
-            $url->setPort((int) $_SERVER['HTTP_X_FORWARDED_PORT']);
-        }
+		if (!empty($_SERVER['HTTP_X_FORWARDED_PORT'])) {
+			$url->setPort((int) $_SERVER['HTTP_X_FORWARDED_PORT']);
+		}
 
 		if (isset($proxyParams['host']) && count($proxyParams['host']) === 1) {
 			$host = $proxyParams['host'][0];
