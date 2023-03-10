@@ -306,8 +306,9 @@ class RequestFactory
 				: explode(':', $address)[0];  // IPv4
 		}
 
-		if (!empty($_SERVER['HTTP_X_FORWARDED_PORT'])) {
-			$url->setPort((int) $_SERVER['HTTP_X_FORWARDED_PORT']);
+		if (isset($proxyParams['proto']) && count($proxyParams['proto']) === 1) {
+			$url->setScheme(strcasecmp($proxyParams['proto'][0], 'https') === 0 ? 'https' : 'http');
+			$url->setPort($url->getScheme() === 'https' ? 443 : 80);
 		}
 
 		if (isset($proxyParams['host']) && count($proxyParams['host']) === 1) {
@@ -330,11 +331,6 @@ class RequestFactory
 				}
 			}
 		}
-
-		$scheme = (isset($proxyParams['proto']) && count($proxyParams['proto']) === 1)
-			? $proxyParams['proto'][0]
-			: 'http';
-		$url->setScheme(strcasecmp($scheme, 'https') === 0 ? 'https' : 'http');
 	}
 
 
