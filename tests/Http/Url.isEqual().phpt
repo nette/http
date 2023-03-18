@@ -56,3 +56,10 @@ Assert::true($url->isEqual('http://example.com'));
 
 $url = new Url('https://xn--tst-qla.de/');
 Assert::true($url->isEqual('https://täst.de/'));
+
+
+// dots at end
+$url = new Url('https://google.com./abcd');
+Assert::true($url->isEqual('https://google.com/abcd'));
+$url = new Url('https://xn--tst-qla.de./');
+Assert::true($url->isEqual('https://täst.de/'));
