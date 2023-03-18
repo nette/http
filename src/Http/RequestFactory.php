@@ -316,6 +316,11 @@ class RequestFactory
 				: substr($address, 1, strpos($address, ']') - 1); // IPv6
 		}
 
+		if (isset($proxyParams['proto']) && count($proxyParams['proto']) === 1) {
+			$url->setScheme(strcasecmp($proxyParams['proto'][0], 'https') === 0 ? 'https' : 'http');
+			$url->setPort($url->getScheme() === 'https' ? 443 : 80);
+		}
+
 		if (isset($proxyParams['host']) && count($proxyParams['host']) === 1) {
 			$host = $proxyParams['host'][0];
 			$startingDelimiterPosition = strpos($host, '[');
@@ -334,11 +339,6 @@ class RequestFactory
 				}
 			}
 		}
-
-		$scheme = (isset($proxyParams['proto']) && count($proxyParams['proto']) === 1)
-			? $proxyParams['proto'][0]
-			: 'http';
-		$url->setScheme(strcasecmp($scheme, 'https') === 0 ? 'https' : 'http');
 		return $remoteAddr ?? null;
 	}
 
