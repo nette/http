@@ -410,7 +410,7 @@ class Session
 			$normalized[$normKey] = $value;
 		}
 
-		if (array_key_exists('read_and_close', $normalized)) {
+		if (isset($normalized['read_and_close'])) {
 			if (session_status() === PHP_SESSION_ACTIVE) {
 				throw new Nette\InvalidStateException('Cannot configure "read_and_close" for already started session.');
 			}

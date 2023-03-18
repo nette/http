@@ -91,6 +91,10 @@ class SessionExtension extends Nette\DI\CompilerExtension
 			$options['autoStart'] = false;
 		}
 
+		if ($config->readAndClose === null) {
+			unset($options['readAndClose']);
+		}
+
 		if (!empty($options)) {
 			$session->addSetup('setOptions', [$options]);
 		}
