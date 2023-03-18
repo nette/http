@@ -357,9 +357,11 @@ class Url implements \JsonSerializable
 		ksort($query);
 		$query2 = $this->query;
 		ksort($query2);
+		$host = rtrim($url->host, '.');
+		$host2 = rtrim($this->host, '.');
 		return $url->scheme === $this->scheme
-			&& (!strcasecmp($url->host, $this->host)
-				|| self::idnHostToUnicode($url->host) === self::idnHostToUnicode($this->host))
+			&& (!strcasecmp($host, $host2)
+				|| self::idnHostToUnicode($host) === self::idnHostToUnicode($host2))
 			&& $url->getPort() === $this->getPort()
 			&& $url->user === $this->user
 			&& $url->password === $this->password
@@ -381,6 +383,7 @@ class Url implements \JsonSerializable
 			function (array $m): string { return rawurlencode($m[0]); },
 			self::unescape($this->path, '%/')
 		);
+		$this->host = rtrim($this->host, '.');
 		$this->host = self::idnHostToUnicode(strtolower($this->host));
 		return $this;
 	}
