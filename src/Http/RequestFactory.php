@@ -282,25 +282,26 @@ class RequestFactory
 		$remoteAddr = !empty($_SERVER['REMOTE_ADDR'])
 			? trim($_SERVER['REMOTE_ADDR'], '[]') // workaround for PHP 7.3.0
 			: null;
-		$remoteHost = !empty($_SERVER['REMOTE_HOST'])
-			? $_SERVER['REMOTE_HOST']
-			: null;
 
 		// use real client address and host if trusted proxy is used
 		$usingTrustedProxy = $remoteAddr && Arrays::some($this->proxies, function (string $proxy) use ($remoteAddr): bool {
 			return Helpers::ipMatch($remoteAddr, $proxy);
 		});
 		if ($usingTrustedProxy) {
-			empty($_SERVER['HTTP_FORWARDED'])
-				? $this->useNonstandardProxy($url, $remoteAddr, $remoteHost)
-				: $this->useForwardedProxy($url, $remoteAddr, $remoteHost);
+			$remoteHost = null;
+			$remoteAddr = empty($_SERVER['HTTP_FORWARDED'])
+				? $this->useNonstandardProxy($url)
+				: $this->useForwardedProxy($url);
+
+		} else {
+			$remoteHost = !empty($_SERVER['REMOTE_HOST']) ? $_SERVER['REMOTE_HOST'] : null;
 		}
 
 		return [$remoteAddr, $remoteHost];
 	}
 
 
-	private function useForwardedProxy(Url $url, &$remoteAddr, &$remoteHost): void
+	private function useForwardedProxy(Url $url): ?string
 	{
 		$forwardParams = preg_split('/[,;]/', $_SERVER['HTTP_FORWARDED']);
 		foreach ($forwardParams as $forwardParam) {
@@ -319,19 +320,17 @@ class RequestFactory
 			$host = $proxyParams['host'][0];
 			$startingDelimiterPosition = strpos($host, '[');
 			if ($startingDelimiterPosition === false) { //IPv4
-				$remoteHostArr = explode(':', $host);
-				$remoteHost = $remoteHostArr[0];
-				$url->setHost($remoteHost);
-				if (isset($remoteHostArr[1])) {
-					$url->setPort((int) $remoteHostArr[1]);
+				$pair = explode(':', $host);
+				$url->setHost($pair[0]);
+				if (isset($pair[1])) {
+					$url->setPort((int) $pair[1]);
 				}
 			} else { //IPv6
 				$endingDelimiterPosition = strpos($host, ']');
-				$remoteHost = substr($host, strpos($host, '[') + 1, $endingDelimiterPosition - 1);
-				$url->setHost($remoteHost);
-				$remoteHostArr = explode(':', substr($host, $endingDelimiterPosition));
-				if (isset($remoteHostArr[1])) {
-					$url->setPort((int) $remoteHostArr[1]);
+				$url->setHost(substr($host, strpos($host, '[') + 1, $endingDelimiterPosition - 1));
+				$pair = explode(':', substr($host, $endingDelimiterPosition));
+				if (isset($pair[1])) {
+					$url->setPort((int) $pair[1]);
 				}
 			}
 		}
@@ -340,10 +339,11 @@ class RequestFactory
 			? $proxyParams['proto'][0]
 			: 'http';
 		$url->setScheme(strcasecmp($scheme, 'https') === 0 ? 'https' : 'http');
+		return $remoteAddr ?? null;
 	}
 
 
-	private function useNonstandardProxy(Url $url, &$remoteAddr, &$remoteHost): void
+	private function useNonstandardProxy(Url $url): ?string
 	{
 		if (!empty($_SERVER['HTTP_X_FORWARDED_PROTO'])) {
 			$url->setScheme(strcasecmp($_SERVER['HTTP_X_FORWARDED_PROTO'], 'https') === 0 ? 'https' : 'http');
@@ -370,10 +370,11 @@ class RequestFactory
 		if (isset($xForwardedForRealIpKey) && !empty($_SERVER['HTTP_X_FORWARDED_HOST'])) {
 			$xForwardedHost = explode(',', $_SERVER['HTTP_X_FORWARDED_HOST']);
 			if (isset($xForwardedHost[$xForwardedForRealIpKey])) {
-				$remoteHost = trim($xForwardedHost[$xForwardedForRealIpKey]);
-				$url->setHost($remoteHost);
+				$url->setHost(trim($xForwardedHost[$xForwardedForRealIpKey]));
 			}
 		}
+
+		return $remoteAddr ?? null;
 	}
 
 
