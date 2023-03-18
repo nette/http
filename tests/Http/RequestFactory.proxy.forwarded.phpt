@@ -25,7 +25,7 @@ test('', function () {
 
 	$factory->setProxy('127.0.0.1/8');
 	Assert::same('23.75.45.200', $factory->fromGlobals()->getRemoteAddress());
-	Assert::same('192.168.0.1', $factory->fromGlobals()->getRemoteHost());
+	Assert::same('a23-75-45-200.deploy.static.akamaitechnologies.com', $factory->fromGlobals()->getRemoteHost());
 
 	$url = $factory->fromGlobals()->getUrl();
 	Assert::same('http', $url->getScheme());
@@ -43,7 +43,7 @@ test('', function () {
 
 	$factory->setProxy('127.0.0.3');
 	Assert::same('23.75.45.200', $factory->fromGlobals()->getRemoteAddress());
-	Assert::same('192.168.0.1', $factory->fromGlobals()->getRemoteHost());
+	Assert::same('a23-75-45-200.deploy.static.akamaitechnologies.com', $factory->fromGlobals()->getRemoteHost());
 
 	$url = $factory->fromGlobals()->getUrl();
 	Assert::same(8080, $url->getPort());
@@ -62,7 +62,7 @@ test('', function () {
 
 	$factory->setProxy('127.0.0.3');
 	Assert::same('2001:db8:cafe::17', $factory->fromGlobals()->getRemoteAddress());
-	Assert::same('2001:db8:cafe::18', $factory->fromGlobals()->getRemoteHost());
+	Assert::same('2001:db8:cafe::17', $factory->fromGlobals()->getRemoteHost());
 
 	$url = $factory->fromGlobals()->getUrl();
 	Assert::same('2001:db8:cafe::18', $url->getHost());
@@ -79,7 +79,7 @@ test('', function () {
 
 	$factory->setProxy('127.0.0.3');
 	Assert::same('2001:db8:cafe::17', $factory->fromGlobals()->getRemoteAddress());
-	Assert::same('2001:db8:cafe::18', $factory->fromGlobals()->getRemoteHost());
+	Assert::same('2001:db8:cafe::17', $factory->fromGlobals()->getRemoteHost());
 
 	$url = $factory->fromGlobals()->getUrl();
 	Assert::same(47832, $url->getPort());
