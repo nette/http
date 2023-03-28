@@ -218,7 +218,7 @@ final class Response implements IResponse
 		$headers = [];
 		foreach (headers_list() as $header) {
 			$a = strpos($header, ':');
-			$headers[substr($header, 0, $a)] = (string) substr($header, $a + 2);
+			$headers[substr($header, 0, $a)] = substr($header, $a + 2);
 		}
 
 		return $headers;

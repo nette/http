@@ -90,7 +90,7 @@ class UrlScript extends UrlImmutable
 	 */
 	public function getPathInfo(): string
 	{
-		return (string) substr($this->getPath(), strlen($this->scriptPath));
+		return substr($this->getPath(), strlen($this->scriptPath));
 	}
 
 
