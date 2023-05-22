@@ -29,7 +29,7 @@ final class FileUpload
 {
 	use Nette\SmartObject;
 
-	public const ImageMimeTypes = ['image/gif', 'image/png', 'image/jpeg', 'image/webp'];
+	public const ImageMimeTypes = ['image/gif', 'image/png', 'image/jpeg', 'image/webp', 'image/avif'];
 
 	/** @deprecated use FileUpload::ImageMimeTypes */
 	public const IMAGE_MIME_TYPES = self::ImageMimeTypes;
