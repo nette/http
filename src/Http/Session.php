@@ -302,6 +302,9 @@ class Session
 
 	/**
 	 * Returns specified session section.
+	 * @template T of SessionSection
+	 * @param class-string<T> $class
+	 * @return T
 	 */
 	public function getSection(string $section, string $class = SessionSection::class): SessionSection
 	{
