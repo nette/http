@@ -19,9 +19,9 @@
 		"nette/utils": "^3.2.1 || ~4.0.0"
 	},
 	"require-dev": {
-		"nette/di": "^3.0",
+		"nette/di": "^3.1 || ^4.0",
 		"nette/tester": "^2.4",
-		"nette/security": "^3.0",
+		"nette/security": "^4.0",
 		"tracy/tracy": "^2.8",
 		"phpstan/phpstan": "^1.0"
 	},
