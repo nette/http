@@ -137,7 +137,7 @@ final class FileUpload
 
 
 	/**
-	 * Returns the path of the temporary location of the uploaded file.
+	 * Returns the size of the uploaded file in bytes.
 	 */
 	public function getSize(): int
 	{
