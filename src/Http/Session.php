@@ -17,8 +17,6 @@ use Nette;
  */
 class Session
 {
-	use Nette\SmartObject;
-
 	/** Default file lifetime */
 	private const DefaultFileLifetime = 3 * Nette\Utils\DateTime::HOUR;
 

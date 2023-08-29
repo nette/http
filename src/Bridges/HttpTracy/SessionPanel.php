@@ -18,8 +18,6 @@ use Tracy;
  */
 class SessionPanel implements Tracy\IBarPanel
 {
-	use Nette\SmartObject;
-
 	/**
 	 * Renders tab.
 	 */

@@ -9,16 +9,12 @@ declare(strict_types=1);
 
 namespace Nette\Http;
 
-use Nette;
-
 
 /**
  * HTTP-specific tasks.
  */
 class Context
 {
-	use Nette\SmartObject;
-
 	private IRequest $request;
 	private IResponse $response;
 

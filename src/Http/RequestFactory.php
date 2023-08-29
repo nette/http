@@ -19,8 +19,6 @@ use Nette\Utils\Strings;
  */
 class RequestFactory
 {
-	use Nette\SmartObject;
-
 	/** @internal */
 	private const ValidChars = '\x09\x0A\x0D\x20-\x7E\xA0-\x{10FFFF}';
 
