@@ -157,7 +157,7 @@ class RequestFactory
 						$list[$key][$k] = (string) preg_replace('#[^' . self::ValidChars . ']+#u', '', $v);
 
 					} else {
-						throw new Nette\InvalidStateException(sprintf('Invalid value in $_POST/$_COOKIE in key %s, expected string, %s given.', "'$k'", gettype($v)));
+						throw new Nette\InvalidStateException(sprintf('Invalid value in $_POST/$_COOKIE in key %s, expected string, %s given.', "'$k'", get_debug_type($v)));
 					}
 				}
 			}
@@ -299,9 +299,9 @@ class RequestFactory
 
 		if (isset($proxyParams['for'])) {
 			$address = $proxyParams['for'][0];
-			$remoteAddr = strpos($address, '[') === false
-				? explode(':', $address)[0]  // IPv4
-				: substr($address, 1, strpos($address, ']') - 1); // IPv6
+			$remoteAddr = str_contains($address, '[')
+				? substr($address, 1, strpos($address, ']') - 1) // IPv6
+				: explode(':', $address)[0];  // IPv4
 		}
 
 		if (isset($proxyParams['proto']) && count($proxyParams['proto']) === 1) {
