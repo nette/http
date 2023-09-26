@@ -177,7 +177,7 @@ class Url implements \JsonSerializable
 	public function setPath(string $path): static
 	{
 		$this->path = $path;
-		if ($this->host && substr($this->path, 0, 1) !== '/') {
+		if ($this->host && !str_starts_with($this->path, '/')) {
 			$this->path = '/' . $this->path;
 		}
 
@@ -366,7 +366,7 @@ class Url implements \JsonSerializable
 	 */
 	private static function idnHostToUnicode(string $host): string
 	{
-		if (strpos($host, '--') === false) { // host does not contain IDN
+		if (!str_contains($host, '--')) { // host does not contain IDN
 			return $host;
 		}
 

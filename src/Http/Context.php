@@ -46,7 +46,7 @@ class Context
 		} elseif ($ifNoneMatch !== null) {
 			$etag = $this->response->getHeader('ETag');
 
-			if ($etag === null || strpos(' ' . strtr($ifNoneMatch, ",\t", '  '), ' ' . $etag) === false) {
+			if ($etag === null || !str_contains(' ' . strtr($ifNoneMatch, ",\t", '  '), ' ' . $etag)) {
 				return true;
 
 			} else {

@@ -50,7 +50,7 @@ class UrlScript extends UrlImmutable
 	{
 		$dolly = clone $this;
 		$dolly->scriptPath = $scriptPath;
-		$parent = \Closure::fromCallable([UrlImmutable::class, 'withPath'])->bindTo($dolly);
+		$parent = UrlImmutable::withPath(...)->bindTo($dolly);
 		return $parent($path);
 	}
 
@@ -90,7 +90,7 @@ class UrlScript extends UrlImmutable
 	 */
 	public function getPathInfo(): string
 	{
-		return (string) substr($this->getPath(), strlen($this->scriptPath));
+		return substr($this->getPath(), strlen($this->scriptPath));
 	}
 
 
