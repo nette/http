@@ -29,10 +29,8 @@ final class FileUpload
 {
 	use Nette\SmartObject;
 
-	public const ImageMimeTypes = ['image/gif', 'image/png', 'image/jpeg', 'image/webp'];
-
-	/** @deprecated use FileUpload::ImageMimeTypes */
-	public const IMAGE_MIME_TYPES = self::ImageMimeTypes;
+	/** @deprecated */
+	public const IMAGE_MIME_TYPES = ['image/gif', 'image/png', 'image/jpeg', 'image/webp'];
 
 	/** @var string */
 	private $name;
@@ -214,12 +212,20 @@ final class FileUpload
 
 
 	/**
-	 * Returns true if the uploaded file is a JPEG, PNG, GIF, or WebP image.
+	 * Returns true if the uploaded file is an image supported by PHP.
 	 * Detection is based on its signature, the integrity of the file is not checked. Requires PHP extension fileinfo.
 	 */
 	public function isImage(): bool
 	{
-		return in_array($this->getContentType(), self::ImageMimeTypes, true);
+		$flag = imagetypes();
+		$types = array_filter([
+			$flag & IMG_GIF ? 'image/gif' : null,
+			$flag & IMG_JPG ? 'image/jpeg' : null,
+			$flag & IMG_PNG ? 'image/png' : null,
+			$flag & IMG_WEBP ? 'image/webp' : null,
+			$flag & 256 ? 'image/avif' : null, // IMG_AVIF
+		]);
+		return in_array($this->getContentType(), $types, true);
 	}
 
 
