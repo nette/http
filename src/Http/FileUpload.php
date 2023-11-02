@@ -10,6 +10,7 @@ declare(strict_types=1);
 namespace Nette\Http;
 
 use Nette;
+use Nette\Utils\Image;
 
 
 /**
@@ -217,14 +218,7 @@ final class FileUpload
 	 */
 	public function isImage(): bool
 	{
-		$flag = imagetypes();
-		$types = array_filter([
-			$flag & IMG_GIF ? 'image/gif' : null,
-			$flag & IMG_JPG ? 'image/jpeg' : null,
-			$flag & IMG_PNG ? 'image/png' : null,
-			$flag & IMG_WEBP ? 'image/webp' : null,
-			$flag & 256 ? 'image/avif' : null, // IMG_AVIF
-		]);
+		$types = array_map(fn($type) => Image::typeToMimeType($type), Image::getSupportedTypes());
 		return in_array($this->getContentType(), $types, strict: true);
 	}
 
@@ -233,9 +227,9 @@ final class FileUpload
 	 * Loads an image.
 	 * @throws Nette\Utils\ImageException  If the upload was not successful or is not a valid image
 	 */
-	public function toImage(): Nette\Utils\Image
+	public function toImage(): Image
 	{
-		return Nette\Utils\Image::fromFile($this->tmpName);
+		return Image::fromFile($this->tmpName);
 	}
 
 
