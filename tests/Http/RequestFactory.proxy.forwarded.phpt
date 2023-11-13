@@ -65,7 +65,7 @@ test('', function () {
 	Assert::same('2001:db8:cafe::17', $factory->fromGlobals()->getRemoteHost());
 
 	$url = $factory->fromGlobals()->getUrl();
-	Assert::same('2001:db8:cafe::18', $url->getHost());
+	Assert::same('[2001:db8:cafe::18]', $url->getHost());
 });
 
 test('', function () {
@@ -83,7 +83,7 @@ test('', function () {
 
 	$url = $factory->fromGlobals()->getUrl();
 	Assert::same(47832, $url->getPort());
-	Assert::same('2001:db8:cafe::18', $url->getHost());
+	Assert::same('[2001:db8:cafe::18]', $url->getHost());
 });
 
 
