@@ -12,6 +12,8 @@ use Tester\Assert;
 require __DIR__ . '/../bootstrap.php';
 
 
-Assert::exception(function () {
-	new UrlImmutable('http:///');
-}, InvalidArgumentException::class, "Malformed or unsupported URI 'http:///'.");
+Assert::exception(
+	fn() => new UrlImmutable('http:///'),
+	InvalidArgumentException::class,
+	"Malformed or unsupported URI 'http:///'.",
+);

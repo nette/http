@@ -33,62 +33,32 @@ class Request implements IRequest
 {
 	use Nette\SmartObject;
 
-	/** @var string */
-	private $method;
+	private array $headers;
 
-	/** @var UrlScript */
-	private $url;
-
-	/** @var array */
-	private $post;
-
-	/** @var array */
-	private $files;
-
-	/** @var array */
-	private $cookies;
-
-	/** @var array */
-	private $headers;
-
-	/** @var string|null */
-	private $remoteAddress;
-
-	/** @var string|null */
-	private $remoteHost;
-
-	/** @var callable|null */
+	/** @var ?callable */
 	private $rawBodyCallback;
 
 
 	public function __construct(
-		UrlScript $url,
-		?array $post = null,
-		?array $files = null,
-		?array $cookies = null,
-		?array $headers = null,
-		?string $method = null,
-		?string $remoteAddress = null,
-		?string $remoteHost = null,
-		?callable $rawBodyCallback = null
+		private UrlScript $url,
+		private array $post = [],
+		private array $files = [],
+		private array $cookies = [],
+		array $headers = [],
+		private string $method = 'GET',
+		private ?string $remoteAddress = null,
+		private ?string $remoteHost = null,
+		?callable $rawBodyCallback = null,
 	) {
-		$this->url = $url;
-		$this->post = (array) $post;
-		$this->files = (array) $files;
-		$this->cookies = (array) $cookies;
-		$this->headers = array_change_key_case((array) $headers, CASE_LOWER);
-		$this->method = $method ?: 'GET';
-		$this->remoteAddress = $remoteAddress;
-		$this->remoteHost = $remoteHost;
+		$this->headers = array_change_key_case($headers, CASE_LOWER);
 		$this->rawBodyCallback = $rawBodyCallback;
 	}
 
 
 	/**
 	 * Returns a clone with a different URL.
-	 * @return static
 	 */
-	public function withUrl(UrlScript $url)
+	public function withUrl(UrlScript $url): static
 	{
 		$dolly = clone $this;
 		$dolly->url = $url;
@@ -111,14 +81,11 @@ class Request implements IRequest
 	/**
 	 * Returns variable provided to the script via URL query ($_GET).
 	 * If no key is passed, returns the entire array.
-	 * @return mixed
 	 */
-	public function getQuery(?string $key = null)
+	public function getQuery(?string $key = null): mixed
 	{
 		if (func_num_args() === 0) {
 			return $this->url->getQueryParameters();
-		} elseif (func_num_args() > 1) {
-			trigger_error(__METHOD__ . '() parameter $default is deprecated, use operator ??', E_USER_DEPRECATED);
 		}
 
 		return $this->url->getQueryParameter($key);
@@ -128,14 +95,11 @@ class Request implements IRequest
 	/**
 	 * Returns variable provided to the script via POST method ($_POST).
 	 * If no key is passed, returns the entire array.
-	 * @return mixed
 	 */
-	public function getPost(?string $key = null)
+	public function getPost(?string $key = null): mixed
 	{
 		if (func_num_args() === 0) {
 			return $this->post;
-		} elseif (func_num_args() > 1) {
-			trigger_error(__METHOD__ . '() parameter $default is deprecated, use operator ??', E_USER_DEPRECATED);
 		}
 
 		return $this->post[$key] ?? null;
@@ -145,9 +109,8 @@ class Request implements IRequest
 	/**
 	 * Returns uploaded file.
 	 * @param  string|string[]  $key
-	 * @return ?FileUpload
 	 */
-	public function getFile($key)
+	public function getFile($key): ?FileUpload
 	{
 		$res = Nette\Utils\Arrays::get($this->files, $key, null);
 		return $res instanceof FileUpload ? $res : null;
@@ -165,14 +128,9 @@ class Request implements IRequest
 
 	/**
 	 * Returns a cookie or `null` if it does not exist.
-	 * @return mixed
 	 */
-	public function getCookie(string $key)
+	public function getCookie(string $key): mixed
 	{
-		if (func_num_args() > 1) {
-			trigger_error(__METHOD__ . '() parameter $default is deprecated, use operator ??', E_USER_DEPRECATED);
-		}
-
 		return $this->cookies[$key] ?? null;
 	}
 
@@ -212,10 +170,6 @@ class Request implements IRequest
 	 */
 	public function getHeader(string $header): ?string
 	{
-		if (func_num_args() > 1) {
-			trigger_error(__METHOD__ . '() parameter $default is deprecated, use operator ??', E_USER_DEPRECATED);
-		}
-
 		$header = strtolower($header);
 		return $this->headers[$header] ?? null;
 	}
@@ -236,6 +190,7 @@ class Request implements IRequest
 	 */
 	public function getReferer(): ?UrlImmutable
 	{
+		trigger_error(__METHOD__ . '() is deprecated', E_USER_DEPRECATED);
 		return isset($this->headers['referer'])
 			? new UrlImmutable($this->headers['referer'])
 			: null;
@@ -299,10 +254,6 @@ class Request implements IRequest
 	 */
 	public function getRemoteHost(): ?string
 	{
-		if ($this->remoteHost === null && $this->remoteAddress !== null) {
-			$this->remoteHost = gethostbyaddr($this->remoteAddress);
-		}
-
 		return $this->remoteHost;
 	}
 
@@ -317,6 +268,20 @@ class Request implements IRequest
 
 
 	/**
+	 * Returns decoded content of HTTP request body.
+	 */
+	public function getBody(): mixed
+	{
+		$type = $this->getHeader('Content-Type');
+		return match ($type) {
+			'application/json' => json_decode($this->getRawBody()),
+			'application/x-www-form-urlencoded' => $_POST,
+			default => throw new \Exception("Unsupported content type: $type"),
+		};
+	}
+
+
+	/**
 	 * Returns basic HTTP authentication credentials.
 	 * @return array{string, string}|null
 	 */
@@ -325,9 +290,9 @@ class Request implements IRequest
 		return preg_match(
 			'~^Basic (\S+)$~',
 			$this->headers['authorization'] ?? '',
-			$t
+			$t,
 		)
-			&& ($t = base64_decode($t[1], true))
+			&& ($t = base64_decode($t[1], strict: true))
 			&& ($t = explode(':', $t, 2))
 			&& (count($t) === 2)
 			? $t

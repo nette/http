@@ -19,7 +19,7 @@ file_put_contents(getTempDir() . '/sess_' . $sessionId, '__NF|a:1:{s:4:"DATA";a:
 
 $session = new Session(new Http\Request(new Http\UrlScript('http://nette.org'), [], [], $cookies), new Http\Response);
 $session->start();
-Assert::same('yes', $session->getSection('temp')->value);
+Assert::same('yes', $session->getSection('temp')->get('value'));
 
 $newSessionId = $session->getId();
 $session->close();

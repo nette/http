@@ -18,8 +18,7 @@ use Nette\Schema\Expect;
  */
 class HttpExtension extends Nette\DI\CompilerExtension
 {
-	/** @var bool */
-	private $cliMode;
+	private bool $cliMode;
 
 
 	public function __construct(bool $cliMode = false)
@@ -115,11 +114,11 @@ class HttpExtension extends Nette\DI\CompilerExtension
 			}
 
 			$value = self::buildPolicy($config->$key);
-			if (strpos($value, "'nonce'")) {
+			if (str_contains($value, "'nonce'")) {
 				$this->initialization->addBody('$cspNonce = base64_encode(random_bytes(16));');
 				$value = Nette\DI\ContainerBuilder::literal(
 					'str_replace(?, ? . $cspNonce, ?)',
-					["'nonce", "'nonce-", $value]
+					["'nonce", "'nonce-", $value],
 				);
 			}
 
@@ -140,7 +139,7 @@ class HttpExtension extends Nette\DI\CompilerExtension
 		if (!$config->disableNetteCookie) {
 			$this->initialization->addBody(
 				'Nette\Http\Helpers::initCookie($this->getService(?), $response);',
-				[$this->prefix('request')]
+				[$this->prefix('request')],
 			);
 		}
 	}

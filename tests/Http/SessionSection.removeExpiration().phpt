@@ -15,8 +15,8 @@ $session = new Session(new Nette\Http\Request(new Nette\Http\UrlScript), new Net
 $session->setExpiration('+10 seconds');
 
 $section = $session->getSection('expireRemove');
-$section->a = 'apple';
-$section->b = 'banana';
+$section->set('a', 'apple');
+$section->set('b', 'banana');
 
 $section->setExpiration('+2 seconds', 'a');
 $section->removeExpiration('a');
