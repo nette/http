@@ -89,11 +89,11 @@ class RequestFactory
 
 		if (
 			(isset($_SERVER[$tmp = 'HTTP_HOST']) || isset($_SERVER[$tmp = 'SERVER_NAME']))
-			&& preg_match('#^([a-z0-9_.-]+|\[[a-f0-9:]+\])(:\d+)?$#Di', $_SERVER[$tmp], $pair)
+			&& ($pair = $this->parseHostAndPort($_SERVER[$tmp]))
 		) {
-			$url->setHost(rtrim(strtolower($pair[1]), '.'));
-			if (isset($pair[2])) {
-				$url->setPort((int) substr($pair[2], 1));
+			$url->setHost($pair[0]);
+			if (isset($pair[1])) {
+				$url->setPort($pair[1]);
 			} elseif ($tmp === 'SERVER_NAME' && isset($_SERVER['SERVER_PORT'])) {
 				$url->setPort((int) $_SERVER['SERVER_PORT']);
 			}
@@ -321,22 +321,13 @@ class RequestFactory
 			$url->setPort($url->getScheme() === 'https' ? 443 : 80);
 		}
 
-		if (isset($proxyParams['host']) && count($proxyParams['host']) === 1) {
-			$host = $proxyParams['host'][0];
-			$startingDelimiterPosition = strpos($host, '[');
-			if ($startingDelimiterPosition === false) { //IPv4
-				$pair = explode(':', $host);
-				$url->setHost($pair[0]);
-				if (isset($pair[1])) {
-					$url->setPort((int) $pair[1]);
-				}
-			} else { //IPv6
-				$endingDelimiterPosition = strpos($host, ']');
-				$url->setHost(substr($host, strpos($host, '[') + 1, $endingDelimiterPosition - 1));
-				$pair = explode(':', substr($host, $endingDelimiterPosition));
-				if (isset($pair[1])) {
-					$url->setPort((int) $pair[1]);
-				}
+		if (
+			isset($proxyParams['host']) && count($proxyParams['host']) === 1
+			&& ($pair = $this->parseHostAndPort($proxyParams['host'][0]))
+		) {
+			$url->setHost($pair[0]);
+			if (isset($pair[1])) {
+				$url->setPort($pair[1]);
 			}
 		}
 		return $remoteAddr ?? null;
@@ -375,6 +366,18 @@ class RequestFactory
 		}
 
 		return $remoteAddr ?? null;
+	}
+
+
+	/** @return array{string, ?int}|null */
+	private function parseHostAndPort(string $s): ?array
+	{
+		return preg_match('#^([a-z0-9_.-]+|\[[a-f0-9:]+])(:\d+)?$#Di', $s, $matches)
+			? [
+				rtrim(strtolower($matches[1]), '.'),
+				isset($matches[2]) ? (int) substr($matches[2], 1) : null,
+			]
+			: null;
 	}
 
 
