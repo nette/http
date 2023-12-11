@@ -4,7 +4,7 @@ on: [push, pull_request]
 
 env:
     php-options: -C -d opcache.enable=0
-    php-extensions: fileinfo, intl
+    php-extensions: fileinfo, intl, gd
 
 jobs:
     tests:
