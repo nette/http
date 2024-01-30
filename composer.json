@@ -30,7 +30,10 @@
 		"nette/schema": "<1.2"
 	},
 	"suggest": {
-		"ext-fileinfo": "to detect type of uploaded files"
+		"ext-fileinfo": "to detect MIME type of uploaded files by Nette\\Http\\FileUpload",
+		"ext-gd": "to use image function in Nette\\Http\\FileUpload",
+		"ext-session": "to use Nette\\Http\\Session",
+		"ext-intl": "to support punycode by Nette\\Http\\Url"
 	},
 	"autoload": {
 		"classmap": ["src/"]
