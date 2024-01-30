@@ -33,7 +33,7 @@ test('', function () {
 	Assert::true($upload->isOk());
 	Assert::true($upload->hasFile());
 	Assert::false($upload->isImage());
-	Assert::null($upload->getImageFileExtension());
+	Assert::null($upload->getSuggestedExtension());
 	Assert::same(file_get_contents(__DIR__ . '/files/file.txt'), $upload->getContents());
 });
 
@@ -51,7 +51,7 @@ test('', function () {
 	Assert::same('image.png', $upload->getSanitizedName());
 	Assert::same('../.image.png', $upload->getUntrustedFullPath());
 	Assert::same('image/png', $upload->getContentType());
-	Assert::same('png', $upload->getImageFileExtension());
+	Assert::same('png', $upload->getSuggestedExtension());
 	Assert::same([108, 46], $upload->getImageSize());
 	Assert::true($upload->isImage());
 });
@@ -68,6 +68,7 @@ test('', function () {
 
 	Assert::false($upload->isOk());
 	Assert::false($upload->hasFile());
+	Assert::null($upload->getContentType());
 	Assert::false($upload->isImage());
-	Assert::null($upload->getImageFileExtension());
+	Assert::null($upload->getSuggestedExtension());
 });

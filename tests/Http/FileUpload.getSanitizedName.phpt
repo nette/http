@@ -43,7 +43,7 @@ Assert::with(new FileUpload([]), function () {
 
 
 Assert::with(new FileUpload([]), function () {
-	$this->type = 'image/jpeg';
+	$this->extension = 'jpeg';
 
 	$this->name = '';
 	Assert::same('unknown.jpeg', $this->getSanitizedName());
