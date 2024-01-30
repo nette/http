@@ -22,26 +22,26 @@ final class Response implements IResponse
 {
 	use Nette\SmartObject;
 
-	/** @var string The domain in which the cookie will be available */
-	public $cookieDomain = '';
+	/** The domain in which the cookie will be available */
+	public string $cookieDomain = '';
 
-	/** @var string The path in which the cookie will be available */
-	public $cookiePath = '/';
+	/** The path in which the cookie will be available */
+	public string $cookiePath = '/';
 
-	/** @var bool Whether the cookie is available only through HTTPS */
-	public $cookieSecure = false;
+	/** Whether the cookie is available only through HTTPS */
+	public bool $cookieSecure = false;
 
 	/** @deprecated */
 	public $cookieHttpOnly;
 
-	/** @var bool Whether warn on possible problem with data in output buffer */
-	public $warnOnBuffer = true;
+	/** Whether warn on possible problem with data in output buffer */
+	public bool $warnOnBuffer = true;
 
 	/** @deprecated */
-	private static $fixIE = true;
+	private static bool $fixIE = true;
 
-	/** @var int HTTP response code */
-	private $code = self::S200_OK;
+	/** HTTP response code */
+	private int $code = self::S200_OK;
 
 
 	public function __construct()

@@ -24,17 +24,15 @@ class RequestFactory
 	/** @internal */
 	private const ValidChars = '\x09\x0A\x0D\x20-\x7E\xA0-\x{10FFFF}';
 
-	/** @var array */
-	public $urlFilters = [
+	public array $urlFilters = [
 		'path' => ['#//#' => '/'], // '%20' => ''
 		'url' => [], // '#[.,)]$#D' => ''
 	];
 
-	/** @var bool */
-	private $binary = false;
+	private bool $binary = false;
 
 	/** @var string[] */
-	private $proxies = [];
+	private array $proxies = [];
 
 
 	/** @return static */
