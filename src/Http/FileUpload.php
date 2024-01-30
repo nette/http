@@ -212,8 +212,8 @@ final class FileUpload
 
 
 	/**
-	 * Returns true if the uploaded file is an image supported by PHP.
-	 * Detection is based on its signature, the integrity of the file is not checked. Requires PHP extension fileinfo.
+	 * Returns true if the uploaded file is an image and the format is supported by PHP, so it can be loaded using the toImage() method.
+	 * Detection is based on its signature, the integrity of the file is not checked. Requires PHP extensions fileinfo & gd.
 	 */
 	public function isImage(): bool
 	{
@@ -230,7 +230,7 @@ final class FileUpload
 
 
 	/**
-	 * Loads an image.
+	 * Converts uploaded image to Nette\Utils\Image object.
 	 * @throws Nette\Utils\ImageException  If the upload was not successful or is not a valid image
 	 */
 	public function toImage(): Nette\Utils\Image
