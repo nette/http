@@ -29,6 +29,7 @@ test('', function () {
 	Assert::same(209, $upload->getSize());
 	Assert::same(__DIR__ . '/files/file.txt', $upload->getTemporaryFile());
 	Assert::same(__DIR__ . '/files/file.txt', (string) $upload);
+	Assert::same(__DIR__ . '/files/file.txt', $upload->__toString());
 	Assert::same(0, $upload->getError());
 	Assert::true($upload->isOk());
 	Assert::true($upload->hasFile());
@@ -71,4 +72,6 @@ test('', function () {
 	Assert::null($upload->getContentType());
 	Assert::false($upload->isImage());
 	Assert::null($upload->getSuggestedExtension());
+	Assert::same('', (string) $upload);
+	Assert::same('', $upload->__toString());
 });
