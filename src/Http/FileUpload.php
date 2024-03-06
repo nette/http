@@ -33,13 +33,13 @@ final class FileUpload
 	/** @deprecated */
 	public const IMAGE_MIME_TYPES = ['image/gif', 'image/png', 'image/jpeg', 'image/webp'];
 
-	private string $name;
+	private ?string $name = null;
 	private string|null $fullPath;
 	private string|false|null $type = null;
 	private string|false|null $extension = null;
-	private int $size;
-	private string $tmpName;
-	private int $error;
+	private int $size = 0;
+	private ?string $tmpName = null;
+	private ?int $error;
 
 
 	public function __construct(?array $value)
@@ -51,11 +51,11 @@ final class FileUpload
 			}
 		}
 
-		$this->name = $value['name'];
+		$this->name = $value['name'] ?? null;
 		$this->fullPath = $value['full_path'] ?? null;
-		$this->size = $value['size'];
-		$this->tmpName = $value['tmp_name'];
-		$this->error = $value['error'];
+		$this->size = isset($value['size']) ? (int) $value['size'] : 0;
+		$this->tmpName = $value['tmp_name'] ?? null;
+		$this->error = $value['error'] ?? null;
 	}
 
 
@@ -169,12 +169,12 @@ final class FileUpload
 	 */
 	public function __toString(): string
 	{
-		return $this->tmpName;
+		return $this->tmpName ?? '';
 	}
 
 
 	/**
-	 * Returns the error code. It is be one of UPLOAD_ERR_XXX constants.
+	 * Returns the error code. It has to be one of UPLOAD_ERR_XXX constants.
 	 * @see http://php.net/manual/en/features.file-upload.errors.php
 	 */
 	public function getError(): int
