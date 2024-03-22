@@ -397,7 +397,7 @@ interface IResponse
 	function setCookie(
 		string $name,
 		string $value,
-		?int $expire,
+		string|int|\DateTimeInterface|null $expire,
 		?string $path = null,
 		?string $domain = null,
 		?bool $secure = null,
