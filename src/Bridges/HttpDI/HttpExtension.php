@@ -18,12 +18,9 @@ use Nette\Schema\Expect;
  */
 class HttpExtension extends Nette\DI\CompilerExtension
 {
-	private bool $cliMode;
-
-
-	public function __construct(bool $cliMode = false)
-	{
-		$this->cliMode = $cliMode;
+	public function __construct(
+		private readonly bool $cliMode = false,
+	) {
 	}
 
 

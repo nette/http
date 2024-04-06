@@ -45,8 +45,8 @@ class Session
 		'gc_maxlifetime' => self::DefaultFileLifetime, // 3 hours
 	];
 
-	private IRequest $request;
-	private IResponse $response;
+	private readonly IRequest $request;
+	private readonly IResponse $response;
 	private ?\SessionHandlerInterface $handler = null;
 	private bool $readAndClose = false;
 	private bool $fileExists = true;
