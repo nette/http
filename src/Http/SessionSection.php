@@ -18,17 +18,15 @@ use Nette;
 class SessionSection implements \IteratorAggregate, \ArrayAccess
 {
 	public bool $warnOnUndefined = false;
-	private Session $session;
-	private string $name;
 
 
 	/**
 	 * Do not call directly. Use Session::getSection().
 	 */
-	public function __construct(Session $session, string $name)
-	{
-		$this->session = $session;
-		$this->name = $name;
+	public function __construct(
+		private readonly Session $session,
+		private readonly string $name,
+	) {
 	}
 
 

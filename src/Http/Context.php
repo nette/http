@@ -15,14 +15,10 @@ namespace Nette\Http;
  */
 class Context
 {
-	private IRequest $request;
-	private IResponse $response;
-
-
-	public function __construct(IRequest $request, IResponse $response)
-	{
-		$this->request = $request;
-		$this->response = $response;
+	public function __construct(
+		private readonly IRequest $request,
+		private readonly IResponse $response,
+	) {
 	}
 
 
