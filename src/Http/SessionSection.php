@@ -7,7 +7,7 @@
 
 namespace Nette\Http;
 
-use function array_key_exists, func_num_args, ini_get, is_array, is_string;
+use function func_num_args, ini_get, is_array, is_string;
 
 
 /**
@@ -17,10 +17,6 @@ use function array_key_exists, func_num_args, ini_get, is_array, is_string;
  */
 class SessionSection implements \IteratorAggregate, \ArrayAccess
 {
-	/** Emits a warning when accessing an undefined variable in this section */
-	public bool $warnOnUndefined = false;
-
-
 	/**
 	 * Do not call directly. Use Session::getSection().
 	 */
@@ -116,10 +112,6 @@ class SessionSection implements \IteratorAggregate, \ArrayAccess
 		$this->session->autoStart(forWrite: true);
 		$data = &$this->getData();
 		$data ??= [];
-		if ($this->warnOnUndefined && !array_key_exists($name, $data)) {
-			trigger_error("The variable '$name' does not exist in session section");
-		}
-
 		return $data[$name];
 	}
 
