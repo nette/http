@@ -18,9 +18,6 @@ use function array_key_exists, func_num_args, ini_get, is_array, time;
  */
 class SessionSection implements \IteratorAggregate, \ArrayAccess
 {
-	public bool $warnOnUndefined = false;
-
-
 	/**
 	 * Do not call directly. Use Session::getSection().
 	 */
@@ -113,10 +110,6 @@ class SessionSection implements \IteratorAggregate, \ArrayAccess
 		trigger_error("Reading from \$session->$name is deprecated, use \$session->get('$name') instead", E_USER_DEPRECATED);
 		$this->session->autoStart(true);
 		$data = &$this->getData();
-		if ($this->warnOnUndefined && !array_key_exists($name, $data ?? [])) {
-			trigger_error("The variable '$name' does not exist in session section");
-		}
-
 		return $data[$name];
 	}
 
