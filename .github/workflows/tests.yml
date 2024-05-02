@@ -19,7 +19,7 @@ jobs:
 
         name: PHP ${{ matrix.php }}/${{ matrix.sapi }} tests on ${{ matrix.os }}
         steps:
-            - uses: actions/checkout@v3
+            - uses: actions/checkout@v4
             - uses: shivammathur/setup-php@v2
               with:
                   php-version: ${{ matrix.php }}
@@ -39,7 +39,7 @@ jobs:
         name: Lowest Dependencies
         runs-on: ubuntu-latest
         steps:
-            - uses: actions/checkout@v3
+            - uses: actions/checkout@v4
             - uses: shivammathur/setup-php@v2
               with:
                   php-version: 8.1
@@ -54,7 +54,7 @@ jobs:
         name: Code Coverage
         runs-on: ubuntu-latest
         steps:
-            - uses: actions/checkout@v3
+            - uses: actions/checkout@v4
             - uses: shivammathur/setup-php@v2
               with:
                   php-version: 8.1
