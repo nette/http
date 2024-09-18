@@ -100,7 +100,7 @@ class Session
 				'session_start',
 				[['read_and_close' => $this->readAndClose]],
 				function (string $message) use (&$e): void {
-					$e = new Nette\InvalidStateException($message);
+					$e = new Nette\InvalidStateException($message, previous: $e);
 				},
 			);
 		} catch (\Throwable $e) {
