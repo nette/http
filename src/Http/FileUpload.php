@@ -34,7 +34,7 @@ final class FileUpload
 	public const IMAGE_MIME_TYPES = ['image/gif', 'image/png', 'image/jpeg', 'image/webp'];
 
 	private readonly string $name;
-	private readonly string|null $fullPath;
+	private readonly ?string $fullPath;
 	private string|false|null $type = null;
 	private string|false|null $extension = null;
 	private readonly int $size;
@@ -46,16 +46,16 @@ final class FileUpload
 	{
 		foreach (['name', 'size', 'tmp_name', 'error'] as $key) {
 			if (!isset($value[$key]) || !is_scalar($value[$key])) {
-				$this->error = UPLOAD_ERR_NO_FILE;
-				return; // or throw exception?
+				$value = [];
+				break;
 			}
 		}
 
-		$this->name = $value['name'];
+		$this->name = $value['name'] ?? '';
 		$this->fullPath = $value['full_path'] ?? null;
-		$this->size = $value['size'];
-		$this->tmpName = $value['tmp_name'];
-		$this->error = $value['error'];
+		$this->size = $value['size'] ?? 0;
+		$this->tmpName = $value['tmp_name'] ?? '';
+		$this->error = $value['error'] ?? UPLOAD_ERR_NO_FILE;
 	}
 
 
@@ -174,7 +174,7 @@ final class FileUpload
 
 
 	/**
-	 * Returns the error code. It is be one of UPLOAD_ERR_XXX constants.
+	 * Returns the error code. It has to be one of UPLOAD_ERR_XXX constants.
 	 * @see http://php.net/manual/en/features.file-upload.errors.php
 	 */
 	public function getError(): int

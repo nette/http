@@ -71,4 +71,17 @@ test('', function () {
 	Assert::null($upload->getContentType());
 	Assert::false($upload->isImage());
 	Assert::null($upload->getSuggestedExtension());
+	Assert::same('', (string) $upload);
+});
+
+
+test('', function () {
+	$upload = new FileUpload([]);
+
+	Assert::false($upload->isOk());
+	Assert::false($upload->hasFile());
+	Assert::null($upload->getContentType());
+	Assert::false($upload->isImage());
+	Assert::null($upload->getSuggestedExtension());
+	Assert::same('', (string) $upload);
 });
