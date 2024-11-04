@@ -413,4 +413,34 @@ class Url implements \JsonSerializable
 		parse_str($s, $res);
 		return $res[0] ?? [];
 	}
+
+
+	public static function isAbsolute(string $url): bool
+	{
+		return (bool) preg_match('#^[a-z][a-z0-9+.-]*:#i', $url);
+	}
+
+
+	public static function removeDotSegments(string $path): string
+	{
+		$prefix = $segment = '';
+		if (str_starts_with($path, '/')) {
+			$prefix = '/';
+			$path = substr($path, 1);
+		}
+		$segments = explode('/', $path);
+		$res = [];
+		foreach ($segments as $segment) {
+			if ($segment === '..') {
+				array_pop($res);
+			} elseif ($segment !== '.') {
+				$res[] = $segment;
+			}
+		}
+
+		if ($segment === '.' || $segment === '..') {
+			$res[] = '';
+		}
+		return $prefix . implode('/', $res);
+	}
 }
