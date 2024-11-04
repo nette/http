@@ -347,8 +347,14 @@ class RequestFactory
 
 		if (isset($xForwardedForRealIpKey) && !empty($_SERVER['HTTP_X_FORWARDED_HOST'])) {
 			$xForwardedHost = explode(',', $_SERVER['HTTP_X_FORWARDED_HOST']);
-			if (isset($xForwardedHost[$xForwardedForRealIpKey])) {
-				$url->setHost(trim($xForwardedHost[$xForwardedForRealIpKey]));
+			if (
+				isset($xForwardedHost[$xForwardedForRealIpKey])
+				&& ($pair = $this->parseHostAndPort(trim($xForwardedHost[$xForwardedForRealIpKey])))
+			) {
+				$url->setHost($pair[0]);
+				if (isset($pair[1])) {
+					$url->setPort($pair[1]);
+				}
 			}
 		}
 
