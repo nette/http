@@ -19,7 +19,6 @@ test('forwarded header handling with proxy', function () {
 	$factory = new RequestFactory;
 	$factory->setProxy('127.0.0.1');
 	Assert::same('127.0.0.3', $factory->fromGlobals()->getRemoteAddress());
-	Assert::same('localhost', $factory->fromGlobals()->getRemoteHost());
 
 	$factory->setProxy('127.0.0.1/8');
 	Assert::same('23.75.45.200', $factory->fromGlobals()->getRemoteAddress());
@@ -58,7 +57,6 @@ test('IPv6 addresses in Forwarded header', function () {
 
 	$factory->setProxy('127.0.0.3');
 	Assert::same('2001:db8:cafe::17', $factory->fromGlobals()->getRemoteAddress());
-	Assert::same('2001:db8:cafe::17', $factory->fromGlobals()->getRemoteHost());
 
 	$url = $factory->fromGlobals()->getUrl();
 	Assert::same('[2001:db8:cafe::18]', $url->getHost());
@@ -75,7 +73,6 @@ test('IPv6 addresses and ports in Forwarded header', function () {
 
 	$factory->setProxy('127.0.0.3');
 	Assert::same('2001:db8:cafe::17', $factory->fromGlobals()->getRemoteAddress());
-	Assert::same('2001:db8:cafe::17', $factory->fromGlobals()->getRemoteHost());
 
 	$url = $factory->fromGlobals()->getUrl();
 	Assert::same(47832, $url->getPort());

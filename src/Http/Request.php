@@ -8,7 +8,7 @@
 namespace Nette\Http;
 
 use Nette;
-use function array_change_key_case, base64_decode, count, explode, func_num_args, gethostbyaddr, implode, preg_match, preg_match_all, rsort, strcasecmp, strtr;
+use function array_change_key_case, base64_decode, count, explode, func_num_args, implode, preg_match, preg_match_all, rsort, strcasecmp, strtr;
 
 
 /**
@@ -25,7 +25,7 @@ use function array_change_key_case, base64_decode, count, explode, func_num_args
  * @property-read bool $secured
  * @property-read bool $ajax
  * @property-read ?string $remoteAddress
- * @property-read ?string $remoteHost
+ * @property-deprecated ?string $remoteHost
  * @property-read ?string $rawBody
  */
 class Request implements IRequest
@@ -54,7 +54,7 @@ class Request implements IRequest
 		array $headers = [],
 		private readonly string $method = 'GET',
 		private readonly ?string $remoteAddress = null,
-		private ?string $remoteHost = null,
+		?string $remoteHost = null,
 		?callable $rawBodyCallback = null,
 	) {
 		$this->headers = array_change_key_case($headers);
@@ -256,16 +256,11 @@ class Request implements IRequest
 	}
 
 
-	/**
-	 * Returns the host of the remote client.
-	 */
+	#[\Deprecated]
 	public function getRemoteHost(): ?string
 	{
-		if ($this->remoteHost === null && $this->remoteAddress !== null) {
-			$this->remoteHost = gethostbyaddr($this->remoteAddress) ?: null;
-		}
-
-		return $this->remoteHost;
+		trigger_error(__METHOD__ . '() is deprecated.', E_USER_DEPRECATED);
+		return null;
 	}
 
 
