@@ -27,7 +27,7 @@ test('X-Forwarded headers handling with proxy', function () {
 
 	$factory->setProxy('127.0.0.1/8');
 	Assert::same('23.75.45.200', $factory->fromGlobals()->getRemoteAddress());
-	Assert::same('a23-75-45-200.deploy.static.akamaitechnologies.com', $factory->fromGlobals()->getRemoteHost());
+	Assert::null($factory->fromGlobals()->getRemoteHost());
 
 	$url = $factory->fromGlobals()->getUrl();
 	Assert::same('otherhost', $url->getHost());
@@ -45,7 +45,7 @@ test('X-Forwarded-Host with port', function () {
 	$factory = new RequestFactory;
 	$factory->setProxy('127.0.0.3');
 	Assert::same('23.75.45.200', $factory->fromGlobals()->getRemoteAddress());
-	Assert::same('a23-75-45-200.deploy.static.akamaitechnologies.com', $factory->fromGlobals()->getRemoteHost());
+	Assert::null($factory->fromGlobals()->getRemoteHost());
 
 	$url = $factory->fromGlobals()->getUrl();
 	Assert::same('otherhost', $url->getHost());
@@ -81,7 +81,7 @@ test('multiple proxies in X-Forwarded headers', function () {
 	$factory = new RequestFactory;
 	$factory->setProxy('10.0.0.0/24');
 	Assert::same('172.16.0.1', $factory->fromGlobals()->getRemoteAddress());
-	Assert::same('172.16.0.1', $factory->fromGlobals()->getRemoteHost());
+	Assert::null($factory->fromGlobals()->getRemoteHost());
 
 	$url = $factory->fromGlobals()->getUrl();
 	Assert::same('real', $url->getHost());
@@ -89,7 +89,7 @@ test('multiple proxies in X-Forwarded headers', function () {
 
 	$factory->setProxy(['10.0.0.1', '10.0.0.2']);
 	Assert::same('172.16.0.1', $factory->fromGlobals()->getRemoteAddress());
-	Assert::same('172.16.0.1', $factory->fromGlobals()->getRemoteHost());
+	Assert::null($factory->fromGlobals()->getRemoteHost());
 
 	$url = $factory->fromGlobals()->getUrl();
 	Assert::same('real', $url->getHost());
@@ -107,7 +107,7 @@ test('X-Forwarded-Host with multiple entries and port', function () {
 	$factory = new RequestFactory;
 	$factory->setProxy(['10.0.0.1', '10.0.0.2']);
 	Assert::same('172.16.0.1', $factory->fromGlobals()->getRemoteAddress());
-	Assert::same('172.16.0.1', $factory->fromGlobals()->getRemoteHost());
+	Assert::null($factory->fromGlobals()->getRemoteHost());
 
 	$url = $factory->fromGlobals()->getUrl();
 	Assert::same('real', $url->getHost());
