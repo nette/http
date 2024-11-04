@@ -129,9 +129,7 @@ interface IRequest
 	 */
 	function getRemoteAddress(): ?string;
 
-	/**
-	 * Returns the host of the remote client.
-	 */
+	#[\Deprecated]
 	function getRemoteHost(): ?string;
 
 	/**

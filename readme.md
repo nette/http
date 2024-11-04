@@ -169,10 +169,6 @@ getRemoteAddress(): ?string
 ---------------------------
 Returns the user's IP address. You may need to [set up a proxy|configuring#HTTP proxy] for proper functionality.
 
-getRemoteHost(): ?string
-------------------------
-Returns DNS translation of the user's IP address. You may need to [set up a proxy|configuring#HTTP proxy] for proper functionality.
-
 getRawBody(): ?string
 ---------------------
 Returns the body of the HTTP request:

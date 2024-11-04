@@ -79,7 +79,7 @@ class RequestFactory
 		$this->getServer($url);
 		$this->getPathAndQuery($url);
 		[$post, $cookies] = $this->getGetPostCookie($url);
-		[$remoteAddr, $remoteHost] = $this->getClient($url);
+		$remoteAddr = $this->getClient($url);
 		if ($this->forceHttps) {
 			$url->setScheme('https');
 		}
@@ -92,7 +92,7 @@ class RequestFactory
 			$this->getHeaders(),
 			$this->getMethod(),
 			$remoteAddr,
-			$remoteHost,
+			null,
 			fn() => (string) file_get_contents('php://input'),
 		);
 	}
@@ -295,24 +295,19 @@ class RequestFactory
 	}
 
 
-	/** @return array{?string, ?string}  [remoteAddr, remoteHost] */
-	private function getClient(Url $url): array
+	private function getClient(Url $url): ?string
 	{
 		$remoteAddr = !empty($_SERVER['REMOTE_ADDR']) ? $_SERVER['REMOTE_ADDR'] : null;
 
-		// use real client address and host if trusted proxy is used
+		// use real client address if trusted proxy is used
 		$usingTrustedProxy = $remoteAddr && Arrays::some($this->proxies, fn(string $proxy): bool => Helpers::ipMatch($remoteAddr, $proxy));
 		if ($usingTrustedProxy) {
-			$remoteHost = null;
-			$remoteAddr = empty($_SERVER['HTTP_FORWARDED'])
+			return empty($_SERVER['HTTP_FORWARDED'])
 				? $this->useNonstandardProxy($url)
 				: $this->useForwardedProxy($url);
-
-		} else {
-			$remoteHost = !empty($_SERVER['REMOTE_HOST']) ? $_SERVER['REMOTE_HOST'] : null;
 		}
 
-		return [$remoteAddr, $remoteHost];
+		return $remoteAddr;
 	}
 
 
