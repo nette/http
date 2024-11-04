@@ -45,8 +45,8 @@ class Session
 		'gc_maxlifetime' => self::DefaultFileLifetime, // 3 hours
 	];
 
-	private IRequest $request;
-	private IResponse $response;
+	private readonly IRequest $request;
+	private readonly IResponse $response;
 	private ?\SessionHandlerInterface $handler = null;
 	private bool $readAndClose = false;
 	private bool $fileExists = true;
@@ -100,7 +100,7 @@ class Session
 				'session_start',
 				[['read_and_close' => $this->readAndClose]],
 				function (string $message) use (&$e): void {
-					$e = new Nette\InvalidStateException($message);
+					$e = new Nette\InvalidStateException($message, previous: $e);
 				},
 			);
 		} catch (\Throwable $e) {

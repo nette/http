@@ -12,54 +12,32 @@ use Tester\Assert;
 require __DIR__ . '/../bootstrap.php';
 
 
-Assert::with(new FileUpload([]), function () {
-	$this->name = '';
-	Assert::same('unknown', $this->getSanitizedName());
+function getSanitizedName(string $name, ?string $ext = null): string
+{
+	$file = new FileUpload(['name' => $name, 'size' => 0, 'tmp_name' => '', 'error' => UPLOAD_ERR_NO_FILE]);
+	Assert::with($file, fn() => $file->extension = $ext);
+	return $file->getSanitizedName();
+}
 
-	$this->name = '--';
-	Assert::same('unknown', $this->getSanitizedName());
 
-	$this->name = 'foo';
-	Assert::same('foo', $this->getSanitizedName());
-
-	$this->name = '.foo.';
-	Assert::same('foo', $this->getSanitizedName());
-
-	$this->name = 'readme.txt';
-	Assert::same('readme.txt', $this->getSanitizedName());
-
-	$this->name = './.image.png';
-	Assert::same('image.png', $this->getSanitizedName());
-
-	$this->name = '../.image.png';
-	Assert::same('image.png', $this->getSanitizedName());
-
-	$this->name = '..\.image.png\\';
-	Assert::same('image.png', $this->getSanitizedName());
-
-	$this->name = '10+.+20.pdf';
-	Assert::same('10.20.pdf', $this->getSanitizedName());
+test('name', function () {
+	Assert::same('unknown', getSanitizedName(''));
+	Assert::same('unknown', getSanitizedName('--'));
+	Assert::same('foo', getSanitizedName('foo'));
+	Assert::same('foo', getSanitizedName('.foo.'));
+	Assert::same('readme.txt', getSanitizedName('readme.txt'));
+	Assert::same('image.png', getSanitizedName('./.image.png'));
+	Assert::same('image.png', getSanitizedName('../.image.png'));
+	Assert::same('image.png', getSanitizedName('..\.image.png\\'));
+	Assert::same('10.20.pdf', getSanitizedName('10+.+20.pdf'));
 });
 
 
-Assert::with(new FileUpload([]), function () {
-	$this->extension = 'jpeg';
-
-	$this->name = '';
-	Assert::same('unknown.jpeg', $this->getSanitizedName());
-
-	$this->name = '--';
-	Assert::same('unknown.jpeg', $this->getSanitizedName());
-
-	$this->name = 'foo';
-	Assert::same('foo.jpeg', $this->getSanitizedName());
-
-	$this->name = 'foo.jpg';
-	Assert::same('foo.jpeg', $this->getSanitizedName());
-
-	$this->name = 'foo.php';
-	Assert::same('foo.jpeg', $this->getSanitizedName());
-
-	$this->name = './.image.png';
-	Assert::same('image.jpeg', $this->getSanitizedName());
+test('name & extension', function () {
+	Assert::same('unknown.jpeg', getSanitizedName('', 'jpeg'));
+	Assert::same('unknown.jpeg', getSanitizedName('--', 'jpeg'));
+	Assert::same('foo.jpeg', getSanitizedName('foo', 'jpeg'));
+	Assert::same('foo.jpeg', getSanitizedName('foo.jpg', 'jpeg'));
+	Assert::same('foo.jpeg', getSanitizedName('foo.php', 'jpeg'));
+	Assert::same('image.jpeg', getSanitizedName('./.image.png', 'jpeg'));
 });

@@ -33,25 +33,26 @@ class Request implements IRequest
 {
 	use Nette\SmartObject;
 
-	private array $headers;
+	private readonly array $headers;
 
-	/** @var ?callable */
-	private $rawBodyCallback;
+	private readonly ?\Closure $rawBodyCallback;
 
 
 	public function __construct(
 		private UrlScript $url,
-		private array $post = [],
-		private array $files = [],
-		private array $cookies = [],
+		private readonly array $post = [],
+		private readonly array $files = [],
+		private readonly array $cookies = [],
 		array $headers = [],
-		private string $method = 'GET',
-		private ?string $remoteAddress = null,
+		private readonly string $method = 'GET',
+		private readonly ?string $remoteAddress = null,
 		private ?string $remoteHost = null,
 		?callable $rawBodyCallback = null,
 	) {
 		$this->headers = array_change_key_case($headers, CASE_LOWER);
-		$this->rawBodyCallback = $rawBodyCallback;
+		$this->rawBodyCallback = $rawBodyCallback
+			? \Closure::fromCallable($rawBodyCallback)
+			: null;
 	}
 
 
@@ -190,6 +191,7 @@ class Request implements IRequest
 	 */
 	public function getReferer(): ?UrlImmutable
 	{
+		trigger_error(__METHOD__ . '() is deprecated', E_USER_DEPRECATED);
 		return isset($this->headers['referer'])
 			? new UrlImmutable($this->headers['referer'])
 			: null;
@@ -253,10 +255,6 @@ class Request implements IRequest
 	 */
 	public function getRemoteHost(): ?string
 	{
-		if ($this->remoteHost === null && $this->remoteAddress !== null) {
-			$this->remoteHost = gethostbyaddr($this->remoteAddress);
-		}
-
 		return $this->remoteHost;
 	}
 
@@ -267,6 +265,20 @@ class Request implements IRequest
 	public function getRawBody(): ?string
 	{
 		return $this->rawBodyCallback ? ($this->rawBodyCallback)() : null;
+	}
+
+
+	/**
+	 * Returns decoded content of HTTP request body.
+	 */
+	public function getDecodedBody(): mixed
+	{
+		$type = $this->getHeader('Content-Type');
+		return match ($type) {
+			'application/json' => json_decode($this->getRawBody()),
+			'application/x-www-form-urlencoded' => $_POST,
+			default => throw new \Exception("Unsupported content type: $type"),
+		};
 	}
 
 
