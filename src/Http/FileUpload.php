@@ -80,7 +80,7 @@ final class FileUpload
 
 	/**
 	 * Returns the sanitized file name. The resulting name contains only ASCII characters [a-zA-Z0-9.-].
-	 * If the name does not contain such characters, it returns 'unknown'. If the file is JPEG, PNG, GIF, or WebP image,
+	 * If the name does not contain such characters, it returns 'unknown'. If the file is an image supported by PHP,
 	 * it returns the correct file extension. Do not blindly trust the value returned by this method.
 	 */
 	public function getSanitizedName(): string
@@ -89,9 +89,9 @@ final class FileUpload
 		$name = str_replace(['-.', '.-'], '.', $name);
 		$name = trim($name, '.-');
 		$name = $name === '' ? 'unknown' : $name;
-		if ($ext = $this->getSuggestedExtension()) {
+		if ($this->isImage()) {
 			$name = preg_replace('#\.[^.]+$#D', '', $name);
-			$name .= '.' . $ext;
+			$name .= '.' . $this->getSuggestedExtension();
 		}
 
 		return $name;

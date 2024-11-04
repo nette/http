@@ -12,10 +12,13 @@ use Tester\Assert;
 require __DIR__ . '/../bootstrap.php';
 
 
-function getSanitizedName(string $name, ?string $ext = null): string
+function getSanitizedName(string $name, ?string $type = null): string
 {
 	$file = new FileUpload(['name' => $name, 'size' => 0, 'tmp_name' => '', 'error' => UPLOAD_ERR_NO_FILE]);
-	Assert::with($file, fn() => $file->extension = $ext);
+	Assert::with($file, function () use ($file, $type) {
+		$file->type = $type;
+		$file->extension = $type === null ? null : explode('/', $type)[1];
+	});
 	return $file->getSanitizedName();
 }
 
@@ -34,10 +37,20 @@ test('name', function () {
 
 
 test('name & extension', function () {
-	Assert::same('unknown.jpeg', getSanitizedName('', 'jpeg'));
-	Assert::same('unknown.jpeg', getSanitizedName('--', 'jpeg'));
-	Assert::same('foo.jpeg', getSanitizedName('foo', 'jpeg'));
-	Assert::same('foo.jpeg', getSanitizedName('foo.jpg', 'jpeg'));
-	Assert::same('foo.jpeg', getSanitizedName('foo.php', 'jpeg'));
-	Assert::same('image.jpeg', getSanitizedName('./.image.png', 'jpeg'));
+	Assert::same('unknown', getSanitizedName('', 'application/pdf'));
+	Assert::same('unknown', getSanitizedName('--', 'application/pdf'));
+	Assert::same('foo', getSanitizedName('foo', 'application/pdf'));
+	Assert::same('foo.jpg', getSanitizedName('foo.jpg', 'application/pdf'));
+	Assert::same('foo.php', getSanitizedName('foo.php', 'application/pdf'));
+	Assert::same('image.png', getSanitizedName('./.image.png', 'application/pdf'));
+});
+
+
+test('image name & extension', function () {
+	Assert::same('unknown.jpeg', getSanitizedName('', 'image/jpeg'));
+	Assert::same('unknown.jpeg', getSanitizedName('--', 'image/jpeg'));
+	Assert::same('foo.jpeg', getSanitizedName('foo', 'image/jpeg'));
+	Assert::same('foo.jpeg', getSanitizedName('foo.jpg', 'image/jpeg'));
+	Assert::same('foo.jpeg', getSanitizedName('foo.php', 'image/jpeg'));
+	Assert::same('image.jpeg', getSanitizedName('./.image.png', 'image/jpeg'));
 });
