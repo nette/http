@@ -44,5 +44,5 @@ test('', function () {
 	Assert::same('Tue, 15 Nov 1994 08:12:31 GMT', Helpers::formatDate('1994-11-15T08:12:31+0000'));
 	Assert::same('Tue, 15 Nov 1994 08:12:31 GMT', Helpers::formatDate('1994-11-15T10:12:31+0200'));
 	Assert::same('Tue, 15 Nov 1994 08:12:31 GMT', Helpers::formatDate(new DateTime('1994-11-15T06:12:31-0200')));
-	Assert::same('Tue, 15 Nov 1994 08:12:31 GMT', Helpers::formatDate(784887151));
+	Assert::same('Tue, 15 Nov 1994 08:12:31 GMT', Helpers::formatDate(784_887_151));
 });

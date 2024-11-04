@@ -16,44 +16,38 @@ class MySessionStorage implements SessionHandlerInterface
 	private $path;
 
 
-	#[ReturnTypeWillChange]
-	public function open($savePath, $sessionName)
+	public function open(string $savePath, string $sessionName): bool
 	{
 		$this->path = $savePath;
 		return true;
 	}
 
 
-	#[ReturnTypeWillChange]
-	public function close()
+	public function close(): bool
 	{
 		return true;
 	}
 
 
-	#[ReturnTypeWillChange]
-	public function read($id)
+	public function read(string $id): string|false
 	{
 		return (string) @file_get_contents("$this->path/sess_$id");
 	}
 
 
-	#[ReturnTypeWillChange]
-	public function write($id, $data)
+	public function write(string $id, string $data): bool
 	{
 		return (bool) file_put_contents("$this->path/sess_$id", $data);
 	}
 
 
-	#[ReturnTypeWillChange]
-	public function destroy($id)
+	public function destroy(string $id): bool
 	{
 		return !is_file("$this->path/sess_$id") || @unlink("$this->path/sess_$id");
 	}
 
 
-	#[ReturnTypeWillChange]
-	public function gc($maxlifetime)
+	public function gc(int $maxlifetime): int|false
 	{
 		foreach (glob("$this->path/sess_*") as $filename) {
 			if (filemtime($filename) + $maxlifetime < time()) {
@@ -65,8 +59,7 @@ class MySessionStorage implements SessionHandlerInterface
 	}
 
 
-	#[ReturnTypeWillChange]
-	public function validateId($key)
+	public function validateId(string $id): bool
 	{
 		return true;
 	}
@@ -80,10 +73,10 @@ $session->setHandler(new MySessionStorage);
 $session->start();
 
 $namespace = $session->getSection('one');
-$namespace->a = 'apple';
+$namespace->set('a', 'apple');
 $session->close();
 unset($_SESSION);
 
 $session->start();
 $namespace = $session->getSection('one');
-Assert::same('apple', $namespace->a);
+Assert::same('apple', $namespace->get('a'));

@@ -34,27 +34,23 @@ use Nette;
  */
 class UrlScript extends UrlImmutable
 {
-	/** @var string */
-	private $scriptPath;
-
-	/** @var string */
-	private $basePath;
+	private string $scriptPath;
+	private string $basePath;
 
 
-	public function __construct($url = '/', string $scriptPath = '')
+	public function __construct(string|Url $url = '/', string $scriptPath = '')
 	{
-		parent::__construct($url);
 		$this->scriptPath = $scriptPath;
+		parent::__construct($url);
 		$this->build();
 	}
 
 
-	/** @return static */
-	public function withPath(string $path, string $scriptPath = '')
+	public function withPath(string $path, string $scriptPath = ''): static
 	{
 		$dolly = clone $this;
 		$dolly->scriptPath = $scriptPath;
-		$parent = \Closure::fromCallable([UrlImmutable::class, 'withPath'])->bindTo($dolly);
+		$parent = UrlImmutable::withPath(...)->bindTo($dolly);
 		return $parent($path);
 	}
 
@@ -94,7 +90,7 @@ class UrlScript extends UrlImmutable
 	 */
 	public function getPathInfo(): string
 	{
-		return (string) substr($this->getPath(), strlen($this->scriptPath));
+		return substr($this->getPath(), strlen($this->scriptPath));
 	}
 
 

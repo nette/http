@@ -10,6 +10,7 @@ declare(strict_types=1);
 namespace Nette\Http;
 
 use Nette;
+use Nette\Utils\Image;
 
 
 /**
@@ -32,23 +33,13 @@ final class FileUpload
 	/** @deprecated */
 	public const IMAGE_MIME_TYPES = ['image/gif', 'image/png', 'image/jpeg', 'image/webp'];
 
-	/** @var string */
-	private $name;
-
-	/** @var string|null */
-	private $fullPath;
-
-	/** @var string|false|null */
-	private $type;
-
-	/** @var int */
-	private $size;
-
-	/** @var string */
-	private $tmpName;
-
-	/** @var int */
-	private $error;
+	private ?string $name = null;
+	private string|null $fullPath;
+	private string|false|null $type = null;
+	private string|false|null $extension = null;
+	private int $size = 0;
+	private ?string $tmpName = null;
+	private ?int $error;
 
 
 	public function __construct(?array $value)
@@ -60,11 +51,11 @@ final class FileUpload
 			}
 		}
 
-		$this->name = $value['name'];
+		$this->name = $value['name'] ?? null;
 		$this->fullPath = $value['full_path'] ?? null;
-		$this->size = $value['size'];
-		$this->tmpName = $value['tmp_name'];
-		$this->error = $value['error'];
+		$this->size = isset($value['size']) ? (int) $value['size'] : 0;
+		$this->tmpName = $value['tmp_name'] ?? null;
+		$this->error = $value['error'] ?? null;
 	}
 
 
@@ -73,6 +64,7 @@ final class FileUpload
 	 */
 	public function getName(): string
 	{
+		trigger_error(__METHOD__ . '() is deprecated, use getUntrustedName()', E_USER_DEPRECATED);
 		return $this->name;
 	}
 
@@ -94,13 +86,13 @@ final class FileUpload
 	 */
 	public function getSanitizedName(): string
 	{
-		$name = Nette\Utils\Strings::webalize($this->name, '.', false);
+		$name = Nette\Utils\Strings::webalize($this->name, '.', lower: false);
 		$name = str_replace(['-.', '.-'], '.', $name);
 		$name = trim($name, '.-');
 		$name = $name === '' ? 'unknown' : $name;
-		if ($this->isImage()) {
+		if ($ext = $this->getSuggestedExtension()) {
 			$name = preg_replace('#\.[^.]+$#D', '', $name);
-			$name .= '.' . ($this->getImageFileExtension() ?? 'unknown');
+			$name .= '.' . $ext;
 		}
 
 		return $name;
@@ -126,11 +118,32 @@ final class FileUpload
 	 */
 	public function getContentType(): ?string
 	{
-		if ($this->isOk() && $this->type === null) {
-			$this->type = finfo_file(finfo_open(FILEINFO_MIME_TYPE), $this->tmpName);
+		if ($this->isOk()) {
+			$this->type ??= finfo_file(finfo_open(FILEINFO_MIME_TYPE), $this->tmpName);
 		}
 
 		return $this->type ?: null;
+	}
+
+
+	/**
+	 * Returns the appropriate file extension (without the period) corresponding to the detected MIME type. Requires the PHP extension fileinfo.
+	 */
+	public function getSuggestedExtension(): ?string
+	{
+		if ($this->isOk() && $this->extension === null) {
+			$exts = finfo_file(finfo_open(FILEINFO_EXTENSION), $this->tmpName);
+			if ($exts && $exts !== '???') {
+				return $this->extension = preg_replace('~[/,].*~', '', $exts);
+			}
+			[, , $type] = @getimagesize($this->tmpName); // @ - files smaller than 12 bytes causes read error
+			if ($type) {
+				return $this->extension = image_type_to_extension($type, false);
+			}
+			$this->extension = false;
+		}
+
+		return $this->extension ?: null;
 	}
 
 
@@ -157,12 +170,12 @@ final class FileUpload
 	 */
 	public function __toString(): string
 	{
-		return $this->tmpName;
+		return $this->tmpName ?? '';
 	}
 
 
 	/**
-	 * Returns the error code. It is be one of UPLOAD_ERR_XXX constants.
+	 * Returns the error code. It has to be one of UPLOAD_ERR_XXX constants.
 	 * @see http://php.net/manual/en/features.file-upload.errors.php
 	 */
 	public function getError(): int
@@ -191,9 +204,8 @@ final class FileUpload
 
 	/**
 	 * Moves an uploaded file to a new location. If the destination file already exists, it will be overwritten.
-	 * @return static
 	 */
-	public function move(string $dest)
+	public function move(string $dest): static
 	{
 		$dir = dirname($dest);
 		Nette\Utils\FileSystem::createDir($dir);
@@ -203,39 +215,32 @@ final class FileUpload
 			[$this->tmpName, $dest],
 			function (string $message) use ($dest): void {
 				throw new Nette\InvalidStateException("Unable to move uploaded file '$this->tmpName' to '$dest'. $message");
-			}
+			},
 		);
-		@chmod($dest, 0666); // @ - possible low permission to chmod
+		@chmod($dest, 0o666); // @ - possible low permission to chmod
 		$this->tmpName = $dest;
 		return $this;
 	}
 
 
 	/**
-	 * Returns true if the uploaded file is an image supported by PHP.
-	 * Detection is based on its signature, the integrity of the file is not checked. Requires PHP extension fileinfo.
+	 * Returns true if the uploaded file is an image and the format is supported by PHP, so it can be loaded using the toImage() method.
+	 * Detection is based on its signature, the integrity of the file is not checked. Requires PHP extensions fileinfo & gd.
 	 */
 	public function isImage(): bool
 	{
-		$flag = imagetypes();
-		$types = array_filter([
-			$flag & IMG_GIF ? 'image/gif' : null,
-			$flag & IMG_JPG ? 'image/jpeg' : null,
-			$flag & IMG_PNG ? 'image/png' : null,
-			$flag & IMG_WEBP ? 'image/webp' : null,
-			$flag & 256 ? 'image/avif' : null, // IMG_AVIF
-		]);
-		return in_array($this->getContentType(), $types, true);
+		$types = array_map(fn($type) => Image::typeToMimeType($type), Image::getSupportedTypes());
+		return in_array($this->getContentType(), $types, strict: true);
 	}
 
 
 	/**
-	 * Loads an image.
+	 * Converts uploaded image to Nette\Utils\Image object.
 	 * @throws Nette\Utils\ImageException  If the upload was not successful or is not a valid image
 	 */
-	public function toImage(): Nette\Utils\Image
+	public function toImage(): Image
 	{
-		return Nette\Utils\Image::fromFile($this->tmpName);
+		return Image::fromFile($this->tmpName);
 	}
 
 
@@ -252,12 +257,11 @@ final class FileUpload
 
 	/**
 	 * Returns image file extension based on detected content type (without dot).
+	 * @deprecated use getSuggestedExtension()
 	 */
 	public function getImageFileExtension(): ?string
 	{
-		return $this->isImage()
-			? explode('/', $this->getContentType())[1]
-			: null;
+		return $this->getSuggestedExtension();
 	}
 
 

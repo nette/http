@@ -15,8 +15,8 @@
 		}
 	],
 	"require": {
-		"php": "7.2 - 8.3",
-		"nette/utils": "^3.2.1 || ~4.0.0"
+		"php": "8.1 - 8.4",
+		"nette/utils": "^4.0.4"
 	},
 	"require-dev": {
 		"nette/di": "^3.0",
@@ -30,7 +30,10 @@
 		"nette/schema": "<1.2"
 	},
 	"suggest": {
-		"ext-fileinfo": "to detect type of uploaded files"
+		"ext-fileinfo": "to detect MIME type of uploaded files by Nette\\Http\\FileUpload",
+		"ext-gd": "to use image function in Nette\\Http\\FileUpload",
+		"ext-session": "to use Nette\\Http\\Session",
+		"ext-intl": "to support punycode by Nette\\Http\\Url"
 	},
 	"autoload": {
 		"classmap": ["src/"]
@@ -42,7 +45,7 @@
 	},
 	"extra": {
 		"branch-alias": {
-			"dev-master": "3.2-dev"
+			"dev-master": "4.0-dev"
 		}
 	}
 }

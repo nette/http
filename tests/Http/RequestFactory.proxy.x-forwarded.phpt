@@ -27,7 +27,7 @@ test('', function () {
 
 	$factory->setProxy('127.0.0.1/8');
 	Assert::same('23.75.45.200', $factory->fromGlobals()->getRemoteAddress());
-	Assert::same('a23-75-45-200.deploy.static.akamaitechnologies.com', $factory->fromGlobals()->getRemoteHost());
+	Assert::null($factory->fromGlobals()->getRemoteHost());
 
 	$url = $factory->fromGlobals()->getUrl();
 	Assert::same('otherhost', $url->getHost());

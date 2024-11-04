@@ -15,13 +15,11 @@ require __DIR__ . '/../bootstrap.php';
 $session = new Session(new Nette\Http\Request(new Nette\Http\UrlScript), new Nette\Http\Response);
 
 $namespace = $session->getSection('one');
-$namespace->a = 'apple';
+$namespace->set('a', 'apple');
 $namespace->set('p', 'pear');
-$namespace['o'] = 'orange';
-
-Assert::same('apple', $namespace->a);
+$namespace->set('o', 'orange');
 Assert::same('pear', $namespace->get('p'));
-Assert::same('orange', $namespace['o']);
+Assert::null($namespace->get('undefined'));
 
 foreach ($namespace as $key => $val) {
 	$tmp[] = "$key=$val";
@@ -33,16 +31,11 @@ Assert::same([
 	'o=orange',
 ], $tmp);
 
+$namespace->remove('a');
+Assert::same('p=pear&o=orange', http_build_query(iterator_to_array($namespace->getIterator())));
 
-Assert::true(isset($namespace['p']));
-Assert::true(isset($namespace->o));
-Assert::false(isset($namespace->undefined));
+$namespace->remove(['x', 'p']);
+Assert::same('o=orange', http_build_query(iterator_to_array($namespace->getIterator())));
 
-unset($namespace['a'], $namespace->o, $namespace->undef);
-$namespace->remove('p');
-$namespace->remove(['x']);
-
-
-
-
+$namespace->remove();
 Assert::same('', http_build_query(iterator_to_array($namespace->getIterator())));

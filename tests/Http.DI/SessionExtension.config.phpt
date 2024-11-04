@@ -39,10 +39,8 @@ $container = new Container;
 $container->getService('session')->start();
 
 Assert::same(
-	PHP_VERSION_ID >= 70300
-		? ['lifetime' => 0, 'path' => '/x', 'domain' => 'nette.org', 'secure' => true, 'httponly' => true, 'samesite' => 'Lax']
-		: ['lifetime' => 0, 'path' => '/x; SameSite=Lax', 'domain' => 'nette.org', 'secure' => true, 'httponly' => true],
-	session_get_cookie_params()
+	['lifetime' => 0, 'path' => '/x', 'domain' => 'nette.org', 'secure' => true, 'httponly' => true, 'samesite' => 'Lax'],
+	session_get_cookie_params(),
 );
 
 // readAndClose
