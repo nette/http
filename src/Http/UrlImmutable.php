@@ -50,7 +50,7 @@ class UrlImmutable implements \JsonSerializable
 	private string $path = '';
 	private array $query = [];
 	private string $fragment = '';
-	private string $authority = '';
+	private ?string $authority = null;
 
 
 	/**
@@ -60,7 +60,6 @@ class UrlImmutable implements \JsonSerializable
 	{
 		$url = is_string($url) ? new Url($url) : $url;
 		[$this->scheme, $this->user, $this->password, $this->host, $this->port, $this->path, $this->query, $this->fragment] = $url->export();
-		$this->build();
 	}
 
 
@@ -68,7 +67,7 @@ class UrlImmutable implements \JsonSerializable
 	{
 		$dolly = clone $this;
 		$dolly->scheme = $scheme;
-		$dolly->build();
+		$dolly->authority = null;
 		return $dolly;
 	}
 
@@ -83,7 +82,7 @@ class UrlImmutable implements \JsonSerializable
 	{
 		$dolly = clone $this;
 		$dolly->user = $user;
-		$dolly->build();
+		$dolly->authority = null;
 		return $dolly;
 	}
 
@@ -98,7 +97,7 @@ class UrlImmutable implements \JsonSerializable
 	{
 		$dolly = clone $this;
 		$dolly->password = $password;
-		$dolly->build();
+		$dolly->authority = null;
 		return $dolly;
 	}
 
@@ -113,7 +112,7 @@ class UrlImmutable implements \JsonSerializable
 	{
 		$dolly = clone $this;
 		$dolly->user = $dolly->password = '';
-		$dolly->build();
+		$dolly->authority = null;
 		return $dolly;
 	}
 
@@ -122,8 +121,8 @@ class UrlImmutable implements \JsonSerializable
 	{
 		$dolly = clone $this;
 		$dolly->host = $host;
-		$dolly->build();
-		return $dolly;
+		$dolly->authority = null;
+		return $dolly->setPath($dolly->path);
 	}
 
 
@@ -149,7 +148,7 @@ class UrlImmutable implements \JsonSerializable
 	{
 		$dolly = clone $this;
 		$dolly->port = $port;
-		$dolly->build();
+		$dolly->authority = null;
 		return $dolly;
 	}
 
@@ -168,10 +167,14 @@ class UrlImmutable implements \JsonSerializable
 
 	public function withPath(string $path): static
 	{
-		$dolly = clone $this;
-		$dolly->path = $path;
-		$dolly->build();
-		return $dolly;
+		return (clone $this)->setPath($path);
+	}
+
+
+	private function setPath(string $path): static
+	{
+		$this->path = $this->host && !str_starts_with($path, '/') ? '/' . $path : $path;
+		return $this;
 	}
 
 
@@ -185,7 +188,6 @@ class UrlImmutable implements \JsonSerializable
 	{
 		$dolly = clone $this;
 		$dolly->query = is_array($query) ? $query : Url::parseQuery($query);
-		$dolly->build();
 		return $dolly;
 	}
 
@@ -220,7 +222,6 @@ class UrlImmutable implements \JsonSerializable
 	{
 		$dolly = clone $this;
 		$dolly->fragment = $fragment;
-		$dolly->build();
 		return $dolly;
 	}
 
@@ -247,7 +248,15 @@ class UrlImmutable implements \JsonSerializable
 	 */
 	public function getAuthority(): string
 	{
-		return $this->authority;
+		return $this->authority ??= $this->host === ''
+			? ''
+			: ($this->user !== ''
+				? rawurlencode($this->user) . ($this->password === '' ? '' : ':' . rawurlencode($this->password)) . '@'
+				: '')
+			. $this->host
+			. ($this->port && $this->port !== $this->getDefaultPort()
+				? ':' . $this->port
+				: '');
 	}
 
 
@@ -256,8 +265,8 @@ class UrlImmutable implements \JsonSerializable
 	 */
 	public function getHostUrl(): string
 	{
-		return ($this->scheme ? $this->scheme . ':' : '')
-			. ($this->authority !== '' ? '//' . $this->authority : '');
+		return ($this->scheme === '' ? '' : $this->scheme . ':')
+			. ($this->host === '' ? '' : '//' . $this->getAuthority());
 	}
 
 
@@ -283,23 +292,5 @@ class UrlImmutable implements \JsonSerializable
 	final public function export(): array
 	{
 		return [$this->scheme, $this->user, $this->password, $this->host, $this->port, $this->path, $this->query, $this->fragment];
-	}
-
-
-	protected function build(): void
-	{
-		if ($this->host && !str_starts_with($this->path, '/')) {
-			$this->path = '/' . $this->path;
-		}
-
-		$this->authority = $this->host === ''
-			? ''
-			: ($this->user !== ''
-				? rawurlencode($this->user) . ($this->password === '' ? '' : ':' . rawurlencode($this->password)) . '@'
-				: '')
-			. $this->host
-			. ($this->port && $this->port !== $this->getDefaultPort()
-				? ':' . $this->port
-				: '');
 	}
 }
