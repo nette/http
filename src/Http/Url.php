@@ -332,7 +332,7 @@ class Url implements \JsonSerializable
 	public function canonicalize(): static
 	{
 		$this->path = preg_replace_callback(
-			'#[^!$&\'()*+,/:;=@%]+#',
+			'#[^!$&\'()*+,/:;=@%"]+#',
 			fn(array $m): string => rawurlencode($m[0]),
 			self::unescape($this->path, '%/'),
 		);
