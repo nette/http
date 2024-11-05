@@ -282,6 +282,48 @@ class UrlImmutable implements \JsonSerializable
 	}
 
 
+	/**
+	 * Resolves relative URLs in the same way as browser. If path is relative, it is resolved against
+	 * base URL, if begins with /, it is resolved against the host root.
+	 */
+	public function resolve(string $reference): self
+	{
+		$ref = new self($reference);
+		if ($ref->scheme !== '') {
+			$ref->path = Url::removeDotSegments($ref->path);
+			return $ref;
+		}
+
+		$ref->scheme = $this->scheme;
+
+		if ($ref->host !== '') {
+			$ref->path = Url::removeDotSegments($ref->path);
+			return $ref;
+		}
+
+		$ref->host = $this->host;
+		$ref->port = $this->port;
+
+		if ($ref->path === '') {
+			$ref->path = $this->path;
+			$ref->query = $ref->query ?: $this->query;
+		} elseif (str_starts_with($ref->path, '/')) {
+			$ref->path = Url::removeDotSegments($ref->path);
+		} else {
+			$ref->path = Url::removeDotSegments($this->mergePath($ref->path));
+		}
+		return $ref;
+	}
+
+
+	/** @internal */
+	protected function mergePath(string $path): string
+	{
+		$pos = strrpos($this->path, '/');
+		return $pos === false ? $path : substr($this->path, 0, $pos + 1) . $path;
+	}
+
+
 	public function jsonSerialize(): string
 	{
 		return $this->getAbsoluteUrl();

@@ -106,4 +106,9 @@ class UrlScript extends UrlImmutable
 	}
 
 
+	/** @internal */
+	protected function mergePath(string $path): string
+	{
+		return $this->basePath . $path;
+	}
 }
