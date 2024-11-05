@@ -100,6 +100,7 @@ class Url implements \JsonSerializable
 	}
 
 
+	/** @deprecated */
 	public function setUser(string $user): static
 	{
 		$this->user = $user;
@@ -107,12 +108,14 @@ class Url implements \JsonSerializable
 	}
 
 
+	/** @deprecated */
 	public function getUser(): string
 	{
 		return $this->user;
 	}
 
 
+	/** @deprecated */
 	public function setPassword(string $password): static
 	{
 		$this->password = $password;
@@ -120,6 +123,7 @@ class Url implements \JsonSerializable
 	}
 
 
+	/** @deprecated */
 	public function getPassword(): string
 	{
 		return $this->password;
