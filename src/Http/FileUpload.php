@@ -42,13 +42,16 @@ final class FileUpload
 	private readonly int $error;
 
 
-	public function __construct(?array $value)
+	public function __construct(array|string|null $value)
 	{
-		foreach (['name', 'size', 'tmp_name', 'error'] as $key) {
-			if (!isset($value[$key]) || !is_scalar($value[$key])) {
-				$value = [];
-				break;
-			}
+		if (is_string($value)) {
+			$value = [
+				'name' => basename($value),
+				'full_path' => $value,
+				'size' => filesize($value),
+				'tmp_name' => $value,
+				'error' => UPLOAD_ERR_OK,
+			];
 		}
 
 		$this->name = $value['name'] ?? '';
