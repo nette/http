@@ -40,18 +40,30 @@ class UrlScript extends UrlImmutable
 
 	public function __construct(string|Url $url = '/', string $scriptPath = '')
 	{
-		$this->scriptPath = $scriptPath;
 		parent::__construct($url);
-		$this->build();
+		$this->setScriptPath($scriptPath);
 	}
 
 
 	public function withPath(string $path, string $scriptPath = ''): static
 	{
-		$dolly = clone $this;
-		$dolly->scriptPath = $scriptPath;
-		$parent = UrlImmutable::withPath(...)->bindTo($dolly);
-		return $parent($path);
+		$dolly = parent::withPath($path);
+		$dolly->setScriptPath($scriptPath);
+		return $dolly;
+	}
+
+
+	private function setScriptPath(string $scriptPath): void
+	{
+		$path = $this->getPath();
+		$scriptPath = $scriptPath ?: $path;
+		$pos = strrpos($scriptPath, '/');
+		if ($pos === false || strncmp($scriptPath, $path, $pos + 1)) {
+			throw new Nette\InvalidArgumentException("ScriptPath '$scriptPath' doesn't match path '$path'");
+		}
+
+		$this->scriptPath = $scriptPath;
+		$this->basePath = substr($scriptPath, 0, $pos + 1);
 	}
 
 
@@ -94,16 +106,4 @@ class UrlScript extends UrlImmutable
 	}
 
 
-	protected function build(): void
-	{
-		parent::build();
-		$path = $this->getPath();
-		$this->scriptPath = $this->scriptPath ?: $path;
-		$pos = strrpos($this->scriptPath, '/');
-		if ($pos === false || strncmp($this->scriptPath, $path, $pos + 1)) {
-			throw new Nette\InvalidArgumentException("ScriptPath '$this->scriptPath' doesn't match path '$path'");
-		}
-
-		$this->basePath = substr($this->scriptPath, 0, $pos + 1);
-	}
 }
