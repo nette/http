@@ -85,3 +85,22 @@ test('', function () {
 	Assert::null($upload->getSuggestedExtension());
 	Assert::same('', (string) $upload);
 });
+
+
+test('', function () {
+	$upload = new FileUpload($file = __DIR__ . '/files/file.txt');
+
+	Assert::same('file.txt', $upload->getName());
+	Assert::same('file.txt', $upload->getUntrustedName());
+	Assert::same('file.txt', $upload->getSanitizedName());
+	Assert::same($file, $upload->getUntrustedFullPath());
+	Assert::same(filesize($file), $upload->getSize());
+	Assert::same($file, $upload->getTemporaryFile());
+	Assert::same($file, (string) $upload);
+	Assert::same(0, $upload->getError());
+	Assert::true($upload->isOk());
+	Assert::true($upload->hasFile());
+	Assert::false($upload->isImage());
+	Assert::null($upload->getSuggestedExtension());
+	Assert::same(file_get_contents($file), $upload->getContents());
+});
