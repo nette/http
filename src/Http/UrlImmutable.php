@@ -78,6 +78,7 @@ class UrlImmutable implements \JsonSerializable
 	}
 
 
+	/** @deprecated */
 	public function withUser(string $user): static
 	{
 		$dolly = clone $this;
@@ -87,12 +88,14 @@ class UrlImmutable implements \JsonSerializable
 	}
 
 
+	/** @deprecated */
 	public function getUser(): string
 	{
 		return $this->user;
 	}
 
 
+	/** @deprecated */
 	public function withPassword(string $password): static
 	{
 		$dolly = clone $this;
@@ -102,12 +105,14 @@ class UrlImmutable implements \JsonSerializable
 	}
 
 
+	/** @deprecated */
 	public function getPassword(): string
 	{
 		return $this->password;
 	}
 
 
+	/** @deprecated */
 	public function withoutUserInfo(): static
 	{
 		$dolly = clone $this;
