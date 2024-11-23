@@ -195,10 +195,7 @@ class Request implements IRequest
 	}
 
 
-	/**
-	 * Returns the referrer URL from the Referer header. Unreliable - clients may omit or spoof it.
-	 * @deprecated  use getOrigin()
-	 */
+	#[\Deprecated('deprecated in favor of the getOrigin()')]
 	public function getReferer(): ?UrlImmutable
 	{
 		trigger_error(__METHOD__ . '() is deprecated', E_USER_DEPRECATED);
