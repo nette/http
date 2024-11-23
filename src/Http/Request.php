@@ -183,10 +183,7 @@ class Request implements IRequest
 	}
 
 
-	/**
-	 * What URL did the user come from? Beware, it is not reliable at all.
-	 * @deprecated  deprecated in favor of the getOrigin()
-	 */
+	#[\Deprecated('deprecated in favor of the getOrigin()')]
 	public function getReferer(): ?UrlImmutable
 	{
 		trigger_error(__METHOD__ . '() is deprecated', E_USER_DEPRECATED);

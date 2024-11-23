@@ -30,7 +30,7 @@ final class FileUpload
 {
 	use Nette\SmartObject;
 
-	/** @deprecated */
+	#[\Deprecated]
 	public const IMAGE_MIME_TYPES = ['image/gif', 'image/png', 'image/jpeg', 'image/webp'];
 
 	private readonly string $name;
@@ -62,9 +62,7 @@ final class FileUpload
 	}
 
 
-	/**
-	 * @deprecated use getUntrustedName()
-	 */
+	#[\Deprecated('use getUntrustedName()')]
 	public function getName(): string
 	{
 		trigger_error(__METHOD__ . '() is deprecated, use getUntrustedName()', E_USER_DEPRECATED);

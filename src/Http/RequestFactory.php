@@ -374,7 +374,7 @@ class RequestFactory
 	}
 
 
-	/** @deprecated use fromGlobals() */
+	#[\Deprecated('use fromGlobals()')]
 	public function createHttpRequest(): Request
 	{
 		trigger_error(__METHOD__ . '() is deprecated, use fromGlobals()', E_USER_DEPRECATED);

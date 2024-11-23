@@ -27,25 +27,25 @@ interface IRequest
 		Patch = 'PATCH',
 		Options = 'OPTIONS';
 
-	/** @deprecated use IRequest::Get */
+	#[\Deprecated('use IRequest::Get')]
 	public const GET = self::Get;
 
-	/** @deprecated use IRequest::Post */
+	#[\Deprecated('use IRequest::Post')]
 	public const POST = self::Post;
 
-	/** @deprecated use IRequest::Head */
+	#[\Deprecated('use IRequest::Head')]
 	public const HEAD = self::Head;
 
-	/** @deprecated use IRequest::Put */
+	#[\Deprecated('use IRequest::Put')]
 	public const PUT = self::Put;
 
-	/** @deprecated use IRequest::Delete */
+	#[\Deprecated('use IRequest::Delete')]
 	public const DELETE = self::Delete;
 
-	/** @deprecated use IRequest::Patch */
+	#[\Deprecated('use IRequest::Patch')]
 	public const PATCH = self::Patch;
 
-	/** @deprecated use IRequest::Options */
+	#[\Deprecated('use IRequest::Options')]
 	public const OPTIONS = self::Options;
 
 	/**

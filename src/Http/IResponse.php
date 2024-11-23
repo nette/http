@@ -146,193 +146,193 @@ interface IResponse
 		SameSiteStrict = 'Strict',
 		SameSiteNone = 'None';
 
-	/** @deprecated use IResponse::ReasonPhrases */
+	#[\Deprecated('use IResponse::ReasonPhrases')]
 	public const REASON_PHRASES = self::ReasonPhrases;
 
-	/** @deprecated use IResponse::SameSiteLax */
+	#[\Deprecated('use IResponse::SameSiteLax')]
 	public const SAME_SITE_LAX = self::SameSiteLax;
 
-	/** @deprecated use IResponse::SameSiteStrict */
+	#[\Deprecated('use IResponse::SameSiteStrict')]
 	public const SAME_SITE_STRICT = self::SameSiteStrict;
 
-	/** @deprecated use IResponse::SameSiteNone */
+	#[\Deprecated('use IResponse::SameSiteNone')]
 	public const SAME_SITE_NONE = self::SameSiteNone;
 
-	/** @deprecated use IResponse::S100_Continue */
+	#[\Deprecated('use IResponse::S100_Continue')]
 	public const S100_CONTINUE = self::S100_Continue;
 
-	/** @deprecated use IResponse::S101_SwitchingProtocols */
+	#[\Deprecated('use IResponse::S101_SwitchingProtocols')]
 	public const S101_SWITCHING_PROTOCOLS = self::S101_SwitchingProtocols;
 
-	/** @deprecated use IResponse::S102_Processing */
+	#[\Deprecated('use IResponse::S102_Processing')]
 	public const S102_PROCESSING = self::S102_Processing;
 
-	/** @deprecated use IResponse::S201_Created */
+	#[\Deprecated('use IResponse::S201_Created')]
 	public const S201_CREATED = self::S201_Created;
 
-	/** @deprecated use IResponse::S202_Accepted */
+	#[\Deprecated('use IResponse::S202_Accepted')]
 	public const S202_ACCEPTED = self::S202_Accepted;
 
-	/** @deprecated use IResponse::S203_NonAuthoritativeInformation */
+	#[\Deprecated('use IResponse::S203_NonAuthoritativeInformation')]
 	public const S203_NON_AUTHORITATIVE_INFORMATION = self::S203_NonAuthoritativeInformation;
 
-	/** @deprecated use IResponse::S204_NoContent */
+	#[\Deprecated('use IResponse::S204_NoContent')]
 	public const S204_NO_CONTENT = self::S204_NoContent;
 
-	/** @deprecated use IResponse::S205_ResetContent */
+	#[\Deprecated('use IResponse::S205_ResetContent')]
 	public const S205_RESET_CONTENT = self::S205_ResetContent;
 
-	/** @deprecated use IResponse::S206_PartialContent */
+	#[\Deprecated('use IResponse::S206_PartialContent')]
 	public const S206_PARTIAL_CONTENT = self::S206_PartialContent;
 
-	/** @deprecated use IResponse::S207_MultiStatus */
+	#[\Deprecated('use IResponse::S207_MultiStatus')]
 	public const S207_MULTI_STATUS = self::S207_MultiStatus;
 
-	/** @deprecated use IResponse::S208_AlreadyReported */
+	#[\Deprecated('use IResponse::S208_AlreadyReported')]
 	public const S208_ALREADY_REPORTED = self::S208_AlreadyReported;
 
-	/** @deprecated use IResponse::S226_ImUsed */
+	#[\Deprecated('use IResponse::S226_ImUsed')]
 	public const S226_IM_USED = self::S226_ImUsed;
 
-	/** @deprecated use IResponse::S300_MultipleChoices */
+	#[\Deprecated('use IResponse::S300_MultipleChoices')]
 	public const S300_MULTIPLE_CHOICES = self::S300_MultipleChoices;
 
-	/** @deprecated use IResponse::S301_MovedPermanently */
+	#[\Deprecated('use IResponse::S301_MovedPermanently')]
 	public const S301_MOVED_PERMANENTLY = self::S301_MovedPermanently;
 
-	/** @deprecated use IResponse::S302_Found */
+	#[\Deprecated('use IResponse::S302_Found')]
 	public const S302_FOUND = self::S302_Found;
 
-	/** @deprecated use IResponse::S303_PostGet */
+	#[\Deprecated('use IResponse::S303_PostGet')]
 	public const S303_SEE_OTHER = self::S303_PostGet;
 
-	/** @deprecated use IResponse::S303_PostGet */
+	#[\Deprecated('use IResponse::S303_PostGet')]
 	public const S303_POST_GET = self::S303_PostGet;
 
-	/** @deprecated use IResponse::S304_NotModified */
+	#[\Deprecated('use IResponse::S304_NotModified')]
 	public const S304_NOT_MODIFIED = self::S304_NotModified;
 
-	/** @deprecated use IResponse::S305_UseProxy */
+	#[\Deprecated('use IResponse::S305_UseProxy')]
 	public const S305_USE_PROXY = self::S305_UseProxy;
 
-	/** @deprecated use IResponse::S307_TemporaryRedirect */
+	#[\Deprecated('use IResponse::S307_TemporaryRedirect')]
 	public const S307_TEMPORARY_REDIRECT = self::S307_TemporaryRedirect;
 
-	/** @deprecated use IResponse::S308_PermanentRedirect */
+	#[\Deprecated('use IResponse::S308_PermanentRedirect')]
 	public const S308_PERMANENT_REDIRECT = self::S308_PermanentRedirect;
 
-	/** @deprecated use IResponse::S400_BadRequest */
+	#[\Deprecated('use IResponse::S400_BadRequest')]
 	public const S400_BAD_REQUEST = self::S400_BadRequest;
 
-	/** @deprecated use IResponse::S401_Unauthorized */
+	#[\Deprecated('use IResponse::S401_Unauthorized')]
 	public const S401_UNAUTHORIZED = self::S401_Unauthorized;
 
-	/** @deprecated use IResponse::S402_PaymentRequired */
+	#[\Deprecated('use IResponse::S402_PaymentRequired')]
 	public const S402_PAYMENT_REQUIRED = self::S402_PaymentRequired;
 
-	/** @deprecated use IResponse::S403_Forbidden */
+	#[\Deprecated('use IResponse::S403_Forbidden')]
 	public const S403_FORBIDDEN = self::S403_Forbidden;
 
-	/** @deprecated use IResponse::S404_NotFound */
+	#[\Deprecated('use IResponse::S404_NotFound')]
 	public const S404_NOT_FOUND = self::S404_NotFound;
 
-	/** @deprecated use IResponse::S405_MethodNotAllowed */
+	#[\Deprecated('use IResponse::S405_MethodNotAllowed')]
 	public const S405_METHOD_NOT_ALLOWED = self::S405_MethodNotAllowed;
 
-	/** @deprecated use IResponse::S406_NotAcceptable */
+	#[\Deprecated('use IResponse::S406_NotAcceptable')]
 	public const S406_NOT_ACCEPTABLE = self::S406_NotAcceptable;
 
-	/** @deprecated use IResponse::S407_ProxyAuthenticationRequired */
+	#[\Deprecated('use IResponse::S407_ProxyAuthenticationRequired')]
 	public const S407_PROXY_AUTHENTICATION_REQUIRED = self::S407_ProxyAuthenticationRequired;
 
-	/** @deprecated use IResponse::S408_RequestTimeout */
+	#[\Deprecated('use IResponse::S408_RequestTimeout')]
 	public const S408_REQUEST_TIMEOUT = self::S408_RequestTimeout;
 
-	/** @deprecated use IResponse::S409_Conflict */
+	#[\Deprecated('use IResponse::S409_Conflict')]
 	public const S409_CONFLICT = self::S409_Conflict;
 
-	/** @deprecated use IResponse::S410_Gone */
+	#[\Deprecated('use IResponse::S410_Gone')]
 	public const S410_GONE = self::S410_Gone;
 
-	/** @deprecated use IResponse::S411_LengthRequired */
+	#[\Deprecated('use IResponse::S411_LengthRequired')]
 	public const S411_LENGTH_REQUIRED = self::S411_LengthRequired;
 
-	/** @deprecated use IResponse::S412_PreconditionFailed */
+	#[\Deprecated('use IResponse::S412_PreconditionFailed')]
 	public const S412_PRECONDITION_FAILED = self::S412_PreconditionFailed;
 
-	/** @deprecated use IResponse::S413_RequestEntityTooLarge */
+	#[\Deprecated('use IResponse::S413_RequestEntityTooLarge')]
 	public const S413_REQUEST_ENTITY_TOO_LARGE = self::S413_RequestEntityTooLarge;
 
-	/** @deprecated use IResponse::S414_RequestUriTooLong */
+	#[\Deprecated('use IResponse::S414_RequestUriTooLong')]
 	public const S414_REQUEST_URI_TOO_LONG = self::S414_RequestUriTooLong;
 
-	/** @deprecated use IResponse::S415_UnsupportedMediaType */
+	#[\Deprecated('use IResponse::S415_UnsupportedMediaType')]
 	public const S415_UNSUPPORTED_MEDIA_TYPE = self::S415_UnsupportedMediaType;
 
-	/** @deprecated use IResponse::S416_RequestedRangeNotSatisfiable */
+	#[\Deprecated('use IResponse::S416_RequestedRangeNotSatisfiable')]
 	public const S416_REQUESTED_RANGE_NOT_SATISFIABLE = self::S416_RequestedRangeNotSatisfiable;
 
-	/** @deprecated use IResponse::S417_ExpectationFailed */
+	#[\Deprecated('use IResponse::S417_ExpectationFailed')]
 	public const S417_EXPECTATION_FAILED = self::S417_ExpectationFailed;
 
-	/** @deprecated use IResponse::S421_MisdirectedRequest */
+	#[\Deprecated('use IResponse::S421_MisdirectedRequest')]
 	public const S421_MISDIRECTED_REQUEST = self::S421_MisdirectedRequest;
 
-	/** @deprecated use IResponse::S422_UnprocessableEntity */
+	#[\Deprecated('use IResponse::S422_UnprocessableEntity')]
 	public const S422_UNPROCESSABLE_ENTITY = self::S422_UnprocessableEntity;
 
-	/** @deprecated use IResponse::S423_Locked */
+	#[\Deprecated('use IResponse::S423_Locked')]
 	public const S423_LOCKED = self::S423_Locked;
 
-	/** @deprecated use IResponse::S424_FailedDependency */
+	#[\Deprecated('use IResponse::S424_FailedDependency')]
 	public const S424_FAILED_DEPENDENCY = self::S424_FailedDependency;
 
-	/** @deprecated use IResponse::S426_UpgradeRequired */
+	#[\Deprecated('use IResponse::S426_UpgradeRequired')]
 	public const S426_UPGRADE_REQUIRED = self::S426_UpgradeRequired;
 
-	/** @deprecated use IResponse::S428_PreconditionRequired */
+	#[\Deprecated('use IResponse::S428_PreconditionRequired')]
 	public const S428_PRECONDITION_REQUIRED = self::S428_PreconditionRequired;
 
-	/** @deprecated use IResponse::S429_TooManyRequests */
+	#[\Deprecated('use IResponse::S429_TooManyRequests')]
 	public const S429_TOO_MANY_REQUESTS = self::S429_TooManyRequests;
 
-	/** @deprecated use IResponse::S431_RequestHeaderFieldsTooLarge */
+	#[\Deprecated('use IResponse::S431_RequestHeaderFieldsTooLarge')]
 	public const S431_REQUEST_HEADER_FIELDS_TOO_LARGE = self::S431_RequestHeaderFieldsTooLarge;
 
-	/** @deprecated use IResponse::S451_UnavailableForLegalReasons */
+	#[\Deprecated('use IResponse::S451_UnavailableForLegalReasons')]
 	public const S451_UNAVAILABLE_FOR_LEGAL_REASONS = self::S451_UnavailableForLegalReasons;
 
-	/** @deprecated use IResponse::S500_InternalServerError */
+	#[\Deprecated('use IResponse::S500_InternalServerError')]
 	public const S500_INTERNAL_SERVER_ERROR = self::S500_InternalServerError;
 
-	/** @deprecated use IResponse::S501_NotImplemented */
+	#[\Deprecated('use IResponse::S501_NotImplemented')]
 	public const S501_NOT_IMPLEMENTED = self::S501_NotImplemented;
 
-	/** @deprecated use IResponse::S502_BadGateway */
+	#[\Deprecated('use IResponse::S502_BadGateway')]
 	public const S502_BAD_GATEWAY = self::S502_BadGateway;
 
-	/** @deprecated use IResponse::S503_ServiceUnavailable */
+	#[\Deprecated('use IResponse::S503_ServiceUnavailable')]
 	public const S503_SERVICE_UNAVAILABLE = self::S503_ServiceUnavailable;
 
-	/** @deprecated use IResponse::S504_GatewayTimeout */
+	#[\Deprecated('use IResponse::S504_GatewayTimeout')]
 	public const S504_GATEWAY_TIMEOUT = self::S504_GatewayTimeout;
 
-	/** @deprecated use IResponse::S505_HttpVersionNotSupported */
+	#[\Deprecated('use IResponse::S505_HttpVersionNotSupported')]
 	public const S505_HTTP_VERSION_NOT_SUPPORTED = self::S505_HttpVersionNotSupported;
 
-	/** @deprecated use IResponse::S506_VariantAlsoNegotiates */
+	#[\Deprecated('use IResponse::S506_VariantAlsoNegotiates')]
 	public const S506_VARIANT_ALSO_NEGOTIATES = self::S506_VariantAlsoNegotiates;
 
-	/** @deprecated use IResponse::S507_InsufficientStorage */
+	#[\Deprecated('use IResponse::S507_InsufficientStorage')]
 	public const S507_INSUFFICIENT_STORAGE = self::S507_InsufficientStorage;
 
-	/** @deprecated use IResponse::S508_LoopDetected */
+	#[\Deprecated('use IResponse::S508_LoopDetected')]
 	public const S508_LOOP_DETECTED = self::S508_LoopDetected;
 
-	/** @deprecated use IResponse::S510_NotExtended */
+	#[\Deprecated('use IResponse::S510_NotExtended')]
 	public const S510_NOT_EXTENDED = self::S510_NotExtended;
 
-	/** @deprecated use IResponse::S511_NetworkAuthenticationRequired */
+	#[\Deprecated('use IResponse::S511_NetworkAuthenticationRequired')]
 	public const S511_NETWORK_AUTHENTICATION_REQUIRED = self::S511_NetworkAuthenticationRequired;
 
 	/**

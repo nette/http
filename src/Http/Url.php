@@ -100,7 +100,7 @@ class Url implements \JsonSerializable
 	}
 
 
-	/** @deprecated */
+	#[\Deprecated]
 	public function setUser(string $user): static
 	{
 		trigger_error(__METHOD__ . '() is deprecated', E_USER_DEPRECATED);
@@ -109,7 +109,7 @@ class Url implements \JsonSerializable
 	}
 
 
-	/** @deprecated */
+	#[\Deprecated]
 	public function getUser(): string
 	{
 		trigger_error(__METHOD__ . '() is deprecated', E_USER_DEPRECATED);
@@ -117,7 +117,7 @@ class Url implements \JsonSerializable
 	}
 
 
-	/** @deprecated */
+	#[\Deprecated]
 	public function setPassword(string $password): static
 	{
 		trigger_error(__METHOD__ . '() is deprecated', E_USER_DEPRECATED);
@@ -126,7 +126,7 @@ class Url implements \JsonSerializable
 	}
 
 
-	/** @deprecated */
+	#[\Deprecated]
 	public function getPassword(): string
 	{
 		trigger_error(__METHOD__ . '() is deprecated', E_USER_DEPRECATED);
@@ -288,7 +288,7 @@ class Url implements \JsonSerializable
 	}
 
 
-	/** @deprecated use UrlScript::getBasePath() instead */
+	#[\Deprecated('use UrlScript::getBasePath() instead')]
 	public function getBasePath(): string
 	{
 		trigger_error(__METHOD__ . '() is deprecated, use UrlScript object', E_USER_DEPRECATED);
@@ -297,7 +297,7 @@ class Url implements \JsonSerializable
 	}
 
 
-	/** @deprecated use UrlScript::getBaseUrl() instead */
+	#[\Deprecated('use UrlScript::getBaseUrl() instead')]
 	public function getBaseUrl(): string
 	{
 		trigger_error(__METHOD__ . '() is deprecated, use UrlScript object', E_USER_DEPRECATED);
@@ -305,7 +305,7 @@ class Url implements \JsonSerializable
 	}
 
 
-	/** @deprecated use UrlScript::getRelativeUrl() instead */
+	#[\Deprecated('use UrlScript::getRelativeUrl() instead')]
 	public function getRelativeUrl(): string
 	{
 		trigger_error(__METHOD__ . '() is deprecated, use UrlScript object', E_USER_DEPRECATED);
