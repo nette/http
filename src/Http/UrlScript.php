@@ -63,7 +63,7 @@ class UrlScript extends UrlImmutable
 		}
 
 		$this->scriptPath = $scriptPath;
-		$this->basePath = substr($scriptPath, 0, $pos + 1);
+		$this->basePath = substr($scriptPath, 0, $pos);
 	}
 
 
@@ -93,7 +93,7 @@ class UrlScript extends UrlImmutable
 
 	public function getRelativeUrl(): string
 	{
-		return substr($this->getAbsoluteUrl(), strlen($this->getBaseUrl()));
+		return substr($this->getAbsoluteUrl(), strlen($this->getBaseUrl()) + 1);
 	}
 
 
