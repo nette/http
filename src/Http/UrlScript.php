@@ -63,7 +63,7 @@ class UrlScript extends UrlImmutable
 		}
 
 		$this->scriptPath = $scriptPath;
-		$this->basePath = substr($scriptPath, 0, $pos + 1);
+		$this->basePath = substr($scriptPath, 0, $pos);
 	}
 
 
