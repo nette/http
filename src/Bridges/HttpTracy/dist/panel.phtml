@@ -1,0 +1,32 @@
+<?php
+declare(strict_types=1);
+?>
+<style class="tracy-debug">
+	#tracy-debug .nette-SessionPanel-parameters pre {
+		background: #FDF5CE;
+		padding: .4em .7em;
+		border: 1px dotted silver;
+		overflow: auto;
+	}
+</style>
+
+<h1>Session #<?= Tracy\Helpers::escapeHtml(substr(session_id(), 0, 10)) ?>
+… (Lifetime: <?= Tracy\Helpers::escapeHtml(ini_get('session.cookie_lifetime')) ?>
+)</h1>
+
+<div class="tracy-inner nette-SessionPanel">
+<?php if (empty($_SESSION)): ?>		<p><i>empty</i></p>
+<?php else: ?>		<table class="tracy-sortable">
+<?php foreach ($_SESSION as $k => $v): ?><?php if ($k === '__NF'): ?>					<tr>
+						<th>Nette Session</th>
+						<td><?= Tracy\Dumper::toHtml($v['DATA'] ?? null, [Tracy\Dumper::LIVE => true]) ?>
+</td>
+					</tr>
+<?php elseif ($k !== '_tracy'): ?>					<tr>
+						<th><?= Tracy\Helpers::escapeHtml($k) ?>
+</th>
+						<td><?= Tracy\Dumper::toHtml($v, [Tracy\Dumper::LIVE => true]) ?>
+</td>
+					</tr>
+<?php endif ?><?php endforeach ?>		</table>
+<?php endif ?></div>

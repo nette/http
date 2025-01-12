@@ -1,0 +1,32 @@
+<style class="tracy-debug">
+	#tracy-debug .nette-SessionPanel-parameters pre {
+		background: #FDF5CE;
+		padding: .4em .7em;
+		border: 1px dotted silver;
+		overflow: auto;
+	}
+</style>
+
+<h1>Session #{substr(session_id(), 0, 10)}… (Lifetime: {ini_get('session.cookie_lifetime')})</h1>
+
+<div class="tracy-inner nette-SessionPanel">
+	{if empty($_SESSION)}
+		<p><i>empty</i></p>
+	{else}
+		<table class="tracy-sortable">
+			{foreach $_SESSION as $k => $v}
+				{if $k === __NF}
+					<tr>
+						<th>Nette Session</th>
+						<td>{Tracy\Dumper::toHtml($v[DATA] ?? null, [Tracy\Dumper::LIVE => true])}</td>
+					</tr>
+				{elseif $k !== '_tracy'}
+					<tr>
+						<th>{$k}</th>
+						<td>{Tracy\Dumper::toHtml($v, [Tracy\Dumper::LIVE => true])}</td>
+					</tr>
+				{/if}
+			{/foreach}
+		</table>
+	{/if}
+</div>
