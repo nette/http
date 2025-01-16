@@ -17,7 +17,7 @@ $_FILES = [
 	'file1' => [
 		'name' => 'readme.txt',
 		'type' => 'text/plain',
-		'tmp_name' => 'C:\\PHP\\temp\\php1D5B.tmp',
+		'tmp_name' => 'C:\PHP\temp\php1D5B.tmp',
 		'error' => 0,
 		'size' => 209,
 	],
@@ -32,7 +32,7 @@ $_FILES = [
 		],
 
 		'tmp_name' => [
-			2 => 'C:\\PHP\\temp\\php1D5C.tmp',
+			2 => 'C:\PHP\temp\php1D5C.tmp',
 		],
 
 		'error' => [
@@ -61,9 +61,9 @@ $_FILES = [
 
 		'tmp_name' => [
 			'y' => [
-				'z' => 'C:\\PHP\\temp\\php1D5D.tmp',
+				'z' => 'C:\PHP\temp\php1D5D.tmp',
 			],
-			1 => 'C:\\PHP\\temp\\php1D5E.tmp',
+			1 => 'C:\PHP\temp\php1D5E.tmp',
 		],
 
 		'error' => [

@@ -105,8 +105,6 @@ final class FileUpload
 	 * Returns the original full path as submitted by the browser during directory upload. Do not trust the value
 	 * returned by this method. A client could send a malicious directory structure with the intention to corrupt
 	 * or hack your application.
-	 *
-	 * The full path is only available in PHP 8.1 and above. In previous versions, this method returns the file name.
 	 */
 	public function getUntrustedFullPath(): string
 	{

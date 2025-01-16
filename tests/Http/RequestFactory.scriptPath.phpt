@@ -117,7 +117,7 @@ test('', function () use ($factory) {
 test('', function () use ($factory) {
 	$_SERVER = [
 		'REQUEST_URI' => '/',
-		'SCRIPT_NAME' => 'c:\\index.php',
+		'SCRIPT_NAME' => 'c:\index.php',
 	];
 
 	Assert::same('/', $factory->fromGlobals()->getUrl()->getScriptPath());
@@ -127,7 +127,7 @@ test('', function () use ($factory) {
 test('', function () use ($factory) {
 	$_SERVER = [
 		'REQUEST_URI' => null,
-		'SCRIPT_NAME' => 'c:\\index.php',
+		'SCRIPT_NAME' => 'c:\index.php',
 	];
 
 	Assert::same('/', $factory->fromGlobals()->getUrl()->getScriptPath());
