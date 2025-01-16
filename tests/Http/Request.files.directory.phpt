@@ -19,7 +19,7 @@ $_FILES = [
 		'name' => ['a.jpg', 'c.jpg'],
 		'type' => ['image/jpeg', 'image/jpeg'],
 		'full_path' => ['a.jpg', 'b/c.jpg'],
-		'tmp_name' => ['C:\\PHP\\temp\\php1D5D.tmp', 'C:\\PHP\\temp\\php1D5E.tmp'],
+		'tmp_name' => ['C:\PHP\temp\php1D5D.tmp', 'C:\PHP\temp\php1D5E.tmp'],
 		'error' => [0, 0],
 		'size' => [12345, 54321],
 	],

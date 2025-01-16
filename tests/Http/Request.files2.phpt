@@ -17,7 +17,7 @@ $_FILES = [
 	'files' => [
 		'name' => ['1a.jpg'],
 		'type' => ['image/jpeg'],
-		'tmp_name' => ['C:\\PHP\\temp\\php1D5D.tmp'],
+		'tmp_name' => ['C:\PHP\temp\php1D5D.tmp'],
 		'error' => [0],
 		'size' => [12345],
 	],
