@@ -19,7 +19,7 @@ $_SERVER = [
 	'QUERY_STRING' => 'x param=val.&pa%%72am=val2&param3=v%20a%26l%3Du%2Be)',
 	'REMOTE_ADDR' => '192.168.188.66',
 	'REQUEST_METHOD' => 'GET',
-	'REQUEST_URI' => '/file.php?x param=val.&pa%%72am=val2&quotes\\"=\\"&param3=v%20a%26l%3Du%2Be)',
+	'REQUEST_URI' => '/file.php?x param=val.&pa%%72am=val2&quotes\"=\"&param3=v%20a%26l%3Du%2Be)',
 	'SCRIPT_NAME' => '/file.php',
 ];
 
