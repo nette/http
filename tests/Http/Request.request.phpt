@@ -23,7 +23,7 @@ $_SERVER = [
 	'SCRIPT_NAME' => '/file.php',
 ];
 
-test('', function () {
+test('URL parsing with custom filters', function () {
 	$factory = new Http\RequestFactory;
 	$factory->urlFilters['path'] = ['#%20#' => ''];
 	$factory->urlFilters['url'] = ['#[.,)]\z#' => ''];
@@ -54,7 +54,7 @@ test('', function () {
 });
 
 
-test('', function () {
+test('URL components with special characters', function () {
 	$factory = new Http\RequestFactory;
 	$factory->urlFilters['path'] = [];
 	$factory->urlFilters['url'] = [];

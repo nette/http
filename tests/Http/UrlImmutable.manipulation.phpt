@@ -8,7 +8,7 @@ use Tester\Assert;
 require __DIR__ . '/../bootstrap.php';
 
 
-test('', function () {
+test('immutable URL component modifications', function () {
 	$url = new UrlImmutable('http://username%3A:password%3A@hostn%61me:60/p%61th/script.php?%61rg=value#%61nchor');
 
 	$url = $url->withScheme('');
@@ -34,7 +34,7 @@ test('', function () {
 });
 
 
-test('', function () {
+test('path manipulation in immutable URL', function () {
 	$url = new UrlImmutable('http://username%3A:password%3A@hostn%61me:60/p%61th/script.php?%61rg=value#%61nchor');
 
 	$url = $url->withPath('');
@@ -60,7 +60,7 @@ test('', function () {
 });
 
 
-test('', function () {
+test('query parameter replacement and removal', function () {
 	$url = new UrlImmutable('http://hostname/path?arg=value');
 	Assert::same('arg=value', $url->query);
 
@@ -78,7 +78,7 @@ test('', function () {
 });
 
 
-test('', function () {
+test('individual query parameter manipulation', function () {
 	$url = new UrlImmutable('http://hostname/path?arg=value');
 	Assert::same('arg=value', $url->query);
 

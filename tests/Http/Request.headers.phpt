@@ -12,17 +12,17 @@ use Tester\Assert;
 require __DIR__ . '/../bootstrap.php';
 
 
-test('', function () {
+test('empty headers by default', function () {
 	$request = new Http\Request(new Http\UrlScript);
 	Assert::same([], $request->getHeaders());
 });
 
-test('', function () {
+test('headers initialization without parameters', function () {
 	$request = new Http\Request(new Http\UrlScript);
 	Assert::same([], $request->getHeaders());
 });
 
-test('', function () {
+test('header normalization and case insensitivity', function () {
 	$request = new Http\Request(new Http\UrlScript, headers: [
 		'one' => '1',
 		'TWO' => '2',

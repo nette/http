@@ -12,7 +12,7 @@ use Tester\Assert;
 require __DIR__ . '/../bootstrap.php';
 
 
-test('invalid POST', function () {
+test('non-string type in POST data', function () {
 	$_POST = [
 		'int' => 1,
 	];
@@ -25,7 +25,7 @@ test('invalid POST', function () {
 });
 
 
-test('invalid COOKIE', function () {
+test('non-string type in cookie array', function () {
 	$_POST = [];
 	$_COOKIE = ['x' => [1]];
 
