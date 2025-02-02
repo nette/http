@@ -8,7 +8,7 @@ use Tester\Assert;
 require __DIR__ . '/../bootstrap.php';
 
 
-test('begins with /', function () {
+test('dot segment removal in absolute paths', function () {
 	Assert::same('/', Url::removeDotSegments('/'));
 	Assert::same('/file', Url::removeDotSegments('/file'));
 	Assert::same('/file/', Url::removeDotSegments('/file/'));
@@ -23,7 +23,7 @@ test('begins with /', function () {
 });
 
 
-test('not begins with /', function () {
+test('dot segment removal in relative paths', function () {
 	Assert::same('', Url::removeDotSegments(''));
 	Assert::same('file', Url::removeDotSegments('file'));
 	Assert::same('file/', Url::removeDotSegments('file/'));
@@ -38,7 +38,7 @@ test('not begins with /', function () {
 });
 
 
-test('incorrect ..', function () {
+test('excessive parent directory traversal handling', function () {
 	Assert::same('/', Url::removeDotSegments('/file/../..'));
 	Assert::same('/', Url::removeDotSegments('/file/../../'));
 	Assert::same('/bar', Url::removeDotSegments('/file/../../bar'));
@@ -48,7 +48,7 @@ test('incorrect ..', function () {
 });
 
 
-test('double slash', function () {
+test('double slash preservation', function () {
 	Assert::same('//', Url::removeDotSegments('//'));
 	Assert::same('//foo//', Url::removeDotSegments('//foo//'));
 	Assert::same('//foo//', Url::removeDotSegments('//foo//..//'));

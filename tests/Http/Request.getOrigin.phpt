@@ -9,13 +9,13 @@ use Tester\Assert;
 require __DIR__ . '/../bootstrap.php';
 
 
-test('missing origin', function () {
+test('no Origin header', function () {
 	$request = new Http\Request(new Http\UrlScript);
 	Assert::null($request->getOrigin());
 });
 
 
-test('opaque origin', function () {
+test('origin header \'null\'', function () {
 	$request = new Http\Request(new Http\UrlScript, headers: [
 		'Origin' => 'null',
 	]);
@@ -23,7 +23,7 @@ test('opaque origin', function () {
 });
 
 
-test('normal origin', function () {
+test('valid Origin header', function () {
 	$request = new Http\Request(new Http\UrlScript, headers: [
 		'Origin' => 'https://nette.org',
 	]);

@@ -12,7 +12,7 @@ use Tester\Assert;
 require __DIR__ . '/../bootstrap.php';
 
 
-test('', function () {
+test('basic upload properties', function () {
 	$upload = new FileUpload([
 		'name' => 'readme.txt',
 		'full_path' => 'path/to/readme.txt',
@@ -38,7 +38,7 @@ test('', function () {
 });
 
 
-test('', function () {
+test('sanitizing name with image detection', function () {
 	$upload = new FileUpload([
 		'name' => '../.image.png',
 		'type' => 'text/plain',
@@ -57,7 +57,7 @@ test('', function () {
 });
 
 
-test('', function () {
+test('no file uploaded', function () {
 	$upload = new FileUpload([
 		'name' => '',
 		'type' => '',
@@ -75,7 +75,7 @@ test('', function () {
 });
 
 
-test('', function () {
+test('empty upload data', function () {
 	$upload = new FileUpload([]);
 
 	Assert::false($upload->isOk());
@@ -87,7 +87,7 @@ test('', function () {
 });
 
 
-test('', function () {
+test('upload from file path', function () {
 	$upload = new FileUpload($file = __DIR__ . '/files/file.txt');
 
 	Assert::same('file.txt', $upload->getName());

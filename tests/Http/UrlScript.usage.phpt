@@ -12,7 +12,7 @@ use Tester\Assert;
 require __DIR__ . '/../bootstrap.php';
 
 
-test('', function () {
+test('script path detection in root directory', function () {
 	$url = new UrlScript('http://nette.org:8080/file.php?q=search');
 	Assert::same('/file.php', $url->scriptPath);
 	Assert::same('http://nette.org:8080/', $url->baseUrl);
@@ -23,7 +23,7 @@ test('', function () {
 });
 
 
-test('', function () {
+test('script path as root directory', function () {
 	$url = new UrlScript('http://nette.org:8080/file.php?q=search', '/');
 	Assert::same('/', $url->scriptPath);
 	Assert::same('http://nette.org:8080/', $url->baseUrl);
@@ -34,7 +34,7 @@ test('', function () {
 });
 
 
-test('', function () {
+test('subdirectory script path and URL components', function () {
 	$url = new UrlScript('http://nette.org:8080/test/?q=search', '/test/index.php');
 	Assert::same('/test/index.php', $url->scriptPath);
 	Assert::same('http://nette.org:8080/test/', $url->baseUrl);
@@ -46,7 +46,7 @@ test('', function () {
 });
 
 
-test('', function () {
+test('directory-based script path handling', function () {
 	$url = new UrlScript('http://nette.org:8080/www/about', '/www/');
 	Assert::same('/www/about', $url->path);
 	Assert::same('/www/', $url->scriptPath);
@@ -55,7 +55,7 @@ test('', function () {
 });
 
 
-test('', function () {
+test('exact script path match', function () {
 	$url = new UrlScript('http://nette.org:8080/www/index.php', '/www/index.php');
 	Assert::same('/www/index.php', $url->path);
 	Assert::same('/www/index.php', $url->scriptPath);

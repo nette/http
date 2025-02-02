@@ -12,7 +12,7 @@ use Tester\Assert;
 require __DIR__ . '/../bootstrap.php';
 
 
-test('Basic', function () {
+test('basic authentication via PHP_AUTH_* variables', function () {
 	$_SERVER = [
 		'PHP_AUTH_USER' => 'user',
 		'PHP_AUTH_PW' => 'password',
@@ -32,7 +32,7 @@ test('Basic', function () {
 
 
 
-test('Digest', function () {
+test('digest authentication header parsing', function () {
 	$_SERVER = [
 		'PHP_AUTH_DIGEST' => 'username="admin"',
 	];
@@ -47,7 +47,7 @@ test('Digest', function () {
 });
 
 
-test('empty', function () {
+test('absence of authentication headers', function () {
 	$_SERVER = [];
 	$factory = new RequestFactory;
 	$request = $factory->fromGlobals();

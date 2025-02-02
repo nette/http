@@ -64,7 +64,7 @@ $_FILES = [
 	],
 ];
 
-test('unfiltered data', function () {
+test('binary data preservation with invalid encoding', function () {
 	$factory = new Http\RequestFactory;
 	$factory->setBinary();
 	$request = $factory->fromGlobals();
@@ -93,7 +93,7 @@ test('unfiltered data', function () {
 });
 
 
-test('filtered data', function () {
+test('invalid encoding sanitization by default', function () {
 	$factory = new Http\RequestFactory;
 	$request = $factory->fromGlobals();
 

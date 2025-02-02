@@ -8,7 +8,7 @@ use Tester\Assert;
 require __DIR__ . '/../bootstrap.php';
 
 
-test('', function () {
+test('base and script path adjustments', function () {
 	$url = new UrlScript('http://nette.org:8080/test/?q=search', '/test/index.php');
 	Assert::same('/test/', $url->basePath);
 	Assert::same('/test/index.php', $url->scriptPath);
