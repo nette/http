@@ -12,7 +12,7 @@ use Tester\Assert;
 require __DIR__ . '/../bootstrap.php';
 
 
-test('', function () {
+test('basic language preference', function () {
 	$headers = ['Accept-Language' => 'en, cs'];
 	$request = new Http\Request(new Http\UrlScript, headers: $headers);
 
@@ -22,7 +22,7 @@ test('', function () {
 });
 
 
-test('', function () {
+test('language with quality weights', function () {
 	$headers = ['Accept-Language' => 'da, en-gb;q=0.8, en;q=0.7'];
 	$request = new Http\Request(new Http\UrlScript, headers: $headers);
 
@@ -31,7 +31,7 @@ test('', function () {
 });
 
 
-test('', function () {
+test('no Accept-Language header', function () {
 	$headers = [];
 	$request = new Http\Request(new Http\UrlScript, headers: $headers);
 
@@ -39,7 +39,7 @@ test('', function () {
 });
 
 
-test('', function () {
+test('invalid Accept-Language header', function () {
 	$headers = ['Accept-Language' => 'garbage'];
 	$request = new Http\Request(new Http\UrlScript, headers: $headers);
 

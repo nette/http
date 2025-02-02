@@ -12,14 +12,14 @@ use Tester\Assert;
 require __DIR__ . '/../bootstrap.php';
 
 
-test('', function () {
+test('raw body retrieval with callback', function () {
 	$request = new Http\Request(new Http\UrlScript, rawBodyCallback: fn() => 'raw body');
 
 	Assert::same('raw body', $request->getRawBody());
 });
 
 
-test('', function () {
+test('raw body absence without callback', function () {
 	$request = new Http\Request(new Http\UrlScript);
 
 	Assert::null($request->getRawBody());

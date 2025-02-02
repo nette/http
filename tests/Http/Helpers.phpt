@@ -12,7 +12,7 @@ use Tester\Assert;
 require __DIR__ . '/../bootstrap.php';
 
 
-test('', function () {
+test('IPv4 address matching', function () {
 	Assert::true(Helpers::ipMatch('192.168.68.233', '192.168.68.233'));
 	Assert::false(Helpers::ipMatch('192.168.68.234', '192.168.68.233'));
 	Assert::true(Helpers::ipMatch('192.168.64.0', '192.168.68.233/20'));
@@ -27,7 +27,7 @@ test('', function () {
 
 
 
-test('', function () {
+test('IPv6 address matching', function () {
 	Assert::true(Helpers::ipMatch('2001:db8:0:0:0:0:0:0', '2001:db8::'));
 	Assert::false(Helpers::ipMatch('2001:db8:0:0:0:0:0:0', '2002:db8::'));
 	Assert::false(Helpers::ipMatch('2001:db8:0:0:0:0:0:1', '2001:db8::'));
@@ -40,7 +40,7 @@ test('', function () {
 
 
 
-test('', function () {
+test('date formatting', function () {
 	Assert::same('Tue, 15 Nov 1994 08:12:31 GMT', Helpers::formatDate('1994-11-15T08:12:31+0000'));
 	Assert::same('Tue, 15 Nov 1994 08:12:31 GMT', Helpers::formatDate('1994-11-15T10:12:31+0200'));
 	Assert::same('Tue, 15 Nov 1994 08:12:31 GMT', Helpers::formatDate(new DateTime('1994-11-15T06:12:31-0200')));

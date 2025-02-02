@@ -10,7 +10,7 @@ use Tester\Assert;
 require __DIR__ . '/../bootstrap.php';
 
 
-test('cookiePath & cookieDomain', function () {
+test('cookie path and domain configuration', function () {
 	$compiler = new DI\Compiler;
 	$compiler->addExtension('http', new HttpExtension);
 	$compiler->addExtension('session', new SessionExtension(false, PHP_SAPI === 'cli'));
@@ -30,7 +30,7 @@ test('cookiePath & cookieDomain', function () {
 });
 
 
-test('cookieDomain = domain', function () {
+test('cookie domain normalization based on request host', function () {
 	$compiler = new DI\Compiler;
 	$compiler->addExtension('http', new HttpExtension);
 	$compiler->addExtension('session', new SessionExtension(false, PHP_SAPI === 'cli'));

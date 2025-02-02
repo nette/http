@@ -8,7 +8,7 @@ use Tester\Assert;
 require __DIR__ . '/../bootstrap.php';
 
 
-test('', function () {
+test('URL modification and query synchronization', function () {
 	$url = new Http\UrlScript('http://nette.org/?arg=hello');
 	$request = new Http\Request($url);
 

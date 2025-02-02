@@ -23,7 +23,7 @@ function getSanitizedName(string $name, ?string $type = null): string
 }
 
 
-test('name', function () {
+test('sanitized name without MIME', function () {
 	Assert::same('unknown', getSanitizedName(''));
 	Assert::same('unknown', getSanitizedName('--'));
 	Assert::same('foo', getSanitizedName('foo'));
@@ -36,7 +36,7 @@ test('name', function () {
 });
 
 
-test('name & extension', function () {
+test('sanitized name with PDF type', function () {
 	Assert::same('unknown', getSanitizedName('', 'application/pdf'));
 	Assert::same('unknown', getSanitizedName('--', 'application/pdf'));
 	Assert::same('foo', getSanitizedName('foo', 'application/pdf'));
@@ -46,7 +46,7 @@ test('name & extension', function () {
 });
 
 
-test('image name & extension', function () {
+test('sanitized name with JPEG type', function () {
 	Assert::same('unknown.jpeg', getSanitizedName('', 'image/jpeg'));
 	Assert::same('unknown.jpeg', getSanitizedName('--', 'image/jpeg'));
 	Assert::same('foo.jpeg', getSanitizedName('foo', 'image/jpeg'));

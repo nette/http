@@ -12,7 +12,7 @@ use Tester\Assert;
 require __DIR__ . '/../bootstrap.php';
 
 
-test('', function () {
+test('file URL parsing with explicit host', function () {
 	$url = new Url('file://localhost/D:/dokumentace/rfc3986.txt');
 	Assert::same('file://localhost/D:/dokumentace/rfc3986.txt', (string) $url);
 	Assert::same('file', $url->scheme);
@@ -26,7 +26,7 @@ test('', function () {
 });
 
 
-test('', function () {
+test('file URL parsing without host (local path)', function () {
 	$url = new Url('file:///D:/dokumentace/rfc3986.txt');
 	Assert::same('file:D:/dokumentace/rfc3986.txt', (string) $url);
 	Assert::same('file', $url->scheme);

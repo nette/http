@@ -12,7 +12,7 @@ use Tester\Assert;
 require __DIR__ . '/../bootstrap.php';
 
 
-test('', function () {
+test('X-Forwarded headers handling with proxy', function () {
 	$_SERVER = [
 		'REMOTE_ADDR' => '127.0.0.3',
 		'REMOTE_HOST' => 'localhost',
@@ -34,7 +34,7 @@ test('', function () {
 	Assert::same(80, $url->getPort());
 });
 
-test('', function () {
+test('X-Forwarded-Host with port', function () {
 	$_SERVER = [
 		'REMOTE_ADDR' => '127.0.0.3',
 		'REMOTE_HOST' => 'localhost',
@@ -52,7 +52,7 @@ test('', function () {
 	Assert::same(8080, $url->getPort());
 });
 
-test('', function () {
+test('X-Forwarded protocol and port', function () {
 	$_SERVER = [
 		'REMOTE_ADDR' => '127.0.0.3',
 		'HTTP_X_FORWARDED_FOR' => '23.75.45.200',
@@ -70,7 +70,7 @@ test('', function () {
 	Assert::same(8080, $url->getPort());
 });
 
-test('', function () {
+test('multiple proxies in X-Forwarded headers', function () {
 	$_SERVER = [
 		'REMOTE_ADDR' => '10.0.0.2', //proxy2
 		'REMOTE_HOST' => 'proxy2',
@@ -96,7 +96,7 @@ test('', function () {
 	Assert::same(80, $url->getPort());
 });
 
-test('', function () {
+test('X-Forwarded-Host with multiple entries and port', function () {
 	$_SERVER = [
 		'REMOTE_ADDR' => '10.0.0.2', //proxy2
 		'REMOTE_HOST' => 'proxy2',
