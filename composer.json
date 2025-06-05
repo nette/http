@@ -36,7 +36,10 @@
 		"ext-intl": "to support punycode by Nette\\Http\\Url"
 	},
 	"autoload": {
-		"classmap": ["src/"]
+		"classmap": ["src/"],
+		"psr-4": {
+			"Nette\\": "src"
+		}
 	},
 	"minimum-stability": "dev",
 	"scripts": {
