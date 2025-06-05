@@ -23,7 +23,7 @@
 		"nette/tester": "^2.4",
 		"nette/security": "^3.0",
 		"tracy/tracy": "^2.8",
-		"phpstan/phpstan": "^1.0"
+		"phpstan/phpstan-nette": "^2.0@stable"
 	},
 	"conflict": {
 		"nette/di": "<3.0.3",
