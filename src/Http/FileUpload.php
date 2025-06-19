@@ -11,6 +11,8 @@ namespace Nette\Http;
 
 use Nette;
 use Nette\Utils\Image;
+use function array_intersect_key, array_map, basename, chmod, dirname, file_get_contents, filesize, finfo_file, finfo_open, getimagesize, image_type_to_extension, in_array, is_string, is_uploaded_file, preg_replace, str_replace, trim, unlink;
+use const FILEINFO_EXTENSION, FILEINFO_MIME_TYPE, UPLOAD_ERR_NO_FILE, UPLOAD_ERR_OK;
 
 
 /**

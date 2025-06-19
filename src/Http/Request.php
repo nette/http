@@ -10,6 +10,8 @@ declare(strict_types=1);
 namespace Nette\Http;
 
 use Nette;
+use function array_change_key_case, base64_decode, count, explode, func_num_args, gethostbyaddr, implode, preg_match, preg_match_all, rsort, strcasecmp, strtolower, strtr;
+use const CASE_LOWER;
 
 
 /**

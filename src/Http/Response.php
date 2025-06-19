@@ -11,6 +11,8 @@ namespace Nette\Http;
 
 use Nette;
 use Nette\Utils\DateTime;
+use function array_filter, header, header_remove, headers_list, headers_sent, htmlspecialchars, http_response_code, ini_get, is_int, ltrim, ob_get_length, ob_get_status, preg_match, rawurlencode, setcookie, str_replace, strcasecmp, strlen, strncasecmp, strpos, substr, time;
+use const ENT_IGNORE, ENT_QUOTES, PHP_SAPI;
 
 
 /**

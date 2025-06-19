@@ -10,6 +10,8 @@ declare(strict_types=1);
 namespace Nette\Http;
 
 use Nette;
+use function array_slice, explode, http_build_query, implode, ip2long, is_array, is_string, rawurlencode, str_starts_with, strrpos, substr;
+use const PHP_QUERY_RFC3986;
 
 
 /**

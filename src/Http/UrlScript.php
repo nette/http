@@ -10,6 +10,7 @@ declare(strict_types=1);
 namespace Nette\Http;
 
 use Nette;
+use function strlen, strncmp, strrpos, substr;
 
 
 /**
