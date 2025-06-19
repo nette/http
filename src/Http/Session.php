@@ -10,6 +10,8 @@ declare(strict_types=1);
 namespace Nette\Http;
 
 use Nette;
+use function array_keys, function_exists, headers_sent, ini_get, ini_get_all, ini_set, is_array, is_string, preg_match, preg_replace, preg_replace_callback, session_create_id, session_destroy, session_get_cookie_params, session_id, session_name, session_regenerate_id, session_set_cookie_params, session_set_save_handler, session_status, session_write_close, strncmp, strtolower, strtoupper, substr, time;
+use const PHP_SESSION_ACTIVE;
 
 
 /**

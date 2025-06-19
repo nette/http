@@ -12,6 +12,8 @@ namespace Nette\Http;
 use Nette;
 use Nette\Utils\Arrays;
 use Nette\Utils\Strings;
+use function array_filter, base64_encode, count, end, explode, file_get_contents, filter_input_array, filter_var, function_exists, get_debug_type, in_array, ini_get, is_array, is_string, key, min, preg_last_error, preg_match, preg_replace, preg_split, rtrim, sprintf, str_contains, strcasecmp, strlen, strncmp, strpos, strrpos, strtolower, strtr, substr, trim;
+use const FILTER_UNSAFE_RAW, FILTER_VALIDATE_IP, INPUT_COOKIE, INPUT_POST, PHP_SAPI, UPLOAD_ERR_NO_FILE;
 
 
 /**
