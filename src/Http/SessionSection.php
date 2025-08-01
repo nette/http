@@ -200,7 +200,7 @@ class SessionSection implements \IteratorAggregate, \ArrayAccess
 		}
 
 		foreach (is_array($variables) ? $variables : [$variables] as $variable) {
-			$meta[$variable]['T'] = $expire ?: null;
+			$meta[$variable ?? '']['T'] = $expire ?: null;
 		}
 
 		return $this;

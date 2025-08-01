@@ -138,7 +138,7 @@ final class FileUpload
 			if ($exts && $exts !== '???') {
 				return $this->extension = preg_replace('~[/,].*~', '', $exts);
 			}
-			[, , $type] = @getimagesize($this->tmpName); // @ - files smaller than 12 bytes causes read error
+			[, , $type] = Nette\Utils\Helpers::falseToNull(@getimagesize($this->tmpName)); // @ - files smaller than 12 bytes causes read error
 			if ($type) {
 				return $this->extension = image_type_to_extension($type, false);
 			}
