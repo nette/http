@@ -58,12 +58,14 @@ interface IRequest
 	/**
 	 * Returns variable provided to the script via URL query ($_GET).
 	 * If no key is passed, returns the entire array.
+	 * @return ($key is null ? array : mixed)
 	 */
 	function getQuery(?string $key = null): mixed;
 
 	/**
 	 * Returns variable provided to the script via POST method ($_POST).
 	 * If no key is passed, returns the entire array.
+	 * @return ($key is null ? array : mixed)
 	 */
 	function getPost(?string $key = null): mixed;
 

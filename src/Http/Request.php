@@ -82,6 +82,7 @@ class Request implements IRequest
 	/**
 	 * Returns variable provided to the script via URL query ($_GET).
 	 * If no key is passed, returns the entire array.
+	 * @return ($key is null ? array : mixed)
 	 */
 	public function getQuery(?string $key = null): mixed
 	{
