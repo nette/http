@@ -33,7 +33,7 @@ use const PHP_QUERY_RFC3986;
  * @property-read string $host
  * @property-read int $port
  * @property-read string $path
- * @property-read string $query
+ * @property-read array $query
  * @property-read string $fragment
  * @property-read string $absoluteUrl
  * @property-read string $authority
