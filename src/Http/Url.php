@@ -33,7 +33,7 @@ use const IDNA_DEFAULT, INTL_IDNA_VARIANT_UTS46, PHP_QUERY_RFC3986;
  * @property   string $host
  * @property   int $port
  * @property   string $path
- * @property   string $query
+ * @property   array $query
  * @property   string $fragment
  * @property-read string $absoluteUrl
  * @property-read string $authority
