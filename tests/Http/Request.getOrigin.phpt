@@ -29,3 +29,11 @@ test('valid Origin header', function () {
 	]);
 	Assert::equal(new UrlImmutable('https://nette.org'), $request->getOrigin());
 });
+
+
+test('invalid Origin header', function () {
+	$request = new Http\Request(new Http\UrlScript, headers: [
+		'Origin' => 'https://nette.org/path',
+	]);
+	Assert::null($request->getOrigin());
+});

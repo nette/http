@@ -204,14 +204,11 @@ class Request implements IRequest
 	 */
 	public function getOrigin(): ?UrlImmutable
 	{
-		$header = $this->headers['origin'] ?? 'null';
-		try {
-			return $header === 'null'
-				? null
-				: new UrlImmutable($header);
-		} catch (Nette\InvalidArgumentException) {
+		$header = $this->headers['origin'] ?? '';
+		if (!preg_match('~^[a-z][a-z0-9+.-]*://[^/]+$~i', $header)) {
 			return null;
 		}
+		return new UrlImmutable($header);
 	}
 
 
