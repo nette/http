@@ -9,7 +9,7 @@ namespace Nette\Bridges\HttpDI;
 
 use Nette;
 use Nette\Schema\Expect;
-use function is_array;
+use function is_array, strval;
 
 
 /**
@@ -91,7 +91,7 @@ class HttpExtension extends Nette\DI\CompilerExtension
 	private function sendHeaders(): void
 	{
 		$config = $this->config;
-		$headers = array_map('strval', $config->headers);
+		$headers = array_map(strval(...), $config->headers);
 
 		if (isset($config->frames) && $config->frames !== true && !isset($headers['X-Frame-Options'])) {
 			$frames = $config->frames;

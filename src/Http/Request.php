@@ -33,6 +33,7 @@ class Request implements IRequest
 {
 	use Nette\SmartObject;
 
+	/** @var string[] */
 	private readonly array $headers;
 
 	private readonly ?\Closure $rawBodyCallback;
@@ -176,6 +177,7 @@ class Request implements IRequest
 
 	/**
 	 * Returns all HTTP headers as associative array.
+	 * @return string[]
 	 */
 	public function getHeaders(): array
 	{
@@ -205,7 +207,7 @@ class Request implements IRequest
 			return $header === 'null'
 				? null
 				: new UrlImmutable($header);
-		} catch (Nette\InvalidArgumentException $e) {
+		} catch (Nette\InvalidArgumentException) {
 			return null;
 		}
 	}
