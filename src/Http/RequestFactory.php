@@ -11,7 +11,7 @@ use Nette;
 use Nette\Utils\Arrays;
 use Nette\Utils\Strings;
 use function array_filter, base64_encode, count, end, explode, file_get_contents, filter_input_array, filter_var, function_exists, get_debug_type, in_array, ini_get, is_array, is_string, key, min, preg_last_error, preg_match, preg_replace, preg_split, rtrim, sprintf, str_contains, strcasecmp, strlen, strncmp, strpos, strrpos, strtolower, strtr, substr, trim;
-use const FILTER_UNSAFE_RAW, FILTER_VALIDATE_IP, INPUT_COOKIE, INPUT_POST, PHP_SAPI, UPLOAD_ERR_NO_FILE;
+use const PHP_SAPI;
 
 
 /**
@@ -22,6 +22,7 @@ class RequestFactory
 	/** @internal */
 	private const ValidChars = '\x09\x0A\x0D\x20-\x7E\xA0-\x{10FFFF}';
 
+	/** @var array<string, string[]> */
 	public array $urlFilters = [
 		'path' => ['#//#' => '/'], // '%20' => ''
 		'url' => [], // '#[.,)]$#D' => ''
@@ -130,7 +131,7 @@ class RequestFactory
 
 	private function getGetPostCookie(Url $url): array
 	{
-		$useFilter = (!in_array((string) ini_get('filter.default'), ['', 'unsafe_raw'], true) || ini_get('filter.default_flags'));
+		$useFilter = (!in_array((string) ini_get('filter.default'), ['', 'unsafe_raw'], strict: true) || ini_get('filter.default_flags'));
 
 		$query = $url->getQueryParameters();
 		$post = $useFilter
@@ -233,7 +234,7 @@ class RequestFactory
 		} else {
 			$headers = [];
 			foreach ($_SERVER as $k => $v) {
-				if (strncmp($k, 'HTTP_', 5) === 0) {
+				if (str_starts_with($k, 'HTTP_')) {
 					$k = substr($k, 5);
 				} elseif (strncmp($k, 'CONTENT_', 8)) {
 					continue;

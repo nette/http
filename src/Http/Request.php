@@ -9,7 +9,6 @@ namespace Nette\Http;
 
 use Nette;
 use function array_change_key_case, base64_decode, count, explode, func_num_args, gethostbyaddr, implode, preg_match, preg_match_all, rsort, strcasecmp, strtolower, strtr;
-use const CASE_LOWER;
 
 
 /**
@@ -33,6 +32,7 @@ class Request implements IRequest
 {
 	use Nette\SmartObject;
 
+	/** @var string[] */
 	private readonly array $headers;
 
 	private readonly ?\Closure $rawBodyCallback;
@@ -176,6 +176,7 @@ class Request implements IRequest
 
 	/**
 	 * Returns all HTTP headers as associative array.
+	 * @return string[]
 	 */
 	public function getHeaders(): array
 	{
@@ -205,7 +206,7 @@ class Request implements IRequest
 			return $header === 'null'
 				? null
 				: new UrlImmutable($header);
-		} catch (Nette\InvalidArgumentException $e) {
+		} catch (Nette\InvalidArgumentException) {
 			return null;
 		}
 	}
