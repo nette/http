@@ -140,7 +140,7 @@ final class FileUpload
 			}
 			[, , $type] = Nette\Utils\Helpers::falseToNull(@getimagesize($this->tmpName)); // @ - files smaller than 12 bytes causes read error
 			if ($type) {
-				return $this->extension = image_type_to_extension($type, false);
+				return $this->extension = image_type_to_extension($type, include_dot: false);
 			}
 			$this->extension = false;
 		}
@@ -231,7 +231,7 @@ final class FileUpload
 	 */
 	public function isImage(): bool
 	{
-		$types = array_map(fn($type) => Image::typeToMimeType($type), Image::getSupportedTypes());
+		$types = array_map(Image::typeToMimeType(...), Image::getSupportedTypes());
 		return in_array($this->getContentType(), $types, strict: true);
 	}
 

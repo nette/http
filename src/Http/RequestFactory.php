@@ -24,6 +24,7 @@ class RequestFactory
 	/** @internal */
 	private const ValidChars = '\x09\x0A\x0D\x20-\x7E\xA0-\x{10FFFF}';
 
+	/** @var array<string, string[]> */
 	public array $urlFilters = [
 		'path' => ['#//#' => '/'], // '%20' => ''
 		'url' => [], // '#[.,)]$#D' => ''
@@ -132,7 +133,7 @@ class RequestFactory
 
 	private function getGetPostCookie(Url $url): array
 	{
-		$useFilter = (!in_array((string) ini_get('filter.default'), ['', 'unsafe_raw'], true) || ini_get('filter.default_flags'));
+		$useFilter = (!in_array((string) ini_get('filter.default'), ['', 'unsafe_raw'], strict: true) || ini_get('filter.default_flags'));
 
 		$query = $url->getQueryParameters();
 		$post = $useFilter
@@ -235,7 +236,7 @@ class RequestFactory
 		} else {
 			$headers = [];
 			foreach ($_SERVER as $k => $v) {
-				if (strncmp($k, 'HTTP_', 5) === 0) {
+				if (str_starts_with($k, 'HTTP_')) {
 					$k = substr($k, 5);
 				} elseif (strncmp($k, 'CONTENT_', 8)) {
 					continue;

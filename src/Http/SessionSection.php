@@ -36,7 +36,7 @@ class SessionSection implements \IteratorAggregate, \ArrayAccess
 	 */
 	public function getIterator(): \Iterator
 	{
-		$this->session->autoStart(false);
+		$this->session->autoStart(forWrite: false);
 		return new \ArrayIterator($this->getData() ?? []);
 	}
 
@@ -49,7 +49,7 @@ class SessionSection implements \IteratorAggregate, \ArrayAccess
 		if ($value === null) {
 			$this->remove($name);
 		} else {
-			$this->session->autoStart(true);
+			$this->session->autoStart(forWrite: true);
 			$this->getData()[$name] = $value;
 			$this->setExpiration($expire, $name);
 		}
@@ -65,7 +65,7 @@ class SessionSection implements \IteratorAggregate, \ArrayAccess
 			throw new \ArgumentCountError(__METHOD__ . '() expects 1 arguments, given more.');
 		}
 
-		$this->session->autoStart(false);
+		$this->session->autoStart(forWrite: false);
 		return $this->getData()[$name] ?? null;
 	}
 
@@ -76,7 +76,7 @@ class SessionSection implements \IteratorAggregate, \ArrayAccess
 	 */
 	public function remove(string|array|null $name = null): void
 	{
-		$this->session->autoStart(false);
+		$this->session->autoStart(forWrite: false);
 		if (func_num_args() > 1) {
 			throw new \ArgumentCountError(__METHOD__ . '() expects at most 1 arguments, given more.');
 
@@ -96,9 +96,9 @@ class SessionSection implements \IteratorAggregate, \ArrayAccess
 	 * Sets a variable in this session section.
 	 * @deprecated  use set() instead
 	 */
-	public function __set(string $name, $value): void
+	public function __set(string $name, mixed $value): void
 	{
-		$this->session->autoStart(true);
+		$this->session->autoStart(forWrite: true);
 		$this->getData()[$name] = $value;
 	}
 
@@ -109,7 +109,7 @@ class SessionSection implements \IteratorAggregate, \ArrayAccess
 	 */
 	public function &__get(string $name): mixed
 	{
-		$this->session->autoStart(true);
+		$this->session->autoStart(forWrite: true);
 		$data = &$this->getData();
 		if ($this->warnOnUndefined && !array_key_exists($name, $data ?? [])) {
 			trigger_error("The variable '$name' does not exist in session section");
@@ -125,7 +125,7 @@ class SessionSection implements \IteratorAggregate, \ArrayAccess
 	 */
 	public function __isset(string $name): bool
 	{
-		$this->session->autoStart(false);
+		$this->session->autoStart(forWrite: false);
 		return isset($this->getData()[$name]);
 	}
 

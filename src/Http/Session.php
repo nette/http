@@ -46,19 +46,16 @@ class Session
 		'cookie_lifetime' => 0,   // for a maximum of 3 hours or until the browser is closed
 		'gc_maxlifetime' => self::DefaultFileLifetime, // 3 hours
 	];
-
-	private readonly IRequest $request;
-	private readonly IResponse $response;
 	private ?\SessionHandlerInterface $handler = null;
 	private bool $readAndClose = false;
 	private bool $fileExists = true;
 	private bool $autoStart = true;
 
 
-	public function __construct(IRequest $request, IResponse $response)
-	{
-		$this->request = $request;
-		$this->response = $response;
+	public function __construct(
+		private readonly IRequest $request,
+		private readonly IResponse $response,
+	) {
 		$this->options['cookie_path'] = &$this->response->cookiePath;
 		$this->options['cookie_domain'] = &$this->response->cookieDomain;
 		$this->options['cookie_secure'] = &$this->response->cookieSecure;
@@ -75,7 +72,7 @@ class Session
 	}
 
 
-	private function doStart($mustExists = false): void
+	private function doStart(bool $mustExists = false): void
 	{
 		if (session_status() === PHP_SESSION_ACTIVE) { // adapt an existing session
 			if (!$this->started) {
@@ -254,7 +251,7 @@ class Session
 				throw new Nette\InvalidStateException('Cannot regenerate session ID after HTTP headers have been sent' . ($file ? " (output started at $file:$line)." : '.'));
 			}
 
-			session_regenerate_id(true);
+			session_regenerate_id(delete_old_session: true);
 		} else {
 			session_id(session_create_id());
 		}
@@ -318,7 +315,7 @@ class Session
 	public function hasSection(string $section): bool
 	{
 		if ($this->exists() && !$this->started) {
-			$this->autoStart(false);
+			$this->autoStart(forWrite: false);
 		}
 
 		return !empty($_SESSION['__NF']['DATA'][$section]);
@@ -329,7 +326,7 @@ class Session
 	public function getSectionNames(): array
 	{
 		if ($this->exists() && !$this->started) {
-			$this->autoStart(false);
+			$this->autoStart(forWrite: false);
 		}
 
 		return array_keys($_SESSION['__NF']['DATA'] ?? []);
@@ -442,7 +439,7 @@ class Session
 			if ($value === null || ini_get("session.$key") == $value) { // intentionally ==
 				continue;
 
-			} elseif (strncmp($key, 'cookie_', 7) === 0) {
+			} elseif (str_starts_with($key, 'cookie_')) {
 				$cookie[substr($key, 7)] = $value;
 
 			} else {

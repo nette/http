@@ -56,7 +56,7 @@ final class Helpers
 	}
 
 
-	public static function initCookie(IRequest $request, IResponse $response)
+	public static function initCookie(IRequest $request, IResponse $response): void
 	{
 		$response->setCookie(self::StrictCookieName, '1', 0, '/', sameSite: IResponse::SameSiteStrict);
 	}
