@@ -9,7 +9,7 @@ namespace Nette\Http;
 
 use Nette;
 use function array_pop, array_slice, bin2hex, chunk_split, defined, explode, function_exists, http_build_query, idn_to_utf8, implode, ini_get, ip2long, is_array, is_string, ksort, parse_str, parse_url, preg_match, preg_quote, preg_replace, preg_replace_callback, rawurldecode, rawurlencode, rtrim, str_contains, str_replace, str_starts_with, strcasecmp, strlen, strrpos, strtolower, strtoupper, substr;
-use const IDNA_DEFAULT, INTL_IDNA_VARIANT_UTS46, PHP_QUERY_RFC3986;
+use const PHP_QUERY_RFC3986;
 
 
 /**
@@ -45,6 +45,7 @@ class Url implements \JsonSerializable
 {
 	use Nette\SmartObject;
 
+	/** @var array<string, int> */
 	public static array $defaultPorts = [
 		'http' => 80,
 		'https' => 443,
@@ -375,7 +376,7 @@ class Url implements \JsonSerializable
 		}
 
 		if (function_exists('idn_to_utf8') && defined('INTL_IDNA_VARIANT_UTS46')) {
-			return idn_to_utf8($host, IDNA_DEFAULT, INTL_IDNA_VARIANT_UTS46) ?: $host;
+			return idn_to_utf8($host) ?: $host;
 		}
 
 		trigger_error('PHP extension intl is not loaded or is too old', E_USER_WARNING);

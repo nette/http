@@ -10,7 +10,6 @@ namespace Nette\Http;
 use Nette;
 use Nette\Utils\Image;
 use function array_intersect_key, array_map, basename, chmod, dirname, file_get_contents, filesize, finfo_file, finfo_open, getimagesize, image_type_to_extension, in_array, is_string, is_uploaded_file, preg_replace, str_replace, trim, unlink;
-use const FILEINFO_EXTENSION, FILEINFO_MIME_TYPE, UPLOAD_ERR_NO_FILE, UPLOAD_ERR_OK;
 
 
 /**
@@ -138,7 +137,7 @@ final class FileUpload
 			}
 			[, , $type] = Nette\Utils\Helpers::falseToNull(@getimagesize($this->tmpName)); // @ - files smaller than 12 bytes causes read error
 			if ($type) {
-				return $this->extension = image_type_to_extension($type, false);
+				return $this->extension = image_type_to_extension($type, include_dot: false);
 			}
 			$this->extension = false;
 		}
@@ -229,7 +228,7 @@ final class FileUpload
 	 */
 	public function isImage(): bool
 	{
-		$types = array_map(fn($type) => Image::typeToMimeType($type), Image::getSupportedTypes());
+		$types = array_map(Image::typeToMimeType(...), Image::getSupportedTypes());
 		return in_array($this->getContentType(), $types, strict: true);
 	}
 
@@ -270,7 +269,6 @@ final class FileUpload
 	 */
 	public function getContents(): ?string
 	{
-		// future implementation can try to work around safe_mode and open_basedir limitations
 		return $this->isOk()
 			? file_get_contents($this->tmpName)
 			: null;
