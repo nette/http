@@ -11,7 +11,6 @@ namespace Nette\Http;
 /**
  * HTTP request contract providing access to URL, headers, cookies, uploaded files, and body.
  * @method ?UrlImmutable getReferer() Returns the referrer URL.
- * @method bool isSameSite() Checks whether the request is coming from the same site.
  * @method bool isFrom(string|list<string>|null $site = null, string|list<string>|null $initiator = null)
  */
 interface IRequest

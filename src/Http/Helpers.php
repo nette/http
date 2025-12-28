@@ -19,9 +19,6 @@ final class Helpers
 {
 	use Nette\StaticClass;
 
-	/** @internal */
-	public const StrictCookieName = '_nss';
-
 
 	/**
 	 * Formats a date and time in the HTTP date format (RFC 7231), e.g. 'Mon, 23 Jan 1978 10:00:00 GMT'.
@@ -52,14 +49,5 @@ final class Helpers
 		}
 
 		return strncmp($ip, $mask, $size === '' ? $max : (int) $size) === 0;
-	}
-
-
-	/**
-	 * Sends the strict same-site cookie used to detect same-site requests.
-	 */
-	public static function initCookie(IRequest $request, IResponse $response): void
-	{
-		$response->setCookie(self::StrictCookieName, '1', 0, '/', sameSite: IResponse::SameSiteStrict);
 	}
 }
