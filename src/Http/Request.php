@@ -221,9 +221,7 @@ class Request implements IRequest
 	}
 
 
-	/**
-	 * Is the request coming from the same site and is initiated by clicking on a link?
-	 */
+	/** @deprecated use isFrom(['same-site', 'same-origin']) */
 	public function isSameSite(): bool
 	{
 		return isset($this->cookies[Helpers::StrictCookieName]);
