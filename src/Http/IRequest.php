@@ -12,6 +12,7 @@ namespace Nette\Http;
  * HTTP request provides access scheme for request sent via HTTP.
  * @method ?UrlImmutable getReferer() Returns referrer.
  * @method bool isSameSite() Is the request sent from the same origin?
+ * @method bool isFrom(string|list<string>|null $site = null, string|list<string>|null $initiator = null)
  */
 interface IRequest
 {
