@@ -10,7 +10,7 @@ declare(strict_types=1);
 namespace Nette\Http;
 
 use Nette;
-use function array_change_key_case, base64_decode, count, explode, func_num_args, gethostbyaddr, implode, preg_match, preg_match_all, rsort, strcasecmp, strtolower, strtr;
+use function array_change_key_case, base64_decode, count, explode, func_num_args, gethostbyaddr, implode, in_array, preg_match, preg_match_all, rsort, strcasecmp, strtr;
 use const CASE_LOWER;
 
 
@@ -227,6 +227,27 @@ class Request implements IRequest
 	public function isSameSite(): bool
 	{
 		return isset($this->cookies[Helpers::StrictCookieName]);
+	}
+
+
+	/**
+	 * Checks whether Sec-Fetch headers match the expected values.
+	 */
+	public function isFrom(string|array|null $site = null, string|array|null $initiator = null): bool
+	{
+		$actualSite = $this->headers['sec-fetch-site'] ?? null;
+		$actualDest = $this->headers['sec-fetch-dest'] ?? null;
+
+		if ($actualSite === null && ($origin = $this->getOrigin())) { // fallback for Safari < 16.4
+			$actualSite = strcasecmp($origin->getScheme(), $this->url->getScheme()) === 0
+					&& strcasecmp(rtrim($origin->getHost(), '.'), rtrim($this->url->getHost(), '.')) === 0
+					&& $origin->getPort() === $this->url->getPort()
+				? 'same-origin'
+				: 'cross-site';
+		}
+
+		return ($site === null || ($actualSite !== null && in_array($actualSite, (array) $site, strict: true)))
+			&& ($initiator === null || ($actualDest !== null && in_array($actualDest, (array) $initiator, strict: true)));
 	}
 
 
