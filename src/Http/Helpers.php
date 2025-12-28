@@ -21,9 +21,6 @@ final class Helpers
 {
 	use Nette\StaticClass;
 
-	/** @internal */
-	public const StrictCookieName = '_nss';
-
 
 	/**
 	 * Returns HTTP valid date format.
@@ -50,11 +47,5 @@ final class Helpers
 		}
 
 		return strncmp($ip, $mask, $size === '' ? $max : (int) $size) === 0;
-	}
-
-
-	public static function initCookie(IRequest $request, IResponse $response): void
-	{
-		$response->setCookie(self::StrictCookieName, '1', 0, '/', sameSite: IResponse::SameSiteStrict);
 	}
 }

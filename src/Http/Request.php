@@ -222,13 +222,6 @@ class Request implements IRequest
 	}
 
 
-	/** @deprecated use isFrom(['same-site', 'same-origin']) */
-	public function isSameSite(): bool
-	{
-		return isset($this->cookies[Helpers::StrictCookieName]);
-	}
-
-
 	/**
 	 * Checks whether Sec-Fetch headers match the expected values.
 	 */

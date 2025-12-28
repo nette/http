@@ -40,7 +40,7 @@ class HttpExtension extends Nette\DI\CompilerExtension
 			'cookiePath' => Expect::string()->dynamic(),
 			'cookieDomain' => Expect::string()->dynamic(),
 			'cookieSecure' => Expect::anyOf('auto', null, true, false)->firstIsDefault()->dynamic(), // Whether the cookie is available only through HTTPS
-			'disableNetteCookie' => Expect::bool(false), // disables cookie use by Nette
+			'disableNetteCookie' => Expect::bool(false)->deprecated(),
 		]);
 	}
 
@@ -132,13 +132,6 @@ class HttpExtension extends Nette\DI\CompilerExtension
 			if ($value !== '') {
 				$this->initialization->addBody('$response->setHeader(?, ?);', [$key, $value]);
 			}
-		}
-
-		if (!$config->disableNetteCookie) {
-			$this->initialization->addBody(
-				'Nette\Http\Helpers::initCookie($this->getService(?), $response);',
-				[$this->prefix('request')],
-			);
 		}
 	}
 
