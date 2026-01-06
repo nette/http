@@ -37,6 +37,8 @@ class RequestFactory
 	/** @var list<string> */
 	private array $proxies = [];
 
+	private bool $forceHttps = false;
+
 
 	/**
 	 * Disables sanitization of request data (GET, POST, cookies, file names) for binary-safe handling.
@@ -60,6 +62,16 @@ class RequestFactory
 
 
 	/**
+	 * Forces the request scheme to HTTPS regardless of the server environment.
+	 */
+	public function setForceHttps(bool $forceHttps = true): static
+	{
+		$this->forceHttps = $forceHttps;
+		return $this;
+	}
+
+
+	/**
 	 * Returns new Request instance, using values from superglobals.
 	 */
 	public function fromGlobals(): Request
@@ -69,6 +81,10 @@ class RequestFactory
 		$this->getPathAndQuery($url);
 		[$post, $cookies] = $this->getGetPostCookie($url);
 		[$remoteAddr, $remoteHost] = $this->getClient($url);
+
+		if ($this->forceHttps) {
+			$url->setScheme('https');
+		}
 
 		return new Request(
 			new UrlScript($url, $this->getScriptPath($url)),

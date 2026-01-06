@@ -27,6 +27,7 @@ class HttpExtension extends Nette\DI\CompilerExtension
 	{
 		return Expect::structure([
 			'proxy' => Expect::anyOf(Expect::arrayOf('string'), Expect::string()->castTo('array'))->firstIsDefault()->dynamic(),
+			'forceHttps' => Expect::bool(false)->dynamic(),
 			'headers' => Expect::arrayOf('scalar|null')->default([
 				'X-Powered-By' => 'Nette Framework 3',
 				'Content-Type' => 'text/html; charset=utf-8',
@@ -48,9 +49,13 @@ class HttpExtension extends Nette\DI\CompilerExtension
 		$builder = $this->getContainerBuilder();
 		$config = $this->config;
 
-		$builder->addDefinition($this->prefix('requestFactory'))
+		$requestFactory = $builder->addDefinition($this->prefix('requestFactory'))
 			->setFactory(Nette\Http\RequestFactory::class)
 			->addSetup('setProxy', [$config->proxy]);
+
+		if ($config->forceHttps) {
+			$requestFactory->addSetup('setForceHttps');
+		}
 
 		$request = $builder->addDefinition($this->prefix('request'))
 			->setFactory('@Nette\Http\RequestFactory::fromGlobals');
