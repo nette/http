@@ -73,6 +73,18 @@ class RequestFactorySchemeTest extends Tester\TestCase
 			['https', 80, ['SERVER_NAME' => 'localhost:80', 'HTTPS' => 'off', 'HTTP_X_FORWARDED_PROTO' => 'https', 'HTTP_X_FORWARDED_PORT' => '80']],
 		];
 	}
+
+
+	public function testForceHttps()
+	{
+		$_SERVER = ['SERVER_NAME' => 'localhost:80'];
+
+		$factory = new Nette\Http\RequestFactory;
+		$factory->setForceHttps();
+		$url = $factory->fromGlobals()->getUrl();
+
+		Assert::same('https', $url->getScheme());
+	}
 }
 
 

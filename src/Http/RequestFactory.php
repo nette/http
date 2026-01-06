@@ -33,6 +33,7 @@ class RequestFactory
 	];
 
 	private bool $binary = false;
+	private bool $forceHttps = false;
 
 	/** @var list<string> */
 	private array $proxies = [];
@@ -60,6 +61,16 @@ class RequestFactory
 
 
 	/**
+	 * Forces the request scheme to HTTPS regardless of the server environment.
+	 */
+	public function setForceHttps(bool $forceHttps = true): static
+	{
+		$this->forceHttps = $forceHttps;
+		return $this;
+	}
+
+
+	/**
 	 * Returns new Request instance, using values from superglobals.
 	 */
 	public function fromGlobals(): Request
@@ -69,6 +80,9 @@ class RequestFactory
 		$this->getPathAndQuery($url);
 		[$post, $cookies] = $this->getGetPostCookie($url);
 		[$remoteAddr, $remoteHost] = $this->getClient($url);
+		if ($this->forceHttps) {
+			$url->setScheme('https');
+		}
 
 		return new Request(
 			new UrlScript($url, $this->getScriptPath($url)),
