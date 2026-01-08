@@ -105,3 +105,46 @@ test('X-Forwarded-Host with multiple entries and port', function () {
 	Assert::same('real', $url->getHost());
 	Assert::same(8080, $url->getPort());
 });
+
+test('X-Forwarded-For with a non-IP innermost value yields a null remote address', function () {
+	$_SERVER = [
+		'REMOTE_ADDR' => '10.0.0.1',
+		'HTTP_X_FORWARDED_FOR' => 'not-an-ip',
+	];
+
+	$factory = new RequestFactory;
+	$factory->setProxy('10.0.0.1');
+	Assert::null($factory->fromGlobals()->getRemoteAddress());
+});
+
+test('X-Forwarded-Proto is applied even without X-Forwarded-For, X-Forwarded-Host is not', function () {
+	$_SERVER = [
+		'REMOTE_ADDR' => '10.0.0.1',
+		'HTTP_X_FORWARDED_PROTO' => 'https',
+		'HTTP_X_FORWARDED_HOST' => 'otherhost',
+	];
+
+	$factory = new RequestFactory;
+	$factory->setProxy('10.0.0.1');
+	$request = $factory->fromGlobals();
+	Assert::null($request->getRemoteAddress());
+	Assert::same('https', $request->getUrl()->getScheme());
+	Assert::same(443, $request->getUrl()->getPort());
+	Assert::same('', $request->getUrl()->getHost());
+});
+
+test('X-Forwarded-Proto is applied even when X-Forwarded-For is invalid, X-Forwarded-Host is not', function () {
+	$_SERVER = [
+		'REMOTE_ADDR' => '10.0.0.1',
+		'HTTP_X_FORWARDED_FOR' => 'not-an-ip',
+		'HTTP_X_FORWARDED_PROTO' => 'https',
+		'HTTP_X_FORWARDED_HOST' => 'otherhost',
+	];
+
+	$factory = new RequestFactory;
+	$factory->setProxy('10.0.0.1');
+	$request = $factory->fromGlobals();
+	Assert::null($request->getRemoteAddress());
+	Assert::same('https', $request->getUrl()->getScheme());
+	Assert::same('', $request->getUrl()->getHost());
+});
