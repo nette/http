@@ -36,7 +36,7 @@ use const PHP_QUERY_RFC3986;
  * @property-read string $absoluteUrl
  * @property-read string $authority
  * @property-read string $hostUrl
- * @property-read array $queryParameters
+ * @property-read array<string,mixed> $queryParameters
  */
 class UrlImmutable implements \JsonSerializable
 {
@@ -48,6 +48,8 @@ class UrlImmutable implements \JsonSerializable
 	private string $host = '';
 	private ?int $port = null;
 	private string $path = '';
+
+	/** @var mixed[] */
 	private array $query = [];
 	private string $fragment = '';
 	private ?string $authority = null;
@@ -189,6 +191,7 @@ class UrlImmutable implements \JsonSerializable
 	}
 
 
+	/** @param string|mixed[] $query */
 	public function withQuery(string|array $query): static
 	{
 		$dolly = clone $this;
@@ -211,12 +214,14 @@ class UrlImmutable implements \JsonSerializable
 	}
 
 
+	/** @return mixed[] */
 	public function getQueryParameters(): array
 	{
 		return $this->query;
 	}
 
 
+	/** @return mixed[]|string|null */
 	public function getQueryParameter(string $name): array|string|null
 	{
 		return $this->query[$name] ?? null;

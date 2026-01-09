@@ -385,6 +385,7 @@ interface IResponse
 
 	/**
 	 * Returns an associative array of headers to sent.
+	 * @return array<string, string>
 	 */
 	function getHeaders(): array;
 
@@ -404,6 +405,7 @@ interface IResponse
 
 	/**
 	 * Deletes a cookie.
+	 * @return void
 	 */
 	function deleteCookie(string $name, ?string $path = null, ?string $domain = null, ?bool $secure = null);
 }

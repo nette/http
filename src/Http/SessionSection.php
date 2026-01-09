@@ -13,6 +13,8 @@ use function array_key_exists, func_num_args, ini_get, is_array, time;
 
 /**
  * Session section.
+ * @implements \IteratorAggregate<string, mixed>
+ * @implements \ArrayAccess<string, mixed>
  */
 class SessionSection implements \IteratorAggregate, \ArrayAccess
 {
@@ -31,6 +33,7 @@ class SessionSection implements \IteratorAggregate, \ArrayAccess
 
 	/**
 	 * Returns an iterator over all section variables.
+	 * @return \Iterator<string, mixed>
 	 */
 	public function getIterator(): \Iterator
 	{
@@ -215,13 +218,15 @@ class SessionSection implements \IteratorAggregate, \ArrayAccess
 	}
 
 
-	private function &getData()
+	/** @return ?array<string, mixed> */
+	private function &getData(): ?array
 	{
 		return $_SESSION['__NF']['DATA'][$this->name];
 	}
 
 
-	private function &getMeta()
+	/** @return ?array<string, array{T?: ?int}> */
+	private function &getMeta(): ?array
 	{
 		return $_SESSION['__NF']['META'][$this->name];
 	}

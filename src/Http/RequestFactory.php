@@ -22,7 +22,7 @@ class RequestFactory
 	/** @internal */
 	private const ValidChars = '\x09\x0A\x0D\x20-\x7E\xA0-\x{10FFFF}';
 
-	/** @var array<string, string[]> */
+	/** @var array<string, array<string, string>> */
 	public array $urlFilters = [
 		'path' => ['#//#' => '/'], // '%20' => ''
 		'url' => [], // '#[.,)]$#D' => ''
@@ -30,7 +30,7 @@ class RequestFactory
 
 	private bool $binary = false;
 
-	/** @var string[] */
+	/** @var list<string> */
 	private array $proxies = [];
 
 
@@ -42,7 +42,7 @@ class RequestFactory
 
 
 	/**
-	 * @param  string|string[]  $proxy
+	 * @param string|list<string>  $proxy
 	 */
 	public function setProxy($proxy): static
 	{
@@ -129,6 +129,7 @@ class RequestFactory
 	}
 
 
+	/** @return array{mixed[], mixed[]} */
 	private function getGetPostCookie(Url $url): array
 	{
 		$useFilter = (!in_array((string) ini_get('filter.default'), ['', 'unsafe_raw'], strict: true) || ini_get('filter.default_flags'));
@@ -171,6 +172,7 @@ class RequestFactory
 	}
 
 
+	/** @return mixed[] */
 	private function getFiles(): array
 	{
 		$reChars = '#^[' . self::ValidChars . ']*+$#Du';
@@ -227,6 +229,7 @@ class RequestFactory
 	}
 
 
+	/** @return array<string, string> */
 	private function getHeaders(): array
 	{
 		if (function_exists('apache_request_headers')) {
@@ -270,6 +273,7 @@ class RequestFactory
 	}
 
 
+	/** @return array{?string, ?string}  [remoteAddr, remoteHost] */
 	private function getClient(Url $url): array
 	{
 		$remoteAddr = !empty($_SERVER['REMOTE_ADDR']) ? $_SERVER['REMOTE_ADDR'] : null;

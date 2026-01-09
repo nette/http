@@ -19,12 +19,12 @@ use const FILEINFO_EXTENSION, FILEINFO_MIME_TYPE, UPLOAD_ERR_NO_FILE, UPLOAD_ERR
  * @property-read string $name
  * @property-read string $sanitizedName
  * @property-read string $untrustedFullPath
- * @property-read string|null $contentType
+ * @property-read ?string $contentType
  * @property-read int $size
  * @property-read string $temporaryFile
  * @property-read int $error
  * @property-read bool $ok
- * @property-read string|null $contents
+ * @property-read ?string $contents
  */
 final class FileUpload
 {
@@ -42,6 +42,7 @@ final class FileUpload
 	private readonly int $error;
 
 
+	/** @param array{name?: string, full_path?: string, size?: int, tmp_name?: string, error?: int, type?: string}|string|null  $value */
 	public function __construct(array|string|null $value)
 	{
 		if (is_string($value)) {
@@ -246,6 +247,7 @@ final class FileUpload
 
 	/**
 	 * Returns a pair of [width, height] with dimensions of the uploaded image.
+	 * @return ?array{int, int}
 	 */
 	public function getImageSize(): ?array
 	{

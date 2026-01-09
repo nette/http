@@ -10,7 +10,7 @@ namespace Nette\Http;
 
 /**
  * HTTP request provides access scheme for request sent via HTTP.
- * @method UrlImmutable|null getReferer() Returns referrer.
+ * @method ?UrlImmutable getReferer() Returns referrer.
  * @method bool isSameSite() Is the request sent from the same origin?
  */
 interface IRequest
@@ -69,12 +69,13 @@ interface IRequest
 
 	/**
 	 * Returns uploaded file.
-	 * @return FileUpload|array|null
+	 * @return ?FileUpload
 	 */
 	function getFile(string $key);
 
 	/**
 	 * Returns uploaded files.
+	 * @return mixed[]
 	 */
 	function getFiles(): array;
 
@@ -86,6 +87,7 @@ interface IRequest
 
 	/**
 	 * Returns variables provided to the script via HTTP cookies.
+	 * @return array<string, string>
 	 */
 	function getCookies(): array;
 
@@ -109,6 +111,7 @@ interface IRequest
 
 	/**
 	 * Returns all HTTP headers.
+	 * @return array<string, string>
 	 */
 	function getHeaders(): array;
 

@@ -16,33 +16,41 @@ use const CASE_LOWER;
  * HttpRequest provides access scheme for request sent via HTTP.
  *
  * @property-read UrlScript $url
- * @property-read array $query
- * @property-read array $post
- * @property-read array $files
- * @property-read array $cookies
+ * @property-read array<string,mixed> $query
+ * @property-read array<string,mixed> $post
+ * @property-read array<string,mixed> $files
+ * @property-read array<string,string> $cookies
  * @property-read string $method
- * @property-read array $headers
- * @property-read UrlImmutable|null $referer
+ * @property-read array<string,string> $headers
+ * @property-read ?UrlImmutable $referer
  * @property-read bool $secured
  * @property-read bool $ajax
- * @property-read string|null $remoteAddress
- * @property-read string|null $remoteHost
- * @property-read string|null $rawBody
+ * @property-read ?string $remoteAddress
+ * @property-read ?string $remoteHost
+ * @property-read ?string $rawBody
  */
 class Request implements IRequest
 {
 	use Nette\SmartObject;
 
-	/** @var string[] */
+	/** @var array<string, string> */
 	private readonly array $headers;
 
+	/** @var (\Closure(): string)|null */
 	private readonly ?\Closure $rawBodyCallback;
 
 
+	/**
+	 * @param array<string, string> $headers
+	 * @param ?(callable(): string) $rawBodyCallback
+	 */
 	public function __construct(
 		private UrlScript $url,
+		/** @var mixed[] */
 		private readonly array $post = [],
+		/** @var mixed[] */
 		private readonly array $files = [],
+		/** @var array<string, string> */
 		private readonly array $cookies = [],
 		array $headers = [],
 		private readonly string $method = 'GET',
@@ -119,6 +127,7 @@ class Request implements IRequest
 
 	/**
 	 * Returns tree of upload files in a normalized structure, with each leaf an instance of Nette\Http\FileUpload.
+	 * @return mixed[]
 	 */
 	public function getFiles(): array
 	{
@@ -137,6 +146,7 @@ class Request implements IRequest
 
 	/**
 	 * Returns all cookies.
+	 * @return array<string, string>
 	 */
 	public function getCookies(): array
 	{
@@ -177,7 +187,7 @@ class Request implements IRequest
 
 	/**
 	 * Returns all HTTP headers as associative array.
-	 * @return string[]
+	 * @return array<string, string>
 	 */
 	public function getHeaders(): array
 	{
@@ -292,7 +302,7 @@ class Request implements IRequest
 
 	/**
 	 * Returns the most preferred language by browser. Uses the `Accept-Language` header. If no match is reached, it returns `null`.
-	 * @param  string[]  $langs  supported languages
+	 * @param list<string>  $langs supported languages
 	 */
 	public function detectLanguage(array $langs): ?string
 	{
