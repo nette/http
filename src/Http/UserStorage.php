@@ -23,7 +23,7 @@ class UserStorage implements Nette\Security\IUserStorage
 
 	private string $namespace = '';
 
-	private SessionSection $sessionSection;
+	private ?SessionSection $sessionSection = null;
 
 
 	public function __construct(
