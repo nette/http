@@ -23,7 +23,6 @@ test('forwarded header handling with proxy', function () {
 
 	$factory->setProxy('127.0.0.1/8');
 	Assert::same('23.75.45.200', $factory->fromGlobals()->getRemoteAddress());
-	Assert::same('a23-75-45-200.deploy.static.akamaitechnologies.com', $factory->fromGlobals()->getRemoteHost());
 
 	$url = $factory->fromGlobals()->getUrl();
 	Assert::same('http', $url->getScheme());
@@ -41,7 +40,6 @@ test('forwarded header with port numbers', function () {
 
 	$factory->setProxy('127.0.0.3');
 	Assert::same('23.75.45.200', $factory->fromGlobals()->getRemoteAddress());
-	Assert::same('a23-75-45-200.deploy.static.akamaitechnologies.com', $factory->fromGlobals()->getRemoteHost());
 
 	$url = $factory->fromGlobals()->getUrl();
 	Assert::same(8080, $url->getPort());

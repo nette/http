@@ -10,6 +10,7 @@ use Tester\Assert;
 require __DIR__ . '/../bootstrap.php';
 
 
+ob_start();
 $session = new Session(new Nette\Http\Request(new Nette\Http\UrlScript), new Nette\Http\Response);
 
 $session->setExpiration('+10 seconds');

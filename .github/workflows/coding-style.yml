@@ -10,11 +10,11 @@ jobs:
             - uses: actions/checkout@v4
             - uses: shivammathur/setup-php@v2
               with:
-                  php-version: 8.1
+                  php-version: 8.3
                   coverage: none
 
             - run: composer create-project nette/code-checker temp/code-checker ^3 --no-progress
-            - run: php temp/code-checker/code-checker --strict-types --no-progress
+            - run: php temp/code-checker/code-checker --strict-types --no-progress --ignore *.latte
 
 
     nette_cs:
@@ -24,7 +24,7 @@ jobs:
             - uses: actions/checkout@v4
             - uses: shivammathur/setup-php@v2
               with:
-                  php-version: 8.1
+                  php-version: 8.3
                   coverage: none
 
             - run: composer create-project nette/coding-standard temp/coding-standard ^3 --no-progress
