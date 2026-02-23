@@ -1,10 +1,8 @@
-<?php
+<?php declare(strict_types=1);
 
 /**
  * Test: Nette\Http\RequestFactory and Authorization header
  */
-
-declare(strict_types=1);
 
 use Nette\Http\RequestFactory;
 use Tester\Assert;

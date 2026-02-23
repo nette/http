@@ -1,11 +1,9 @@
-<?php
+<?php declare(strict_types=1);
 
 /**
  * Test: Nette\Http\Response errors.
  * @phpIni output_buffering=0
  */
-
-declare(strict_types=1);
 
 use Nette\Http;
 use Tester\Assert;

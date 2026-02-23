@@ -1,10 +1,8 @@
-<?php
+<?php declare(strict_types=1);
 
 /**
  * Test: Nette\Http\Session accepts cookie from Http\IRequest
  */
-
-declare(strict_types=1);
 
 use Nette\Http;
 use Nette\Http\Session;

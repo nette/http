@@ -1,10 +1,8 @@
-<?php
+<?php declare(strict_types=1);
 
 /**
  * Test: HttpExtension.
  */
-
-declare(strict_types=1);
 
 use Nette\Bridges\HttpDI\HttpExtension;
 use Nette\DI;

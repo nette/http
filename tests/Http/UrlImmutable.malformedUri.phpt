@@ -1,10 +1,8 @@
-<?php
+<?php declare(strict_types=1);
 
 /**
  * Test: Nette\Http\UrlImmutable malformed URI.
  */
-
-declare(strict_types=1);
 
 use Nette\Http\UrlImmutable;
 use Tester\Assert;

@@ -1,10 +1,8 @@
-<?php
+<?php declare(strict_types=1);
 
 /**
  * Test: Nette\Http\UrlScript parse.
  */
-
-declare(strict_types=1);
 
 use Nette\Http\UrlScript;
 use Tester\Assert;

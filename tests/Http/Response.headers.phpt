@@ -1,10 +1,8 @@
-<?php
+<?php declare(strict_types=1);
 
 /**
  * Test: Nette\Http\Response headers
  */
-
-declare(strict_types=1);
 
 use Nette\Http;
 use Tester\Assert;

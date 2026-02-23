@@ -1,10 +1,8 @@
-<?php
+<?php declare(strict_types=1);
 
 /**
  * Test: Nette\Http\UrlImmutable http://
  */
-
-declare(strict_types=1);
 
 use Nette\Http\Url;
 use Nette\Http\UrlImmutable;

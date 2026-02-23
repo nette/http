@@ -1,10 +1,8 @@
-<?php
+<?php declare(strict_types=1);
 
 /**
  * Test: Nette\Http\Request URI.
  */
-
-declare(strict_types=1);
 
 use Nette\Http;
 use Tester\Assert;

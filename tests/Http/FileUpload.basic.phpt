@@ -1,10 +1,8 @@
-<?php
+<?php declare(strict_types=1);
 
 /**
  * Test: Nette\Http\FileUpload basic test.
  */
-
-declare(strict_types=1);
 
 use Nette\Http\FileUpload;
 use Tester\Assert;
