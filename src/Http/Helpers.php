@@ -42,9 +42,15 @@ final class Helpers
 	public static function ipMatch(string $ip, string $mask): bool
 	{
 		[$mask, $size] = explode('/', $mask . '/');
+		$ipBin = inet_pton($ip);
+		$maskBin = inet_pton($mask);
+		if ($ipBin === false || $maskBin === false) {
+			return false;
+		}
+
 		$tmp = fn(int $n): string => sprintf('%032b', $n);
-		$ip = implode('', array_map($tmp, unpack('N*', inet_pton($ip))));
-		$mask = implode('', array_map($tmp, unpack('N*', inet_pton($mask))));
+		$ip = implode('', array_map($tmp, unpack('N*', $ipBin) ?: []));
+		$mask = implode('', array_map($tmp, unpack('N*', $maskBin) ?: []));
 		$max = strlen($ip);
 		if (!$max || $max !== strlen($mask) || (int) $size < 0 || (int) $size > $max) {
 			return false;

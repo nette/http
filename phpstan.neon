@@ -1,5 +1,15 @@
 parameters:
-	level: 5
+	level: 8
 
 	paths:
 		- src
+
+	excludePaths:
+		- src/Http/UserStorage.php   # deprecated, implements interface from optional nette/security
+
+	fileExtensions:
+		- php
+		- phtml
+
+includes:
+	- phpstan-baseline.neon

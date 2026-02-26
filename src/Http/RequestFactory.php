@@ -95,7 +95,7 @@ class RequestFactory
 			$this->getMethod(),
 			$remoteAddr,
 			$remoteHost,
-			fn(): string => file_get_contents('php://input'),
+			fn(): string => (string) file_get_contents('php://input'),
 		);
 	}
 

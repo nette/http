@@ -87,7 +87,7 @@ class Session
 			$id = $this->request->getCookie(session_name());
 			$id = is_string($id) && preg_match('#^[0-9a-zA-Z,-]{22,256}$#Di', $id)
 				? $id
-				: session_create_id();
+				: (session_create_id() ?: throw new Nette\InvalidStateException('Failed to create session ID.'));
 			session_id($id); // causes resend of a cookie to make sure it has the right parameters
 		}
 
@@ -251,7 +251,7 @@ class Session
 
 			session_regenerate_id(delete_old_session: true);
 		} else {
-			session_id(session_create_id());
+			session_id(session_create_id() ?: throw new Nette\InvalidStateException('Failed to create session ID.'));
 		}
 
 		$this->regenerated = true;
@@ -330,7 +330,9 @@ class Session
 			$this->autoStart(forWrite: false);
 		}
 
-		return array_keys($_SESSION['__NF']['DATA'] ?? []);
+		/** @var array<string, mixed> $data */
+		$data = $_SESSION['__NF']['DATA'] ?? [];
+		return array_keys($data);
 	}
 
 

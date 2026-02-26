@@ -42,6 +42,7 @@ class SessionExtension extends Nette\DI\CompilerExtension
 	{
 		$builder = $this->getContainerBuilder();
 		$config = $this->config;
+		\assert($config instanceof \stdClass);
 
 		$session = $builder->addDefinition($this->prefix('session'))
 			->setFactory(Nette\Http\Session::class);

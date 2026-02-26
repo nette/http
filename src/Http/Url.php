@@ -400,6 +400,7 @@ class Url implements \JsonSerializable
 		}
 
 		trigger_error('PHP extension intl is not loaded or is too old', E_USER_WARNING);
+		return $host;
 	}
 
 
@@ -416,7 +417,7 @@ class Url implements \JsonSerializable
 				'#%(' . substr(chunk_split(bin2hex($reserved), 2, '|'), 0, -1) . ')#i',
 				fn(array $m): string => '%25' . strtoupper($m[1]),
 				$s,
-			);
+			) ?? throw new \LogicException('Regular expression failed in unescape()');
 		}
 
 		return rawurldecode($s);
@@ -430,10 +431,10 @@ class Url implements \JsonSerializable
 	public static function parseQuery(string $s): array
 	{
 		$s = str_replace(['%5B', '%5b'], '[', $s);
-		$sep = preg_quote(ini_get('arg_separator.input'));
-		$s = preg_replace("#([$sep])([^[$sep=]+)([^$sep]*)#", '&0[$2]$3', '&' . $s);
+		$sep = preg_quote(ini_get('arg_separator.input') ?: '&');
+		$s = preg_replace("#([$sep])([^[$sep=]+)([^$sep]*)#", '&0[$2]$3', '&' . $s) ?? throw new \LogicException('Regular expression failed in parseQuery()');
 		parse_str($s, $res);
-		return $res[0] ?? [];
+		return (array) ($res[0] ?? []);
 	}
 
 

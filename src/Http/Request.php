@@ -8,7 +8,7 @@
 namespace Nette\Http;
 
 use Nette;
-use function array_change_key_case, base64_decode, count, explode, func_num_args, gethostbyaddr, implode, in_array, preg_match, preg_match_all, rsort, strcasecmp, strtr;
+use function array_change_key_case, base64_decode, count, explode, gethostbyaddr, implode, in_array, preg_match, preg_match_all, rsort, strcasecmp, strtr;
 
 
 /**
@@ -90,7 +90,7 @@ class Request implements IRequest
 	 */
 	public function getQuery(?string $key = null): mixed
 	{
-		if (func_num_args() === 0) {
+		if ($key === null) {
 			return $this->url->getQueryParameters();
 		}
 
@@ -103,7 +103,7 @@ class Request implements IRequest
 	 */
 	public function getPost(?string $key = null): mixed
 	{
-		if (func_num_args() === 0) {
+		if ($key === null) {
 			return $this->post;
 		}
 
@@ -284,7 +284,7 @@ class Request implements IRequest
 	public function getRemoteHost(): ?string
 	{
 		if ($this->remoteHost === null && $this->remoteAddress !== null) {
-			$this->remoteHost = gethostbyaddr($this->remoteAddress);
+			$this->remoteHost = gethostbyaddr($this->remoteAddress) ?: null;
 		}
 
 		return $this->remoteHost;

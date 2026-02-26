@@ -48,6 +48,7 @@ class HttpExtension extends Nette\DI\CompilerExtension
 	{
 		$builder = $this->getContainerBuilder();
 		$config = $this->config;
+		\assert($config instanceof \stdClass);
 
 		$requestFactory = $builder->addDefinition($this->prefix('requestFactory'))
 			->setFactory(Nette\Http\RequestFactory::class)
@@ -96,6 +97,7 @@ class HttpExtension extends Nette\DI\CompilerExtension
 	private function sendHeaders(): void
 	{
 		$config = $this->config;
+		\assert($config instanceof \stdClass);
 		$headers = array_map(strval(...), $config->headers);
 
 		if (isset($config->frames) && $config->frames !== true && !isset($headers['X-Frame-Options'])) {

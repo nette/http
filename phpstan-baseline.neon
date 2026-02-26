@@ -1,0 +1,55 @@
+parameters:
+	ignoreErrors:
+		-
+			message: '#^Unknown parameter \$sameSite in call to method Nette\\Http\\IResponse\:\:setCookie\(\)\.$#'
+			identifier: argument.unknown
+			count: 1
+			path: src/Http/Helpers.php
+
+		-
+			message: '#^Right side of && is always true\.$#'
+			identifier: booleanAnd.rightAlwaysTrue
+			count: 1
+			path: src/Http/Request.php
+
+		-
+			message: '#^Strict comparison using \=\=\= between 2 and 2 will always evaluate to true\.$#'
+			identifier: identical.alwaysTrue
+			count: 1
+			path: src/Http/Request.php
+
+		-
+			message: '#^Offset ''name'' on non\-empty\-array in isset\(\) always exists and is not nullable\.$#'
+			identifier: isset.offset
+			count: 1
+			path: src/Http/RequestFactory.php
+
+		-
+			message: '#^Variable \$_FILES on left side of \?\? always exists and is not nullable\.$#'
+			identifier: nullCoalesce.variable
+			count: 1
+			path: src/Http/RequestFactory.php
+
+		-
+			message: '#^Method Nette\\Http\\IResponse\:\:setCookie\(\) invoked with 8 parameters, 3\-7 required\.$#'
+			identifier: arguments.count
+			count: 1
+			path: src/Http/Session.php
+
+		-
+			message: '#^Offset ''samesite'' on array\{lifetime\: int\<0, max\>, path\: non\-falsy\-string, domain\: string, secure\: bool, httponly\: bool, samesite\: ''Lax''\|''lax''\|''None''\|''none''\|''Strict''\|''strict''\} on left side of \?\? always exists and is not nullable\.$#'
+			identifier: nullCoalesce.offset
+			count: 1
+			path: src/Http/Session.php
+
+		-
+			message: '#^Method Nette\\Http\\Url\:\:export\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Http/Url.php
+
+		-
+			message: '#^Method Nette\\Http\\UrlImmutable\:\:export\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Http/UrlImmutable.php
