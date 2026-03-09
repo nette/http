@@ -9,9 +9,9 @@ namespace Nette\Http;
 
 
 /**
- * HTTP request provides access scheme for request sent via HTTP.
- * @method UrlImmutable|null getReferer() Returns referrer.
- * @method bool isSameSite() Is the request sent from the same origin?
+ * HTTP request contract providing access to URL, headers, cookies, uploaded files, and body.
+ * @method ?UrlImmutable getReferer() Returns the referrer URL.
+ * @method bool isSameSite() Checks whether the request is coming from the same site.
  */
 interface IRequest
 {
@@ -47,63 +47,61 @@ interface IRequest
 	public const OPTIONS = self::Options;
 
 	/**
-	 * Returns URL object.
+	 * Returns the request URL.
 	 */
 	function getUrl(): UrlScript;
 
 	/********************* query, post, files & cookies ****************d*g**/
 
 	/**
-	 * Returns variable provided to the script via URL query ($_GET).
-	 * If no key is passed, returns the entire array.
+	 * Returns a URL query parameter, or all parameters as an array if no key is given.
 	 * @return mixed
 	 */
 	function getQuery(?string $key = null);
 
 	/**
-	 * Returns variable provided to the script via POST method ($_POST).
-	 * If no key is passed, returns the entire array.
+	 * Returns a POST parameter, or all POST parameters as an array if no key is given.
 	 * @return mixed
 	 */
 	function getPost(?string $key = null);
 
 	/**
-	 * Returns uploaded file.
+	 * Returns the uploaded file for the given key, or null if not present.
+	 * Accepts a string key or an array of keys for nested file structures (e.g. ['form', 'avatar']).
 	 * @return FileUpload|array|null
 	 */
 	function getFile(string $key);
 
 	/**
-	 * Returns uploaded files.
+	 * Returns the tree of uploaded files, with each leaf being a FileUpload instance.
 	 */
 	function getFiles(): array;
 
 	/**
-	 * Returns variable provided to the script via HTTP cookies.
+	 * Returns a cookie value, or null if it does not exist.
 	 * @return mixed
 	 */
 	function getCookie(string $key);
 
 	/**
-	 * Returns variables provided to the script via HTTP cookies.
+	 * Returns all cookies.
 	 */
 	function getCookies(): array;
 
 	/********************* method & headers ****************d*g**/
 
 	/**
-	 * Returns HTTP request method (GET, POST, HEAD, PUT, ...). The method is case-sensitive.
+	 * Returns the HTTP request method (GET, POST, HEAD, PUT, ...).
 	 */
 	function getMethod(): string;
 
 	/**
-	 * Checks HTTP request method.
+	 * Checks the HTTP request method. The comparison is case-insensitive.
 	 */
 	function isMethod(string $method): bool;
 
 	/**
-	 * Return the value of the HTTP header. Pass the header name as the
-	 * plain, HTTP-specified header name (e.g. 'Accept-Encoding').
+	 * Returns the value of an HTTP header, or null if it does not exist. The name is case-insensitive.
 	 */
 	function getHeader(string $header): ?string;
 
@@ -113,12 +111,12 @@ interface IRequest
 	function getHeaders(): array;
 
 	/**
-	 * Is the request sent via secure channel (https)?
+	 * Checks whether the request was sent via a secure channel (HTTPS).
 	 */
 	function isSecured(): bool;
 
 	/**
-	 * Is AJAX request?
+	 * Checks whether the request was made via AJAX (X-Requested-With: XMLHttpRequest).
 	 */
 	function isAjax(): bool;
 

@@ -183,7 +183,7 @@ class Session
 
 
 	/**
-	 * Has been session started?
+	 * Checks whether the session has been started.
 	 */
 	public function isStarted(): bool
 	{
@@ -259,7 +259,7 @@ class Session
 
 
 	/**
-	 * Returns the current session ID. Don't make dependencies, can be changed for each request.
+	 * Returns the current session ID. Avoid relying on the value - it may change between requests.
 	 */
 	public function getId(): string
 	{
@@ -268,7 +268,7 @@ class Session
 
 
 	/**
-	 * Sets the session name to a specified one.
+	 * Sets the session name.
 	 */
 	public function setName(string $name): static
 	{
@@ -320,7 +320,10 @@ class Session
 	}
 
 
-	/** @return string[] */
+	/**
+	 * Returns the names of all existing session sections.
+	 * @return list<string>
+	 */
 	public function getSectionNames(): array
 	{
 		if ($this->exists() && !$this->started) {
@@ -472,8 +475,8 @@ class Session
 
 
 	/**
-	 * Sets the amount of time (like '20 minutes') allowed between requests before the session will be terminated,
-	 * null means "for a maximum of 3 hours or until the browser is closed".
+	 * Sets the session lifetime as a time string (e.g. '20 minutes'), or null to revert to the default
+	 * (up to 3 hours or until the browser is closed).
 	 */
 	public function setExpiration(?string $expire): static
 	{

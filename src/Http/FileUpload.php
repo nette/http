@@ -174,7 +174,7 @@ final class FileUpload
 
 
 	/**
-	 * Returns the error code. It has to be one of UPLOAD_ERR_XXX constants.
+	 * Returns the upload error code (one of the UPLOAD_ERR_XXX constants).
 	 * @see http://php.net/manual/en/features.file-upload.errors.php
 	 */
 	public function getError(): int
@@ -223,8 +223,8 @@ final class FileUpload
 
 
 	/**
-	 * Returns true if the uploaded file is an image and the format is supported by PHP, so it can be loaded using the toImage() method.
-	 * Detection is based on its signature, the integrity of the file is not checked. Requires PHP extensions fileinfo & gd.
+	 * Checks whether the uploaded file is an image in a format supported by PHP (detectable via fileinfo, loadable via GD).
+	 * Detection is based on file signature; full integrity is not verified.
 	 */
 	public function isImage(): bool
 	{
@@ -244,7 +244,7 @@ final class FileUpload
 
 
 	/**
-	 * Returns a pair of [width, height] with dimensions of the uploaded image.
+	 * Returns the [width, height] dimensions of the uploaded image, or null if it is not a valid image.
 	 */
 	public function getImageSize(): ?array
 	{

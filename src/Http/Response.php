@@ -14,7 +14,7 @@ use const PHP_SAPI;
 
 
 /**
- * HttpResponse class.
+ * Mutable HTTP response for setting status code, headers, cookies, and redirects.
  *
  * @property-read array $headers
  */
@@ -31,7 +31,7 @@ final class Response implements IResponse
 	/** Whether the cookie is available only through HTTPS */
 	public bool $cookieSecure = false;
 
-	/** Whether warn on possible problem with data in output buffer */
+	/** Whether to warn when there is data in the output buffer before sending headers */
 	public bool $warnOnBuffer = true;
 
 	/** HTTP response code */
@@ -76,7 +76,7 @@ final class Response implements IResponse
 
 
 	/**
-	 * Sends an HTTP header and overwrites previously sent header of the same name.
+	 * Sends an HTTP header, replacing any previously sent header with the same name.
 	 * @throws Nette\InvalidStateException  if HTTP headers have been sent
 	 */
 	public function setHeader(string $name, ?string $value): static
@@ -95,7 +95,7 @@ final class Response implements IResponse
 
 
 	/**
-	 * Sends an HTTP header and doesn't overwrite previously sent header of the same name.
+	 * Adds an HTTP header without replacing a previously sent header with the same name.
 	 * @throws Nette\InvalidStateException  if HTTP headers have been sent
 	 */
 	public function addHeader(string $name, string $value): static
@@ -130,7 +130,7 @@ final class Response implements IResponse
 
 
 	/**
-	 * Response should be downloaded with 'Save as' dialog.
+	 * Triggers a browser download dialog for the response body with the given filename.
 	 * @throws Nette\InvalidStateException  if HTTP headers have been sent
 	 */
 	public function sendAsFile(string $fileName): static
@@ -160,8 +160,8 @@ final class Response implements IResponse
 
 
 	/**
-	 * Sets the expiration of the HTTP document using the `Cache-Control` and `Expires` headers.
-	 * The parameter is either a time interval (as text) or `null`, which disables caching.
+	 * Sets the Cache-Control and Expires headers. Pass a time string (e.g. '20 minutes') to enable caching,
+	 * or null to disable it entirely.
 	 * @throws Nette\InvalidStateException  if HTTP headers have been sent
 	 */
 	public function setExpiration(?string $expire): static
@@ -181,8 +181,7 @@ final class Response implements IResponse
 
 
 	/**
-	 * Returns whether headers have already been sent from the server to the browser,
-	 * so it is no longer possible to send headers or change the response code.
+	 * Checks whether HTTP headers have already been sent, making it impossible to modify them.
 	 */
 	public function isSent(): bool
 	{

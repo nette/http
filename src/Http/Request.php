@@ -12,7 +12,7 @@ use function array_change_key_case, base64_decode, count, explode, func_num_args
 
 
 /**
- * HttpRequest provides access scheme for request sent via HTTP.
+ * Immutable representation of an HTTP request with access to URL, headers, cookies, uploaded files, and body.
  *
  * @property-read UrlScript $url
  * @property-read array $query
@@ -78,8 +78,7 @@ class Request implements IRequest
 
 
 	/**
-	 * Returns variable provided to the script via URL query ($_GET).
-	 * If no key is passed, returns the entire array.
+	 * Returns a URL query parameter, or all parameters as an array if no key is given.
 	 */
 	public function getQuery(?string $key = null): mixed
 	{
@@ -92,8 +91,7 @@ class Request implements IRequest
 
 
 	/**
-	 * Returns variable provided to the script via POST method ($_POST).
-	 * If no key is passed, returns the entire array.
+	 * Returns a POST parameter, or all POST parameters as an array if no key is given.
 	 */
 	public function getPost(?string $key = null): mixed
 	{
@@ -106,7 +104,8 @@ class Request implements IRequest
 
 
 	/**
-	 * Returns uploaded file.
+	 * Returns the uploaded file for the given key, or null if not present.
+	 * Accepts a string key or an array of keys for nested file structures (e.g. ['form', 'avatar']).
 	 * @param  string|string[]  $key
 	 */
 	public function getFile($key): ?FileUpload
@@ -117,7 +116,7 @@ class Request implements IRequest
 
 
 	/**
-	 * Returns tree of upload files in a normalized structure, with each leaf an instance of Nette\Http\FileUpload.
+	 * Returns the tree of uploaded files, with each leaf being a FileUpload instance.
 	 */
 	public function getFiles(): array
 	{
@@ -185,8 +184,8 @@ class Request implements IRequest
 
 
 	/**
-	 * What URL did the user come from? Beware, it is not reliable at all.
-	 * @deprecated  deprecated in favor of the getOrigin()
+	 * Returns the referrer URL from the Referer header. Unreliable - clients may omit or spoof it.
+	 * @deprecated  use getOrigin()
 	 */
 	public function getReferer(): ?UrlImmutable
 	{
@@ -197,7 +196,7 @@ class Request implements IRequest
 
 
 	/**
-	 * What origin did the user come from? It contains scheme, hostname and port.
+	 * Returns the request origin (scheme + host + port) from the Origin header, or null if absent or invalid.
 	 */
 	public function getOrigin(): ?UrlImmutable
 	{
@@ -213,7 +212,7 @@ class Request implements IRequest
 
 
 	/**
-	 * Is the request sent via secure channel (https)?
+	 * Checks whether the request was sent via a secure channel (HTTPS).
 	 */
 	public function isSecured(): bool
 	{
@@ -222,7 +221,7 @@ class Request implements IRequest
 
 
 	/**
-	 * Is the request coming from the same site and is initiated by clicking on a link?
+	 * Checks whether the request is coming from the same site and was initiated by clicking on a link.
 	 */
 	public function isSameSite(): bool
 	{
@@ -231,7 +230,7 @@ class Request implements IRequest
 
 
 	/**
-	 * Is it an AJAX request?
+	 * Checks whether the request was made via AJAX (X-Requested-With: XMLHttpRequest).
 	 */
 	public function isAjax(): bool
 	{
@@ -290,8 +289,9 @@ class Request implements IRequest
 
 
 	/**
-	 * Returns the most preferred language by browser. Uses the `Accept-Language` header. If no match is reached, it returns `null`.
-	 * @param  string[]  $langs  supported languages
+	 * Returns the most preferred language from the Accept-Language header that matches one of the supported languages,
+	 * or null if no match is found.
+	 * @param  array<string>  $langs  supported language codes (e.g. ['en', 'cs', 'de'])
 	 */
 	public function detectLanguage(array $langs): ?string
 	{
