@@ -21,7 +21,8 @@ class Context
 
 
 	/**
-	 * Attempts to cache the sent entity by its last modification date.
+	 * Checks whether the response has been modified since the client's cached version.
+	 * Sets Last-Modified and ETag headers if provided. Returns false and sends 304 Not Modified if unchanged.
 	 */
 	public function isModified(string|int|\DateTimeInterface|null $lastModified = null, ?string $etag = null): bool
 	{

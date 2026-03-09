@@ -16,6 +16,7 @@ use function array_key_exists, func_num_args, ini_get, is_array, is_string, time
  */
 class SessionSection implements \IteratorAggregate, \ArrayAccess
 {
+	/** Emits a warning when accessing an undefined variable in this section */
 	public bool $warnOnUndefined = false;
 
 
@@ -40,7 +41,8 @@ class SessionSection implements \IteratorAggregate, \ArrayAccess
 
 
 	/**
-	 * Sets a variable in this session section.
+	 * Sets a variable in this session section. Passing null removes it.
+	 * The optional $expire sets per-variable expiration as a time string (e.g. '30 seconds').
 	 */
 	public function set(string $name, mixed $value, ?string $expire = null): void
 	{
@@ -69,7 +71,7 @@ class SessionSection implements \IteratorAggregate, \ArrayAccess
 
 
 	/**
-	 * Removes a variable or whole section.
+	 * Removes a variable or a list of variables from this section. With no argument, removes the entire section.
 	 * @param  string|string[]|null  $name
 	 */
 	public function remove(string|array|null $name = null): void
@@ -179,8 +181,9 @@ class SessionSection implements \IteratorAggregate, \ArrayAccess
 
 
 	/**
-	 * Sets the expiration of the section or specific variables.
-	 * @param  string|string[]|null  $variables  list of variables / single variable to expire
+	 * Sets the expiration time for the whole section or for specific variables.
+	 * Pass null to clear the expiration.
+	 * @param  string|string[]|null  $variables  variable name(s) to apply the expiration to; null applies to the whole section
 	 */
 	public function setExpiration(?string $expire, string|array|null $variables = null): static
 	{
@@ -206,8 +209,8 @@ class SessionSection implements \IteratorAggregate, \ArrayAccess
 
 
 	/**
-	 * Removes the expiration from the section or specific variables.
-	 * @param  string|string[]|null  $variables  list of variables / single variable to expire
+	 * Removes the expiration from the whole section or from specific variables.
+	 * @param  string|string[]|null  $variables  variable name(s) to clear expiration for; null applies to the whole section
 	 */
 	public function removeExpiration(string|array|null $variables = null): void
 	{

@@ -9,7 +9,7 @@ namespace Nette\Http;
 
 
 /**
- * HTTP response interface.
+ * HTTP response contract for setting status code, headers, cookies, and redirects.
  * @method self deleteHeader(string $name)
  */
 interface IResponse
@@ -345,13 +345,13 @@ interface IResponse
 	function getCode(): int;
 
 	/**
-	 * Sends a HTTP header and replaces a previous one.
+	 * Sends an HTTP header, replacing any previously sent header with the same name.
 	 * @return static
 	 */
 	function setHeader(string $name, string $value);
 
 	/**
-	 * Adds HTTP header.
+	 * Adds an HTTP header without replacing a previously sent header with the same name.
 	 * @return static
 	 */
 	function addHeader(string $name, string $value);
@@ -368,23 +368,24 @@ interface IResponse
 	function redirect(string $url, int $code = self::S302_Found): void;
 
 	/**
-	 * Sets the time (like '20 minutes') before a page cached on a browser expires, null means "must-revalidate".
+	 * Sets the Cache-Control and Expires headers. Pass a time string (e.g. '20 minutes') to enable caching,
+	 * or null to disable it.
 	 * @return static
 	 */
 	function setExpiration(?string $expire);
 
 	/**
-	 * Checks if headers have been sent.
+	 * Checks whether HTTP headers have already been sent.
 	 */
 	function isSent(): bool;
 
 	/**
-	 * Returns value of an HTTP header.
+	 * Returns the value of a sent HTTP header, or null if it does not exist.
 	 */
 	function getHeader(string $header): ?string;
 
 	/**
-	 * Returns an associative array of headers to sent.
+	 * Returns all sent HTTP headers as an associative array.
 	 */
 	function getHeaders(): array;
 

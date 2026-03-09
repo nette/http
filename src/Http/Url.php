@@ -146,7 +146,8 @@ class Url implements \JsonSerializable
 
 
 	/**
-	 * Returns the part of domain.
+	 * Returns the specified number of rightmost domain labels (e.g. level 2 of 'www.nette.org' -> 'nette.org').
+	 * Negative values trim from the right instead.
 	 */
 	public function getDomain(int $level = 2): string
 	{
@@ -167,18 +168,27 @@ class Url implements \JsonSerializable
 	}
 
 
+	/**
+	 * Returns the port number, falling back to the default port for the scheme if not explicitly set.
+	 */
 	public function getPort(): ?int
 	{
 		return $this->port ?: $this->getDefaultPort();
 	}
 
 
+	/**
+	 * Returns the default port for the current scheme, or null if the scheme is not recognized.
+	 */
 	public function getDefaultPort(): ?int
 	{
 		return self::$defaultPorts[$this->scheme] ?? null;
 	}
 
 
+	/**
+	 * Sets the path. Automatically prepends a leading slash when a host is set.
+	 */
 	public function setPath(string $path): static
 	{
 		$this->path = $path;
@@ -203,6 +213,11 @@ class Url implements \JsonSerializable
 	}
 
 
+	/**
+	 * Merges query parameters into the existing query. Array values use union (existing keys are preserved);
+	 * string values are appended and reparsed.
+	 * @param string|mixed[] $query
+	 */
 	public function appendQuery(string|array $query): static
 	{
 		$this->query = is_array($query)
@@ -308,7 +323,7 @@ class Url implements \JsonSerializable
 
 
 	/**
-	 * URL comparison.
+	 * Checks whether two URLs are equal, ignoring query parameter order and trailing dots in hostnames.
 	 */
 	public function isEqual(string|self|UrlImmutable $url): bool
 	{
@@ -332,7 +347,8 @@ class Url implements \JsonSerializable
 
 
 	/**
-	 * Transforms URL to canonical form.
+	 * Normalizes the URL to canonical form: percent-encodes path, lowercases and trims the host,
+	 * and converts IDN ASCII to Unicode.
 	 */
 	public function canonicalize(): static
 	{
@@ -384,7 +400,7 @@ class Url implements \JsonSerializable
 
 
 	/**
-	 * Similar to rawurldecode, but preserves reserved chars encoded.
+	 * Decodes percent-encoded characters, but keeps reserved characters (specified in $reserved) encoded.
 	 */
 	public static function unescape(string $s, string $reserved = '%;/?:@&=+$,'): string
 	{
@@ -417,7 +433,7 @@ class Url implements \JsonSerializable
 
 
 	/**
-	 * Determines if URL is absolute, ie if it starts with a scheme followed by colon.
+	 * Checks whether the URL is absolute, i.e. starts with a scheme followed by a colon.
 	 */
 	public static function isAbsolute(string $url): bool
 	{
@@ -426,7 +442,7 @@ class Url implements \JsonSerializable
 
 
 	/**
-	 * Normalizes a path by handling and removing relative path references like '.', '..' and directory traversal.
+	 * Resolves dot segments (. and ..) in a URL path, as per RFC 3986.
 	 */
 	public static function removeDotSegments(string $path): string
 	{

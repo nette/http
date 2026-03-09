@@ -27,7 +27,7 @@ final class Helpers
 
 
 	/**
-	 * Returns HTTP valid date format.
+	 * Formats a date and time in the HTTP date format (RFC 7231), e.g. 'Mon, 23 Jan 1978 10:00:00 GMT'.
 	 */
 	public static function formatDate(string|int|\DateTimeInterface $time): string
 	{
@@ -37,7 +37,7 @@ final class Helpers
 
 
 	/**
-	 * Is IP address in CIDR block?
+	 * Checks whether an IP address falls within a CIDR block (e.g. '192.168.1.0/24').
 	 */
 	public static function ipMatch(string $ip, string $mask): bool
 	{
@@ -54,6 +54,9 @@ final class Helpers
 	}
 
 
+	/**
+	 * Sends the strict same-site cookie used to detect same-site requests.
+	 */
 	public static function initCookie(IRequest $request, IResponse $response): void
 	{
 		$response->setCookie(self::StrictCookieName, '1', 0, '/', sameSite: IResponse::SameSiteStrict);

@@ -97,7 +97,7 @@ class UrlScript extends UrlImmutable
 
 
 	/**
-	 * Returns the additional path information.
+	 * Returns the path segment after the script name (PATH_INFO), or an empty string if not present.
 	 */
 	public function getPathInfo(): string
 	{

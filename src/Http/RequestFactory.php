@@ -22,7 +22,11 @@ class RequestFactory
 	/** @internal */
 	private const ValidChars = '\x09\x0A\x0D\x20-\x7E\xA0-\x{10FFFF}';
 
-	/** @var array<string, string[]> */
+	/**
+	 * Regex-based filters applied to the URL before parsing. 'path' filters run on the path component only;
+	 * 'url' filters run on the full request URI.
+	 * @var array<string, array<string, string>>
+	 */
 	public array $urlFilters = [
 		'path' => ['#//#' => '/'], // '%20' => ''
 		'url' => [], // '#[.,)]$#D' => ''
@@ -34,6 +38,9 @@ class RequestFactory
 	private array $proxies = [];
 
 
+	/**
+	 * Disables sanitization of request data (GET, POST, cookies, file names) for binary-safe handling.
+	 */
 	public function setBinary(bool $binary = true): static
 	{
 		$this->binary = $binary;
@@ -42,7 +49,8 @@ class RequestFactory
 
 
 	/**
-	 * @param  string|string[]  $proxy
+	 * Sets the trusted proxy IP addresses or CIDR blocks used to resolve the real client IP and URL scheme.
+	 * @param string|list<string>  $proxy
 	 */
 	public function setProxy($proxy): static
 	{
