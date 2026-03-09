@@ -68,12 +68,13 @@ interface IRequest
 	/**
 	 * Returns the uploaded file for the given key, or null if not present.
 	 * Accepts a string key or an array of keys for nested file structures (e.g. ['form', 'avatar']).
-	 * @return FileUpload|array|null
+	 * @return ?FileUpload
 	 */
 	function getFile(string $key);
 
 	/**
 	 * Returns the tree of uploaded files, with each leaf being a FileUpload instance.
+	 * @return mixed[]
 	 */
 	function getFiles(): array;
 
@@ -85,6 +86,7 @@ interface IRequest
 
 	/**
 	 * Returns all cookies.
+	 * @return array<string, string>
 	 */
 	function getCookies(): array;
 
@@ -107,6 +109,7 @@ interface IRequest
 
 	/**
 	 * Returns all HTTP headers.
+	 * @return array<string, string>
 	 */
 	function getHeaders(): array;
 

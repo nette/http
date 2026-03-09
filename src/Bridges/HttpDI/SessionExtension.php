@@ -14,6 +14,16 @@ use Nette\Schema\Expect;
 
 /**
  * Session extension for Nette DI.
+ *
+ * @property object{
+ *     debugger: bool,
+ *     autoStart: 'smart'|'always'|'never'|bool,
+ *     expiration: ?string,
+ *     handler: ?string,
+ *     readAndClose: ?bool,
+ *     cookieSamesite: 'Lax'|'Strict'|'None',
+ *     cookieDomain?: string,
+ * } $config
  */
 class SessionExtension extends Nette\DI\CompilerExtension
 {

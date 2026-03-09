@@ -18,12 +18,12 @@ use function array_intersect_key, array_map, basename, chmod, dirname, file_get_
  * @property-read string $name
  * @property-read string $sanitizedName
  * @property-read string $untrustedFullPath
- * @property-read string|null $contentType
+ * @property-read ?string $contentType
  * @property-read int $size
  * @property-read string $temporaryFile
  * @property-read int $error
  * @property-read bool $ok
- * @property-read string|null $contents
+ * @property-read ?string $contents
  */
 final class FileUpload
 {
@@ -41,6 +41,7 @@ final class FileUpload
 	private readonly int $error;
 
 
+	/** @param array{name?: string, full_path?: string, size?: int, tmp_name?: string, error?: int, type?: string}|string|null  $value */
 	public function __construct(array|string|null $value)
 	{
 		if (is_string($value)) {
@@ -245,6 +246,7 @@ final class FileUpload
 
 	/**
 	 * Returns the [width, height] dimensions of the uploaded image, or null if it is not a valid image.
+	 * @return ?array{int, int}
 	 */
 	public function getImageSize(): ?array
 	{

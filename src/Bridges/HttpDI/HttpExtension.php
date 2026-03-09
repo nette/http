@@ -14,6 +14,19 @@ use function is_array, strval;
 
 /**
  * HTTP extension for Nette DI.
+ *
+ * @property object{
+ *     proxy: array<string>,
+ *     headers: array<string, ?scalar>,
+ *     frames: string|bool|null,
+ *     csp: array<string, array<mixed>|scalar|null>,
+ *     cspReportOnly: array<string, array<mixed>|scalar|null>,
+ *     featurePolicy: array<string, array<mixed>|scalar|null>,
+ *     cookiePath: ?string,
+ *     cookieDomain: ?string,
+ *     cookieSecure: bool|'auto'|null,
+ *     disableNetteCookie: bool,
+ * } $config
  */
 class HttpExtension extends Nette\DI\CompilerExtension
 {
@@ -141,6 +154,7 @@ class HttpExtension extends Nette\DI\CompilerExtension
 	}
 
 
+	/** @param array<string, array<mixed>|scalar|null>  $config */
 	private static function buildPolicy(array $config): string
 	{
 		$nonQuoted = ['require-sri-for' => 1, 'sandbox' => 1];
