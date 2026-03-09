@@ -16,7 +16,7 @@ use const PHP_SAPI;
 /**
  * Mutable HTTP response for setting status code, headers, cookies, and redirects.
  *
- * @property-read array $headers
+ * @property-read array<string,string> $headers
  */
 final class Response implements IResponse
 {
@@ -208,6 +208,7 @@ final class Response implements IResponse
 
 	/**
 	 * Returns all sent HTTP headers as associative array.
+	 * @return array<string, string>
 	 */
 	public function getHeaders(): array
 	{
@@ -223,6 +224,7 @@ final class Response implements IResponse
 
 	/**
 	 * Sends a cookie.
+	 * @param self::SameSite*|null  $sameSite
 	 * @throws Nette\InvalidStateException  if HTTP headers have been sent
 	 */
 	public function setCookie(

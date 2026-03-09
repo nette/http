@@ -29,16 +29,16 @@ class Session
 		'cookie_httponly' => true, // must be enabled to prevent Session Hijacking
 	];
 
-	/** @var array<callable(self): void>  Occurs when the session is started */
+	/** @var list<callable(Session): void>  Occurs when the session is started */
 	public array $onStart = [];
 
-	/** @var array<callable(self): void>  Occurs before the session is written to disk */
+	/** @var list<callable(Session): void>  Occurs before the session is written to disk */
 	public array $onBeforeWrite = [];
 
 	private bool $regenerated = false;
 	private bool $started = false;
 
-	/** default configuration */
+	/** @var array<string, mixed> default configuration */
 	private array $options = [
 		'cookie_samesite' => IResponse::SameSiteLax,
 		'cookie_lifetime' => 0,   // for a maximum of 3 hours or until the browser is closed
@@ -298,7 +298,7 @@ class Session
 	/**
 	 * Returns specified session section.
 	 * @template T of SessionSection
-	 * @param class-string<T> $class
+	 * @param class-string<T>  $class
 	 * @return T
 	 */
 	public function getSection(string $section, string $class = SessionSection::class): SessionSection
@@ -371,6 +371,7 @@ class Session
 
 	/**
 	 * Sets session options.
+	 * @param array<string, mixed>  $options
 	 * @throws Nette\NotSupportedException
 	 * @throws Nette\InvalidStateException
 	 */
@@ -421,6 +422,7 @@ class Session
 
 	/**
 	 * Returns all session options.
+	 * @return array<string, mixed>
 	 */
 	public function getOptions(): array
 	{
@@ -430,6 +432,7 @@ class Session
 
 	/**
 	 * Configures session environment.
+	 * @param array<string, mixed>  $config
 	 */
 	private function configure(array $config): void
 	{

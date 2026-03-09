@@ -39,7 +39,7 @@ use const PHP_QUERY_RFC3986;
  * @property-read string $basePath
  * @property-read string $baseUrl
  * @property-read string $relativeUrl
- * @property-read array $queryParameters
+ * @property-read array<string,mixed> $queryParameters
  */
 class Url implements \JsonSerializable
 {
@@ -58,6 +58,8 @@ class Url implements \JsonSerializable
 	private string $host = '';
 	private ?int $port = null;
 	private string $path = '';
+
+	/** @var mixed[] */
 	private array $query = [];
 	private string $fragment = '';
 
@@ -206,6 +208,7 @@ class Url implements \JsonSerializable
 	}
 
 
+	/** @param string|mixed[] $query */
 	public function setQuery(string|array $query): static
 	{
 		$this->query = is_array($query) ? $query : self::parseQuery($query);
@@ -233,6 +236,7 @@ class Url implements \JsonSerializable
 	}
 
 
+	/** @return mixed[] */
 	public function getQueryParameters(): array
 	{
 		return $this->query;
@@ -421,6 +425,7 @@ class Url implements \JsonSerializable
 
 	/**
 	 * Parses query string. Is affected by directive arg_separator.input.
+	 * @return mixed[]
 	 */
 	public static function parseQuery(string $s): array
 	{

@@ -141,6 +141,7 @@ class HttpExtension extends Nette\DI\CompilerExtension
 	}
 
 
+	/** @param array<string, list<mixed>|scalar|null>  $config */
 	private static function buildPolicy(array $config): string
 	{
 		$nonQuoted = ['require-sri-for' => 1, 'sandbox' => 1];

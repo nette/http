@@ -15,33 +15,41 @@ use function array_change_key_case, base64_decode, count, explode, func_num_args
  * Immutable representation of an HTTP request with access to URL, headers, cookies, uploaded files, and body.
  *
  * @property-read UrlScript $url
- * @property-read array $query
- * @property-read array $post
- * @property-read array $files
- * @property-read array $cookies
+ * @property-read array<string,mixed> $query
+ * @property-read array<string,mixed> $post
+ * @property-read array<string,mixed> $files
+ * @property-read array<string,string> $cookies
  * @property-read string $method
- * @property-read array $headers
- * @property-read UrlImmutable|null $referer
+ * @property-read array<string,string> $headers
+ * @property-read ?UrlImmutable $referer
  * @property-read bool $secured
  * @property-read bool $ajax
- * @property-read string|null $remoteAddress
- * @property-read string|null $remoteHost
- * @property-read string|null $rawBody
+ * @property-read ?string $remoteAddress
+ * @property-read ?string $remoteHost
+ * @property-read ?string $rawBody
  */
 class Request implements IRequest
 {
 	use Nette\SmartObject;
 
-	/** @var string[] */
+	/** @var array<string, string> */
 	private readonly array $headers;
 
+	/** @var (\Closure(): string)|null */
 	private readonly ?\Closure $rawBodyCallback;
 
 
+	/**
+	 * @param array<string, string> $headers
+	 * @param ?(callable(): string) $rawBodyCallback
+	 */
 	public function __construct(
 		private UrlScript $url,
+		/** @var mixed[] */
 		private readonly array $post = [],
+		/** @var mixed[] */
 		private readonly array $files = [],
+		/** @var array<string, string> */
 		private readonly array $cookies = [],
 		array $headers = [],
 		private readonly string $method = 'GET',
@@ -117,6 +125,7 @@ class Request implements IRequest
 
 	/**
 	 * Returns the tree of uploaded files, with each leaf being a FileUpload instance.
+	 * @return mixed[]
 	 */
 	public function getFiles(): array
 	{
@@ -135,6 +144,7 @@ class Request implements IRequest
 
 	/**
 	 * Returns all cookies.
+	 * @return array<string, string>
 	 */
 	public function getCookies(): array
 	{
@@ -175,7 +185,7 @@ class Request implements IRequest
 
 	/**
 	 * Returns all HTTP headers as associative array.
-	 * @return string[]
+	 * @return array<string, string>
 	 */
 	public function getHeaders(): array
 	{
