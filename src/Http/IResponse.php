@@ -402,6 +402,7 @@ interface IResponse
 		?string $domain = null,
 		?bool $secure = null,
 		?bool $httpOnly = null,
+		?string $sameSite = null,
 	);
 
 	/**
