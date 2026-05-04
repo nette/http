@@ -10,7 +10,7 @@ namespace Nette\Http;
 use Nette;
 use Nette\Utils\Arrays;
 use Nette\Utils\Strings;
-use function array_filter, base64_encode, count, end, explode, file_get_contents, filter_input_array, filter_var, function_exists, get_debug_type, in_array, ini_get, is_array, is_string, key, min, preg_last_error, preg_match, preg_replace, preg_split, rtrim, sprintf, str_contains, strcasecmp, strlen, strncmp, strpos, strrpos, strtolower, strtr, substr, trim;
+use function array_filter, base64_encode, count, end, explode, file_get_contents, filter_input_array, function_exists, get_debug_type, in_array, ini_get, is_array, is_string, key, min, preg_last_error, preg_match, preg_replace, preg_split, rtrim, sprintf, str_contains, strcasecmp, strlen, strncmp, strpos, strrpos, strtolower, strtr, substr, trim;
 use const PHP_SAPI;
 
 
@@ -301,7 +301,8 @@ class RequestFactory
 		$remoteAddr = !empty($_SERVER['REMOTE_ADDR']) ? $_SERVER['REMOTE_ADDR'] : null;
 
 		// use real client address and host if trusted proxy is used
-		$usingTrustedProxy = $remoteAddr && Arrays::some($this->proxies, fn(string $proxy): bool => Helpers::ipMatch($remoteAddr, $proxy));
+		$client = $remoteAddr ? IPAddress::tryFrom($remoteAddr) : null;
+		$usingTrustedProxy = $client && Arrays::some($this->proxies, fn(string $proxy): bool => $client->isInRange($proxy));
 		if ($usingTrustedProxy) {
 			$remoteHost = null;
 			$remoteAddr = empty($_SERVER['HTTP_FORWARDED'])
@@ -363,8 +364,8 @@ class RequestFactory
 		if (!empty($_SERVER['HTTP_X_FORWARDED_FOR'])) {
 			$xForwardedForWithoutProxies = array_filter(
 				explode(',', $_SERVER['HTTP_X_FORWARDED_FOR']),
-				fn(string $ip): bool => filter_var($ip = trim($ip), FILTER_VALIDATE_IP) === false
-					|| !Arrays::some($this->proxies, fn(string $proxy): bool => Helpers::ipMatch($ip, $proxy)),
+				fn(string $ip): bool => ($address = IPAddress::tryFrom(trim($ip))) === null
+					|| !Arrays::some($this->proxies, fn(string $proxy): bool => $address->isInRange($proxy)),
 			);
 			if ($xForwardedForWithoutProxies) {
 				$remoteAddr = trim(end($xForwardedForWithoutProxies));

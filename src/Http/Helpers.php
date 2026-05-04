@@ -9,7 +9,6 @@ namespace Nette\Http;
 
 use Nette;
 use Nette\Utils\DateTime;
-use function array_map, explode, implode, inet_pton, sprintf, strlen, strncmp, unpack;
 
 
 /**
@@ -38,23 +37,11 @@ final class Helpers
 
 	/**
 	 * Checks whether an IP address falls within a CIDR block (e.g. '192.168.1.0/24').
+	 * @deprecated use IPAddress class
 	 */
 	public static function ipMatch(string $ip, string $mask): bool
 	{
-		[$mask, $size] = explode('/', $mask . '/');
-		if (!($ipBin = inet_pton($ip)) || !($maskBin = inet_pton($mask))) {
-			return false;
-		}
-
-		$tmp = fn(int $n): string => sprintf('%032b', $n);
-		$ip = implode('', array_map($tmp, unpack('N*', $ipBin) ?: []));
-		$mask = implode('', array_map($tmp, unpack('N*', $maskBin) ?: []));
-		$max = strlen($ip);
-		if (!$max || $max !== strlen($mask) || (int) $size < 0 || (int) $size > $max) {
-			return false;
-		}
-
-		return strncmp($ip, $mask, $size === '' ? $max : (int) $size) === 0;
+		return IPAddress::tryFrom($ip)?->isInRange($mask) ?? false;
 	}
 
 
