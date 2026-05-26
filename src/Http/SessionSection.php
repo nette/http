@@ -114,7 +114,8 @@ class SessionSection implements \IteratorAggregate, \ArrayAccess
 	{
 		$this->session->autoStart(forWrite: true);
 		$data = &$this->getData();
-		if ($this->warnOnUndefined && !array_key_exists($name, $data ?? [])) {
+		$data ??= [];
+		if ($this->warnOnUndefined && !array_key_exists($name, $data)) {
 			trigger_error("The variable '$name' does not exist in session section");
 		}
 
@@ -149,6 +150,7 @@ class SessionSection implements \IteratorAggregate, \ArrayAccess
 	 */
 	public function offsetSet($name, $value): void
 	{
+		assert(is_string($name));
 		$this->__set($name, $value);
 	}
 

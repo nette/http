@@ -48,7 +48,7 @@ final class FileUpload
 			$value = [
 				'name' => basename($value),
 				'full_path' => $value,
-				'size' => filesize($value),
+				'size' => filesize($value) ?: 0,
 				'tmp_name' => $value,
 				'error' => UPLOAD_ERR_OK,
 			];
@@ -119,7 +119,7 @@ final class FileUpload
 	public function getContentType(): ?string
 	{
 		if ($this->isOk()) {
-			$this->type ??= finfo_file(finfo_open(FILEINFO_MIME_TYPE), $this->tmpName);
+			$this->type ??= ($finfo = finfo_open(FILEINFO_MIME_TYPE)) ? finfo_file($finfo, $this->tmpName) : false;
 		}
 
 		return $this->type ?: null;
@@ -132,13 +132,14 @@ final class FileUpload
 	public function getSuggestedExtension(): ?string
 	{
 		if ($this->isOk() && $this->extension === null) {
-			$exts = finfo_file(finfo_open(FILEINFO_EXTENSION), $this->tmpName);
+			$finfo = finfo_open(FILEINFO_EXTENSION);
+			$exts = $finfo ? finfo_file($finfo, $this->tmpName) : false;
 			if ($exts && $exts !== '???') {
 				return $this->extension = preg_replace('~[/,].*~', '', $exts);
 			}
-			[, , $type] = Nette\Utils\Helpers::falseToNull(@getimagesize($this->tmpName)); // @ - files smaller than 12 bytes causes read error
-			if ($type) {
-				return $this->extension = image_type_to_extension($type, include_dot: false);
+			$info = Nette\Utils\Helpers::falseToNull(@getimagesize($this->tmpName)); // @ - files smaller than 12 bytes causes read error
+			if ($info) {
+				return $this->extension = image_type_to_extension($info[2], include_dot: false) ?: null;
 			}
 			$this->extension = false;
 		}
@@ -250,8 +251,8 @@ final class FileUpload
 	 */
 	public function getImageSize(): ?array
 	{
-		return $this->isImage()
-			? array_intersect_key(getimagesize($this->tmpName), [0, 1])
+		return $this->isImage() && ($info = getimagesize($this->tmpName))
+			? array_intersect_key($info, [0, 1])
 			: null;
 	}
 
@@ -271,8 +272,13 @@ final class FileUpload
 	 */
 	public function getContents(): ?string
 	{
-		return $this->isOk()
-			? file_get_contents($this->tmpName)
-			: null;
+		if (!$this->isOk()) {
+			return null;
+		}
+
+		$res = file_get_contents($this->tmpName);
+		return $res === false
+			? throw new Nette\IOException("Unable to read file '$this->tmpName'.")
+			: $res;
 	}
 }

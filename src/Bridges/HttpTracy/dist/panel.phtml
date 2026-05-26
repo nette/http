@@ -1,5 +1,6 @@
 <?php declare(strict_types=1);
 
+/** @var mixed[] $_SESSION */
 echo '<style class="tracy-debug">
 	#tracy-debug .nette-SessionPanel-parameters pre {
 		background: #FDF5CE;
@@ -10,35 +11,35 @@ echo '<style class="tracy-debug">
 </style>
 
 <h1>Session #';
-echo Tracy\Helpers::escapeHtml(substr(session_id(), 0, 10)) /* pos 10:14 */;
+echo Tracy\Helpers::escapeHtml(substr(session_id(), 0, 10)) /* pos 11:14 */;
 echo '… (Lifetime: ';
-echo Tracy\Helpers::escapeHtml(ini_get('session.cookie_lifetime')) /* pos 10:58 */;
+echo Tracy\Helpers::escapeHtml(ini_get('session.cookie_lifetime')) /* pos 11:58 */;
 echo ')</h1>
 
 <div class="tracy-inner nette-SessionPanel">
 ';
-if (empty($_SESSION)) /* pos 13:2 */ {
+if (empty($_SESSION)) /* pos 14:2 */ {
 	echo '	<p><i>empty</i></p>
 ';
-} else /* pos 15:2 */ {
+} else /* pos 16:2 */ {
 	echo '	<table class="tracy-sortable">
 ';
-	foreach ($_SESSION as $k => $v) /* pos 17:4 */ {
-		if ($k === '__NF') /* pos 18:5 */ {
+	foreach ($_SESSION as $k => $v) /* pos 18:4 */ {
+		if ($k === '__NF') /* pos 19:5 */ {
 			echo '		<tr>
 			<th>Nette Session</th>
 			<td>';
-			echo Tracy\Dumper::toHtml($v['DATA'] ?? null, [Tracy\Dumper::LIVE => true]) /* pos 21:11 */;
+			echo Tracy\Dumper::toHtml($v['DATA'] ?? null, [Tracy\Dumper::LIVE => true]) /* pos 22:11 */;
 			echo '</td>
 		</tr>
 ';
-		} elseif ($k !== '_tracy') /* pos 23:5 */ {
+		} elseif ($k !== '_tracy') /* pos 24:5 */ {
 			echo '		<tr>
 			<th>';
-			echo Tracy\Helpers::escapeHtml($k) /* pos 25:11 */;
+			echo Tracy\Helpers::escapeHtml($k) /* pos 26:11 */;
 			echo '</th>
 			<td>';
-			echo Tracy\Dumper::toHtml($v, [Tracy\Dumper::LIVE => true]) /* pos 26:11 */;
+			echo Tracy\Dumper::toHtml($v, [Tracy\Dumper::LIVE => true]) /* pos 27:11 */;
 			echo '</td>
 		</tr>
 ';

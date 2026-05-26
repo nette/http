@@ -9,7 +9,7 @@ namespace Nette\Http;
 
 use Nette;
 use Nette\Utils\DateTime;
-use function array_filter, header, header_remove, headers_list, headers_sent, htmlspecialchars, http_response_code, ini_get, is_int, ltrim, ob_get_length, ob_get_status, preg_match, rawurlencode, setcookie, str_replace, strcasecmp, strlen, strncasecmp, strpos, substr, time;
+use function array_filter, header, header_remove, headers_list, headers_sent, htmlspecialchars, http_response_code, ini_get, is_int, ltrim, ob_get_length, ob_get_status, preg_match, rawurlencode, setcookie, str_replace, strcasecmp, strlen, strncasecmp, substr, time;
 use const PHP_SAPI;
 
 
@@ -214,8 +214,10 @@ final class Response implements IResponse
 	{
 		$headers = [];
 		foreach (headers_list() as $header) {
-			$a = strpos($header, ':');
-			$headers[substr($header, 0, $a)] = substr($header, $a + 2);
+			$parts = explode(':', $header, 2);
+			if (isset($parts[1])) {
+				$headers[$parts[0]] = ltrim($parts[1]);
+			}
 		}
 
 		return $headers;
