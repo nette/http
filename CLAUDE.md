@@ -6,7 +6,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 **Nette HTTP Component** - A standalone PHP library providing HTTP abstraction for request/response handling, URL manipulation, session management, and file uploads. Part of the Nette Framework ecosystem but usable independently.
 
-- **PHP Version**: 8.1 - 8.5
+- **PHP Version**: 8.3 - 8.5
 - **Package**: `nette/http`
 
 ## Essential Commands
@@ -137,7 +137,7 @@ Input sanitization is mandatory, not optional:
   - `getUntrustedName()` - Original browser-provided name (⚠️ never trust!)
   - `getSanitizedName()` - Safe ASCII-only name `[a-zA-Z0-9.-]` with correct extension
   - `getSuggestedExtension()` - Extension based on MIME type (v3.2.4+)
-  - `getUntrustedFullPath()` - Full path for directory uploads (PHP 8.1+, ⚠️ never trust!)
+  - `getUntrustedFullPath()` - Full path for directory uploads (PHP 8.3+, ⚠️ never trust!)
 
 ### Nette DI Integration
 
@@ -173,7 +173,7 @@ declare(strict_types=1);
 
 ### Modern PHP Features
 
-Heavily uses PHP 8.1+ features:
+Heavily uses PHP 8.3+ features:
 
 ```php
 // Constructor property promotion with readonly
@@ -296,7 +296,7 @@ $session->onBeforeWrite[] = function () use ($section) {
 GitHub Actions runs:
 
 1. **Tests** (`.github/workflows/tests.yml`):
-   - Matrix: Ubuntu/Windows/macOS × PHP 8.1-8.5 × php/php-cgi
+   - Matrix: Ubuntu/Windows/macOS × PHP 8.3-8.5 × php/php-cgi
    - Lowest dependencies test
    - Code coverage with Coveralls
 
