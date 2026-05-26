@@ -15,10 +15,10 @@
 	{else}
 		<table class="tracy-sortable">
 			{foreach $_SESSION as $k => $v}
-				{if $k === __NF}
+				{if $k === '__NF'}
 					<tr>
 						<th>Nette Session</th>
-						<td>{Tracy\Dumper::toHtml($v[DATA] ?? null, [Tracy\Dumper::LIVE => true])}</td>
+						<td>{Tracy\Dumper::toHtml($v['DATA'] ?? null, [Tracy\Dumper::LIVE => true])}</td>
 					</tr>
 				{elseif $k !== '_tracy'}
 					<tr>
