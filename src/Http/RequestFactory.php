@@ -53,7 +53,7 @@ class RequestFactory
 	 * Sets the trusted proxy IP addresses or CIDR blocks used to resolve the real client IP and URL scheme.
 	 * @param string|list<string>  $proxy
 	 */
-	public function setProxy($proxy): static
+	public function setProxy(string|array $proxy): static
 	{
 		$this->proxies = (array) $proxy;
 		return $this;
@@ -255,7 +255,7 @@ class RequestFactory
 	private function getHeaders(): array
 	{
 		if (function_exists('apache_request_headers')) {
-			$headers = apache_request_headers();
+			$headers = apache_request_headers() ?: [];
 		} else {
 			$headers = [];
 			foreach ($_SERVER as $k => $v) {

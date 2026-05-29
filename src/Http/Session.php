@@ -17,7 +17,7 @@ use const PHP_SESSION_ACTIVE;
  */
 class Session
 {
-	/** Default file lifetime */
+	/** Default server-side idle timeout */
 	private const DefaultFileLifetime = 3 * Nette\Utils\DateTime::HOUR;
 
 	private const SecurityOptions = [
@@ -41,8 +41,8 @@ class Session
 	/** @var array<string, mixed> default configuration */
 	private array $options = [
 		'cookie_samesite' => IResponse::SameSiteLax,
-		'cookie_lifetime' => 0,   // for a maximum of 3 hours or until the browser is closed
-		'gc_maxlifetime' => self::DefaultFileLifetime, // 3 hours
+		'cookie_lifetime' => 0,   // session cookie - kept by the browser per its own policy
+		'gc_maxlifetime' => self::DefaultFileLifetime, // server-side idle timeout, independent of the cookie lifetime above
 	];
 	private ?\SessionHandlerInterface $handler = null;
 	private bool $readAndClose = false;
@@ -481,7 +481,7 @@ class Session
 
 	/**
 	 * Sets the session lifetime as a time string (e.g. '20 minutes'), or null to revert to the default
-	 * (up to 3 hours or until the browser is closed).
+	 * (a 3-hour server-side idle timeout; the session cookie itself is kept by the browser per its own policy).
 	 */
 	public function setExpiration(?string $expire): static
 	{

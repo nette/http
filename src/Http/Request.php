@@ -8,7 +8,7 @@
 namespace Nette\Http;
 
 use Nette;
-use function array_change_key_case, base64_decode, count, explode, gethostbyaddr, implode, in_array, preg_match, preg_match_all, rsort, strcasecmp, strtr;
+use function array_change_key_case, base64_decode, count, explode, func_num_args, gethostbyaddr, implode, preg_match, preg_match_all, rsort, strcasecmp, strtr;
 
 
 /**
@@ -138,7 +138,7 @@ class Request implements IRequest
 	/**
 	 * Returns a cookie or `null` if it does not exist.
 	 */
-	public function getCookie(string $key): mixed
+	public function getCookie(string $key): ?string
 	{
 		return $this->cookies[$key] ?? null;
 	}
