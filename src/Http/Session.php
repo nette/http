@@ -485,19 +485,20 @@ class Session
 	 */
 	public function setExpiration(?string $expire): static
 	{
-		if ($expire === null) {
+		$seconds = Helpers::expirationToSeconds($expire);
+		if ($seconds === null) {
 			return $this->setOptions([
 				'gc_maxlifetime' => self::DefaultFileLifetime,
 				'cookie_lifetime' => 0,
 			]);
-
-		} else {
-			$expire = Nette\Utils\DateTime::from($expire)->format('U') - time();
-			return $this->setOptions([
-				'gc_maxlifetime' => $expire,
-				'cookie_lifetime' => $expire,
-			]);
+		} elseif ($seconds <= 0) {
+			throw new Nette\InvalidArgumentException("Session expiration must be in the future, '$expire' given.");
 		}
+
+		return $this->setOptions([
+			'gc_maxlifetime' => $seconds,
+			'cookie_lifetime' => $seconds,
+		]);
 	}
 
 
@@ -554,7 +555,7 @@ class Session
 		$this->response->setCookie(
 			session_name(),
 			session_id(),
-			$cookie['lifetime'] ? $cookie['lifetime'] + time() : 0,
+			$cookie['lifetime'] ?: null, // a relative number of seconds; setCookie() treats it as such
 			$cookie['path'],
 			$cookie['domain'],
 			$cookie['secure'],

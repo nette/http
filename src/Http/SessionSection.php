@@ -7,7 +7,6 @@
 
 namespace Nette\Http;
 
-use Nette;
 use function array_key_exists, func_num_args, ini_get, is_array, is_string, time;
 
 
@@ -192,21 +191,22 @@ class SessionSection implements \IteratorAggregate, \ArrayAccess
 	 */
 	public function setExpiration(?string $expire, string|array|null $variables = null): static
 	{
-		$this->session->autoStart((bool) $expire);
+		$seconds = Helpers::expirationToSeconds($expire);
+		$this->session->autoStart($seconds !== null);
 		$meta = &$this->getMeta();
-		if ($expire) {
-			$expire = Nette\Utils\DateTime::from($expire)->format('U');
+		if ($seconds !== null) {
 			$max = (int) ini_get('session.gc_maxlifetime');
 			if (
 				$max !== 0 // 0 - unlimited in memcache handler
-				&& ($expire - time() > $max + 3) // 3 - bulgarian constant
+				&& ($seconds > $max + 3) // 3 - bulgarian constant
 			) {
 				trigger_error("The expiration time is greater than the session expiration $max seconds");
 			}
 		}
 
+		$time = $seconds === null ? null : time() + $seconds;
 		foreach (is_array($variables) ? $variables : [$variables] as $variable) {
-			$meta[$variable ?? '']['T'] = $expire ?: null;
+			$meta[$variable ?? '']['T'] = $time;
 		}
 
 		return $this;

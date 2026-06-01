@@ -8,7 +8,6 @@
 namespace Nette\Http;
 
 use Nette;
-use Nette\Utils\DateTime;
 use function array_filter, header, header_remove, headers_list, headers_sent, htmlspecialchars, http_response_code, ini_get, is_int, ltrim, ob_get_length, ob_get_status, preg_match, rawurlencode, setcookie, str_replace, strcasecmp, strlen, strncasecmp, substr, time;
 use const PHP_SAPI;
 
@@ -166,16 +165,16 @@ final class Response implements IResponse
 	 */
 	public function setExpiration(?string $expire): static
 	{
+		$seconds = Helpers::expirationToSeconds($expire);
 		$this->setHeader('Pragma', null);
-		if (!$expire) { // no cache
+		if ($seconds === null || $seconds <= 0) { // no cache
 			$this->setHeader('Cache-Control', 's-maxage=0, max-age=0, must-revalidate');
 			$this->setHeader('Expires', 'Mon, 23 Jan 1978 10:00:00 GMT');
 			return $this;
 		}
 
-		$expire = DateTime::from($expire);
-		$this->setHeader('Cache-Control', 'max-age=' . ($expire->format('U') - time()));
-		$this->setHeader('Expires', Helpers::formatDate($expire));
+		$this->setHeader('Cache-Control', 'max-age=' . $seconds);
+		$this->setHeader('Expires', Helpers::formatDate(time() + $seconds));
 		return $this;
 	}
 
@@ -241,8 +240,13 @@ final class Response implements IResponse
 	): static
 	{
 		self::checkHeaders();
+		if ($expire === 0) { // BC: 0 used to mean a session cookie; silently accepted as null for now
+			$expire = null;
+		}
+
+		$seconds = Helpers::expirationToSeconds($expire);
 		setcookie($name, $value, [
-			'expires' => $expire ? (int) DateTime::from($expire)->format('U') : 0,
+			'expires' => $seconds === null ? 0 : time() + $seconds,
 			'path' => $path ?? ($domain ? '/' : $this->cookiePath),
 			'domain' => $domain ?? ($path ? '' : $this->cookieDomain),
 			'secure' => $secure ?? $this->cookieSecure,
@@ -264,7 +268,7 @@ final class Response implements IResponse
 		?bool $secure = null,
 	): void
 	{
-		$this->setCookie($name, '', 0, $path, $domain, $secure);
+		$this->setCookie($name, '', null, $path, $domain, $secure);
 	}
 
 

@@ -9,7 +9,7 @@ namespace Nette\Http;
 
 use Nette;
 use Nette\Utils\DateTime;
-use function array_shift, arsort, explode, preg_match, strtolower, trim;
+use function array_shift, arsort, explode, is_int, preg_match, strtolower, trim;
 
 
 /**
@@ -33,6 +33,40 @@ final class Helpers
 	{
 		$time = DateTime::from($time)->setTimezone(new \DateTimeZone('GMT'));
 		return $time->format('D, d M Y H:i:s \G\M\T');
+	}
+
+
+	/**
+	 * Converts an expiration value to the number of seconds from now (may be negative for the past).
+	 * Integers (or numeric strings) are relative seconds; other strings ('20 minutes', '2024-01-01')
+	 * and DateTimeInterface are absolute times. Null returns null.
+	 * @throws Nette\InvalidArgumentException  for an empty string
+	 * @throws \DateMalformedStringException  for an unparsable textual time
+	 */
+	public static function expirationToSeconds(string|int|\DateTimeInterface|null $expire): ?int
+	{
+		return match (true) {
+			$expire === null => null,
+			is_int($expire) => self::normalizeToRelative($expire),
+			$expire instanceof \DateTimeInterface => $expire->getTimestamp() - time(),
+			$expire === '' => throw new Nette\InvalidArgumentException('Expiration must not be an empty string; use null instead.'),
+			($seconds = filter_var($expire, FILTER_VALIDATE_INT)) !== false => self::normalizeToRelative($seconds),
+			default => (new DateTime($expire))->getTimestamp() - time(),
+		};
+	}
+
+
+	private static function normalizeToRelative(int $seconds): int
+	{
+		// All numbers are now relative seconds. Previously DateTime::from() treated numbers above one
+		// year (~31.5M) as absolute timestamps; the threshold is intentionally raised to 1e9 (~ year 2001)
+		// so that values in between newly work as relative intervals, while genuine timestamps still warn.
+		if ($seconds >= 1_000_000_000) {
+			trigger_error('Passing an absolute timestamp as an expiration is deprecated; pass a relative number of seconds or a DateTimeInterface instead.', E_USER_DEPRECATED);
+			return $seconds - time();
+		}
+
+		return $seconds;
 	}
 
 
@@ -84,6 +118,6 @@ final class Helpers
 	 */
 	public static function initCookie(IRequest $request, IResponse $response): void
 	{
-		$response->setCookie(self::StrictCookieName, '1', 0, '/', sameSite: IResponse::SameSiteStrict);
+		$response->setCookie(self::StrictCookieName, '1', null, '/', sameSite: IResponse::SameSiteStrict);
 	}
 }

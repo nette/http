@@ -71,3 +71,45 @@ test('date formatting', function () {
 	Assert::same('Tue, 15 Nov 1994 08:12:31 GMT', Helpers::formatDate(new DateTime('1994-11-15T06:12:31-0200')));
 	Assert::same('Tue, 15 Nov 1994 08:12:31 GMT', Helpers::formatDate(784_887_151));
 });
+
+
+test('expirationToSeconds', function () {
+	// null means no value
+	Assert::null(Helpers::expirationToSeconds(null));
+
+	// an empty string is never meaningful
+	Assert::exception(
+		fn() => Helpers::expirationToSeconds(''),
+		Nette\InvalidArgumentException::class,
+	);
+
+	// an integer or a string representing an integer (incl. negative) is the number of seconds
+	Assert::same(0, Helpers::expirationToSeconds(0));
+	Assert::same(0, Helpers::expirationToSeconds('0'));
+	Assert::same(3600, Helpers::expirationToSeconds(3600));
+	Assert::same(3600, Helpers::expirationToSeconds('3600'));
+	Assert::same(-5, Helpers::expirationToSeconds(-5));
+	Assert::same(-5, Helpers::expirationToSeconds('-5'));
+
+	// just below the threshold is still a plain relative interval (no notice)
+	Assert::same(999_999_999, Helpers::expirationToSeconds(999_999_999));
+
+	// a number that looks like an absolute UNIX timestamp is deprecated, but still interpreted (for BC)
+	Assert::error(
+		function () {
+			Assert::true(abs(Helpers::expirationToSeconds(2_000_000_000) - (2_000_000_000 - time())) <= 1);
+		},
+		E_USER_DEPRECATED,
+		'Passing an absolute timestamp as an expiration is deprecated; pass a relative number of seconds or a DateTimeInterface instead.',
+	);
+
+	// a textual time or DateTimeInterface is resolved as an absolute time, relative to now
+	Assert::true(abs(Helpers::expirationToSeconds('+1 hour') - 3600) <= 1);
+	Assert::true(abs(Helpers::expirationToSeconds(new DateTime('+1 hour')) - 3600) <= 1);
+
+	// an unparsable textual time throws
+	Assert::exception(
+		fn() => Helpers::expirationToSeconds('nonsense'),
+		DateMalformedStringException::class,
+	);
+});
