@@ -4,9 +4,6 @@ parameters:
 	paths:
 		- src
 
-	excludePaths:
-		- src/Http/UserStorage.php   # deprecated, implements interface from optional nette/security
-
 	fileExtensions:
 		- php
 		- phtml
