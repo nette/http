@@ -26,7 +26,3 @@ parameters:
 			identifier: isset.offset
 			count: 1
 			path: src/Http/RequestFactory.php
-
-		-   # session_get_cookie_params() declares 'samesite' key but it may legitimately be missing on older configurations
-			identifier: nullCoalesce.offset
-			path: src/Http/Session.php
