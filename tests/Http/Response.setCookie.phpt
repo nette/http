@@ -143,6 +143,14 @@ $headers = array_values(array_diff(headers_list(), $old, ['Set-Cookie:']));
 Assert::same(['Set-Cookie: test=value; path=/; secure; HttpOnly; SameSite=None'], $headers);
 
 
+// Partitioned (CHIPS) adds the attribute and forces Secure
+$response = new Http\Response;
+$old = headers_list();
+$response->setCookie('test', 'value', null, sameSite: Http\IResponse::SameSiteNone, partitioned: true);
+$headers = array_values(array_diff(headers_list(), $old, ['Set-Cookie:']));
+Assert::same(['Set-Cookie: test=value; path=/; secure; HttpOnly; SameSite=None; Partitioned'], $headers);
+
+
 // integer 0 is deprecated, but kept as a session cookie for BC
 $response = new Http\Response;
 $old = headers_list();

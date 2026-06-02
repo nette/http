@@ -237,6 +237,7 @@ final class Response implements IResponse
 		?bool $secure = null,
 		?bool $httpOnly = null,
 		?string $sameSite = null,
+		bool $partitioned = false,
 	): static
 	{
 		self::checkHeaders();
@@ -254,15 +255,16 @@ final class Response implements IResponse
 
 		$seconds = Helpers::expirationToSeconds($expire);
 		$sameSite ??= self::SameSiteLax;
-		// SameSite=None is rejected by the browser without the Secure attribute
-		$secure = $sameSite === self::SameSiteNone || ($secure ?? $this->cookieSecure);
+		// both SameSite=None and Partitioned are rejected by the browser without the Secure attribute
+		$secure = $sameSite === self::SameSiteNone || $partitioned || ($secure ?? $this->cookieSecure);
 		$cookie = $name . '=' . rawurlencode($value)
 			. ($seconds === null ? '' : '; expires=' . Helpers::formatDate(time() + $seconds) . '; Max-Age=' . max(0, $seconds))
 			. '; path=' . $path
 			. ($domain === '' ? '' : '; domain=' . $domain)
 			. ($secure ? '; secure' : '')
 			. (($httpOnly ?? true) ? '; HttpOnly' : '')
-			. '; SameSite=' . $sameSite;
+			. '; SameSite=' . $sameSite
+			. ($partitioned ? '; Partitioned' : '');
 		header('Set-Cookie: ' . $cookie, replace: false);
 		return $this;
 	}
