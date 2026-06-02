@@ -9,12 +9,6 @@ parameters:
 		- phtml
 
 	ignoreErrors:
-		-   # IResponse::setCookie() interface does not yet declare $sameSite parameter, Response::setCookie() does
-			message: '#^Unknown parameter \$sameSite in call to method Nette\\Http\\IResponse\:\:setCookie\(\)\.$#'
-			identifier: argument.unknown
-			count: 1
-			path: src/Http/Helpers.php
-
 		-   # runtime validation of HTTP header value coming from untrusted client input
 			message: '#^Right side of && is always true\.$#'
 			identifier: booleanAnd.rightAlwaysTrue
@@ -32,12 +26,6 @@ parameters:
 			identifier: isset.offset
 			count: 1
 			path: src/Http/RequestFactory.php
-
-		-   # IResponse::setCookie() interface does not yet declare $sameSite parameter, see Helpers.php
-			message: '#^Method Nette\\Http\\IResponse\:\:setCookie\(\) invoked with 8 parameters, 3\-7 required\.$#'
-			identifier: arguments.count
-			count: 1
-			path: src/Http/Session.php
 
 		-   # session_get_cookie_params() declares 'samesite' key but it may legitimately be missing on older configurations
 			message: '#^Offset ''samesite'' on array\{lifetime\: int\<0, max\>, path\: non\-falsy\-string, domain\: string, secure\: bool, httponly\: bool, samesite\: ''Lax''\|''lax''\|''None''\|''none''\|''Strict''\|''strict''\} on left side of \?\? always exists and is not nullable\.$#'
