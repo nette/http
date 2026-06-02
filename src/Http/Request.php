@@ -8,7 +8,7 @@
 namespace Nette\Http;
 
 use Nette;
-use function array_change_key_case, base64_decode, count, explode, func_num_args, implode, preg_match, preg_match_all, rsort, strcasecmp, strtr;
+use function array_change_key_case, array_keys, base64_decode, count, explode, func_num_args, preg_match, str_starts_with, strcasecmp, strlen, strtolower, strtr, usort;
 
 
 /**
@@ -304,25 +304,18 @@ class Request implements IRequest
 			return null;
 		}
 
-		$s = strtolower($header);  // case insensitive
-		$s = strtr($s, '_', '-');  // cs_CZ means cs-CZ
-		rsort($langs);             // first more specific
-		preg_match_all('#(' . implode('|', $langs) . ')(?:-[^\s,;=]+)?\s*(?:;\s*q=([0-9.]+))?#', $s, $matches);
+		usort($langs, fn($a, $b) => strlen($b) <=> strlen($a)); // more specific first
+		$accepted = Helpers::parseQualityList(strtr($header, '_', '-')); // cs_CZ means cs-CZ
 
-		if (!$matches[0]) {
-			return null;
-		}
-
-		$max = 0;
-		$lang = null;
-		foreach ($matches[1] as $key => $value) {
-			$q = $matches[2][$key] === '' ? 1.0 : (float) $matches[2][$key];
-			if ($q > $max) {
-				$max = $q;
-				$lang = $value;
+		foreach (array_keys($accepted) as $token) {
+			foreach ($langs as $lang) {
+				$l = strtolower($lang);
+				if ($token === '*' || $token === $l || str_starts_with($token, $l . '-')) {
+					return $lang;
+				}
 			}
 		}
 
-		return $lang;
+		return null;
 	}
 }

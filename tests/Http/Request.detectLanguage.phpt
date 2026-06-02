@@ -29,6 +29,23 @@ test('language with quality weights', function () {
 });
 
 
+test('case-insensitive matching, original case is returned', function () {
+	$headers = ['Accept-Language' => 'cs_CZ, EN;q=0.8'];
+	$request = new Http\Request(new Http\UrlScript, headers: $headers);
+
+	Assert::same('CS', $request->detectLanguage(['CS', 'En']));
+	Assert::same('cs-cz', $request->detectLanguage(['en', 'cs-cz']));
+});
+
+
+test('wildcard matches any supported language', function () {
+	$request = new Http\Request(new Http\UrlScript, headers: ['Accept-Language' => 'fr, *;q=0.1']);
+
+	Assert::same('en', $request->detectLanguage(['en', 'cs'])); // fr unsupported, * falls back
+	Assert::null($request->detectLanguage([])); // nothing to fall back to
+});
+
+
 test('no Accept-Language header', function () {
 	$headers = [];
 	$request = new Http\Request(new Http\UrlScript, headers: $headers);

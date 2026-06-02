@@ -38,6 +38,33 @@ test('IPv6 address matching', function () {
 
 
 
+test('parseQualityList', function () {
+	Assert::same([], Helpers::parseQualityList(''));
+	Assert::same(['gzip' => 1.0], Helpers::parseQualityList('gzip'));
+
+	// ordered by descending q-factor, default q is 1.0
+	Assert::same(
+		['da' => 1.0, 'en-gb' => 0.8, 'en' => 0.7],
+		Helpers::parseQualityList('da, en-gb;q=0.8, en;q=0.7'),
+	);
+
+	// equal q keeps the header order (stable sort)
+	Assert::same(['en' => 1.0, 'cs' => 1.0], Helpers::parseQualityList('en, cs'));
+
+	// tokens are lowercased and trimmed, q=0 is dropped
+	Assert::same(
+		['text/html' => 0.9, '*/*' => 0.8],
+		Helpers::parseQualityList('TEXT/HTML ; q=0.9 , identity;q=0 , */* ;q=0.8'),
+	);
+
+	// a repeated token keeps its highest q
+	Assert::same(['de' => 0.9], Helpers::parseQualityList('de;q=0.9, de;q=0.1'));
+
+	// q is capped at 1
+	Assert::same(['a' => 1.0, 'b' => 0.9], Helpers::parseQualityList('a;q=5, b;q=0.9'));
+});
+
+
 test('date formatting', function () {
 	Assert::same('Tue, 15 Nov 1994 08:12:31 GMT', Helpers::formatDate('1994-11-15T08:12:31+0000'));
 	Assert::same('Tue, 15 Nov 1994 08:12:31 GMT', Helpers::formatDate('1994-11-15T10:12:31+0200'));
