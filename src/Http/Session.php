@@ -560,7 +560,7 @@ class Session
 			$cookie['domain'],
 			$cookie['secure'],
 			$cookie['httponly'],
-			$cookie['samesite'] ?? null,
+			SameSite::from(ucfirst(strtolower($cookie['samesite']))),
 		);
 	}
 }
