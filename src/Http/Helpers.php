@@ -114,10 +114,13 @@ final class Helpers
 
 
 	/**
-	 * Sends the strict same-site cookie used to detect same-site requests.
+	 * Sends the SameSite=Strict cookie used as a fallback for detecting same-site requests
+	 * in browsers that don't support the Sec-Fetch-Site header (Safari < 16.4).
 	 */
 	public static function initCookie(IRequest $request, IResponse $response): void
 	{
-		$response->setCookie(self::StrictCookieName, '1', null, '/', sameSite: IResponse::SameSiteStrict);
+		if ($request->getHeader('Sec-Fetch-Site') === null) {
+			$response->setCookie(self::StrictCookieName, '1', null, '/', sameSite: IResponse::SameSiteStrict);
+		}
 	}
 }

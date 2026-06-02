@@ -230,11 +230,13 @@ class Request implements IRequest
 
 
 	/**
-	 * Checks whether the request is coming from the same site and was initiated by clicking on a link.
+	 * Checks whether the request originated from your own site (same-site), i.e. it was not
+	 * triggered from a foreign website. Serves as a CSRF-like protection for forms and signals.
+	 * @deprecated use isFrom()
 	 */
 	public function isSameSite(): bool
 	{
-		return isset($this->cookies[Helpers::StrictCookieName]);
+		return $this->isFrom([FetchSite::SameSite, FetchSite::SameOrigin]);
 	}
 
 
