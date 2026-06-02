@@ -8,7 +8,7 @@
 namespace Nette\Http;
 
 use Nette;
-use function array_filter, header, header_remove, headers_list, headers_sent, htmlspecialchars, http_response_code, ini_get, is_int, ltrim, ob_get_length, ob_get_status, preg_match, rawurlencode, setcookie, str_replace, strcasecmp, strlen, strncasecmp, substr, time;
+use function array_filter, header, header_remove, headers_list, headers_sent, htmlspecialchars, http_response_code, ini_get, is_int, ltrim, ob_get_length, ob_get_status, preg_match, rawurlencode, str_replace, strcasecmp, strlen, strncasecmp, substr, time;
 use const PHP_SAPI;
 
 
@@ -240,19 +240,27 @@ final class Response implements IResponse
 	): static
 	{
 		self::checkHeaders();
-		if ($expire === 0) { // BC: 0 used to mean a session cookie; silently accepted as null for now
+		[$path, $domain] = [
+			$path ?? ($domain ? '/' : $this->cookiePath),
+			$domain ?? ($path ? '' : $this->cookieDomain),
+		];
+		if ($name === '' || preg_match('#[=,; \t\r\n\x0B\x0C]#', $name)) {
+			throw new Nette\InvalidArgumentException("Cookie name must not be empty or contain '=', ',', ';', whitespace or control characters, '$name' given.");
+		} elseif (preg_match('#[,; \t\r\n\x0B\x0C]#', $path . $domain . $sameSite)) {
+			throw new Nette\InvalidArgumentException("Cookie path, domain and sameSite must not contain ',', ';', whitespace or control characters.");
+		} elseif ($expire === 0) { // BC: 0 used to mean a session cookie; silently accepted as null for now
 			$expire = null;
 		}
 
 		$seconds = Helpers::expirationToSeconds($expire);
-		setcookie($name, $value, [
-			'expires' => $seconds === null ? 0 : time() + $seconds,
-			'path' => $path ?? ($domain ? '/' : $this->cookiePath),
-			'domain' => $domain ?? ($path ? '' : $this->cookieDomain),
-			'secure' => $secure ?? $this->cookieSecure,
-			'httponly' => $httpOnly ?? true,
-			'samesite' => $sameSite ?? self::SameSiteLax,
-		]);
+		$cookie = $name . '=' . rawurlencode($value)
+			. ($seconds === null ? '' : '; expires=' . Helpers::formatDate(time() + $seconds))
+			. '; path=' . $path
+			. ($domain === '' ? '' : '; domain=' . $domain)
+			. (($secure ?? $this->cookieSecure) ? '; secure' : '')
+			. (($httpOnly ?? true) ? '; HttpOnly' : '')
+			. '; SameSite=' . ($sameSite ?? self::SameSiteLax);
+		header('Set-Cookie: ' . $cookie, replace: false);
 		return $this;
 	}
 
