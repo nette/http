@@ -80,9 +80,46 @@ test('unknown header value matches nothing', function () {
 });
 
 
-test('no Sec-Fetch-Site returns false', function () {
+test('no header, no cookie returns false', function () {
 	$request = new Http\Request(new Http\UrlScript);
 
 	Assert::false($request->isFrom(FetchSite::SameOrigin));
 	Assert::false($request->isFrom(FetchSite::CrossSite));
+});
+
+
+test('cookie fallback proves only "not cross-site"', function () {
+	$request = new Http\Request(new Http\UrlScript, cookies: [
+		Http\Helpers::StrictCookieName => '1',
+	]);
+
+	Assert::true($request->isFrom(FetchSite::SameOrigin));
+	Assert::true($request->isFrom(FetchSite::SameSite));
+	Assert::true($request->isFrom(FetchSite::None));
+	Assert::true($request->isFrom([FetchSite::SameOrigin, FetchSite::CrossSite]));
+	Assert::false($request->isFrom(FetchSite::CrossSite));
+});
+
+
+test('cookie fallback fails closed for dest & user', function () {
+	$request = new Http\Request(new Http\UrlScript, cookies: [
+		Http\Helpers::StrictCookieName => '1',
+	]);
+
+	// dest/user can't be proven by the cookie alone, so a stricter check must not pass
+	Assert::false($request->isFrom(FetchSite::SameOrigin, FetchDest::Document));
+	Assert::false($request->isFrom(FetchSite::SameOrigin, user: true));
+	Assert::false($request->isFrom(FetchSite::SameOrigin, user: false));
+});
+
+
+test('cookie fallback not used when Sec-Fetch-Site present', function () {
+	$request = new Http\Request(new Http\UrlScript, cookies: [
+		Http\Helpers::StrictCookieName => '1',
+	], headers: [
+		'Sec-Fetch-Site' => 'cross-site',
+	]);
+
+	Assert::false($request->isFrom(FetchSite::SameOrigin));
+	Assert::true($request->isFrom(FetchSite::CrossSite));
 });

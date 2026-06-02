@@ -8,7 +8,7 @@
 namespace Nette\Http;
 
 use Nette;
-use function array_change_key_case, base64_decode, count, explode, func_num_args, in_array, is_array, preg_match, strcasecmp, strlen, strtr;
+use function array_change_key_case, array_filter, base64_decode, count, explode, func_num_args, in_array, is_array, preg_match, strcasecmp, strlen, strtr;
 
 
 /**
@@ -240,6 +240,7 @@ class Request implements IRequest
 
 	/**
 	 * Checks whether the request matches the given Sec-Fetch-Site, Sec-Fetch-Dest and Sec-Fetch-User values.
+	 * Falls back to the SameSite=Strict cookie in browsers without Sec-Fetch (Safari < 16.4)
 	 * @param  FetchSite|list<FetchSite>  $site
 	 * @param  FetchDest|list<FetchDest>|null  $dest
 	 */
@@ -249,12 +250,20 @@ class Request implements IRequest
 		?bool $user = null,
 	): bool
 	{
-		$actualSite = FetchSite::tryFrom($this->headers['sec-fetch-site'] ?? '');
+		$siteHeader = $this->headers['sec-fetch-site'] ?? null;
 		$actualDest = FetchDest::tryFrom($this->headers['sec-fetch-dest'] ?? '');
 		$actualUser = ($this->headers['sec-fetch-user'] ?? null) === '?1';
 		$site = is_array($site) ? $site : [$site];
 		$dest = $dest === null || is_array($dest) ? $dest : [$dest];
 
+		if ($siteHeader === null) { // fallback for browsers without Sec-Fetch (Safari < 16.4)
+			return $dest === null
+				&& $user === null
+				&& isset($this->cookies[Helpers::StrictCookieName])
+				&& array_filter($site, fn(FetchSite $s) => $s !== FetchSite::CrossSite) !== [];
+		}
+
+		$actualSite = FetchSite::tryFrom($siteHeader);
 		return $actualSite !== null
 			&& in_array($actualSite, $site, strict: true)
 			&& ($dest === null || ($actualDest !== null && in_array($actualDest, $dest, strict: true)))
