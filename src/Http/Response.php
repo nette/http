@@ -225,7 +225,6 @@ final class Response implements IResponse
 
 	/**
 	 * Sends a cookie.
-	 * @param SameSite|self::SameSite*|null  $sameSite
 	 * @throws Nette\InvalidStateException  if HTTP headers have been sent
 	 */
 	public function setCookie(
@@ -235,8 +234,8 @@ final class Response implements IResponse
 		?string $path = null,
 		?string $domain = null,
 		?bool $secure = null,
-		?bool $httpOnly = null,
-		SameSite|string|null $sameSite = null,
+		bool $httpOnly = true,
+		SameSite|string|null $sameSite = SameSite::Lax,
 		bool $partitioned = false,
 	): static
 	{
@@ -256,7 +255,6 @@ final class Response implements IResponse
 		}
 
 		$seconds = Helpers::expirationToSeconds($expire);
-		$sameSite ??= SameSite::Lax->value;
 		// both SameSite=None and Partitioned are rejected by the browser without the Secure attribute
 		$secure = $sameSite === SameSite::None->value || $partitioned || ($secure ?? $this->cookieSecure);
 		$cookie = $name . '=' . rawurlencode($value)
@@ -264,7 +262,7 @@ final class Response implements IResponse
 			. '; path=' . $path
 			. ($domain === '' ? '' : '; domain=' . $domain)
 			. ($secure ? '; secure' : '')
-			. (($httpOnly ?? true) ? '; HttpOnly' : '')
+			. ($httpOnly ? '; HttpOnly' : '')
 			. '; SameSite=' . $sameSite
 			. ($partitioned ? '; Partitioned' : '');
 		header('Set-Cookie: ' . $cookie, replace: false);
