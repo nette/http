@@ -19,9 +19,6 @@ final class Helpers
 {
 	use Nette\StaticClass;
 
-	/** @internal */
-	public const StrictCookieName = '_nss';
-
 
 	/**
 	 * Formats a date and time in the HTTP date format (RFC 7231), e.g. 'Mon, 23 Jan 1978 10:00:00 GMT'.
@@ -93,17 +90,5 @@ final class Helpers
 	public static function ipMatch(string $ip, string $mask): bool
 	{
 		return IPAddress::tryFrom($ip)?->isInRange($mask) ?? false;
-	}
-
-
-	/**
-	 * Sends the SameSite=Strict cookie used as a fallback for detecting same-site requests
-	 * in browsers that don't support the Sec-Fetch-Site header (Safari < 16.4).
-	 */
-	public static function initCookie(IRequest $request, IResponse $response): void
-	{
-		if ($request->getHeader('Sec-Fetch-Site') === null) {
-			$response->setCookie(self::StrictCookieName, '1', null, '/', sameSite: SameSite::Strict);
-		}
 	}
 }
