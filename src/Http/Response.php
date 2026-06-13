@@ -253,13 +253,16 @@ final class Response implements IResponse
 		}
 
 		$seconds = Helpers::expirationToSeconds($expire);
+		$sameSite ??= self::SameSiteLax;
+		// SameSite=None is rejected by the browser without the Secure attribute
+		$secure = $sameSite === self::SameSiteNone || ($secure ?? $this->cookieSecure);
 		$cookie = $name . '=' . rawurlencode($value)
 			. ($seconds === null ? '' : '; expires=' . Helpers::formatDate(time() + $seconds) . '; Max-Age=' . max(0, $seconds))
 			. '; path=' . $path
 			. ($domain === '' ? '' : '; domain=' . $domain)
-			. (($secure ?? $this->cookieSecure) ? '; secure' : '')
+			. ($secure ? '; secure' : '')
 			. (($httpOnly ?? true) ? '; HttpOnly' : '')
-			. '; SameSite=' . ($sameSite ?? self::SameSiteLax);
+			. '; SameSite=' . $sameSite;
 		header('Set-Cookie: ' . $cookie, replace: false);
 		return $this;
 	}

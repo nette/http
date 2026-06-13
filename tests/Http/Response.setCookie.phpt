@@ -135,6 +135,14 @@ Assert::exception(
 );
 
 
+// SameSite=None forces the Secure attribute (otherwise the browser rejects the cookie)
+$response = new Http\Response;
+$old = headers_list();
+$response->setCookie('test', 'value', null, sameSite: Http\IResponse::SameSiteNone);
+$headers = array_values(array_diff(headers_list(), $old, ['Set-Cookie:']));
+Assert::same(['Set-Cookie: test=value; path=/; secure; HttpOnly; SameSite=None'], $headers);
+
+
 // integer 0 is deprecated, but kept as a session cookie for BC
 $response = new Http\Response;
 $old = headers_list();
