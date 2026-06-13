@@ -138,7 +138,7 @@ interface IResponse
 		511 => 'Network Authentication Required',
 	];
 
-	/** SameSite cookie */
+	/** @deprecated use Nette\Http\SameSite enum */
 	public const
 		SameSiteLax = 'Lax',
 		SameSiteStrict = 'Strict',
@@ -147,13 +147,13 @@ interface IResponse
 	/** @deprecated use IResponse::ReasonPhrases */
 	public const REASON_PHRASES = self::ReasonPhrases;
 
-	/** @deprecated use IResponse::SameSiteLax */
+	/** @deprecated use Nette\Http\SameSite enum */
 	public const SAME_SITE_LAX = self::SameSiteLax;
 
-	/** @deprecated use IResponse::SameSiteStrict */
+	/** @deprecated use Nette\Http\SameSite enum */
 	public const SAME_SITE_STRICT = self::SameSiteStrict;
 
-	/** @deprecated use IResponse::SameSiteNone */
+	/** @deprecated use Nette\Http\SameSite enum */
 	public const SAME_SITE_NONE = self::SameSiteNone;
 
 	/** @deprecated use IResponse::S100_Continue */

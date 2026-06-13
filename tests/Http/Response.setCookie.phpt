@@ -138,7 +138,7 @@ Assert::exception(
 // SameSite=None forces the Secure attribute (otherwise the browser rejects the cookie)
 $response = new Http\Response;
 $old = headers_list();
-$response->setCookie('test', 'value', null, sameSite: Http\IResponse::SameSiteNone);
+$response->setCookie('test', 'value', null, sameSite: Http\SameSite::None);
 $headers = array_values(array_diff(headers_list(), $old, ['Set-Cookie:']));
 Assert::same(['Set-Cookie: test=value; path=/; secure; HttpOnly; SameSite=None'], $headers);
 
@@ -146,9 +146,21 @@ Assert::same(['Set-Cookie: test=value; path=/; secure; HttpOnly; SameSite=None']
 // Partitioned (CHIPS) adds the attribute and forces Secure
 $response = new Http\Response;
 $old = headers_list();
-$response->setCookie('test', 'value', null, sameSite: Http\IResponse::SameSiteNone, partitioned: true);
+$response->setCookie('test', 'value', null, sameSite: Http\SameSite::None, partitioned: true);
 $headers = array_values(array_diff(headers_list(), $old, ['Set-Cookie:']));
 Assert::same(['Set-Cookie: test=value; path=/; secure; HttpOnly; SameSite=None; Partitioned'], $headers);
+
+
+// the SameSite enum and the equivalent string produce the same header
+$response = new Http\Response;
+$old = headers_list();
+$response->setCookie('test', 'a', null, sameSite: Http\SameSite::Strict);
+$response->setCookie('test', 'b', null, sameSite: 'Strict');
+$headers = array_values(array_diff(headers_list(), $old, ['Set-Cookie:']));
+Assert::same([
+	'Set-Cookie: test=a; path=/; HttpOnly; SameSite=Strict',
+	'Set-Cookie: test=b; path=/; HttpOnly; SameSite=Strict',
+], $headers);
 
 
 // integer 0 is deprecated, but kept as a session cookie for BC

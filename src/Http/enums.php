@@ -60,3 +60,14 @@ enum FetchDest: string
 	case Worker = 'worker';
 	case Xslt = 'xslt';
 }
+
+
+/**
+ * Values of the SameSite cookie attribute.
+ */
+enum SameSite: string
+{
+	case Lax = 'Lax';
+	case Strict = 'Strict';
+	case None = 'None';
+}

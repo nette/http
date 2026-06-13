@@ -8,7 +8,7 @@
 namespace Nette\Bridges\HttpDI;
 
 use Nette;
-use Nette\Http\IResponse;
+use Nette\Http\SameSite;
 use Nette\Schema\Expect;
 
 
@@ -42,7 +42,7 @@ class SessionExtension extends Nette\DI\CompilerExtension
 			'expiration' => Expect::string()->dynamic(),
 			'handler' => Expect::string()->dynamic(),
 			'readAndClose' => Expect::bool(),
-			'cookieSamesite' => Expect::anyOf(IResponse::SameSiteLax, IResponse::SameSiteStrict, IResponse::SameSiteNone)
+			'cookieSamesite' => Expect::anyOf(SameSite::Lax->value, SameSite::Strict->value, SameSite::None->value)
 				->firstIsDefault(),
 		])->otherItems();
 	}

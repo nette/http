@@ -120,7 +120,7 @@ final class Helpers
 	public static function initCookie(IRequest $request, IResponse $response): void
 	{
 		if ($request->getHeader('Sec-Fetch-Site') === null) {
-			$response->setCookie(self::StrictCookieName, '1', null, '/', sameSite: IResponse::SameSiteStrict);
+			$response->setCookie(self::StrictCookieName, '1', null, '/', sameSite: SameSite::Strict);
 		}
 	}
 }

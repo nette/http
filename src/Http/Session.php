@@ -40,7 +40,7 @@ class Session
 
 	/** @var array<string, mixed> default configuration */
 	private array $options = [
-		'cookie_samesite' => IResponse::SameSiteLax,
+		'cookie_samesite' => SameSite::Lax->value,
 		'cookie_lifetime' => 0,   // session cookie - kept by the browser per its own policy
 		'gc_maxlifetime' => self::DefaultFileLifetime, // server-side idle timeout, independent of the cookie lifetime above
 	];
@@ -509,14 +509,14 @@ class Session
 		string $path,
 		?string $domain = null,
 		?bool $secure = null,
-		?string $sameSite = null,
+		SameSite|string|null $sameSite = null,
 	): static
 	{
 		return $this->setOptions([
 			'cookie_path' => $path,
 			'cookie_domain' => $domain,
 			'cookie_secure' => $secure,
-			'cookie_samesite' => $sameSite,
+			'cookie_samesite' => $sameSite instanceof SameSite ? $sameSite->value : $sameSite,
 		]);
 	}
 
