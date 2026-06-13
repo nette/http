@@ -250,7 +250,8 @@ final class Response implements IResponse
 			throw new Nette\InvalidArgumentException("Cookie name must not be empty or contain '=', ',', ';', whitespace or control characters, '$name' given.");
 		} elseif (preg_match('#[,; \t\r\n\x0B\x0C]#', $path . $domain . $sameSite)) {
 			throw new Nette\InvalidArgumentException("Cookie path, domain and sameSite must not contain ',', ';', whitespace or control characters.");
-		} elseif ($expire === 0) { // BC: 0 used to mean a session cookie; silently accepted as null for now
+		} elseif ($expire === 0) { // BC: 0 used to mean a session cookie
+			trigger_error('Passing 0 as $expire is deprecated; use null for a session cookie.', E_USER_DEPRECATED);
 			$expire = null;
 		}
 
