@@ -166,6 +166,10 @@ Assert::same([
 // integer 0 is deprecated, but kept as a session cookie for BC
 $response = new Http\Response;
 $old = headers_list();
-$response->setCookie('test', 'g', 0);
+Assert::error(
+	fn() => $response->setCookie('test', 'g', 0),
+	E_USER_DEPRECATED,
+	'Passing 0 as $expire is deprecated; use null for a session cookie.',
+);
 $headers = array_values(array_diff(headers_list(), $old, ['Set-Cookie:']));
 Assert::same(['Set-Cookie: test=g; path=/; HttpOnly; SameSite=Lax'], $headers);
