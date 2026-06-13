@@ -70,12 +70,19 @@ $headers = array_values(array_diff(headers_list(), $old, ['Set-Cookie:']));
 Assert::same(['Set-Cookie: test=f; path=/; domain=example.org; HttpOnly; SameSite=Lax'], $headers);
 
 
-// a future expiration sets the expires attribute
+// a future expiration sets Max-Age (and expires for ancient clients)
 $response = new Http\Response;
 $old = headers_list();
 $response->setCookie('test', 'value', 3600);
 $headers = array_values(array_diff(headers_list(), $old, ['Set-Cookie:']));
-Assert::match('Set-Cookie: test=value; expires=%a%; path=/; HttpOnly; SameSite=Lax', $headers[0]);
+Assert::match('Set-Cookie: test=value; expires=%a%; Max-Age=3600; path=/; HttpOnly; SameSite=Lax', $headers[0]);
+
+
+// deleteCookie sends Max-Age=0 (immediate deletion)
+$old = headers_list();
+$response->deleteCookie('test');
+$headers = array_values(array_diff(headers_list(), $old, ['Set-Cookie:']));
+Assert::match('Set-Cookie: test=; expires=%a%; Max-Age=0; path=/; HttpOnly; SameSite=Lax', $headers[0]);
 
 
 // the value is percent-encoded, the name is kept verbatim (incl. [] for array cookies)

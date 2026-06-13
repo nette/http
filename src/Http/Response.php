@@ -254,7 +254,7 @@ final class Response implements IResponse
 
 		$seconds = Helpers::expirationToSeconds($expire);
 		$cookie = $name . '=' . rawurlencode($value)
-			. ($seconds === null ? '' : '; expires=' . Helpers::formatDate(time() + $seconds))
+			. ($seconds === null ? '' : '; expires=' . Helpers::formatDate(time() + $seconds) . '; Max-Age=' . max(0, $seconds))
 			. '; path=' . $path
 			. ($domain === '' ? '' : '; domain=' . $domain)
 			. (($secure ?? $this->cookieSecure) ? '; secure' : '')
@@ -276,7 +276,7 @@ final class Response implements IResponse
 		?bool $secure = null,
 	): void
 	{
-		$this->setCookie($name, '', null, $path, $domain, $secure);
+		$this->setCookie($name, '', -1, $path, $domain, $secure);
 	}
 
 
