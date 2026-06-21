@@ -171,7 +171,7 @@ final readonly class UrlValidator
 	}
 
 
-	/** @return string[] */
+	/** @return list<string> */
 	private static function resolveHost(string $host): array
 	{
 		$a = @dns_get_record($host, DNS_A) ?: [];
