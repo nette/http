@@ -38,6 +38,9 @@ class RequestFactory
 	/** @var list<string> */
 	private array $proxies = [];
 
+	private bool $forwarded = true;
+	private bool $xForwarded = true;
+
 
 	/**
 	 * Disables sanitization of request data (GET, POST, cookies, file names) for binary-safe handling.
@@ -50,12 +53,15 @@ class RequestFactory
 
 
 	/**
-	 * Sets the trusted proxy IP addresses or CIDR blocks used to resolve the real client IP and URL scheme.
+	 * Sets the trusted proxy IP addresses or CIDR blocks used to resolve the real client IP and URL scheme,
+	 * and which forwarding headers to trust from them ("Forwarded" and/or "X-Forwarded-*").
 	 * @param string|list<string>  $proxy
 	 */
-	public function setProxy(string|array $proxy): static
+	public function setProxy(string|array $proxy, bool $forwarded = true, bool $xForwarded = true): static
 	{
 		$this->proxies = (array) $proxy;
+		$this->forwarded = $forwarded;
+		$this->xForwarded = $xForwarded;
 		return $this;
 	}
 
@@ -304,9 +310,11 @@ class RequestFactory
 		$client = $remoteAddr ? IPAddress::tryFrom($remoteAddr) : null;
 		$usingTrustedProxy = $client && Arrays::some($this->proxies, fn(string $proxy): bool => $client->isInRange($proxy));
 		if ($usingTrustedProxy) {
-			return empty($_SERVER['HTTP_FORWARDED'])
-				? $this->useNonstandardProxy($url)
-				: $this->useForwardedProxy($url);
+			return match (true) {
+				$this->forwarded && !empty($_SERVER['HTTP_FORWARDED']) => $this->useForwardedProxy($url),
+				$this->xForwarded => $this->useNonstandardProxy($url),
+				default => $remoteAddr,
+			};
 		}
 
 		return $remoteAddr;

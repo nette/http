@@ -17,6 +17,7 @@ use function is_array, strval;
  *
  * @property object{
  *     proxy: array<string>,
+ *     proxyHeaders: string,
  *     forceHttps: bool,
  *     headers: array<string, ?scalar>,
  *     frames: string|bool|null,
@@ -41,6 +42,7 @@ class HttpExtension extends Nette\DI\CompilerExtension
 	{
 		return Expect::structure([
 			'proxy' => Expect::anyOf(Expect::arrayOf('string'), Expect::string()->castTo('array'))->firstIsDefault()->dynamic(),
+			'proxyHeaders' => Expect::anyOf('both', 'xForwarded', 'forwarded', 'none')->firstIsDefault(),
 			'forceHttps' => Expect::bool(false)->dynamic(),
 			'headers' => Expect::arrayOf('scalar|null')->default([
 				'X-Powered-By' => 'Nette Framework 3',
@@ -65,7 +67,11 @@ class HttpExtension extends Nette\DI\CompilerExtension
 
 		$requestFactory = $builder->addDefinition($this->prefix('requestFactory'))
 			->setFactory(Nette\Http\RequestFactory::class)
-			->addSetup('setProxy', [$config->proxy]);
+			->addSetup('setProxy', [
+				$config->proxy,
+				'forwarded' => $config->proxyHeaders === 'forwarded' || $config->proxyHeaders === 'both',
+				'xForwarded' => $config->proxyHeaders === 'xForwarded' || $config->proxyHeaders === 'both',
+			]);
 
 		if ($config->forceHttps) {
 			$requestFactory->addSetup('setForceHttps');
