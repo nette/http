@@ -42,7 +42,7 @@ class HttpExtension extends Nette\DI\CompilerExtension
 	{
 		return Expect::structure([
 			'proxy' => Expect::anyOf(Expect::arrayOf('string'), Expect::string()->castTo('array'))->firstIsDefault()->dynamic(),
-			'proxyHeaders' => Expect::anyOf('both', 'xForwarded', 'forwarded', 'none')->firstIsDefault(),
+			'proxyHeaders' => Expect::anyOf('xForwarded', 'forwarded', 'both', 'none')->firstIsDefault(),
 			'forceHttps' => Expect::bool(false)->dynamic(),
 			'headers' => Expect::arrayOf('scalar|null')->default([
 				'X-Powered-By' => 'Nette Framework 3',
