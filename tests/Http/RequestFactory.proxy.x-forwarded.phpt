@@ -106,3 +106,14 @@ test('X-Forwarded-Host with multiple entries and port', function () {
 	Assert::same('real', $url->getHost());
 	Assert::same(8080, $url->getPort());
 });
+
+test('X-Forwarded-For with a non-IP innermost value yields a null remote address', function () {
+	$_SERVER = [
+		'REMOTE_ADDR' => '10.0.0.1',
+		'HTTP_X_FORWARDED_FOR' => 'not-an-ip',
+	];
+
+	$factory = new RequestFactory;
+	$factory->setProxy('10.0.0.1');
+	Assert::null($factory->fromGlobals()->getRemoteAddress());
+});
