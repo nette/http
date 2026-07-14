@@ -96,3 +96,43 @@ test('forwarded protocol (HTTPS) handling', function () {
 	$url = $factory->fromGlobals()->getUrl();
 	Assert::same('https', $url->getScheme());
 });
+
+
+test('trusted proxies are stripped from the Forwarded chain (rightmost untrusted hop wins)', function () {
+	$_SERVER = [
+		'REMOTE_ADDR' => '10.0.0.2',
+		'HTTP_FORWARDED' => 'for=23.75.45.200, for=172.16.0.1, for=10.0.0.1',
+	];
+
+	$factory = new RequestFactory;
+	$factory->setProxy('10.0.0.0/24');
+	Assert::same('172.16.0.1', $factory->fromGlobals()->getRemoteAddress());
+});
+
+
+test('host and proto are resolved from the client hop, not from an injected element', function () {
+	// the leftmost element is the one a client can forge by appending it
+	$_SERVER = [
+		'REMOTE_ADDR' => '10.0.0.2',
+		'HTTP_FORWARDED' => 'for=6.6.6.6;host=evil.test;proto=http, for=172.16.0.1;host=real.test;proto=https, for=10.0.0.1',
+	];
+
+	$factory = new RequestFactory;
+	$factory->setProxy('10.0.0.0/24');
+	$request = $factory->fromGlobals();
+	Assert::same('172.16.0.1', $request->getRemoteAddress());
+	Assert::same('real.test', $request->getUrl()->getHost());
+	Assert::same('https', $request->getUrl()->getScheme());
+});
+
+
+test('obfuscated or invalid client identifier yields a null remote address', function () {
+	$_SERVER = [
+		'REMOTE_ADDR' => '10.0.0.1',
+		'HTTP_FORWARDED' => 'for=unknown',
+	];
+
+	$factory = new RequestFactory;
+	$factory->setProxy('10.0.0.1');
+	Assert::null($factory->fromGlobals()->getRemoteAddress());
+});

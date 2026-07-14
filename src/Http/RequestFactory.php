@@ -10,7 +10,7 @@ namespace Nette\Http;
 use Nette;
 use Nette\Utils\Arrays;
 use Nette\Utils\Strings;
-use function array_filter, base64_encode, count, end, explode, file_get_contents, filter_input_array, filter_var, function_exists, get_debug_type, in_array, ini_get, is_array, is_string, key, min, preg_last_error, preg_match, preg_replace, preg_split, rtrim, sprintf, str_contains, strcasecmp, strlen, strncmp, strpos, strrpos, strtolower, strtr, substr, trim;
+use function array_filter, array_key_last, array_map, base64_encode, explode, file_get_contents, filter_input_array, filter_var, function_exists, get_debug_type, in_array, ini_get, is_array, is_string, min, preg_last_error, preg_match, preg_replace, rtrim, sprintf, str_contains, strcasecmp, strlen, strncmp, strpos, strrpos, strtolower, strtr, substr, trim;
 use const PHP_SAPI;
 
 
@@ -300,7 +300,8 @@ class RequestFactory
 	{
 		$remoteAddr = !empty($_SERVER['REMOTE_ADDR']) ? $_SERVER['REMOTE_ADDR'] : null;
 
-		// use real client address and host if trusted proxy is used
+		// trust forwarding headers only when the request comes through a trusted proxy;
+		// the proxy in turn should strip any forwarding header it does not set itself
 		$usingTrustedProxy = $remoteAddr && Arrays::some($this->proxies, fn(string $proxy): bool => Helpers::ipMatch($remoteAddr, $proxy));
 		if ($usingTrustedProxy) {
 			$remoteHost = null;
@@ -318,34 +319,42 @@ class RequestFactory
 
 	private function useForwardedProxy(Url $url): ?string
 	{
-		$forwardParams = preg_split('/[,;]/', $_SERVER['HTTP_FORWARDED']);
-		foreach ($forwardParams as $forwardParam) {
-			[$key, $value] = explode('=', $forwardParam, 2) + [1 => ''];
-			$proxyParams[strtolower(trim($key))][] = trim($value, " \t\"");
+		// RFC 7239: split into hops (comma), each a set of params (semicolon)
+		$hops = $addresses = [];
+		foreach (explode(',', $_SERVER['HTTP_FORWARDED']) as $element) {
+			$hop = [];
+			foreach (explode(';', $element) as $pair) {
+				[$key, $value] = explode('=', $pair, 2) + [1 => ''];
+				$hop[strtolower(trim($key))] = trim($value, " \t\"");
+			}
+
+			$for = $hop['for'] ?? '';
+			$addresses[] = str_contains($for, '[')
+				? substr($for, 1, strpos($for, ']') - 1) // IPv6 "[addr]:port"
+				: explode(':', $for)[0]; // IPv4 "addr:port" or bare address
+			$hops[] = $hop;
 		}
 
-		if (isset($proxyParams['for'])) {
-			$address = $proxyParams['for'][0];
-			$remoteAddr = str_contains($address, '[')
-				? substr($address, 1, strpos($address, ']') - 1) // IPv6
-				: explode(':', $address)[0];  // IPv4
+		$clientHop = $this->findClientHop($addresses);
+		if ($clientHop === null) {
+			return null;
 		}
 
-		if (isset($proxyParams['proto']) && count($proxyParams['proto']) === 1) {
-			$url->setScheme(strcasecmp($proxyParams['proto'][0], 'https') === 0 ? 'https' : 'http');
+		// scheme and host from the client's own hop
+		$hop = $hops[$clientHop[0]];
+		if (isset($hop['proto'])) {
+			$url->setScheme(strcasecmp($hop['proto'], 'https') === 0 ? 'https' : 'http');
 			$url->setPort($url->getScheme() === 'https' ? 443 : 80);
 		}
 
-		if (
-			isset($proxyParams['host']) && count($proxyParams['host']) === 1
-			&& ($pair = $this->parseHostAndPort($proxyParams['host'][0]))
-		) {
+		if (isset($hop['host']) && ($pair = $this->parseHostAndPort($hop['host']))) {
 			$url->setHost($pair[0]);
 			if (isset($pair[1])) {
 				$url->setPort($pair[1]);
 			}
 		}
-		return $remoteAddr ?? null;
+
+		return $clientHop[1];
 	}
 
 
@@ -360,24 +369,18 @@ class RequestFactory
 			$url->setPort((int) $_SERVER['HTTP_X_FORWARDED_PORT']);
 		}
 
-		if (!empty($_SERVER['HTTP_X_FORWARDED_FOR'])) {
-			$xForwardedForWithoutProxies = array_filter(
-				explode(',', $_SERVER['HTTP_X_FORWARDED_FOR']),
-				fn(string $ip): bool => filter_var($ip = trim($ip), FILTER_VALIDATE_IP) === false
-					|| !Arrays::some($this->proxies, fn(string $proxy): bool => Helpers::ipMatch($ip, $proxy)),
-			);
-			if ($xForwardedForWithoutProxies) {
-				$remoteAddr = trim(end($xForwardedForWithoutProxies));
-				$xForwardedForRealIpKey = key($xForwardedForWithoutProxies);
-			}
+		if (empty($_SERVER['HTTP_X_FORWARDED_FOR'])) {
+			return null;
 		}
 
-		if (isset($xForwardedForRealIpKey) && !empty($_SERVER['HTTP_X_FORWARDED_HOST'])) {
-			$xForwardedHost = explode(',', $_SERVER['HTTP_X_FORWARDED_HOST']);
-			if (
-				isset($xForwardedHost[$xForwardedForRealIpKey])
-				&& ($pair = $this->parseHostAndPort(trim($xForwardedHost[$xForwardedForRealIpKey])))
-			) {
+		$clientHop = $this->findClientHop(array_map(trim(...), explode(',', $_SERVER['HTTP_X_FORWARDED_FOR'])));
+		if ($clientHop === null) {
+			return null;
+		}
+
+		if (!empty($_SERVER['HTTP_X_FORWARDED_HOST'])) {
+			$hosts = explode(',', $_SERVER['HTTP_X_FORWARDED_HOST']);
+			if (isset($hosts[$clientHop[0]]) && ($pair = $this->parseHostAndPort(trim($hosts[$clientHop[0]])))) {
 				$url->setHost($pair[0]);
 				if (isset($pair[1])) {
 					$url->setPort($pair[1]);
@@ -385,7 +388,31 @@ class RequestFactory
 			}
 		}
 
-		return $remoteAddr ?? null;
+		return $clientHop[1];
+	}
+
+
+	/**
+	 * Returns [index, address] of the rightmost hop after stripping trailing trusted proxies,
+	 * or null when that hop is not a valid IP.
+	 * @param  list<string>  $addresses
+	 * @return array{int, string}|null
+	 */
+	private function findClientHop(array $addresses): ?array
+	{
+		$untrusted = array_filter(
+			$addresses,
+			fn(string $ip): bool => filter_var($ip, FILTER_VALIDATE_IP) === false
+				|| !Arrays::some($this->proxies, fn(string $proxy): bool => Helpers::ipMatch($ip, $proxy)),
+		);
+		if (!$untrusted) {
+			return null;
+		}
+
+		$index = array_key_last($untrusted);
+		return filter_var($untrusted[$index], FILTER_VALIDATE_IP) === false
+			? null
+			: [$index, $untrusted[$index]];
 	}
 
 
