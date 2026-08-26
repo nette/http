@@ -7,7 +7,7 @@
 
 namespace Nette\Http;
 
-use function array_column, array_merge, dns_get_record, in_array, parse_url, str_ends_with, str_starts_with, strlen, strtolower, substr;
+use function in_array, strlen;
 use const DNS_A, DNS_AAAA;
 
 

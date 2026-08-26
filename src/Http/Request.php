@@ -8,7 +8,7 @@
 namespace Nette\Http;
 
 use Nette;
-use function array_change_key_case, array_filter, base64_decode, count, explode, func_num_args, in_array, is_array, preg_match, strcasecmp, strlen, strtr;
+use function count, func_num_args, in_array, is_array, strlen;
 
 
 /**

@@ -8,7 +8,7 @@
 namespace Nette\Http;
 
 use Nette;
-use function array_filter, header, header_remove, headers_list, headers_sent, htmlspecialchars, http_response_code, ini_get, is_int, ltrim, ob_get_length, ob_get_status, preg_match, rawurlencode, str_replace, strcasecmp, strlen, strncasecmp, substr, time;
+use function is_int, strlen;
 use const PHP_SAPI;
 
 

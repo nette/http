@@ -8,7 +8,7 @@
 namespace Nette\Http;
 
 use Nette;
-use function array_slice, explode, http_build_query, implode, ip2long, is_array, is_string, rawurlencode, str_starts_with, strrpos, substr;
+use function array_slice, is_array, is_string;
 use const PHP_QUERY_RFC3986;
 
 

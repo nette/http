@@ -8,7 +8,7 @@
 namespace Nette\Http;
 
 use Nette;
-use function strlen, strncmp, strrpos, substr;
+use function strlen;
 
 
 /**

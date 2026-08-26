@@ -9,7 +9,7 @@ namespace Nette\Http;
 
 use Nette;
 use Nette\Utils\DateTime;
-use function array_shift, arsort, explode, is_int, preg_match, strtolower, trim;
+use function is_int;
 
 
 /**
