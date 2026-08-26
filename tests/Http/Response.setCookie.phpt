@@ -69,6 +69,15 @@ $response->setCookie('test', 'f', null, null, 'example.org');
 $headers = array_values(array_diff(headers_list(), $old, ['Set-Cookie:']));
 Assert::same(['Set-Cookie: test=f; path=/; domain=example.org; HttpOnly; SameSite=Lax'], $headers);
 
+// an explicitly empty domain counts as given, so the path widens instead of inheriting cookiePath
+$response = new Http\Response;
+$response->cookiePath = '/foo';
+$response->cookieDomain = 'nette.org';
+$old = headers_list();
+$response->setCookie('test', 'hostonly', null, null, '');
+$headers = array_values(array_diff(headers_list(), $old, ['Set-Cookie:']));
+Assert::same(['Set-Cookie: test=hostonly; path=/; HttpOnly; SameSite=Lax'], $headers);
+
 
 // a future expiration sets Max-Age (and expires for ancient clients)
 $response = new Http\Response;

@@ -243,8 +243,8 @@ final class Response implements IResponse
 		self::checkHeaders();
 		$sameSite = $sameSite instanceof SameSite ? $sameSite->value : $sameSite;
 		[$path, $domain] = [
-			$path ?? ($domain ? '/' : $this->cookiePath),
-			$domain ?? ($path ? '' : $this->cookieDomain),
+			$path ?? ($domain === null ? $this->cookiePath : '/'),
+			$domain ?? ($path === null ? $this->cookieDomain : ''),
 		];
 		if ($name === '' || preg_match('#[=,; \t\r\n\x0B\x0C]#', $name)) {
 			throw new Nette\InvalidArgumentException("Cookie name must not be empty or contain '=', ',', ';', whitespace or control characters, '$name' given.");
