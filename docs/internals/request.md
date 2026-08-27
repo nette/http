@@ -28,13 +28,17 @@ names, with headers as the deliberate exception.
 `fromGlobals` assembles the URL (scheme from `HTTPS`/proxy, host/port from
 `HTTP_HOST` with `SERVER_NAME`+`SERVER_PORT` as fallback), applies `urlFilters`
 (default `//`→`/` on the path), sanitizes, then
-resolves the client via the proxy chain (see proxy.md). `setForceHttps()` overrides
-the scheme to `https` after that.
+resolves the client via the proxy chain (see proxy.md). When no host came out of
+any of that (CLI), the URL configured via `setBaseUrl()` (`http: baseUrl`) supplies
+scheme, host, port and path instead; the environment always wins when it has a
+host. `setForceHttps()` overrides the scheme to `https` after that.
 
 The `scriptPath` is derived by comparing the request path against
 `$_SERVER['SCRIPT_NAME']` (case-insensitively): it finds their common prefix and
 truncates to the last `/` within the match (`/` under `cli-server` or on no
-match). That `scriptPath` seeds `UrlScript`, from which `basePath` and the other
+match). With the base-URL fallback the comparison is skipped and `scriptPath` is
+the base path itself, because `SCRIPT_NAME` names the CLI script. That
+`scriptPath` seeds `UrlScript`, from which `basePath` and the other
 virtual components follow (see url.md).
 
 ## File-upload normalization

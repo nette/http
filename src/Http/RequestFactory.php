@@ -34,6 +34,7 @@ class RequestFactory
 
 	private bool $binary = false;
 	private bool $forceHttps = false;
+	private ?Url $baseUrl = null;
 
 	/** @var list<string> */
 	private array $proxies = [];
@@ -77,6 +78,21 @@ class RequestFactory
 
 
 	/**
+	 * Sets the base URL of the application, used when it cannot be detected from the environment (CLI).
+	 */
+	public function setBaseUrl(string|Url $url): static
+	{
+		$this->baseUrl = new Url($url);
+		if ($this->baseUrl->getHost() === '') {
+			throw new Nette\InvalidArgumentException("Base URL '$url' must be absolute.");
+		}
+
+		$this->baseUrl->setPath(rtrim($this->baseUrl->getPath(), '/') . '/');
+		return $this;
+	}
+
+
+	/**
 	 * Returns new Request instance, using values from superglobals.
 	 */
 	public function fromGlobals(): Request
@@ -86,12 +102,23 @@ class RequestFactory
 		$this->getPathAndQuery($url);
 		[$post, $cookies] = $this->getGetPostCookie($url);
 		$remoteAddr = $this->getClient($url);
+		if ($url->getHost() === '' && $this->baseUrl) {
+			$url->setScheme($this->baseUrl->getScheme())
+				->setHost($this->baseUrl->getHost())
+				->setPath($scriptPath = $this->baseUrl->getPath());
+			if (($port = $this->baseUrl->getPort()) && $port !== $this->baseUrl->getDefaultPort()) {
+				$url->setPort($port);
+			}
+		} else {
+			$scriptPath = $this->getScriptPath($url);
+		}
+
 		if ($this->forceHttps) {
 			$url->setScheme('https');
 		}
 
 		return new Request(
-			new UrlScript($url, $this->getScriptPath($url)),
+			new UrlScript($url, $scriptPath),
 			$post,
 			$this->getFiles(),
 			$cookies,
