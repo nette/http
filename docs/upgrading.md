@@ -1,0 +1,352 @@
+# Upgrading nette/http
+
+## 3.4.1
+
+- **Changed** `Nette\Http\Request::getRemoteAddress()` returns `null` behind a trusted proxy when the forwarded client value is not a valid IP address; previously the raw non-IP string was returned, and the client address is now taken as the rightmost hop left after stripping trailing trusted proxies instead of the leftmost value (1cc7c52c)
+- **Changed** `Nette\Http\Response::setCookie()` treats an explicitly empty `$path` as given, so the cookie is scoped to the root path; previously `''` counted as omitted and fell back to `'/'` or `Nette\Http\Response::$cookiePath` (3566de4a)
+- **Changed** `Nette\Http\Response::setCookie()` treats an explicitly empty `$domain` as given, so the cookie is host-only; previously `''` counted as omitted and fell back to `''` or `Nette\Http\Response::$cookieDomain` (3566de4a)
+- **Config** `http.proxyHeaders`: the default is `xForwarded`; previously `both`, so a `Forwarded` header from a trusted proxy is no longer honored unless you set `proxyHeaders: forwarded` or `proxyHeaders: both` (200d5377)
+
+## 3.4.0
+
+- **Removed** `Nette\Http\UserStorage` (deprecated since 3.1.0): use `Nette\Bridges\SecurityHttp\SessionStorage` from nette/security (a957b8f2)
+- **Replaced** `Nette\Http\Request::isSameSite()` with `Nette\Http\Request::isFrom()`: call `isFrom([Nette\Http\FetchSite::SameSite, Nette\Http\FetchSite::SameOrigin])`; the old method now delegates to it and decides primarily by the `Sec-Fetch-Site` header instead of the strict cookie (00a4f7ba)
+- **Deprecated** `Nette\Http\Helpers::ipMatch()`: use `Nette\Http\IPAddress::tryFrom($ip)?->isInRange($mask) ?? false`; the old name is silently deprecated (9d1f0c37)
+- **Deprecated** `Nette\Http\Request::isSameSite()`: use `Nette\Http\Request::isFrom()`; the old name is silently deprecated (00a4f7ba)
+- **Deprecated** `Nette\Http\Request::getRemoteHost()`: there is no replacement, the method now always returns `null`; using the old name triggers `E_USER_DEPRECATED` (1f4e22c8)
+- **Deprecated** `Nette\Http\IRequest::getRemoteHost()`: there is no replacement; the method carries `#[\Deprecated]`, so on PHP 8.4+ using it triggers `E_USER_DEPRECATED`; affects classes implementing the interface (1f4e22c8)
+- **Deprecated** `Nette\Http\IResponse::SameSiteLax`: use `Nette\Http\SameSite::Lax`; the old name is silently deprecated (de5988d8)
+- **Deprecated** `Nette\Http\IResponse::SameSiteStrict`: use `Nette\Http\SameSite::Strict`; the old name is silently deprecated (de5988d8)
+- **Deprecated** `Nette\Http\IResponse::SameSiteNone`: use `Nette\Http\SameSite::None`; the old name is silently deprecated (de5988d8)
+- **Signature** `Nette\Http\Request::getCookie()`: declares the return type `?string` instead of `mixed`; affects subclasses overriding it and code relying on a non-string cookie value (5ae07435)
+- **Signature** `Nette\Http\RequestFactory::setProxy()`: `$proxy` is typed `string|array`; previously untyped, so another type now throws a `TypeError` (5ae07435)
+- **Changed** `Nette\Http\Request::getRemoteHost()` always returns `null`; previously it resolved the client hostname by a reverse DNS lookup (1f4e22c8)
+- **Changed** `Nette\Http\Request::detectLanguage()` compares the header and the offered languages case-insensitively and returns the language in the exact casing the caller passed; previously in the casing taken from the header (14e0376d)
+- **Changed** `Nette\Http\Response::setCookie()` builds the `Set-Cookie` header itself and throws `Nette\InvalidArgumentException` for an empty cookie name, for a name containing `=`, `,`, `;`, whitespace or control characters, and for such characters in `$path`, `$domain` or `$sameSite`; previously the values were passed to `setcookie()` (c0d93ef5)
+- **Changed** `Nette\Http\Response::deleteCookie()` sends `Max-Age=0`, deleting the cookie immediately; previously it sent a session cookie with an empty value, and `Nette\Http\Response::setCookie()` now sends `Max-Age` next to `expires` (72fc6897)
+- **Changed** `Nette\Http\Response::setExpiration()` disables caching with `Cache-Control: max-age=0` for a past or otherwise non-positive expiration; previously only an empty value disabled it and a past date produced a negative max-age (a9ba7324)
+- **Changed** a numeric `$expire` passed to `Nette\Http\Response::setCookie()`, `Nette\Http\Response::setExpiration()`, `Nette\Http\Session::setExpiration()` and `Nette\Http\SessionSection::setExpiration()` is a relative number of seconds up to 1e9; previously a number above roughly 31.5 million was taken as an absolute Unix timestamp; passing a value of 1e9 or more triggers `E_USER_DEPRECATED`, pass a relative number of seconds or a `\DateTimeInterface` instead (a9ba7324)
+- **Changed** the strict `_nss` cookie is sent only when the request carries no `Sec-Fetch-Site` header; previously it was resent with every response (00a4f7ba)
+## 3.3.4
+
+- **Changed** `Nette\Http\FileUpload::getContents()` throws `Nette\IOException` when the file cannot be read; previously the call failed with a `TypeError` (f538ad68)
+- **Changed** `Nette\Http\Helpers::ipMatch()` returns `false` for an invalid IP address or CIDR mask; previously such input could fail with a `TypeError` (f538ad68)
+- **Changed** `Nette\Http\Request::getOrigin()` returns `null` unless the `Origin` header has the RFC 6454 form `scheme://host`; previously any value parseable as a URL was accepted (ffa2680d)
+
+## 3.3.3
+
+- **Deprecated** `Nette\Http\Url::getUser()`: there is no replacement, credentials in a URL should not be used; the old name is silently deprecated (54ab2036)
+- **Deprecated** `Nette\Http\Url::getPassword()`: there is no replacement, credentials in a URL should not be used; the old name is silently deprecated (54ab2036)
+- **Deprecated** `Nette\Http\Url::setUser()`: there is no replacement, credentials in a URL should not be used; the old name is silently deprecated (54ab2036)
+- **Deprecated** `Nette\Http\Url::setPassword()`: there is no replacement, credentials in a URL should not be used; the old name is silently deprecated (54ab2036)
+- **Deprecated** `Nette\Http\UrlImmutable::getUser()`: there is no replacement, credentials in a URL should not be used; the old name is silently deprecated (54ab2036)
+- **Deprecated** `Nette\Http\UrlImmutable::getPassword()`: there is no replacement, credentials in a URL should not be used; the old name is silently deprecated (54ab2036)
+- **Deprecated** `Nette\Http\UrlImmutable::withUser()`: there is no replacement, credentials in a URL should not be used; the old name is silently deprecated (54ab2036)
+- **Deprecated** `Nette\Http\UrlImmutable::withPassword()`: there is no replacement, credentials in a URL should not be used; the old name is silently deprecated (54ab2036)
+- **Deprecated** `Nette\Http\UrlImmutable::withoutUserInfo()`: there is no replacement, credentials in a URL should not be used; the old name is silently deprecated (54ab2036)
+
+## 3.3.2
+
+- **Removed** `Nette\Http\UrlImmutable::build()`: the protected method is gone and nothing replaces it; affects subclasses overriding it (d74dc455)
+- **Removed** `Nette\Http\UrlScript::build()`: the protected method is gone and nothing replaces it; affects subclasses overriding it (d74dc455)
+- **Changed** `Nette\Http\Url::canonicalize()` no longer percent-encodes `"` in the path (2b99b0af)
+
+## 3.3.1
+
+- **Signature** `Nette\Http\IResponse::setCookie()`: `$expire` is typed `string|int|\DateTimeInterface|null` instead of `?int`; affects classes implementing the interface (85b71ee4)
+
+## 3.3.0
+
+- **Removed** `Nette\Http\IResponse::BROWSER` (deprecated since 3.0.3): pass `null` as the cookie expiration instead (28b9928a)
+- **Removed** `Nette\Http\IResponse::PERMANENT` (deprecated since 3.0.3): pass an explicit far-future expiration instead (28b9928a)
+- **Removed** `Nette\Http\Response::$cookieHttpOnly` (deprecated since 3.1.0): pass `$httpOnly` to `Nette\Http\Response::setCookie()`, which sends `HttpOnly` by default (28b9928a)
+- **Removed** `Nette\Http\Session::getCookieParameters()` (deprecated since 3.0.0): call `session_get_cookie_params()` (28b9928a)
+- **Removed** `Nette\Http\Session::getIterator()` (deprecated since 3.2.1): call `Nette\Http\Session::getSectionNames()`; `Nette\Http\Session` is no longer iterable (28b9928a)
+- **Signature** `Nette\Http\Request::__construct()`: `$post`, `$files`, `$cookies` and `$headers` default to `[]` and `$method` to `'GET'`, and none of them is nullable any more; passing `null` explicitly now throws a `TypeError` (93b37733)
+- **Signature** `Nette\Http\IResponse::setCookie()`: `$expire` is typed `?int`; previously untyped and documented as `string|int|\DateTimeInterface`; affects classes implementing the interface (77dfd5d0)
+- **Signature** `Nette\Http\UrlScript::__construct()`: `$url` is typed `string|Nette\Http\Url`; passing a `Nette\Http\UrlImmutable` or another `Nette\Http\UrlScript` now throws a `TypeError` (77dfd5d0)
+- **Changed** `Nette\Http\Request::getQuery()` silently ignores a second argument; previously it triggered `E_USER_DEPRECATED`; use `getQuery($key) ?? $default` (28b9928a)
+- **Changed** `Nette\Http\Request::getPost()` silently ignores a second argument; previously it triggered `E_USER_DEPRECATED`; use `getPost($key) ?? $default` (28b9928a)
+- **Changed** `Nette\Http\Request::getCookie()` silently ignores a second argument; previously it triggered `E_USER_DEPRECATED`; use `getCookie($key) ?? $default` (28b9928a)
+- **Changed** `Nette\Http\Request::getHeader()` silently ignores a second argument; previously it triggered `E_USER_DEPRECATED`; use `getHeader($header) ?? $default` (28b9928a)
+- **Changed** `Nette\Http\Response::getHeader()` silently ignores a second argument; previously it triggered `E_USER_DEPRECATED`; use `getHeader($header) ?? $default` (28b9928a)
+- **Changed** `Nette\Http\Url::getQueryParameter()` silently ignores a second argument; previously it triggered `E_USER_DEPRECATED`; use `getQueryParameter($name) ?? $default` (28b9928a)
+- **Changed** `Nette\Http\UrlImmutable::__construct()` throws `\TypeError` for an argument of an unsupported type; previously `Nette\InvalidArgumentException` (77dfd5d0)
+- **Changed** `Nette\Http\Context`, `Nette\Http\RequestFactory`, `Nette\Http\Session` and `Nette\Http\SessionSection` no longer use `Nette\SmartObject`, so access to an undeclared property or method raises a plain PHP error instead of `Nette\MemberAccessException` (862e4437)
+- **Config** `session.cookieSamesite`: the value `true` is rejected by the schema, use `'Lax'`; previously `true` was translated to `'Lax'` (28b9928a)
+- **Config** `session.cookieSecure`: the key is silently ignored, use `http.cookieSecure`; previously it was forwarded there together with an `E_USER_DEPRECATED` notice (28b9928a)
+## 3.2.4
+
+- **Renamed** `Nette\Http\FileUpload::getImageFileExtension()` → `Nette\Http\FileUpload::getSuggestedExtension()`; the old name is silently deprecated (d7cc833e)
+- **Changed** `Nette\Http\RequestFactory::fromGlobals()` validates the host taken from the `Forwarded` or `X-Forwarded-Host` header against a strict hostname/IPv6 pattern instead of splitting it on `:`, so a malformed value now sets neither the host nor the port (87e61821)
+
+## 3.2.3
+
+- **Removed** `Nette\Http\FileUpload::ImageMimeTypes` (added in 3.2.1): there is no replacement, `Nette\Http\FileUpload::isImage()` decides by the image types the PHP build supports (54d79711)
+- **Removed** `Nette\Http\Response::__destruct()`: it only echoed invisible padding on short error pages for MSIE, which is no longer sent (1749bc16)
+- **Deprecated** `Nette\Http\FileUpload::IMAGE_MIME_TYPES`: there is no replacement, call `Nette\Http\FileUpload::isImage()`; the old name is silently deprecated (54d79711)
+- **Changed** `Nette\Http\FileUpload::isImage()` accepts every image type the PHP build supports, including `image/avif`, and rejects a type the build cannot handle; previously it compared against a fixed list of GIF, PNG, JPEG and WebP (54d79711)
+- **Changed** `Nette\Http\RequestFactory::fromGlobals()` takes the port from `HTTP_HOST` when that header is present; `SERVER_PORT` is used only as a fallback when the host comes from `SERVER_NAME` (75c6bb9b)
+
+## 3.2.2
+
+- **Replaced** `Nette\Http\Session::getIterator()` with `Nette\Http\Session::getSectionNames()`: it returns an array of section names, so code iterating a `Nette\Http\Session` directly must iterate that array instead (a81c2e46)
+
+## 3.2.1
+
+- **Renamed** `Nette\Http\FileUpload::IMAGE_MIME_TYPES` → `Nette\Http\FileUpload::ImageMimeTypes`; the old name is silently deprecated (1f6ce5d5)
+- **Renamed** `Nette\Http\Helpers::STRICT_COOKIE_NAME` → `Nette\Http\Helpers::StrictCookieName`; the old name is silently deprecated (1f6ce5d5)
+- **Renamed** `Nette\Http\IRequest::DELETE` → `Nette\Http\IRequest::Delete`; the old name is silently deprecated (1f6ce5d5)
+- **Renamed** `Nette\Http\IRequest::GET` → `Nette\Http\IRequest::Get`; the old name is silently deprecated (1f6ce5d5)
+- **Renamed** `Nette\Http\IRequest::HEAD` → `Nette\Http\IRequest::Head`; the old name is silently deprecated (1f6ce5d5)
+- **Renamed** `Nette\Http\IRequest::OPTIONS` → `Nette\Http\IRequest::Options`; the old name is silently deprecated (1f6ce5d5)
+- **Renamed** `Nette\Http\IRequest::PATCH` → `Nette\Http\IRequest::Patch`; the old name is silently deprecated (1f6ce5d5)
+- **Renamed** `Nette\Http\IRequest::POST` → `Nette\Http\IRequest::Post`; the old name is silently deprecated (1f6ce5d5)
+- **Renamed** `Nette\Http\IRequest::PUT` → `Nette\Http\IRequest::Put`; the old name is silently deprecated (1f6ce5d5)
+- **Renamed** `Nette\Http\IResponse::REASON_PHRASES` → `Nette\Http\IResponse::ReasonPhrases`; the old name is silently deprecated (1f6ce5d5)
+- **Renamed** `Nette\Http\IResponse::S100_CONTINUE` → `Nette\Http\IResponse::S100_Continue`; the old name is silently deprecated (1f6ce5d5)
+- **Renamed** `Nette\Http\IResponse::S101_SWITCHING_PROTOCOLS` → `Nette\Http\IResponse::S101_SwitchingProtocols`; the old name is silently deprecated (1f6ce5d5)
+- **Renamed** `Nette\Http\IResponse::S102_PROCESSING` → `Nette\Http\IResponse::S102_Processing`; the old name is silently deprecated (1f6ce5d5)
+- **Renamed** `Nette\Http\IResponse::S201_CREATED` → `Nette\Http\IResponse::S201_Created`; the old name is silently deprecated (1f6ce5d5)
+- **Renamed** `Nette\Http\IResponse::S202_ACCEPTED` → `Nette\Http\IResponse::S202_Accepted`; the old name is silently deprecated (1f6ce5d5)
+- **Renamed** `Nette\Http\IResponse::S203_NON_AUTHORITATIVE_INFORMATION` → `Nette\Http\IResponse::S203_NonAuthoritativeInformation`; the old name is silently deprecated (1f6ce5d5)
+- **Renamed** `Nette\Http\IResponse::S204_NO_CONTENT` → `Nette\Http\IResponse::S204_NoContent`; the old name is silently deprecated (1f6ce5d5)
+- **Renamed** `Nette\Http\IResponse::S205_RESET_CONTENT` → `Nette\Http\IResponse::S205_ResetContent`; the old name is silently deprecated (1f6ce5d5)
+- **Renamed** `Nette\Http\IResponse::S206_PARTIAL_CONTENT` → `Nette\Http\IResponse::S206_PartialContent`; the old name is silently deprecated (1f6ce5d5)
+- **Renamed** `Nette\Http\IResponse::S207_MULTI_STATUS` → `Nette\Http\IResponse::S207_MultiStatus`; the old name is silently deprecated (1f6ce5d5)
+- **Renamed** `Nette\Http\IResponse::S208_ALREADY_REPORTED` → `Nette\Http\IResponse::S208_AlreadyReported`; the old name is silently deprecated (1f6ce5d5)
+- **Renamed** `Nette\Http\IResponse::S226_IM_USED` → `Nette\Http\IResponse::S226_ImUsed`; the old name is silently deprecated (1f6ce5d5)
+- **Renamed** `Nette\Http\IResponse::S300_MULTIPLE_CHOICES` → `Nette\Http\IResponse::S300_MultipleChoices`; the old name is silently deprecated (1f6ce5d5)
+- **Renamed** `Nette\Http\IResponse::S301_MOVED_PERMANENTLY` → `Nette\Http\IResponse::S301_MovedPermanently`; the old name is silently deprecated (1f6ce5d5)
+- **Renamed** `Nette\Http\IResponse::S302_FOUND` → `Nette\Http\IResponse::S302_Found`; the old name is silently deprecated (1f6ce5d5)
+- **Renamed** `Nette\Http\IResponse::S303_POST_GET` → `Nette\Http\IResponse::S303_PostGet`; the old name is silently deprecated (1f6ce5d5)
+- **Renamed** `Nette\Http\IResponse::S303_SEE_OTHER` → `Nette\Http\IResponse::S303_PostGet`; the old name is silently deprecated (1f6ce5d5)
+- **Renamed** `Nette\Http\IResponse::S304_NOT_MODIFIED` → `Nette\Http\IResponse::S304_NotModified`; the old name is silently deprecated (1f6ce5d5)
+- **Renamed** `Nette\Http\IResponse::S305_USE_PROXY` → `Nette\Http\IResponse::S305_UseProxy`; the old name is silently deprecated (1f6ce5d5)
+- **Renamed** `Nette\Http\IResponse::S307_TEMPORARY_REDIRECT` → `Nette\Http\IResponse::S307_TemporaryRedirect`; the old name is silently deprecated (1f6ce5d5)
+- **Renamed** `Nette\Http\IResponse::S308_PERMANENT_REDIRECT` → `Nette\Http\IResponse::S308_PermanentRedirect`; the old name is silently deprecated (1f6ce5d5)
+- **Renamed** `Nette\Http\IResponse::S400_BAD_REQUEST` → `Nette\Http\IResponse::S400_BadRequest`; the old name is silently deprecated (1f6ce5d5)
+- **Renamed** `Nette\Http\IResponse::S401_UNAUTHORIZED` → `Nette\Http\IResponse::S401_Unauthorized`; the old name is silently deprecated (1f6ce5d5)
+- **Renamed** `Nette\Http\IResponse::S402_PAYMENT_REQUIRED` → `Nette\Http\IResponse::S402_PaymentRequired`; the old name is silently deprecated (1f6ce5d5)
+- **Renamed** `Nette\Http\IResponse::S403_FORBIDDEN` → `Nette\Http\IResponse::S403_Forbidden`; the old name is silently deprecated (1f6ce5d5)
+- **Renamed** `Nette\Http\IResponse::S404_NOT_FOUND` → `Nette\Http\IResponse::S404_NotFound`; the old name is silently deprecated (1f6ce5d5)
+- **Renamed** `Nette\Http\IResponse::S405_METHOD_NOT_ALLOWED` → `Nette\Http\IResponse::S405_MethodNotAllowed`; the old name is silently deprecated (1f6ce5d5)
+- **Renamed** `Nette\Http\IResponse::S406_NOT_ACCEPTABLE` → `Nette\Http\IResponse::S406_NotAcceptable`; the old name is silently deprecated (1f6ce5d5)
+- **Renamed** `Nette\Http\IResponse::S407_PROXY_AUTHENTICATION_REQUIRED` → `Nette\Http\IResponse::S407_ProxyAuthenticationRequired`; the old name is silently deprecated (1f6ce5d5)
+- **Renamed** `Nette\Http\IResponse::S408_REQUEST_TIMEOUT` → `Nette\Http\IResponse::S408_RequestTimeout`; the old name is silently deprecated (1f6ce5d5)
+- **Renamed** `Nette\Http\IResponse::S409_CONFLICT` → `Nette\Http\IResponse::S409_Conflict`; the old name is silently deprecated (1f6ce5d5)
+- **Renamed** `Nette\Http\IResponse::S410_GONE` → `Nette\Http\IResponse::S410_Gone`; the old name is silently deprecated (1f6ce5d5)
+- **Renamed** `Nette\Http\IResponse::S411_LENGTH_REQUIRED` → `Nette\Http\IResponse::S411_LengthRequired`; the old name is silently deprecated (1f6ce5d5)
+- **Renamed** `Nette\Http\IResponse::S412_PRECONDITION_FAILED` → `Nette\Http\IResponse::S412_PreconditionFailed`; the old name is silently deprecated (1f6ce5d5)
+- **Renamed** `Nette\Http\IResponse::S413_REQUEST_ENTITY_TOO_LARGE` → `Nette\Http\IResponse::S413_RequestEntityTooLarge`; the old name is silently deprecated (1f6ce5d5)
+- **Renamed** `Nette\Http\IResponse::S414_REQUEST_URI_TOO_LONG` → `Nette\Http\IResponse::S414_RequestUriTooLong`; the old name is silently deprecated (1f6ce5d5)
+- **Renamed** `Nette\Http\IResponse::S415_UNSUPPORTED_MEDIA_TYPE` → `Nette\Http\IResponse::S415_UnsupportedMediaType`; the old name is silently deprecated (1f6ce5d5)
+- **Renamed** `Nette\Http\IResponse::S416_REQUESTED_RANGE_NOT_SATISFIABLE` → `Nette\Http\IResponse::S416_RequestedRangeNotSatisfiable`; the old name is silently deprecated (1f6ce5d5)
+- **Renamed** `Nette\Http\IResponse::S417_EXPECTATION_FAILED` → `Nette\Http\IResponse::S417_ExpectationFailed`; the old name is silently deprecated (1f6ce5d5)
+- **Renamed** `Nette\Http\IResponse::S421_MISDIRECTED_REQUEST` → `Nette\Http\IResponse::S421_MisdirectedRequest`; the old name is silently deprecated (1f6ce5d5)
+- **Renamed** `Nette\Http\IResponse::S422_UNPROCESSABLE_ENTITY` → `Nette\Http\IResponse::S422_UnprocessableEntity`; the old name is silently deprecated (1f6ce5d5)
+- **Renamed** `Nette\Http\IResponse::S423_LOCKED` → `Nette\Http\IResponse::S423_Locked`; the old name is silently deprecated (1f6ce5d5)
+- **Renamed** `Nette\Http\IResponse::S424_FAILED_DEPENDENCY` → `Nette\Http\IResponse::S424_FailedDependency`; the old name is silently deprecated (1f6ce5d5)
+- **Renamed** `Nette\Http\IResponse::S426_UPGRADE_REQUIRED` → `Nette\Http\IResponse::S426_UpgradeRequired`; the old name is silently deprecated (1f6ce5d5)
+- **Renamed** `Nette\Http\IResponse::S428_PRECONDITION_REQUIRED` → `Nette\Http\IResponse::S428_PreconditionRequired`; the old name is silently deprecated (1f6ce5d5)
+- **Renamed** `Nette\Http\IResponse::S429_TOO_MANY_REQUESTS` → `Nette\Http\IResponse::S429_TooManyRequests`; the old name is silently deprecated (1f6ce5d5)
+- **Renamed** `Nette\Http\IResponse::S431_REQUEST_HEADER_FIELDS_TOO_LARGE` → `Nette\Http\IResponse::S431_RequestHeaderFieldsTooLarge`; the old name is silently deprecated (1f6ce5d5)
+- **Renamed** `Nette\Http\IResponse::S451_UNAVAILABLE_FOR_LEGAL_REASONS` → `Nette\Http\IResponse::S451_UnavailableForLegalReasons`; the old name is silently deprecated (1f6ce5d5)
+- **Renamed** `Nette\Http\IResponse::S500_INTERNAL_SERVER_ERROR` → `Nette\Http\IResponse::S500_InternalServerError`; the old name is silently deprecated (1f6ce5d5)
+- **Renamed** `Nette\Http\IResponse::S501_NOT_IMPLEMENTED` → `Nette\Http\IResponse::S501_NotImplemented`; the old name is silently deprecated (1f6ce5d5)
+- **Renamed** `Nette\Http\IResponse::S502_BAD_GATEWAY` → `Nette\Http\IResponse::S502_BadGateway`; the old name is silently deprecated (1f6ce5d5)
+- **Renamed** `Nette\Http\IResponse::S503_SERVICE_UNAVAILABLE` → `Nette\Http\IResponse::S503_ServiceUnavailable`; the old name is silently deprecated (1f6ce5d5)
+- **Renamed** `Nette\Http\IResponse::S504_GATEWAY_TIMEOUT` → `Nette\Http\IResponse::S504_GatewayTimeout`; the old name is silently deprecated (1f6ce5d5)
+- **Renamed** `Nette\Http\IResponse::S505_HTTP_VERSION_NOT_SUPPORTED` → `Nette\Http\IResponse::S505_HttpVersionNotSupported`; the old name is silently deprecated (1f6ce5d5)
+- **Renamed** `Nette\Http\IResponse::S506_VARIANT_ALSO_NEGOTIATES` → `Nette\Http\IResponse::S506_VariantAlsoNegotiates`; the old name is silently deprecated (1f6ce5d5)
+- **Renamed** `Nette\Http\IResponse::S507_INSUFFICIENT_STORAGE` → `Nette\Http\IResponse::S507_InsufficientStorage`; the old name is silently deprecated (1f6ce5d5)
+- **Renamed** `Nette\Http\IResponse::S508_LOOP_DETECTED` → `Nette\Http\IResponse::S508_LoopDetected`; the old name is silently deprecated (1f6ce5d5)
+- **Renamed** `Nette\Http\IResponse::S510_NOT_EXTENDED` → `Nette\Http\IResponse::S510_NotExtended`; the old name is silently deprecated (1f6ce5d5)
+- **Renamed** `Nette\Http\IResponse::S511_NETWORK_AUTHENTICATION_REQUIRED` → `Nette\Http\IResponse::S511_NetworkAuthenticationRequired`; the old name is silently deprecated (1f6ce5d5)
+- **Renamed** `Nette\Http\IResponse::SAME_SITE_LAX` → `Nette\Http\IResponse::SameSiteLax`; the old name is silently deprecated (1f6ce5d5)
+- **Renamed** `Nette\Http\IResponse::SAME_SITE_NONE` → `Nette\Http\IResponse::SameSiteNone`; the old name is silently deprecated (1f6ce5d5)
+- **Renamed** `Nette\Http\IResponse::SAME_SITE_STRICT` → `Nette\Http\IResponse::SameSiteStrict`; the old name is silently deprecated (1f6ce5d5)
+- **Renamed** `$time` of `Nette\Http\Response::setCookie()` → `$expire`; the old name was removed, which affects named arguments (ed234279)
+- **Renamed** `$time` of `Nette\Http\Response::setExpiration()` → `$expire`; the old name was removed, which affects named arguments (ed234279)
+- **Renamed** `$time` of `Nette\Http\Session::setExpiration()` → `$expire`; the old name was removed, which affects named arguments (ed234279)
+- **Renamed** `$time` of `Nette\Http\SessionSection::setExpiration()` → `$expire`; the old name was removed, which affects named arguments (ed234279)
+- **Renamed** `$expiration` of `Nette\Http\SessionSection::set()` → `$expire`; the old name was removed, which affects named arguments (ed234279)
+- **Deprecated** `Nette\Http\Session::getIterator()`: there is no replacement yet, iterate the sections you know; using it triggers `E_USER_DEPRECATED` (0e16cd4f)
+- **Deprecated** `Nette\Http\SessionSection::__get()`: use `Nette\Http\SessionSection::get()`, so write `$section->get('name')` instead of `$section->name`; the old name is silently deprecated (01e7a4af)
+- **Deprecated** `Nette\Http\SessionSection::__set()`: use `Nette\Http\SessionSection::set()`, so write `$section->set('name', $value)` instead of `$section->name = $value`; the old name is silently deprecated (01e7a4af)
+- **Deprecated** `Nette\Http\SessionSection::__isset()`: use `Nette\Http\SessionSection::get()`, so write `$section->get('name') !== null` instead of `isset($section->name)`; the old name is silently deprecated (01e7a4af)
+- **Deprecated** `Nette\Http\SessionSection::__unset()`: use `Nette\Http\SessionSection::remove()`, so write `$section->remove('name')` instead of `unset($section->name)`; the old name is silently deprecated (01e7a4af)
+- **Deprecated** `Nette\Http\SessionSection::offsetGet()`: use `Nette\Http\SessionSection::get()`, so write `$section->get('name')` instead of `$section['name']`; the old name is silently deprecated (01e7a4af)
+- **Deprecated** `Nette\Http\SessionSection::offsetSet()`: use `Nette\Http\SessionSection::set()`, so write `$section->set('name', $value)` instead of `$section['name'] = $value`; the old name is silently deprecated (01e7a4af)
+- **Deprecated** `Nette\Http\SessionSection::offsetExists()`: use `Nette\Http\SessionSection::get()`, so write `$section->get('name') !== null` instead of `isset($section['name'])`; the old name is silently deprecated (01e7a4af)
+- **Deprecated** `Nette\Http\SessionSection::offsetUnset()`: use `Nette\Http\SessionSection::remove()`, so write `$section->remove('name')` instead of `unset($section['name'])`; the old name is silently deprecated (01e7a4af)
+- **Changed** `Nette\Http\RequestFactory::fromGlobals()` no longer copies the HTTP Basic credentials into the URL, so `Nette\Http\Request::getUrl()` carries neither user nor password; read them with `Nette\Http\Request::getBasicCredentials()` (be426993)
+- **Changed** `Nette\Http\RequestFactory::fromGlobals()` reconstructs the `Authorization` header from `PHP_AUTH_USER` and `PHP_AUTH_PW`, or from `PHP_AUTH_DIGEST`, when the header itself is missing (410837de)
+- **Changed** `Nette\Http\RequestFactory::fromGlobals()` falls back to `GET` when `$_SERVER['REQUEST_METHOD']` is missing, so `Nette\Http\Request::getMethod()` no longer returns `null` (9b95f9dc)
+
+## 3.1.8
+
+- **Changed** `Nette\Http\Request::getRemoteHost()` returns `null` behind a trusted proxy; previously it could be filled from `X-Forwarded-Host`; also in 3.2.2 (613d8cfc)
+- **Changed** `Nette\Http\Request::getUrl()` gets the port derived from the scheme (443 or 80) when a trusted proxy sends a `Forwarded` header with a `proto` parameter; previously the port stayed unchanged; also in 3.2.2 (792f6b4d)
+- **Changed** `Nette\Http\Session::setOptions()` treats the key `read_and_close` with the value `null` as absent, so it neither checks for a running session nor switches read-and-close on; also in 3.2.2 (f096ac1d)
+- **Changed** `Nette\Http\Url::canonicalize()` strips a trailing dot from the host; also in 3.2.2 (d6ef4021)
+- **Changed** `Nette\Http\Url::isEqual()` strips a trailing dot from the host before comparing, so `example.com.` and `example.com` count as the same host; also in 3.2.2 (d6ef4021)
+- **Config** `session.readAndClose`: when the key is not set, the extension no longer forces a default on the session by calling `setOptions()`; also in 3.2.2 (f096ac1d)
+
+## 3.1.7
+
+- **Deprecated** `Nette\Http\Request::getReferer()`: use `Nette\Http\Request::getOrigin()`, which reads the `Origin` header and returns only scheme, host and port instead of the full URL of the referring page; the old name is silently deprecated (eb3f6d19)
+
+## 3.1.5
+
+- **Changed** `Nette\Http\Session::setOptions()` with `autoStart` enabled no longer starts the session immediately; it only allows a lazy start on the first read or write (b926598c)
+- **Changed** reading or writing session data while `autoStart` is disabled triggers `E_USER_WARNING` and the access is skipped; previously the session was started silently, so call `Nette\Http\Session::start()` explicitly (b926598c)
+- **Changed** `Nette\Http\Session::setOptions()` honors `readAndClose` whenever the key is present, including the value `false`; previously only a truthy value was recognized, so read-and-close could not be switched off (323b83ea)
+- **Changed** `Nette\Http\SessionSection::get()` throws `\ArgumentCountError` when called with a second argument; previously the extra argument was silently ignored (dd9436c2)
+- **Changed** `Nette\Http\SessionSection::remove()` throws `\ArgumentCountError` when called with more than one argument; previously the extra arguments were silently ignored (dd9436c2)
+- **Changed** `Nette\Http\SessionSection::remove()` no longer starts the session when none exists; previously it started and thus created one (bb0452a3)
+- **Changed** `Nette\Http\SessionSection::setExpiration()` and `Nette\Http\SessionSection::removeExpiration()` no longer start or write the session when the expiration is only being cleared (bb0452a3)
+
+## 3.1.1
+
+- **Changed** `Nette\Http\SessionSection::__get()` returns a reference to the stored value, so writing through the returned reference now really updates the session (ad82141c)
+
+## 3.1.0
+
+- **Deprecated** `Nette\Http\UserStorage`: use `Nette\Bridges\SecurityHttp\SessionStorage` from nette/security, which stores the identity differently; the old name is silently deprecated (e791a006)
+- **Deprecated** `Nette\Http\FileUpload::getName()`: use `Nette\Http\FileUpload::getUntrustedName()`; the old name is silently deprecated (alias since 3.0.5) (53095961)
+- **Deprecated** `Nette\Http\Response::$cookieHttpOnly`: pass `$httpOnly` to `Nette\Http\Response::setCookie()`; the old name is silently deprecated (5d56a34e)
+- **Deprecated** `Nette\Http\Session::getCookieParameters()`: call `session_get_cookie_params()`; using the old name triggers `E_USER_DEPRECATED` (deprecated since 3.0.0) (0759b831)
+- **Deprecated** `Nette\Http\Url::getBasePath()`: use `Nette\Http\UrlScript::getBasePath()`, which needs a `Nette\Http\UrlScript` instance; the old name is silently deprecated (f4289479)
+- **Deprecated** `Nette\Http\Url::getBaseUrl()`: use `Nette\Http\UrlScript::getBaseUrl()`, which needs a `Nette\Http\UrlScript` instance; the old name is silently deprecated (f4289479)
+- **Deprecated** `Nette\Http\Url::getRelativeUrl()`: use `Nette\Http\UrlScript::getRelativeUrl()`, which needs a `Nette\Http\UrlScript` instance; the old name is silently deprecated (f4289479)
+- **Signature** `Nette\Http\Request::getFile()`: `$key` also accepts an array of keys and the method always returns `?Nette\Http\FileUpload`; previously a key pointing at a group of files returned a nested array (c89e53a1)
+- **Changed** `Nette\Http\Response::setCookie()` sends `SameSite=Lax` by default; previously the attribute was omitted (5d7cff39)
+- **Changed** `Nette\Http\Response::setCookie()` defaults `$path` to `'/'` when `$domain` is given, and `$domain` to `''` when `$path` is given; previously `Nette\Http\Response::$cookiePath` and `Nette\Http\Response::$cookieDomain` were used (9b7696b6)
+- **Changed** `Nette\Http\Session::setExpiration()` resets the expiration to the default only for `null`; other falsy values such as `''` or `'0'` are parsed as a time string (31b10d74)
+- **Changed** `Nette\Http\Helpers::STRICT_COOKIE_NAME` is `'_nss'`; previously `'nette-samesite'`, so the same-site detection cookie is sent under the new name; affects code reading or deleting it by name (marked @internal) (9422e79f)
+- **Changed** `Nette\Http\RequestFactory::fromGlobals()` throws `Nette\InvalidStateException` when `$_POST` or `$_COOKIE` holds a leaf value that is neither a string nor an array; previously the value was cast to a string (e61eaaa8)
+- **Changed** reading a value from a `Nette\Http\SessionSection` no longer forces the session to start when a session is already active, so reads work after read-and-close (7f07a266)
+- **Config** `http.cookieSecure`: the default is `'auto'`, so a cookie is marked secure on an HTTPS request; previously no default was applied and the flag followed `Nette\Http\Response::$cookieSecure` (dbfe3c21)
+- **Config** `session.cookieSecure` → `http.cookieSecure`: the old key still works but triggers `E_USER_DEPRECATED` (c02cde45)
+- **Config** `session.cookieSamesite`: the value must be `'Lax'`, `'Strict'`, `'None'` or `true`, otherwise the configuration is rejected (f5541181)
+## 3.0.7
+
+- **Signature** `Nette\Http\SessionSection::remove()`: takes an optional `$name`, a name or an array of names; previously it always removed the whole section; affects subclasses overriding it; also in 3.1.5 (7d8b1fc0)
+- **Changed** `Nette\Http\Session::setOptions()` applies `read_and_close` whenever the key is present, even with a falsy value, and throws `Nette\InvalidStateException` if the session is already active; previously a falsy value was silently ignored (7af759ac)
+- **Changed** `Nette\Http\Session::start()` no longer regenerates the ID of an empty session in read-and-close mode, so no extra `Set-Cookie` is sent; also in 3.1.5 (e1ba2ae8)
+- **Config** `session.autoStart`: the default is `false`; previously `'smart'`, so a session is no longer started automatically unless the option is set explicitly (f0a72562)
+
+## 3.0.6
+
+- **Renamed** `$samesite` of `Nette\Http\Session::setCookieParameters()` → `$sameSite`; the old name was removed, which affects named arguments (c31fb6c3)
+- **Changed** `Nette\Http\RequestFactory::$urlFilters` collapses only a pair of slashes in the path; previously a run of three or more slashes was collapsed in one pass; also in 3.1.2 (3d15108b)
+- **Changed** `Nette\Http\RequestFactory::createHttpRequest()` strips a trailing dot from the `Host` header, so the resulting URL host no longer contains it; also in 3.1.2 (ed7fca1d)
+- **Changed** `Nette\Http\Session::setOptions()` throws `Nette\InvalidStateException` for an invalid option key right away; previously the error surfaced only when the session was started (f3f5f218)
+- **Changed** the `nette-samesite` cookie is sent with every response; previously only when the request did not carry it (dc7ce6cf)
+
+## 3.0.5
+
+- **Renamed** `Nette\Http\FileUpload::getName()` → `Nette\Http\FileUpload::getUntrustedName()`; the old name still works as an alias (1e89b090)
+- **Changed** `Nette\Http\FileUpload::getSanitizedName()` replaces the extension of a recognized image with the one matching its detected content type (99aa58ca)
+- **Changed** `Nette\Http\FileUpload::getSanitizedName()` returns `'unknown'` when the original name contains no allowed character; previously an empty string (3705f22a)
+- **Changed** `Nette\Http\FileUpload::getSanitizedName()` collapses a redundant `-` next to a dot into the dot alone (650a6d42)
+- **Changed** `Nette\Http\FileUpload::getImageSize()` returns `null` for a file that is not a recognized image; previously `getimagesize()` was called on every successfully uploaded file (eef37b79)
+
+## 3.0.3.1
+
+- **Changed** `Nette\Http\Url::parseQuery()` splits the query string by the separators from the `arg_separator.input` ini directive; previously always by `&` and `;`, so a literal `;` no longer separates unless the directive lists it (90a34a9e)
+
+## 3.0.3
+
+- **Renamed** `Nette\Http\RequestFactory::createHttpRequest()` → `Nette\Http\RequestFactory::fromGlobals()`; the old name is silently deprecated (d73c9aa6)
+- **Deprecated** `Nette\Http\IResponse::BROWSER`: pass `null` as the cookie expiration instead; the old name is silently deprecated (630336fa)
+- **Deprecated** `Nette\Http\IResponse::PERMANENT`: pass an explicit far-future expiration instead; the old name is silently deprecated (630336fa)
+- **Changed** `Nette\Http\Response::setCode()` sends a reason phrase from `Nette\Http\IResponse::REASON_PHRASES` for a wider set of codes such as 102, 226, 421 to 424, 507, 508 and 510; previously those fell back to `Unknown status` (65feb257)
+
+## 3.0.2
+
+- **Changed** `Nette\Http\RequestFactory::createHttpRequest()` copies the HTTP Basic credentials from `PHP_AUTH_USER` and `PHP_AUTH_PW` into the URL again, so `Nette\Http\Request::getUrl()` carries them; the removal made in 3.0.0 is reverted (9901e0f7)
+- **Changed** `Nette\Http\UrlImmutable::getHostUrl()` keeps a host that is the string `'0'`; previously a falsy check dropped it (3e0259b3)
+
+## 3.0.1
+
+- **Changed** autowiring the HTTP request and response services by the concrete types `Nette\Http\Request` and `Nette\Http\Response` works again without a notice; the restriction to `Nette\Http\IRequest` and `Nette\Http\IResponse` introduced in 3.0.0 is reverted (5c326b5b)
+- **Changed** the session cookie no longer sets `SameSite=Lax`; the default introduced in 3.0.0 is reverted and the attribute is omitted again (e358c668)
+- **Changed** the session options `referer_check`, `use_cookies`, `use_only_cookies`, `use_trans_sid`, `use_strict_mode` and `cookie_httponly` can no longer be overridden through `Nette\Http\Session::setOptions()` or the `session` configuration section; they are always forced to their secure values (be4275ae)
+- **Changed** `Nette\Http\Session::exists()` returns true whenever a PHP session is active, even one not started by Nette; previously it only consulted Nette's own flag (4a2bb601)
+- **Changed** `Nette\Http\Session::start()` cooperates with a session already active outside Nette and only initializes its own structures instead of starting the session again (4a2bb601)
+- **Changed** `Nette\Http\Session::destroy()` no longer throws `Nette\InvalidStateException` when called before the session was started (4a2bb601)
+- **Changed** `Nette\Http\Session::start()` no longer regenerates the ID of a newly created session, so no extra `Set-Cookie` with the regenerated ID is sent (7ff93fc3)
+- **Changed** `Nette\Http\Request::getRemoteAddress()` returns an IPv6 address without the surrounding brackets that PHP 7.3 could leave in `REMOTE_ADDR` (5975c301)
+- **Changed** an unknown or misspelled session configuration option throws `Nette\InvalidStateException` with a spelling suggestion; previously it was silently ignored (ae60d634)
+- **Config** `http.sameSiteProtection`: the key was removed and the `nette-samesite` cookie is always sent, so the protection can no longer be switched off (9c49a496)
+- **Config** `http.cookieSecure`: no default is applied any more, so the secure flag follows `Nette\Http\Response::$cookieSecure`; previously the default was `'auto'`, set `cookieSecure: auto` explicitly to keep it (51a304fa)
+- **Config** `http.cookieSecure`: the value is validated against `null`, `true`, `false` and `'auto'`; previously any value was cast with `(bool)` (51a304fa)
+- **Config** `session.cookieSamesite`: the value `true` is accepted and translated to `'Lax'`; previously it was passed through unchanged and had no defined effect (5abc28d0)
+## 3.0.0
+
+- **Removed** `Nette\Http\Session::DEFAULT_FILE_LIFETIME`: the constant is gone and nothing replaces it (812a0ab7)
+- **Removed** `Nette\Http\UrlScript::setScriptPath()`: the class is immutable now, pass the script path as the second argument of `Nette\Http\UrlScript::__construct()` (b1a2c2c9)
+- **Removed** the `http.context` service and its `nette.httpContext` alias: inject `Nette\Http\IRequest` and `Nette\Http\IResponse` instead of `Nette\Http\Context` (76cfc4b4)
+- **Replaced** `Nette\Http\ISessionStorage` with `\SessionHandlerInterface`: the interface was removed, implement the native one, whose `destroy()` and `gc()` take the place of `remove()` and `clean()` (76cfc4b4)
+- **Replaced** `Nette\Http\Session::setStorage()` with `Nette\Http\Session::setHandler()`: pass an implementation of `\SessionHandlerInterface`; the old method was removed (76cfc4b4)
+- **Replaced** `Nette\Http\Request::isPost()` with `Nette\Http\Request::isMethod()`: call `isMethod('POST')`; the old method was removed (76cfc4b4)
+- **Replaced** `Nette\Http\Response::date()` with `Nette\Http\Helpers::formatDate()`: the old static method was removed (76cfc4b4)
+- **Renamed** `$value` of `Nette\Http\Url::setScheme()` → `$scheme`; the old name was removed, which affects named arguments (c0ee2bf3)
+- **Renamed** `$value` of `Nette\Http\Url::setUser()` → `$user`; the old name was removed, which affects named arguments (c0ee2bf3)
+- **Renamed** `$value` of `Nette\Http\Url::setPassword()` → `$password`; the old name was removed, which affects named arguments (c0ee2bf3)
+- **Renamed** `$value` of `Nette\Http\Url::setHost()` → `$host`; the old name was removed, which affects named arguments (c0ee2bf3)
+- **Renamed** `$value` of `Nette\Http\Url::setPort()` → `$port`; the old name was removed, which affects named arguments (c0ee2bf3)
+- **Renamed** `$value` of `Nette\Http\Url::setPath()` → `$path`; the old name was removed, which affects named arguments (c0ee2bf3)
+- **Renamed** `$value` of `Nette\Http\Url::setQuery()` → `$query`; the old name was removed, which affects named arguments (c0ee2bf3)
+- **Renamed** `$value` of `Nette\Http\Url::appendQuery()` → `$query`; the old name was removed, which affects named arguments (c0ee2bf3)
+- **Renamed** `$value` of `Nette\Http\Url::setFragment()` → `$fragment`; the old name was removed, which affects named arguments (c0ee2bf3)
+- **Deprecated** `Nette\Http\Session::getCookieParameters()`: call `session_get_cookie_params()`; the old name is silently deprecated (32299217)
+- **Deprecated** autowiring the HTTP request service by the concrete type `Nette\Http\Request`: type-hint `Nette\Http\IRequest` instead; using the concrete class triggers `E_USER_DEPRECATED` (2e43a584)
+- **Deprecated** autowiring the HTTP response service by the concrete type `Nette\Http\Response`: type-hint `Nette\Http\IResponse` instead; using the concrete class triggers `E_USER_DEPRECATED` (2e43a584)
+- **Signature** `Nette\Http\FileUpload`: the class is `final`; affects subclasses extending it (9df9df5b)
+- **Signature** `Nette\Http\Helpers`: the class is `final`; affects subclasses extending it (9df9df5b)
+- **Signature** `Nette\Http\Response`: the class is `final`; affects subclasses extending it (9df9df5b)
+- **Signature** `Nette\Http\Request::__construct()`: the second parameter `$query` was removed, so every argument after `$url` shifts one position; an argument passed in the old `$query` position now binds to `$post` (c9ff316a)
+- **Signature** `Nette\Http\Request::getReferer()`: returns `?Nette\Http\UrlImmutable` instead of `?Nette\Http\Url`; the result has no setters, derive a modified copy with the `with*()` methods (b470427d)
+- **Signature** `Nette\Http\Request::getQuery()`: the second parameter `$default` was removed; passing it triggers `E_USER_DEPRECATED` and the value is ignored, write `getQuery($key) ?? $default` (282ab9d4)
+- **Signature** `Nette\Http\Request::getPost()`: the second parameter `$default` was removed; passing it triggers `E_USER_DEPRECATED` and the value is ignored, write `getPost($key) ?? $default` (282ab9d4)
+- **Signature** `Nette\Http\Request::getCookie()`: the second parameter `$default` was removed; passing it triggers `E_USER_DEPRECATED` and the value is ignored, write `getCookie($key) ?? $default` (282ab9d4)
+- **Signature** `Nette\Http\Request::getHeader()`: the second parameter `$default` was removed; passing it triggers `E_USER_DEPRECATED` and the value is ignored, write `getHeader($header) ?? $default` (282ab9d4)
+- **Signature** `Nette\Http\Response::getHeader()`: the second parameter `$default` was removed; passing it triggers `E_USER_DEPRECATED` and the value is ignored, write `getHeader($header) ?? $default` (282ab9d4)
+- **Signature** `Nette\Http\Url::getQueryParameter()`: the second parameter `$default` was removed; passing it triggers `E_USER_DEPRECATED` and the value is ignored, write `getQueryParameter($name) ?? $default` (282ab9d4)
+- **Signature** `Nette\Http\IResponse::setCode()`: takes an optional second parameter `$reason`; affects classes implementing the interface (398dc223)
+- **Signature** `Nette\Http\IResponse::setExpiration()`: the parameter is `?string $expire` instead of the untyped `$seconds`; affects classes implementing the interface and code passing a number of seconds (9daa6026)
+- **Signature** `Nette\Http\UserStorage::setIdentity()`: `$identity` is required and typed `?Nette\Security\IIdentity`; previously it was optional (f5e9ce5f)
+- **Signature** `Nette\Http\UserStorage::setExpiration()`: `$time` is typed `?string`, so a non-string value now throws a `TypeError`; previously it only triggered `E_USER_DEPRECATED` and still worked (57dd6591)
+- **Signature** `Nette\Http\UrlScript::__construct()`: `$url` defaults to `'/'`; previously `null` (b1a2c2c9)
+- **Signature** `Nette\Http\UrlScript::withPath()`: takes an optional second parameter `$scriptPath`; affects subclasses overriding it (9a763c71)
+- **Signature** `Nette\Http\Session::setCookieParameters()`: takes an optional fourth parameter `$samesite`; affects subclasses overriding it (1906c2ce)
+- **Signature** native parameter and return types were added throughout the package, so a value of another type now throws a `TypeError` and a subclass or an implementation of `Nette\Http\IRequest` and `Nette\Http\IResponse` must repeat the declarations: `Nette\Http\IRequest::getQuery()`, `Nette\Http\IRequest::getPost()`, `Nette\Http\IRequest::getCookie()`, `Nette\Http\IRequest::getHeader()`, `Nette\Http\IRequest::getFile()`, `Nette\Http\IRequest::isMethod()`, `Nette\Http\IResponse::setHeader()`, `Nette\Http\IResponse::addHeader()`, `Nette\Http\IResponse::setContentType()`, `Nette\Http\IResponse::redirect()`, `Nette\Http\IResponse::setCookie()`, `Nette\Http\IResponse::deleteCookie()`, `Nette\Http\Request::getFile()`, `Nette\Http\Request::detectLanguage()`, `Nette\Http\Response::setCode()`, `Nette\Http\Response::setContentType()`, `Nette\Http\Response::setCookie()`, `Nette\Http\Response::deleteCookie()`, `Nette\Http\Session::setName()`, `Nette\Http\Session::setSavePath()`, `Nette\Http\SessionSection::__construct()`, `Nette\Http\FileUpload::__construct()`, `Nette\Http\Helpers::ipMatch()`, `Nette\Http\Helpers::formatDate()`, `Nette\Http\Url::parseQuery()` (f5e9ce5f, fdcbd8dd)
+- **Changed** `Nette\Http\UrlScript` extends `Nette\Http\UrlImmutable` instead of `Nette\Http\Url`, so it is immutable and the inherited setters `setScheme()`, `setUser()`, `setPassword()`, `setHost()`, `setPort()`, `setPath()`, `setQuery()`, `appendQuery()`, `setQueryParameter()` and `setFragment()` are gone; use the `with*()` methods instead (b1a2c2c9)
+- **Changed** `Nette\Http\UrlScript::__construct()` throws `Nette\InvalidArgumentException` when `$scriptPath` is not a prefix of the URL path; previously it silently produced a wrong base path (b6ed2322)
+- **Changed** `Nette\Http\Url::__construct()` throws `Nette\InvalidArgumentException` for a value that is neither a string nor a `Nette\Http\Url` nor a `Nette\Http\UrlImmutable`; previously such a value was silently ignored (6ad15e84)
+- **Changed** `Nette\Http\Url::getAuthority()` includes the user and password for `http` and `https` URLs, and so do `getHostUrl()`, `getAbsoluteUrl()` and `__toString()`; previously they were stripped (c8dbe234)
+- **Changed** `Nette\Http\Url::isEqual()` always compares the user and the password; previously it ignored them for `http` and `https` URLs (c8dbe234)
+- **Changed** `Nette\Http\Url::getHostUrl()` returns `scheme:` for a URL that has a scheme but no host, and so do `getAbsoluteUrl()` and `__toString()`; previously `scheme://` with an empty authority (8ffa1cd5)
+- **Changed** `Nette\Http\Url::parseQuery()` keeps a query key containing a space or a dot verbatim; previously PHP's `parse_str()` turned such characters into underscores (2c472bc4)
+- **Changed** `Nette\Http\Url::parseQuery()` returns the parsed array even when the first value is falsy, for instance an empty string produced by `%00`; previously an empty array (3660997f)
+- **Changed** `Nette\Http\Url::$defaultPorts` no longer lists `news` and `nntp`, so `Nette\Http\Url::getPort()` returns `null` for those schemes (c0ee2bf3)
+- **Changed** `Nette\Http\FileUpload::move()` throws `Nette\IOException` when the target directory cannot be created; previously `Nette\InvalidStateException` (3666eba3)
+- **Changed** `Nette\Http\FileUpload::isImage()` returns true for `image/webp` as well (3ea6fcde)
+- **Changed** `Nette\Http\RequestFactory::createHttpRequest()` no longer copies the HTTP Basic credentials from `PHP_AUTH_USER` and `PHP_AUTH_PW` into the URL, so `Nette\Http\Request::getUrl()` does not carry them; read `$_SERVER` directly if you need them (458c96da)
+- **Changed** `Nette\Http\RequestFactory::createHttpRequest()` ignores a malformed, non-IP value in `X-Forwarded-For` instead of matching it against the trusted proxies (9c580190)
+- **Changed** `Nette\Http\RequestFactory::createHttpRequest()` sets the port to the standard 443 or 80 of the detected scheme when a trusted proxy sends `X-Forwarded-Proto` without `X-Forwarded-Port`; previously the port stayed unchanged (08df9ae9)
+- **Changed** the session cookie is sent with `SameSite=Lax` by default; previously without the attribute (5e1deebc)
+- **Changed** `Nette\Http\Session` enables PHP's `use_strict_mode`, so an unrecognized session ID, for example one set by hand in a cookie, is rejected and a new one is generated (43c26b9c)
+- **Changed** the session cookie parameters `cookie_path`, `cookie_domain` and `cookie_secure` follow `Nette\Http\Response::$cookiePath`, `Nette\Http\Response::$cookieDomain` and `Nette\Http\Response::$cookieSecure`; previously they were the fixed defaults `'/'`, `''` and `false` (4c57041e)
+- **Changed** `Nette\Http\Session::regenerateId()` called before the session starts really assigns a new session ID; previously it only set an internal flag (544d9e66)
+- **Changed** `Nette\Http\Session::setOptions()` normalizes the keys to snake_case and strips the `session.` prefix, so `Nette\Http\Session::getOptions()` returns the normalized keys instead of the spelling that was passed in (c2a627f9)
+- **Config** `http.csp-report` → `http.cspReportOnly`: the old key was removed (62ad94ad)
+- **Config** `http.cookieSecure`: the default is `'auto'`, so a cookie is marked secure automatically on an HTTPS request; previously the default was `null` and the flag followed `Nette\Http\Response::$cookieSecure`; set `cookieSecure: false` to keep the previous behavior (76ac03bc)
+- **Config** `http.headers.X-Powered-By`: the default is `'Nette Framework 3'`; previously `'Nette Framework'` (5112a679)
+- **Config** `http.frames`: the key is ignored when `http.headers` defines `X-Frame-Options` explicitly; previously it overwrote that header (b9897262)
+- **Config** `http.headers`: a configured header value of `'0'` is sent; previously it was treated as empty and skipped (bdb45167)
+- **Config** `http.csp.require-sri-for`: the values are no longer wrapped in quotes in the generated header (1c56c3c0)
+- **Config** `http.csp.sandbox`: the values are no longer wrapped in quotes in the generated header (1c56c3c0)

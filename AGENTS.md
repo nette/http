@@ -13,6 +13,12 @@ This is a security-critical package: read the internals before touching URL
 parsing, input sanitization, the reverse-proxy trust model, cookies, or sessions.
 A subtle change there can open an injection, spoofing, or fixation hole.
 
+`docs/upgrading.md` records, per released version, every change visible to
+users of the package (renames, removals, deprecations, signatures, behavior,
+configuration), each with its commit hash; internal changes are not in it. It
+is the place to look up the history of a public symbol. Do not write to it; it
+is extended at release time from the git history.
+
 ## Project Overview
 
 **Nette HTTP Component** - A standalone PHP library providing HTTP abstraction for
