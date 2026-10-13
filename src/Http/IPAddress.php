@@ -35,7 +35,7 @@ final readonly class IPAddress implements \Stringable
 	public function __construct(
 		public string $address,
 	) {
-		$bin = @inet_pton($address);
+		$bin = inet_pton($address);
 		if ($bin === false) {
 			throw new Nette\InvalidArgumentException("Invalid IP address: $address");
 		}
@@ -55,7 +55,7 @@ final readonly class IPAddress implements \Stringable
 	 */
 	public static function isValid(string $address): bool
 	{
-		return @inet_pton($address) !== false;
+		return inet_pton($address) !== false;
 	}
 
 
@@ -123,7 +123,7 @@ final readonly class IPAddress implements \Stringable
 			$prefix = null;
 		}
 
-		$networkBin = @inet_pton($network);
+		$networkBin = inet_pton($network);
 		if ($networkBin === false) {
 			return false;
 		}

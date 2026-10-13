@@ -103,7 +103,7 @@ class Session
 		}
 
 		if ($e) {
-			@session_write_close(); // this is needed
+			session_write_close();
 			throw $e;
 		}
 

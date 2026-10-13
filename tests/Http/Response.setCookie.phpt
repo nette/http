@@ -116,7 +116,7 @@ Assert::exception(
 // the name is validated even on the deprecated integer 0 path (no attribute injection)
 Assert::exception(
 	function () use ($response) {
-		@$response->setCookie('a; Domain=evil', 'value', 0);
+		$response->setCookie('a; Domain=evil', 'value', 0);
 	},
 	Nette\InvalidArgumentException::class,
 );

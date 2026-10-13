@@ -173,8 +173,8 @@ final readonly class UrlValidator
 	/** @return list<string> */
 	private static function resolveHost(string $host): array
 	{
-		$a = @dns_get_record($host, DNS_A) ?: [];
-		$aaaa = @dns_get_record($host, DNS_AAAA) ?: [];
+		$a = @dns_get_record($host, DNS_A) ?: []; // @ a failed DNS query triggers a warning
+		$aaaa = @dns_get_record($host, DNS_AAAA) ?: []; // @ a failed DNS query triggers a warning
 		return array_merge(
 			array_column($a, 'ip'),
 			array_column($aaaa, 'ipv6'),
