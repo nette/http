@@ -41,7 +41,7 @@ composer phpstan
 - Tests are Nette Tester `.phpt` files under `tests/Http/`, using the `test()`
   helper from `tests/bootstrap.php`. CI runs the suite on Linux, Windows, and
   macOS - keep new tests Windows-safe.
-- Coding style follows the Nette Coding Standard (PSR-12 based); PHPStan runs at
+- Coding style is checked by DressCode (`dresscode.neon`); PHPStan runs at
   level 8 and the build fails on any error.
 
 ## Working in this repo

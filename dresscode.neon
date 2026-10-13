@@ -1,0 +1,29 @@
+use:
+	- nette
+	- modernizations
+
+typeAnalysis: phpstan
+
+paths:
+	- src
+	- tests
+
+fileExtensions:
+	- php
+	- phpt
+
+imports: {grouping: {class: grouped}}
+
+overrides:
+	-
+		paths: [src]
+		nameResolution: certain
+		use:
+			- compilerOptimizations
+			- deprecations
+	- # the status code constants are public API
+		paths: [src/Http/IResponse.php]
+		naming: {constant: keep}
+	- # renaming the parameters of the deprecated array access would break named arguments
+		paths: [src/Http/SessionSection.php]
+		classes: {overridingMethod: {parameterName: keep}}
