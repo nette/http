@@ -4,8 +4,7 @@
  * Test: Nette\Http\UrlValidator.
  */
 
-use Nette\Http\UrlImmutable;
-use Nette\Http\UrlValidator;
+use Nette\Http\{UrlImmutable, UrlValidator};
 use Tester\Assert;
 
 require __DIR__ . '/../bootstrap.php';

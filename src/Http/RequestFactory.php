@@ -8,8 +8,7 @@
 namespace Nette\Http;
 
 use Nette;
-use Nette\Utils\Arrays;
-use Nette\Utils\Strings;
+use Nette\Utils\{Arrays, Strings};
 use function function_exists, in_array, ini_get, is_array, is_string, sprintf, strlen;
 use const PHP_SAPI;
 

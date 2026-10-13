@@ -4,8 +4,7 @@
  * Test: Nette\Http\UrlImmutable http://
  */
 
-use Nette\Http\Url;
-use Nette\Http\UrlImmutable;
+use Nette\Http\{Url, UrlImmutable};
 use Tester\Assert;
 
 require __DIR__ . '/../bootstrap.php';

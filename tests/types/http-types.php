@@ -5,8 +5,7 @@
  * Run: vendor/bin/phpstan analyse tests/types
  */
 
-use Nette\Http\FileUpload;
-use Nette\Http\SessionSection;
+use Nette\Http\{FileUpload, SessionSection};
 use function PHPStan\Testing\assertType;
 
 

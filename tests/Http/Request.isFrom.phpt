@@ -1,8 +1,7 @@
 <?php declare(strict_types=1);
 
 use Nette\Http;
-use Nette\Http\FetchDest;
-use Nette\Http\FetchSite;
+use Nette\Http\{FetchDest, FetchSite};
 use Tester\Assert;
 
 require __DIR__ . '/../bootstrap.php';
