@@ -8,8 +8,7 @@
 namespace Nette\Http;
 
 use Nette;
-use function chr, strlen;
-use const FILTER_FLAG_IPV4, FILTER_FLAG_IPV6, FILTER_VALIDATE_IP;
+use function strlen;
 
 
 /**

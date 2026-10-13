@@ -8,8 +8,7 @@
 namespace Nette\Http;
 
 use Nette;
-use function is_array, is_string;
-use const PHP_SESSION_ACTIVE;
+use function function_exists, is_array, is_string;
 
 
 /**

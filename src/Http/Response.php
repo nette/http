@@ -8,8 +8,8 @@
 namespace Nette\Http;
 
 use Nette;
-use function is_int, strlen;
-use const PHP_SAPI;
+use function ini_get, is_int, strlen;
+use const ENT_IGNORE, ENT_QUOTES, PHP_SAPI;
 
 
 /**

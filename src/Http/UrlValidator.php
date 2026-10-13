@@ -7,8 +7,7 @@
 
 namespace Nette\Http;
 
-use function in_array, strlen;
-use const DNS_A, DNS_AAAA;
+use function strlen;
 
 
 /**

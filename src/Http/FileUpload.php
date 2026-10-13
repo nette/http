@@ -9,7 +9,7 @@ namespace Nette\Http;
 
 use Nette;
 use Nette\Utils\Image;
-use function in_array, is_string;
+use function is_string;
 
 
 /**
@@ -231,7 +231,7 @@ final class FileUpload
 	public function isImage(): bool
 	{
 		$types = array_map(Image::typeToMimeType(...), Image::getSupportedTypes());
-		return in_array($this->getContentType(), $types, strict: true);
+		return in_array($this->getContentType(), $types, true);
 	}
 
 

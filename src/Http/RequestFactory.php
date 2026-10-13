@@ -10,7 +10,7 @@ namespace Nette\Http;
 use Nette;
 use Nette\Utils\Arrays;
 use Nette\Utils\Strings;
-use function in_array, is_array, is_string, sprintf, strlen;
+use function function_exists, in_array, ini_get, is_array, is_string, sprintf, strlen;
 use const PHP_SAPI;
 
 
@@ -187,7 +187,7 @@ class RequestFactory
 	/** @return array{mixed[], mixed[]} */
 	private function getGetPostCookie(Url $url): array
 	{
-		$useFilter = (!in_array((string) ini_get('filter.default'), ['', 'unsafe_raw'], strict: true) || ini_get('filter.default_flags'));
+		$useFilter = (!in_array((string) ini_get('filter.default'), ['', 'unsafe_raw'], true) || ini_get('filter.default_flags'));
 
 		$query = $url->getQueryParameters();
 		$post = $useFilter

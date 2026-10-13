@@ -8,7 +8,7 @@
 namespace Nette\Http;
 
 use Nette;
-use function count, func_num_args, in_array, is_array, strlen;
+use function count, func_num_args, is_array, strlen;
 
 
 /**
@@ -267,8 +267,8 @@ class Request implements IRequest
 
 		$actualSite = FetchSite::tryFrom($siteHeader);
 		return $actualSite !== null
-			&& in_array($actualSite, $site, strict: true)
-			&& ($dest === null || ($actualDest !== null && in_array($actualDest, $dest, strict: true)))
+			&& in_array($actualSite, $site, true)
+			&& ($dest === null || ($actualDest !== null && in_array($actualDest, $dest, true)))
 			&& ($user === null || $user === $actualUser);
 	}
 
