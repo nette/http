@@ -19,7 +19,7 @@ A subtle change there can open an injection, spoofing, or fixation hole.
 request/response handling, URL manipulation, session management, and file uploads.
 Part of the Nette Framework ecosystem but usable independently.
 
-- **PHP Version**: 8.3 - 8.5
+- **PHP Version**: 8.3 - 8.6
 - **Package**: `nette/http`
 
 ## Essential Commands

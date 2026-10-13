@@ -9,7 +9,7 @@ use Tester\Assert;
 require __DIR__ . '/../bootstrap.php';
 
 
-class MySessionStorage implements SessionHandlerInterface
+class MySessionStorage implements SessionHandlerInterface, SessionIdInterface
 {
 	private $path;
 
@@ -54,6 +54,12 @@ class MySessionStorage implements SessionHandlerInterface
 		}
 
 		return 0;
+	}
+
+
+	public function create_sid(): string
+	{
+		return bin2hex(random_bytes(16));
 	}
 
 

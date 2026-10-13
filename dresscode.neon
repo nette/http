@@ -27,3 +27,6 @@ overrides:
 	- # renaming the parameters of the deprecated array access would break named arguments
 		paths: [src/Http/SessionSection.php]
 		classes: {overridingMethod: {parameterName: keep}}
+	- # create_sid() is named by SessionIdInterface
+		paths: [tests/Http/Session.handler.phpt]
+		naming: {method: keep}
