@@ -84,7 +84,9 @@ class Url implements \JsonSerializable
 			$this->fragment = rawurldecode($p['fragment'] ?? '');
 
 		} elseif ($url instanceof UrlImmutable || $url instanceof self) {
-			[$this->scheme, $this->user, $this->password, $this->host, $this->port, $this->path, $this->query, $this->fragment] = $url->export();
+			[
+				$this->scheme, $this->user, $this->password, $this->host, $this->port, $this->path, $this->query, $this->fragment,
+			] = $url->export();
 		}
 	}
 
@@ -286,10 +288,10 @@ class Url implements \JsonSerializable
 			: ($this->user !== ''
 				? rawurlencode($this->user) . ($this->password === '' ? '' : ':' . rawurlencode($this->password)) . '@'
 				: '')
-			. $this->host
-			. ($this->port && $this->port !== $this->getDefaultPort()
-				? ':' . $this->port
-				: '');
+				. $this->host
+				. ($this->port && $this->port !== $this->getDefaultPort()
+					? ':' . $this->port
+					: '');
 	}
 
 

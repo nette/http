@@ -23,5 +23,5 @@ $session = new Nette\Http\Session($factory->fromGlobals(), new Nette\Http\Respon
 
 $session->setOptions(['save_handler' => 'files']);
 $session->setHandler(new MySessionStorageExtension);
-$session->start(); //and configure();
+$session->start(); // and configure();
 Assert::same('user', ini_get('session.save_handler'));

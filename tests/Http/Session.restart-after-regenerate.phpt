@@ -10,7 +10,10 @@ use Tester\Assert;
 require __DIR__ . '/../bootstrap.php';
 
 $cookies = [session_name() => $sessionId = md5('3')];
-file_put_contents(getTempDir() . '/sess_' . $sessionId, sprintf('__NF|a:2:{s:4:"Time";i:%s;s:4:"DATA";a:1:{s:4:"temp";a:1:{s:5:"value";s:3:"yes";}}}', time() - 1000));
+file_put_contents(
+	getTempDir() . '/sess_' . $sessionId,
+	sprintf('__NF|a:2:{s:4:"Time";i:%s;s:4:"DATA";a:1:{s:4:"temp";a:1:{s:5:"value";s:3:"yes";}}}', time() - 1000),
+);
 
 $session = new Http\Session(new Http\Request(new Http\UrlScript, [], [], $cookies), new Http\Response);
 

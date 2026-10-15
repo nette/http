@@ -25,7 +25,10 @@ Assert::same(['Set-Cookie: test=value; path=/; HttpOnly; SameSite=Lax'], $header
 
 $response->setCookie('test', 'newvalue', null);
 $headers = array_values(array_diff(headers_list(), $old, ['Set-Cookie:']));
-Assert::same(['Set-Cookie: test=value; path=/; HttpOnly; SameSite=Lax', 'Set-Cookie: test=newvalue; path=/; HttpOnly; SameSite=Lax'], $headers);
+Assert::same(
+	['Set-Cookie: test=value; path=/; HttpOnly; SameSite=Lax', 'Set-Cookie: test=newvalue; path=/; HttpOnly; SameSite=Lax'],
+	$headers,
+);
 
 
 // cookiePath

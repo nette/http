@@ -39,7 +39,10 @@ class RequestFactorySchemeTest extends Tester\TestCase
 			['https', ['SERVER_NAME' => 'localhost:443', 'HTTPS' => 'anything']],
 			['https', ['SERVER_NAME' => 'localhost:443', 'HTTPS' => 'on', 'HTTP_X_FORWARDED_PROTO' => 'http']],
 			['https', ['SERVER_NAME' => 'localhost:443', 'HTTPS' => 'on', 'HTTP_X_FORWARDED_PORT' => '80']],
-			['https', ['SERVER_NAME' => 'localhost:443', 'HTTPS' => 'on', 'HTTP_X_FORWARDED_PROTO' => 'http', 'HTTP_X_FORWARDED_PORT' => '80']],
+			[
+				'https',
+				['SERVER_NAME' => 'localhost:443', 'HTTPS' => 'on', 'HTTP_X_FORWARDED_PROTO' => 'http', 'HTTP_X_FORWARDED_PORT' => '80'],
+			],
 		];
 	}
 
@@ -50,7 +53,7 @@ class RequestFactorySchemeTest extends Tester\TestCase
 	 */
 	public function testCreateHttpRequestWithTrustedProxy($expectedScheme, $expectedPort, array $server)
 	{
-		$_SERVER = array_merge(['REMOTE_ADDR' => '10.0.0.1'], $server);
+		$_SERVER = ['REMOTE_ADDR' => '10.0.0.1', ...$server];
 
 		$factory = new Nette\Http\RequestFactory;
 		$factory->setProxy(['10.0.0.1']);
@@ -67,10 +70,18 @@ class RequestFactorySchemeTest extends Tester\TestCase
 			['http', 80, ['SERVER_NAME' => 'localhost:80', 'HTTP_X_FORWARDED_PROTO' => 'http']],
 			['http', 80, ['SERVER_NAME' => 'localhost:443', 'HTTPS' => 'on', 'HTTP_X_FORWARDED_PROTO' => 'http']],
 			['http', 80, ['SERVER_NAME' => 'localhost:443', 'HTTPS' => 'on', 'HTTP_X_FORWARDED_PROTO' => 'something-unexpected']],
-			['http', 443, ['SERVER_NAME' => 'localhost:443', 'HTTPS' => 'on', 'HTTP_X_FORWARDED_PROTO' => 'http', 'HTTP_X_FORWARDED_PORT' => '443']],
+			[
+				'http',
+				443,
+				['SERVER_NAME' => 'localhost:443', 'HTTPS' => 'on', 'HTTP_X_FORWARDED_PROTO' => 'http', 'HTTP_X_FORWARDED_PORT' => '443'],
+			],
 			['https', 443, ['SERVER_NAME' => 'localhost:80', 'HTTP_X_FORWARDED_PROTO' => 'https']],
 			['https', 443, ['SERVER_NAME' => 'localhost:80', 'HTTPS' => 'off', 'HTTP_X_FORWARDED_PROTO' => 'https']],
-			['https', 80, ['SERVER_NAME' => 'localhost:80', 'HTTPS' => 'off', 'HTTP_X_FORWARDED_PROTO' => 'https', 'HTTP_X_FORWARDED_PORT' => '80']],
+			[
+				'https',
+				80,
+				['SERVER_NAME' => 'localhost:80', 'HTTPS' => 'off', 'HTTP_X_FORWARDED_PROTO' => 'https', 'HTTP_X_FORWARDED_PORT' => '80'],
+			],
 		];
 	}
 

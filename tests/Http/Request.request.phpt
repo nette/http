@@ -47,7 +47,10 @@ test('URL parsing with custom filters', function () {
 	Assert::same('https://nette.org:8080/', $request->getUrl()->baseUrl);
 	Assert::same('/', $request->getUrl()->basePath);
 	Assert::same('file.php?x%20param=val.&pa%25ram=val2&quotes%5C%22=%5C%22&param3=v%20a%26l%3Du%2Be', $request->getUrl()->relativeUrl);
-	Assert::same('https://nette.org:8080/file.php?x%20param=val.&pa%25ram=val2&quotes%5C%22=%5C%22&param3=v%20a%26l%3Du%2Be', $request->getUrl()->absoluteUrl);
+	Assert::same(
+		'https://nette.org:8080/file.php?x%20param=val.&pa%25ram=val2&quotes%5C%22=%5C%22&param3=v%20a%26l%3Du%2Be',
+		$request->getUrl()->absoluteUrl,
+	);
 	Assert::same('', $request->getUrl()->pathInfo);
 });
 

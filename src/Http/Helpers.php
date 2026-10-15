@@ -62,7 +62,10 @@ final class Helpers
 		// year (~31.5M) as absolute timestamps; the threshold is intentionally raised to 1e9 (~ year 2001)
 		// so that values in between newly work as relative intervals, while genuine timestamps still warn.
 		if ($seconds >= 1_000_000_000) {
-			trigger_error('Passing an absolute timestamp as an expiration is deprecated; pass a relative number of seconds or a DateTimeInterface instead.', E_USER_DEPRECATED);
+			trigger_error(
+				'Passing an absolute timestamp as an expiration is deprecated; pass a relative number of seconds or a DateTimeInterface instead.',
+				E_USER_DEPRECATED,
+			);
 			return $seconds - time();
 		}
 

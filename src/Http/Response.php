@@ -293,9 +293,9 @@ final class Response implements IResponse
 			throw new Nette\InvalidStateException('Cannot send header after HTTP headers have been sent' . ($file ? " (output started at $file:$line)." : '.'));
 
 		} elseif (
-			$this->warnOnBuffer &&
-			ob_get_length() &&
-			!array_filter(ob_get_status(full_status: true), fn(array $i): bool => !$i['chunk_size'])
+			$this->warnOnBuffer
+			&& ob_get_length()
+			&& !array_filter(ob_get_status(full_status: true), fn(array $i): bool => !$i['chunk_size'])
 		) {
 			trigger_error('Possible problem: you are sending a HTTP header while already having some data in output buffer. Try Tracy\OutputDebugger or send cookies/start session earlier.');
 		}

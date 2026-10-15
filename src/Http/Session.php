@@ -249,6 +249,7 @@ class Session
 			}
 
 			session_regenerate_id(delete_old_session: true);
+
 		} else {
 			session_id(session_create_id() ?: throw new Nette\InvalidStateException('Failed to create session ID.'));
 		}

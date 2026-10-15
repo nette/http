@@ -25,21 +25,20 @@ final readonly class UrlValidator
 	 * Host patterns: exact ('example.com') or wildcard subdomain ('*.example.com'
 	 * matches any depth but NOT apex; for apex list both forms). Multicast addresses
 	 * are always rejected — never opt-in.
-	 *
-	 * @param  string[]       $schemes         allowed schemes; empty array rejects all
-	 * @param  int[]|null     $ports           allowed ports, null = any; implicit port from scheme (https→443, http→80) is honored
-	 * @param  string[]|null  $hostAllowlist   if set, host must match one pattern; null = no allowlist; [] = reject all
-	 * @param  string[]|null  $hostBlocklist   if set, host must not match any pattern
 	 */
 	public function __construct(
+		/** @var string[] allowed schemes; empty array rejects all */
 		private array $schemes = ['https'],
+		/** @var int[]|null allowed ports, null = any; implicit port from scheme (https→443, http→80) is honored */
 		private ?array $ports = [443],
 		private bool $allowPrivateIps = false,
 		private bool $allowLoopback = false,
 		private bool $allowLinkLocal = false,
 		private bool $allowReserved = false,
 		private bool $allowUserinfo = false,
+		/** @var string[]|null if set, host must match one pattern; null = no allowlist; [] = reject all */
 		private ?array $hostAllowlist = null,
+		/** @var string[]|null if set, host must not match any pattern */
 		private ?array $hostBlocklist = null,
 	) {
 	}
@@ -175,9 +174,9 @@ final readonly class UrlValidator
 	{
 		$a = @dns_get_record($host, DNS_A) ?: []; // @ a failed DNS query triggers a warning
 		$aaaa = @dns_get_record($host, DNS_AAAA) ?: []; // @ a failed DNS query triggers a warning
-		return array_merge(
-			array_column($a, 'ip'),
-			array_column($aaaa, 'ipv6'),
-		);
+		return [
+			...array_column($a, 'ip'),
+			...array_column($aaaa, 'ipv6'),
+		];
 	}
 }
