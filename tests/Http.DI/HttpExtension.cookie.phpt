@@ -1,7 +1,6 @@
 <?php declare(strict_types=1);
 
-use Nette\Bridges\HttpDI\HttpExtension;
-use Nette\Bridges\HttpDI\SessionExtension;
+use Nette\Bridges\HttpDI\{HttpExtension, SessionExtension};
 use Nette\DI;
 use Tester\Assert;
 
