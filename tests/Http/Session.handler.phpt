@@ -29,7 +29,7 @@ class MySessionStorage implements SessionHandlerInterface
 
 	public function read(string $id): string|false
 	{
-		return (string) @file_get_contents("$this->path/sess_$id");
+		return (string) @file_get_contents("$this->path/sess_$id"); // @ file may not exist
 	}
 
 
@@ -41,7 +41,7 @@ class MySessionStorage implements SessionHandlerInterface
 
 	public function destroy(string $id): bool
 	{
-		return !is_file("$this->path/sess_$id") || @unlink("$this->path/sess_$id");
+		return !is_file("$this->path/sess_$id") || unlink("$this->path/sess_$id");
 	}
 
 
