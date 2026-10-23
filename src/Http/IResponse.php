@@ -11,6 +11,7 @@ namespace Nette\Http;
 /**
  * HTTP response contract for setting status code, headers, cookies, and redirects.
  * @method self deleteHeader(string $name)
+ * @method static setCookie(string $name, string $value, string|int|\DateTimeInterface|null $expire, ?string $path = null, ?string $domain = null, ?bool $secure = null, ?bool $httpOnly = null, SameSite|string|null $sameSite = null, bool $partitioned = false)
  */
 interface IResponse
 {
