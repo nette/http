@@ -51,7 +51,7 @@ class RequestFactoryPortTest extends Tester\TestCase
 	 */
 	public function testCreateHttpRequestWithTrustedProxy($expectedPort, array $server)
 	{
-		$_SERVER = array_merge(['REMOTE_ADDR' => '10.0.0.1'], $server);
+		$_SERVER = ['REMOTE_ADDR' => '10.0.0.1', ...$server];
 
 		$factory = new Nette\Http\RequestFactory;
 		$factory->setProxy(['10.0.0.1']);

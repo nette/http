@@ -47,5 +47,9 @@ if (PHP_SAPI === 'cli') {
 	Assert::exception(function () use ($response) {
 		ob_flush();
 		$response->setHeader('A', 'b');
-	}, Nette\InvalidStateException::class, 'Cannot send header after HTTP headers have been sent (output started at ' . __FILE__ . ':' . (__LINE__ - 2) . ').');
+	}, Nette\InvalidStateException::class, 'Cannot send header after HTTP headers have been sent (output started at '
+		. __FILE__
+		. ':'
+		. (__LINE__ - 5)
+		. ').');
 }

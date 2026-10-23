@@ -44,7 +44,7 @@ class SessionExtension extends Nette\DI\CompilerExtension
 			'readAndClose' => Expect::bool(),
 			'cookieSamesite' => Expect::anyOf(IResponse::SameSiteLax, IResponse::SameSiteStrict, IResponse::SameSiteNone)
 				->firstIsDefault(),
-		])->otherItems('mixed');
+		])->otherItems();
 	}
 
 

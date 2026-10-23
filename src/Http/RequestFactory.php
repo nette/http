@@ -52,7 +52,7 @@ class RequestFactory
 	 * Sets the trusted proxy IP addresses or CIDR blocks used to resolve the real client IP and URL scheme.
 	 * @param string|list<string>  $proxy
 	 */
-	public function setProxy($proxy): static
+	public function setProxy(string|array $proxy): static
 	{
 		$this->proxies = (array) $proxy;
 		return $this;
@@ -180,7 +180,11 @@ class RequestFactory
 						$list[$key][$k] = (string) preg_replace('#[^' . self::ValidChars . ']+#u', '', $v);
 
 					} else {
-						throw new Nette\InvalidStateException(sprintf('Invalid value in $_POST/$_COOKIE in key %s, expected string, %s given.', "'$k'", get_debug_type($v)));
+						throw new Nette\InvalidStateException(sprintf(
+							'Invalid value in $_POST/$_COOKIE in key %s, expected string, %s given.',
+							"'$k'",
+							get_debug_type($v),
+						));
 					}
 				}
 			}
@@ -254,7 +258,7 @@ class RequestFactory
 	private function getHeaders(): array
 	{
 		if (function_exists('apache_request_headers')) {
-			$headers = apache_request_headers();
+			$headers = apache_request_headers() ?: [];
 		} else {
 			$headers = [];
 			foreach ($_SERVER as $k => $v) {

@@ -13,7 +13,7 @@ use function strlen;
 
 
 /**
- * Rendering helpers for HTTP.
+ * Helper functions for HTTP requests, responses and headers.
  */
 final class Helpers
 {

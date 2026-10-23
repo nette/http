@@ -138,7 +138,7 @@ class Request implements IRequest
 	/**
 	 * Returns a cookie or `null` if it does not exist.
 	 */
-	public function getCookie(string $key): mixed
+	public function getCookie(string $key): ?string
 	{
 		return $this->cookies[$key] ?? null;
 	}

@@ -127,7 +127,8 @@ final class FileUpload
 
 
 	/**
-	 * Returns the appropriate file extension (without the period) corresponding to the detected MIME type. Requires the PHP extension fileinfo.
+	 * Returns the appropriate file extension (without the period) corresponding to the detected MIME type.
+	 * Requires the PHP extension fileinfo.
 	 */
 	public function getSuggestedExtension(): ?string
 	{
