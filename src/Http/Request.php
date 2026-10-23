@@ -8,7 +8,7 @@
 namespace Nette\Http;
 
 use Nette;
-use function count, func_num_args, is_array, strlen;
+use function count, is_array, strlen;
 
 
 /**
@@ -87,29 +87,25 @@ class Request implements IRequest
 
 	/**
 	 * Returns a URL query parameter, or all parameters as an array if no key is given.
+	 * @return ($key is null ? array<mixed> : mixed)
 	 */
 	public function getQuery(?string $key = null): mixed
 	{
-		if (func_num_args() === 0) {
-			return $this->url->getQueryParameters();
-		}
-
-		assert($key !== null);
-		return $this->url->getQueryParameter($key);
+		return $key === null
+			? $this->url->getQueryParameters()
+			: $this->url->getQueryParameter($key);
 	}
 
 
 	/**
 	 * Returns a POST parameter, or all POST parameters as an array if no key is given.
+	 * @return ($key is null ? array<mixed> : mixed)
 	 */
 	public function getPost(?string $key = null): mixed
 	{
-		if (func_num_args() === 0) {
-			return $this->post;
-		}
-
-		assert($key !== null);
-		return $this->post[$key] ?? null;
+		return $key === null
+			? $this->post
+			: $this->post[$key] ?? null;
 	}
 
 

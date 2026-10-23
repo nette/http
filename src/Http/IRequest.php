@@ -55,13 +55,13 @@ interface IRequest
 
 	/**
 	 * Returns a URL query parameter, or all parameters as an array if no key is given.
-	 * @return mixed
+	 * @return ($key is null ? array<mixed> : mixed)
 	 */
 	function getQuery(?string $key = null);
 
 	/**
 	 * Returns a POST parameter, or all POST parameters as an array if no key is given.
-	 * @return mixed
+	 * @return ($key is null ? array<mixed> : mixed)
 	 */
 	function getPost(?string $key = null);
 
