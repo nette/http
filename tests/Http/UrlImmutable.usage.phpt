@@ -29,3 +29,8 @@ Assert::same('anchor', $url->fragment);
 Assert::same('username%3A:password%3A@hostname:60', $url->authority);
 Assert::same('http://username%3A:password%3A@hostname:60', $url->hostUrl);
 Assert::same('http://username%3A:password%3A@hostname:60/p%61th/script.php?arg=value#anchor', $url->absoluteUrl);
+
+
+$url = new UrlImmutable('http://[::ffff:192.168.1.1]/');
+Assert::same('[::ffff:192.168.1.1]', $url->getDomain());
+Assert::same('', $url->getDomain(-1));

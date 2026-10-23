@@ -20,6 +20,17 @@ Assert::same('192.168.1.1', $url->getDomain(1));
 Assert::same('', $url->getDomain(-1));
 
 
+$url = new Url('http://0.0.0.0/');
+Assert::same('0.0.0.0', $url->getDomain());
+Assert::same('', $url->getDomain(-1));
+
+
+$url = new Url('http://[::ffff:192.168.1.1]/');
+Assert::same('[::ffff:192.168.1.1]', $url->getDomain());
+Assert::same('[::ffff:192.168.1.1]', $url->getDomain(1));
+Assert::same('', $url->getDomain(-1));
+
+
 $url = new Url('http://nette.org/');
 Assert::same('nette.org', $url->getDomain());
 Assert::same('nette.org', $url->getDomain(0));

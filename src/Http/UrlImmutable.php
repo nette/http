@@ -146,7 +146,7 @@ class UrlImmutable implements \JsonSerializable
 	 */
 	public function getDomain(int $level = 2): string
 	{
-		$parts = ip2long($this->host)
+		$parts = filter_var(trim($this->host, '[]'), FILTER_VALIDATE_IP) !== false
 			? [$this->host]
 			: explode('.', $this->host);
 		$parts = $level >= 0
