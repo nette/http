@@ -8,7 +8,7 @@
 namespace Nette\Http;
 
 use Nette;
-use function array_key_exists, func_num_args, ini_get, is_array, is_string, time;
+use function array_key_exists, func_num_args, ini_get, is_array, is_string;
 
 
 /**

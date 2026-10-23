@@ -9,7 +9,7 @@ namespace Nette\Bridges\HttpDI;
 
 use Nette;
 use Nette\Schema\Expect;
-use function is_array, strval;
+use function is_array;
 
 
 /**
