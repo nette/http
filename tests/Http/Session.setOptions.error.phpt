@@ -28,3 +28,12 @@ Assert::exception(
 	Nette\InvalidStateException::class,
 	"Invalid session configuration option 'cookieDoman', did you mean 'cookieDomain'?",
 );
+
+
+Assert::exception(
+	fn() => $session->setOptions([
+		'gcMaxlifetime' => 123,
+	]),
+	Nette\InvalidStateException::class,
+	"Unable to set 'session.gc_maxlifetime' to value '123' (current value is '%a%') when session has been started.",
+);
