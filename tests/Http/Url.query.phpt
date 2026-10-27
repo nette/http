@@ -16,24 +16,24 @@ Assert::same(['arg' => 'value'], $url->getQueryParameters());
 
 $url->appendQuery([null]);
 Assert::same('arg=value', $url->query);
-Assert::same([null, 'arg' => 'value'], $url->getQueryParameters());
+Assert::same(['arg' => 'value', null], $url->getQueryParameters());
 
 $url->appendQuery('arg2=value2');
 Assert::same('arg=value&arg2=value2', $url->query);
 Assert::same(['arg' => 'value', 'arg2' => 'value2'], $url->getQueryParameters());
 
 $url->appendQuery(['arg3' => 'value3']);
-Assert::same('arg3=value3&arg=value&arg2=value2', $url->query);
+Assert::same('arg=value&arg2=value2&arg3=value3', $url->query);
 
 $url->appendQuery('arg4[]=1');
 $url->appendQuery('arg4[]=2');
-Assert::same('arg3=value3&arg=value&arg2=value2&arg4%5B0%5D=1&arg4%5B1%5D=2', $url->query);
+Assert::same('arg=value&arg2=value2&arg3=value3&arg4%5B0%5D=1&arg4%5B1%5D=2', $url->query);
 
 $url->appendQuery('arg4[0]=3');
-Assert::same('arg3=value3&arg=value&arg2=value2&arg4%5B0%5D=3&arg4%5B1%5D=2', $url->query);
+Assert::same('arg=value&arg2=value2&arg3=value3&arg4%5B0%5D=3&arg4%5B1%5D=2', $url->query);
 
 $url->appendQuery(['arg4' => 4]);
-Assert::same('arg4=4&arg3=value3&arg=value&arg2=value2', $url->query);
+Assert::same('arg=value&arg2=value2&arg3=value3&arg4=4', $url->query);
 
 
 $url->setQuery(['arg3' => 'value3']);
