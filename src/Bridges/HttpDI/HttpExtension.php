@@ -107,12 +107,6 @@ class HttpExtension extends Nette\DI\CompilerExtension
 			$response->addSetup('$cookieSecure', [$value]);
 		}
 
-		if ($this->name === 'http') {
-			$builder->addAlias('nette.httpRequestFactory', $this->prefix('requestFactory'));
-			$builder->addAlias('httpRequest', $this->prefix('request'));
-			$builder->addAlias('httpResponse', $this->prefix('response'));
-		}
-
 		if (!$this->cliMode) {
 			$this->sendHeaders();
 		}

@@ -90,10 +90,6 @@ class SessionExtension extends Nette\DI\CompilerExtension
 			$session->addSetup('setOptions', [$options]);
 		}
 
-		if ($this->name === 'session') {
-			$builder->addAlias('session', $this->prefix('session'));
-		}
-
 		if (!$this->cliMode) {
 			$name = $this->prefix('session');
 

@@ -33,7 +33,7 @@ services:
 eval($compiler->addConfig($config)->compile());
 
 $container = new Container;
-$container->getService('session')->start();
+$container->getService('session.session')->start();
 
 Assert::same(
 	PHP_VERSION_ID < 80500

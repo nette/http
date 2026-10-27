@@ -41,6 +41,6 @@ services:
 eval($compiler->addConfig($config)->compile());
 
 $container = new Container;
-$container->getService('session')->start();
+$container->getService('session.session')->start();
 
 Assert::true($container->getService('handler')->called);

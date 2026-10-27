@@ -21,7 +21,7 @@ Assert::type(Nette\Http\RequestFactory::class, $container->getService('http.requ
 Assert::type(Nette\Http\Request::class, $container->getService('http.request'));
 Assert::type(Nette\Http\Response::class, $container->getService('http.response'));
 
-// aliases
-Assert::same($container->getService('http.requestFactory'), $container->getService('nette.httpRequestFactory'));
-Assert::same($container->getService('http.request'), $container->getService('httpRequest'));
-Assert::same($container->getService('http.response'), $container->getService('httpResponse'));
+// no legacy aliases
+Assert::false($container->hasService('nette.httpRequestFactory'));
+Assert::false($container->hasService('httpRequest'));
+Assert::false($container->hasService('httpResponse'));

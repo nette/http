@@ -29,8 +29,8 @@ $session = $container->getService('session.session');
 Assert::type(Nette\Http\Session::class, $session);
 Assert::false($session->isStarted());
 
-// aliases
-Assert::same($session, $container->getService('session'));
+// no legacy alias
+Assert::false($container->hasService('session'));
 
 
 $container->initialize();
