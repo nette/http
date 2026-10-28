@@ -112,7 +112,7 @@ class Request implements IRequest
 	 * Accepts a string key or an array of keys for nested file structures (e.g. ['form', 'avatar']).
 	 * @param  string|string[]  $key
 	 */
-	public function getFile($key): ?FileUpload
+	public function getFile(string|array $key): ?FileUpload
 	{
 		$res = Nette\Utils\Arrays::get($this->files, $key, null);
 		return $res instanceof FileUpload ? $res : null;

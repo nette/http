@@ -109,3 +109,7 @@ Assert::true(isset($request->files['file1']));
 
 Assert::null($request->getFile('empty1'));
 Assert::null($request->getFile('empty2'));
+
+Assert::same($request->files['file3']['y']['z'], $request->getFile(['file3', 'y', 'z']));
+Assert::null($request->getFile(['file3', 'y']));
+Assert::null($request->getFile(['file3', 'x']));
