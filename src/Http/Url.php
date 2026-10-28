@@ -222,14 +222,14 @@ class Url implements \JsonSerializable
 
 
 	/**
-	 * Merges query parameters into the existing query. Array values use union (existing keys are preserved);
-	 * string values are appended and reparsed.
+	 * Merges query parameters into the existing query. Array values are set as setQueryParameter() would;
+	 * a string is appended to the query and reparsed.
 	 * @param string|mixed[] $query
 	 */
 	public function appendQuery(string|array $query): static
 	{
 		$this->query = is_array($query)
-			? $query + $this->query
+			? array_replace($this->query, $query)
 			: self::parseQuery($this->getQuery() . '&' . $query);
 		return $this;
 	}
