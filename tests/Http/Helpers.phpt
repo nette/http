@@ -104,8 +104,8 @@ test('expirationToSeconds', function () {
 	);
 
 	// a textual time or DateTimeInterface is resolved as an absolute time, relative to now
-	Assert::true(abs(Helpers::expirationToSeconds('+1 hour') - 3600) <= 1);
-	Assert::true(abs(Helpers::expirationToSeconds(new DateTime('+1 hour')) - 3600) <= 1);
+	Assert::same(3600, Helpers::expirationToSeconds('+1 hour'));
+	Assert::same(3600, Helpers::expirationToSeconds(new DateTime('+1 hour')));
 
 	// an unparsable textual time throws
 	Assert::exception(

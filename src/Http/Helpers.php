@@ -48,10 +48,10 @@ final class Helpers
 		return match (true) {
 			$expire === null => null,
 			is_int($expire) => self::normalizeToRelative($expire),
-			$expire instanceof \DateTimeInterface => $expire->getTimestamp() - time(),
+			$expire instanceof \DateTimeInterface => (int) round((float) $expire->format('U.u') - microtime(true)),
 			$expire === '' => throw new Nette\InvalidArgumentException('Expiration must not be an empty string; use null instead.'),
 			($seconds = filter_var($expire, FILTER_VALIDATE_INT)) !== false => self::normalizeToRelative($seconds),
-			default => (new DateTime($expire))->getTimestamp() - time(),
+			default => self::expirationToSeconds(new DateTime($expire)),
 		};
 	}
 
