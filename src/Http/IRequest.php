@@ -68,8 +68,9 @@ interface IRequest
 	/**
 	 * Returns the uploaded file for the given key, or null if not present.
 	 * Accepts a string key or an array of keys for nested file structures (e.g. ['form', 'avatar']).
+	 * @param  string|string[]  $key
 	 */
-	function getFile(string $key): ?FileUpload;
+	function getFile(string|array $key): ?FileUpload;
 
 	/**
 	 * Returns the tree of uploaded files, with each leaf being a FileUpload instance.
