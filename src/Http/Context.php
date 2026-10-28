@@ -40,8 +40,9 @@ class Context
 
 		} elseif ($ifNoneMatch !== null) {
 			$etag = $this->response->getHeader('ETag');
+			$weak = fn(string $tags): string => str_replace(' W/', ' ', ' ' . strtr($tags, ",\t", '  ')); // weak comparison per RFC 9110
 
-			if ($etag === null || !str_contains(' ' . strtr($ifNoneMatch, ",\t", '  '), ' ' . $etag)) {
+			if ($etag === null || !str_contains($weak($ifNoneMatch), $weak($etag))) {
 				return true;
 
 			} else {
