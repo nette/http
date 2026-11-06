@@ -35,7 +35,7 @@ Installation
 composer require nette/http
 ```
 
-It requires PHP version 8.3 and supports PHP up to 8.6.
+It requires PHP version 8.4 and supports PHP up to 8.6.
 
 
 HTTP Request

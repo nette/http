@@ -12,7 +12,7 @@ jobs:
         strategy:
             matrix:
                 os: [ubuntu-latest, windows-latest, macOS-latest]
-                php: ['8.3', '8.4', '8.5', '8.6']
+                php: ['8.4', '8.5', '8.6']
                 sapi: ['php', 'php-cgi']
 
             fail-fast: false
@@ -42,7 +42,7 @@ jobs:
             - uses: actions/checkout@v7
             - uses: shivammathur/setup-php@v2
               with:
-                  php-version: 8.3
+                  php-version: 8.4
                   coverage: none
                   extensions: ${{ env.php-extensions }}
 
@@ -57,7 +57,7 @@ jobs:
             - uses: actions/checkout@v7
             - uses: shivammathur/setup-php@v2
               with:
-                  php-version: 8.3
+                  php-version: 8.4
                   coverage: pcov
                   extensions: ${{ env.php-extensions }}
 

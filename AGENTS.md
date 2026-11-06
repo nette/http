@@ -25,7 +25,7 @@ is extended at release time from the git history.
 request/response handling, URL manipulation, session management, and file uploads.
 Part of the Nette Framework ecosystem but usable independently.
 
-- **PHP Version**: 8.3 - 8.6
+- **PHP Version**: 8.4 - 8.6
 - **Package**: `nette/http`
 
 ## Essential Commands
