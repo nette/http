@@ -299,7 +299,7 @@ class UrlImmutable implements \JsonSerializable
 	 */
 	public function isEqual(string|Url|self $url): bool
 	{
-		return (new Url($this))->isEqual($url);
+		return new Url($this)->isEqual($url);
 	}
 
 

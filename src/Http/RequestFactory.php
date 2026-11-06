@@ -8,7 +8,7 @@
 namespace Nette\Http;
 
 use Nette;
-use Nette\Utils\{Arrays, Strings};
+use Nette\Utils\Strings;
 use function function_exists, in_array, ini_get, is_array, is_string, sprintf, strlen;
 use const PHP_SAPI;
 
@@ -338,7 +338,7 @@ class RequestFactory
 		// trust forwarding headers only when the request comes through a trusted proxy;
 		// the proxy in turn should strip any forwarding header it does not set itself
 		$client = $remoteAddr ? IPAddress::tryFrom($remoteAddr) : null;
-		$usingTrustedProxy = $client && Arrays::some($this->proxies, fn(string $proxy): bool => $client->isInRange($proxy));
+		$usingTrustedProxy = $client && array_any($this->proxies, fn(string $proxy): bool => $client->isInRange($proxy));
 		if ($usingTrustedProxy) {
 			return match (true) {
 				$this->forwarded && !empty($_SERVER['HTTP_FORWARDED']) => $this->useForwardedProxy($url),
@@ -437,7 +437,7 @@ class RequestFactory
 		$untrusted = array_filter(
 			$addresses,
 			fn(string $ip): bool => ($address = IPAddress::tryFrom($ip)) === null
-				|| !Arrays::some($this->proxies, fn(string $proxy): bool => $address->isInRange($proxy)),
+				|| !array_any($this->proxies, fn(string $proxy): bool => $address->isInRange($proxy)),
 		);
 		if (!$untrusted) {
 			return null;

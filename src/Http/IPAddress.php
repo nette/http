@@ -225,11 +225,6 @@ final readonly class IPAddress implements \Stringable
 	/** @param  string[]  $ranges */
 	private function matchesAny(array $ranges): bool
 	{
-		foreach ($ranges as $cidr) {
-			if ($this->isInRange($cidr)) {
-				return true;
-			}
-		}
-		return false;
+		return array_any($ranges, fn(string $cidr): bool => $this->isInRange($cidr));
 	}
 }

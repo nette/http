@@ -22,7 +22,7 @@ final class Helpers
 	/** @internal */
 	public const StrictCookieName = '_nss';
 
-	/** @deprecated */
+	#[\Deprecated]
 	public const STRICT_COOKIE_NAME = self::StrictCookieName;
 
 

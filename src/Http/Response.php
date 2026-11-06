@@ -295,7 +295,7 @@ final class Response implements IResponse
 		} elseif (
 			$this->warnOnBuffer
 			&& ob_get_length()
-			&& !array_filter(ob_get_status(full_status: true), fn(array $i): bool => !$i['chunk_size'])
+			&& array_all(ob_get_status(full_status: true), fn(array $i): bool => $i['chunk_size'] > 0)
 		) {
 			trigger_error('Possible problem: you are sending a HTTP header while already having some data in output buffer. Try Tracy\OutputDebugger or send cookies/start session earlier.');
 		}

@@ -258,7 +258,7 @@ class Request implements IRequest
 			return $dest === null
 				&& $user === null
 				&& isset($this->cookies[Helpers::StrictCookieName])
-				&& array_filter($site, fn(FetchSite $s) => $s !== FetchSite::CrossSite) !== [];
+				&& array_any($site, fn(FetchSite $s) => $s !== FetchSite::CrossSite);
 		}
 
 		$actualSite = FetchSite::tryFrom($siteHeader);

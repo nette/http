@@ -111,7 +111,7 @@ function isModified(?string $ifNoneMatch, ?string $etag = 'abc', ?string $respon
 	}
 
 	$request = new Request(new UrlScript, headers: $ifNoneMatch === null ? [] : ['If-None-Match' => $ifNoneMatch]);
-	$res = (new Context($request, $response))->isModified(etag: $etag);
+	$res = new Context($request, $response)->isModified(etag: $etag);
 	Assert::same($res ? IResponse::S200_OK : IResponse::S304_NotModified, $response->getCode());
 	return $res;
 }

@@ -76,32 +76,32 @@ test('tryFrom returns null for invalid input', function () {
 
 
 test('isIPv4 distinguishes pure IPv4 from IPv6 forms', function () {
-	Assert::true((new IPAddress('1.2.3.4'))->isIPv4());
-	Assert::false((new IPAddress('::1'))->isIPv4());
-	Assert::false((new IPAddress('::ffff:1.2.3.4'))->isIPv4());
+	Assert::true(new IPAddress('1.2.3.4')->isIPv4());
+	Assert::false(new IPAddress('::1')->isIPv4());
+	Assert::false(new IPAddress('::ffff:1.2.3.4')->isIPv4());
 });
 
 
 test('isIPv6 includes IPv4-mapped form', function () {
-	Assert::true((new IPAddress('::1'))->isIPv6());
-	Assert::true((new IPAddress('2001:db8::1'))->isIPv6());
-	Assert::true((new IPAddress('::ffff:1.2.3.4'))->isIPv6());
-	Assert::false((new IPAddress('1.2.3.4'))->isIPv6());
+	Assert::true(new IPAddress('::1')->isIPv6());
+	Assert::true(new IPAddress('2001:db8::1')->isIPv6());
+	Assert::true(new IPAddress('::ffff:1.2.3.4')->isIPv6());
+	Assert::false(new IPAddress('1.2.3.4')->isIPv6());
 });
 
 
 test('isIPv4Mapped detects ::ffff:a.b.c.d form only', function () {
-	Assert::true((new IPAddress('::ffff:1.2.3.4'))->isIPv4Mapped());
-	Assert::true((new IPAddress('::ffff:127.0.0.1'))->isIPv4Mapped());
-	Assert::false((new IPAddress('1.2.3.4'))->isIPv4Mapped());
-	Assert::false((new IPAddress('::1'))->isIPv4Mapped());
-	Assert::false((new IPAddress('2001:db8::1'))->isIPv4Mapped());
+	Assert::true(new IPAddress('::ffff:1.2.3.4')->isIPv4Mapped());
+	Assert::true(new IPAddress('::ffff:127.0.0.1')->isIPv4Mapped());
+	Assert::false(new IPAddress('1.2.3.4')->isIPv4Mapped());
+	Assert::false(new IPAddress('::1')->isIPv4Mapped());
+	Assert::false(new IPAddress('2001:db8::1')->isIPv4Mapped());
 });
 
 
 test('toIPv4 converts mapped form', function () {
-	Assert::same('1.2.3.4', (string) (new IPAddress('::ffff:1.2.3.4'))->toIPv4());
-	Assert::same('127.0.0.1', (string) (new IPAddress('::ffff:127.0.0.1'))->toIPv4());
+	Assert::same('1.2.3.4', (string) new IPAddress('::ffff:1.2.3.4')->toIPv4());
+	Assert::same('127.0.0.1', (string) new IPAddress('::ffff:127.0.0.1')->toIPv4());
 });
 
 

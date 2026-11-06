@@ -66,13 +66,13 @@ test('isInRange returns false for malformed CIDR', function () {
 test('isInRange handles boundary prefixes', function () {
 	$ip = new IPAddress('1.2.3.4');
 	Assert::true($ip->isInRange('0.0.0.0/0'));
-	Assert::false((new IPAddress('5.6.7.8'))->isInRange('1.2.3.4/32'));
+	Assert::false(new IPAddress('5.6.7.8')->isInRange('1.2.3.4/32'));
 });
 
 
 test('isInRange handles non-byte-aligned prefixes', function () {
-	Assert::true((new IPAddress('100.64.0.1'))->isInRange('100.64.0.0/10'));
-	Assert::true((new IPAddress('100.127.255.255'))->isInRange('100.64.0.0/10'));
-	Assert::false((new IPAddress('100.128.0.0'))->isInRange('100.64.0.0/10'));
-	Assert::false((new IPAddress('100.63.255.255'))->isInRange('100.64.0.0/10'));
+	Assert::true(new IPAddress('100.64.0.1')->isInRange('100.64.0.0/10'));
+	Assert::true(new IPAddress('100.127.255.255')->isInRange('100.64.0.0/10'));
+	Assert::false(new IPAddress('100.128.0.0')->isInRange('100.64.0.0/10'));
+	Assert::false(new IPAddress('100.63.255.255')->isInRange('100.64.0.0/10'));
 });
