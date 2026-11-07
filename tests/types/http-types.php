@@ -29,5 +29,5 @@ function testSessionSectionArrayAccess(SessionSection $section): void
 function testFileUploadGetImageSize(FileUpload $upload): void
 {
 	$size = $upload->getImageSize();
-	assertType('array{int, int}|null', $size);
+	assertType('array{int<0, max>, int<0, max>}|null', $size);
 }

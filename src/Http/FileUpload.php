@@ -246,7 +246,7 @@ final class FileUpload
 
 	/**
 	 * Returns the [width, height] dimensions of the uploaded image, or null if it is not a valid image.
-	 * @return ?array{int, int}
+	 * @return ?array{int<0, max>, int<0, max>}
 	 */
 	public function getImageSize(): ?array
 	{
