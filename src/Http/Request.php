@@ -287,7 +287,7 @@ class Request implements IRequest
 	}
 
 
-	#[\Deprecated]
+	#[\Deprecated(since: '3.4')]
 	public function getRemoteHost(): ?string
 	{
 		trigger_error(__METHOD__ . '() is deprecated.', E_USER_DEPRECATED);

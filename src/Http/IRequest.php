@@ -128,7 +128,7 @@ interface IRequest
 	 */
 	function getRemoteAddress(): ?string;
 
-	#[\Deprecated]
+	#[\Deprecated(since: '3.4')]
 	function getRemoteHost(): ?string;
 
 	/**
